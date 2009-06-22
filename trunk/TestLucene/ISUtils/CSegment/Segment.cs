@@ -14,7 +14,7 @@ namespace ISUtils.CSegment
         private static string _numberPath = "";
         private static string _filterPath = "";
         private static List<string> _customPaths = new List<string>();
-        private static IWordSegment wordSegment=new BackMatchSegment();
+        private static IWordSegment wordSegment=new ForwardMatchSegment();
         private static IDictionaryLoader dictLoader=new TextDictionaryLoader();
         private static bool initPath = false;
         private static bool initDefs = false;

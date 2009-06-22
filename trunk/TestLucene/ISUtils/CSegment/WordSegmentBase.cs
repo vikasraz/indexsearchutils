@@ -123,7 +123,7 @@ namespace ISUtils.CSegment
             }
             string sentence = StrUtility.Filter(text, _filterList, false);
             StringBuilder result = new StringBuilder();
-            SegmentSentence(sentence, ref result, ref startList);
+            SegmentSentence(sentence, ref result, out startList);
             return result.ToString();
         }
         /// <summary>
@@ -148,8 +148,9 @@ namespace ISUtils.CSegment
             return resultList;
         }
 
-        public List<string> SegmentEx(string text, ref List<int> startList)
+        public List<string> SegmentEx(string text, out List<int> startList)
         {
+            startList = null;
             if (string.IsNullOrEmpty(text))
             {
                 return new List<string>();
@@ -157,7 +158,7 @@ namespace ISUtils.CSegment
 
             string sentence = StrUtility.Filter(text, _filterList, false);
             List<string> resultList = new List<string>();
-            resultList.AddRange(SegmentSentence(sentence,ref startList));
+            resultList.AddRange(SegmentSentence(sentence,out startList));
             return resultList;
         }
         /// <summary>
@@ -171,7 +172,7 @@ namespace ISUtils.CSegment
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="result"></param>
-        protected abstract void SegmentSentence(string sentence, ref StringBuilder result,ref List<int> startList);
+        protected abstract void SegmentSentence(string sentence, ref StringBuilder result,out List<int> startList);
         /// <summary>
         /// 对单个句子分词。
         /// </summary>
@@ -183,7 +184,7 @@ namespace ISUtils.CSegment
         /// </summary>
         /// <param name="sentence"></param>
         /// <param name="result"></param>
-        protected abstract List<string> SegmentSentence(string sentence,ref List<int> startList);
+        protected abstract List<string> SegmentSentence(string sentence,out List<int> startList);
 
         #endregion
 

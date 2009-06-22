@@ -156,10 +156,10 @@ namespace TestLucene
             //testSearch();
             //TestChineseSegment();
             //TeseCSegment();
-            //TestChineseSegmentIndexerSpeed();
+            TestChineseSegmentIndexerSpeed();
             //AllAnalysisTest aat = new AllAnalysisTest();
             //aat.TestMethod("");
-            TestForQuery();
+            //TestForQuery();
             //TestChineseSearch();
             //Mainf();
             //TestForChineseSegment();
@@ -241,8 +241,8 @@ namespace TestLucene
             //Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
             //Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
             ISUtils.Utils.IndexUtil.SetIndexSettings(path);
-            ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
-            ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
+            //ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+            //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
             ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary);

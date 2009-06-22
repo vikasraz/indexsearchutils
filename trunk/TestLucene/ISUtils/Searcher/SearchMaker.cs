@@ -76,7 +76,10 @@ namespace ISUtils.Searcher
             SupportClass.LogPath = path;
             Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
             Utils.SearchUtil.SetQueryInfo(info);
-            Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
+            //由于中文分词结果随中文词库的变化而变化，为了使索引不需要根据中文词库的变化而变化，
+            //故采用默认的Analyzer来进行分词，即StandardAnalyzer,
+            //而采用中文分词进行预处理后，再进行搜索操作
+            //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             List<QueryResult.SearchInfo> qrsiList;
             List<Hits> hitsList = Utils.SearchUtil.Search(out qrsiList);
             QueryResult result = new QueryResult();

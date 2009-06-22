@@ -40,7 +40,7 @@ namespace Searchd
             }
             catch (Exception e)
             {
-                EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory);
+                EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory+"\n"+e.StackTrace.ToString());
             }
             try
             {
@@ -122,7 +122,7 @@ namespace Searchd
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
         }
     }

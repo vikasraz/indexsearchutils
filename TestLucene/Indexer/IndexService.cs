@@ -130,7 +130,7 @@ namespace Indexer
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
         }
         protected override void OnStop()

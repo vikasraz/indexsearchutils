@@ -329,7 +329,7 @@ namespace TestLucene
         //}
         static void Mainf()
         {
-            string filepath = @"D:\xampp\apache\conf\httpd.conf";
+            //string filepath = @"D:\xampp\apache\conf\httpd.conf";
             //FileReader.GetFileText(filepath);
             //Analyzer analyzer = new StandardAnalyzer();
             //WriteIndex(analyzer, "IndexDir");

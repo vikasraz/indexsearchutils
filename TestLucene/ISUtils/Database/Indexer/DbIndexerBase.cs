@@ -11,17 +11,17 @@ namespace ISUtils.Database.Indexer
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        public string ConnectString { get { return ""; } }
+        public abstract string ConnectString { get; }
         /**/
         /// <summary>
         /// 字符串分析器
         /// </summary>
-        public Analyzer Analyzer { get { return new StandardAnalyzer(); } }
+        public abstract Analyzer Analyzer { get; }
         /**/
         /// <summary>
         /// 索引存储路径
         /// </summary>
-        public string Directory { get { return ""; } }
+        public abstract string Directory { get; }
         /**/
         /// <summary>
         /// 将数据库查询结果写入索引

@@ -92,7 +92,9 @@ namespace ISUtils.Database.Link
             }
             catch (Exception ex)
             {
-                //Console.WriteLine(ex.Message);
+#if DEBUG
+                System.Console.WriteLine(ex.StackTrace.ToString());
+#endif
             }
             finally
             {

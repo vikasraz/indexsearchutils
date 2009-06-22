@@ -15,7 +15,7 @@ namespace ISUtils.Database.Indexer
         /// 数据库连接字符串
         /// </summary>
         private string _connectString = "";
-        public string ConnectString
+        public override string ConnectString
         {
             get { return _connectString; }
         }
@@ -24,7 +24,7 @@ namespace ISUtils.Database.Indexer
         /// 字符串分析器
         /// </summary>
         private Analyzer analyzer;
-        public Analyzer Analyzer 
+        public override Analyzer Analyzer 
         {
             get { return analyzer; }
         }
@@ -33,7 +33,7 @@ namespace ISUtils.Database.Indexer
         /// 索引存储路径
         /// </summary>
         private string _directory = "";
-        public string Directory 
+        public override string Directory 
         {
             get { return _directory; }
         }

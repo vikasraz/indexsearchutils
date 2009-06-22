@@ -177,7 +177,7 @@ namespace ISUtils
                 }
                 catch (Exception e)
                 {
-                    throw;
+                    throw e;
                 }
             }
             public static void WriteConfigFile(string path, List<Source> sourceList, List<IndexSet> indexList, DictionarySet dictSet, IndexerSet indexerSet, SearchSet searchSet)
@@ -208,7 +208,7 @@ namespace ISUtils
                 }
                 catch (Exception e)
                 {
-                    throw;
+                    throw e;
                 }
             }
         }

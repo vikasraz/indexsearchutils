@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Analysis\Chinese\ChineseAnalyzer.cs" />
     <Compile Include="Analysis\Chinese\ChineseTokenizer.cs" />
+    <Compile Include="Async\WriteDbProgressChangedEventArgs.cs" />
+    <Compile Include="Async\WriteTableCompletedEventArgs.cs" />
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\DBType.cs" />
     <Compile Include="Common\DictionarySet.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Database\Link\DBLinker.cs" />
     <Compile Include="Database\Link\OracleLinker.cs" />
     <Compile Include="Database\Writer\DbWriterBase.cs" />
+    <Compile Include="Async\WriteRowCompletedEventArgs.cs" />
     <Compile Include="Indexer\IndexMaker.cs" />
     <Compile Include="SupportClass.cs" />
     <Compile Include="Utils\IndexUtil.cs" />

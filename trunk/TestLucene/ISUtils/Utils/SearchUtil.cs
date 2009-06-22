@@ -4,6 +4,7 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using Lucene.Net.Index;
 using ISUtils.Common;
 
 namespace ISUtils.Utils
@@ -21,8 +22,10 @@ namespace ISUtils.Utils
         private static string wordNotInclude="";
         private static List<string> queryAtList = new List<string>();
         private static List<IndexSet> searchIndexList = new List<IndexSet>();
+        private static bool initSettings=false;
         public static void SetSearchSettings(string configFileName)
         {
+            if (initSettings) return;
             try
             {
                 List<string> srcList = SupportClass.File.GetFileText(configFileName);
@@ -45,6 +48,7 @@ namespace ISUtils.Utils
                         }
                     }
                 }
+                initSettings = true;
             }
             catch (Exception e)
             {
@@ -56,6 +60,7 @@ namespace ISUtils.Utils
         }
         public static void SetSearchSettings(List<Source> sourceList, List<IndexSet> indexList, DictionarySet dictSet, SearchSet searchSet)
         {
+            if (initSettings) return;
             SearchUtil.searchSet = searchSet;
             SearchUtil.dictSet = dictSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
@@ -74,16 +79,15 @@ namespace ISUtils.Utils
                         System.Console.WriteLine("\t"+set.ToString());
                         System.Console.WriteLine("\t"+source.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, "SearchUtil.indexDict.Add:");
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, "\t" + set.ToString());
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, "\t" + source.ToString());
                         break;
                     }
                 }
             }
+            initSettings = true;
         }
         public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, SearchSet searchSet)
         {
+            if (initSettings) return;
             if (dict != null)
                 indexDict = dict;
             else
@@ -92,6 +96,7 @@ namespace ISUtils.Utils
             SearchUtil.searchSet = searchSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
             ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
+            initSettings = true;
         }
         public static void UseDefaultChineseAnalyzer(bool useChineseAnalyzer)
         {
@@ -136,6 +141,7 @@ namespace ISUtils.Utils
         {
             if (searchIndexList == null)
                 searchIndexList = new  List<IndexSet>();
+            searchIndexList.Clear();
             string[] names = SupportClass.String.Split(indexNames);
             foreach (string name in names)
             {
@@ -185,6 +191,7 @@ namespace ISUtils.Utils
                 return;
             if (indexFieldsDict == null)
                 indexFieldsDict = new Dictionary<IndexSet, List<string>>();
+            indexFieldsDict.Clear();
             foreach (IndexSet indexSet in indexDict.Keys)
             {
                 List<string> fieldList = new List<string>();
@@ -207,6 +214,7 @@ namespace ISUtils.Utils
         {
             if (queryAtList == null)
                 queryAtList = new List<string>();
+            queryAtList.Clear();
             string[] fields=SupportClass.String.Split(queryAt);
             foreach (string field in fields)
             {
@@ -226,6 +234,7 @@ namespace ISUtils.Utils
         {
             if (queryAtList == null)
                 queryAtList = new List<string>();
+            queryAtList.Clear();
             foreach (string queryAt in queryAts)
             {
                 string[] fields = SupportClass.String.Split(queryAt);
@@ -352,6 +361,46 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
+        private static Query GetQuery()
+        {
+            BooleanQuery queryRet = new BooleanQuery();
+            if (searchIndexList.Count > 0)
+            {
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.SHOULD);
+                }
+            }
+            else
+            {
+                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                {
+                    queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.SHOULD);
+                }
+            }
+            return queryRet;
+        }
+        //private static Query GetQuery(out QueryResult.SearchInfo info)
+        //{
+        //    BooleanQuery queryRet = new BooleanQuery();
+        //    info = new QueryResult.SearchInfo();
+        //    if (searchIndexList.Count > 0)
+        //    {
+        //        foreach (IndexSet indexSet in searchIndexList)
+        //        {
+        //            queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.MUST);
+                    
+        //        }
+        //    }
+        //    else
+        //    {
+        //        foreach (IndexSet indexSet in indexFieldsDict.Keys)
+        //        {
+        //            queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.MUST);
+        //        }
+        //    }
+        //    return queryRet;
+        //}
         public static List<Hits> Search()
         {
             List<Hits> hitsList = new List<Hits>();
@@ -382,6 +431,63 @@ namespace ISUtils.Utils
                 }
             }
             return hitsList;
+        }
+        public static Hits SearchEx()
+        {
+            Hits hits = null;
+            List<IndexReader> readerList = new List<IndexReader>();
+            if (searchIndexList.Count > 0)
+            {
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+            }
+            else
+            {
+                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+            }
+            MultiReader multiReader = new MultiReader(readerList.ToArray());
+            IndexSearcher searcher = new IndexSearcher(multiReader);
+            Query query = GetQuery();
+#if DEBUG
+            System.Console.WriteLine(query.ToString());
+#endif
+            SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+            hits = searcher.Search(query);
+            return hits;
+        }
+        public static Hits SearchEx(out Query query)
+        {
+            Hits hits = null;
+            query = null;
+            List<IndexReader> readerList = new List<IndexReader>();
+            if (searchIndexList.Count > 0)
+            {
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+            }
+            else
+            {
+                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+            }
+            MultiReader multiReader = new MultiReader(readerList.ToArray());
+            IndexSearcher searcher = new IndexSearcher(multiReader);
+            query = GetQuery();
+#if DEBUG
+            System.Console.WriteLine(query.ToString());
+#endif
+            SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+            hits = searcher.Search(query);
+            return hits;
         }
         public static List<Hits> Search(out List<QueryResult.SearchInfo> siList)
         {

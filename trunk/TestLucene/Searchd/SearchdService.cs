@@ -85,7 +85,7 @@ namespace Searchd
                 try
                 {
                     WriteToLog("Try to execute search");
-                    Message msg = searcher.ExecuteSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt");
+                    Message msg = searcher.ExecuteSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt",true);
                     WriteToLog("After ExecuteSearch");
                     if (msg.Success)
                         WriteToLog(msg.ToString());

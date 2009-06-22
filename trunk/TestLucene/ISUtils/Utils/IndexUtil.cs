@@ -13,9 +13,12 @@ namespace ISUtils.Utils
         private static IndexerSet indexerSet=new IndexerSet();
         private static DictionarySet dictSet=new DictionarySet();
         private static Analyzer analyzer = new StandardAnalyzer();
+        private static bool initSettings = false;
 
         public static void SetIndexSettings(string configFileName)
         {
+            if (initSettings) return;
+            initSettings = true;
             try
             {
                 List<string> srcList = SupportClass.File.GetFileText(configFileName);
@@ -47,6 +50,8 @@ namespace ISUtils.Utils
         }
         public static void SetIndexSettings(List<Source> sourceList, List<IndexSet> indexList, DictionarySet dictSet, IndexerSet indexerSet)
         {
+            if (initSettings) return;
+            initSettings = true;
             IndexUtil.indexerSet = indexerSet;
             IndexUtil.dictSet = dictSet;
             if (indexDict == null)
@@ -65,6 +70,8 @@ namespace ISUtils.Utils
         }
         public static void SetIndexSettings(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexerSet)
         {
+            if (initSettings) return;
+            initSettings = true;
             if (dict != null)
                 indexDict = dict;
             else
@@ -89,6 +96,8 @@ namespace ISUtils.Utils
         }
         public static void Index(IndexTypeEnum type)
         {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
                 foreach (IndexSet indexSet in indexDict.Keys)
@@ -102,6 +111,8 @@ namespace ISUtils.Utils
         }
         public static void Index(bool create)
         {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
                 foreach (IndexSet indexSet in indexDict.Keys)
@@ -112,6 +123,8 @@ namespace ISUtils.Utils
         }
         public static void Index(IndexTypeEnum type,ref System.Windows.Forms.ToolStripProgressBar progressBar)
         {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
                 foreach (IndexSet indexSet in indexDict.Keys)
@@ -128,6 +141,8 @@ namespace ISUtils.Utils
         }
         public static void Index(IndexTypeEnum type, ref System.Windows.Forms.ProgressBar progressBar)
         {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
                 foreach (IndexSet indexSet in indexDict.Keys)

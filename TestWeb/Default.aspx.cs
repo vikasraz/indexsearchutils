@@ -57,11 +57,11 @@ public partial class _Default : System.Web.UI.Page
             {
                 Response.Write(se.Message + "\n");
             }
-            QueryResult qr= null;
+            FormatedResult fr= null;
             try
             {
                 DateTime start = DateTime.Now;
-                qr = (QueryResult)formater.Deserialize(ns);
+                fr = (FormatedResult)formater.Deserialize(ns);
                 TimeSpan span = DateTime.Now - start;
                 Response.Write("反序列化:"+span.TotalMilliseconds.ToString() + "毫秒<br>");
             }
@@ -91,21 +91,77 @@ public partial class _Default : System.Web.UI.Page
             //Hits hits = searcher.Search(query);
 
             TimeSpan tm = DateTime.Now - now;
-            Dictionary<QueryResult.SearchInfo, List<QueryResult.ExDocument>>.KeyCollection kc=qr.docs.Keys;
-            foreach (QueryResult.SearchInfo si in kc)
+            foreach (FormatedResult.Element elem in fr.ElemList)
             {
-                Response.Write("index :" + si.IndexName + "<br>");
-                foreach (QueryResult.ExDocument ed in qr.docs[si])
-                {
-                    foreach (string s in si.Fields)
-                    {
-                        Response.Write("\t" + ed.doc.Get(s));
-                    }
-                    Response.Write("\tscore=" + ed.score.ToString() + "<br>");
-                    //Response.Write(ISUtils.SupportClass.Document.ToString(ed.doc)+ "<br>");
-                    //Console.WriteLine(string.Format("title:{0} \nhistoryName:{1}", doc.Get("id"), doc.Get("historyName")));
-                }
+                Response.Write(elem.ToString() + "<br>");
             }
+            //foreach (QueryResult.SearchInfo si in qr.docs.Keys)
+            //{
+            //    Response.Write("index :" + si.IndexName + "<br>");
+            //    foreach (QueryResult.ExDocument ed in qr.docs[si])
+            //    {
+            //        foreach (string s in si.Fields)
+            //        {
+            //            Response.Write("\t" + ed.doc.Get(s));
+            //        }
+            //        Response.Write("\tscore=" + ed.score.ToString() + "<br>");
+            //        //Response.Write(ISUtils.SupportClass.Document.ToString(ed.doc)+ "<br>");
+            //        //Console.WriteLine(string.Format("title:{0} \nhistoryName:{1}", doc.Get("id"), doc.Get("historyName")));
+            //    }
+            //}
+            //Lucene.Net.Highlight.Highlighter highlighter = new Lucene.Net.Highlight.Highlighter(new Lucene.Net.Highlight.QueryScorer(highquery));
+            //highlighter.SetTextFragmenter(new Lucene.Net.Highlight.SimpleFragmenter(100));
+
+            ////for (int i = start; i < end; i++)
+            ////{
+            ////    Lucene.Net.Documents.Document doc = hits.Doc(i);
+            ////    System.String text = doc.Get("content");
+            ////    //添加结尾，保证结尾特殊符号不被过滤
+            ////    string title = doc.Get("title") + "+aaaaaaaaa";
+            ////    Lucene.Net.Analysis.TokenStream tokenStream = highanalyzer.TokenStream("content", new System.IO.StringReader(text));
+            ////    Lucene.Net.Analysis.TokenStream titkeStream = highanalyzer.TokenStream("title", new System.IO.StringReader(title));
+            ////    System.String result = highlighter.GetBestFragments(tokenStream, text, 2, "...");
+            ////    string tresult = highlighter.GetBestFragments(titkeStream, title, 0, "..");
+            ////    //祛除标题结尾标记
+            ////    if (tresult.Length > 10)
+            ////        tresult = tresult.Remove(tresult.Length - 10, 10);
+            ////    if (string.IsNullOrEmpty(tresult))
+            ////        tresult = title.Remove(title.Length - 10, 10);
+            ////    //未标注内容读取
+            ////    if (string.IsNullOrEmpty(result))
+            ////    {
+            ////        if (text.Length > 100)
+            ////            result = text.Substring(0, 100);
+            ////        else
+            ////            result = text;
+            ////    }
+            ////    if (result.Length < text.Length)
+            ////        result = result + "...";
+            ////} 
+            //Lucene.Net.Analysis.Analyzer analyzer = new Lucene.Net.Analysis.Standard.StandardAnalyzer();
+            //foreach (QueryResult.ExDocument ed in qr.docList)
+            //{
+            //    //Response.Write(ed.doc.ToString() + "<br>");
+            //    Document doc = ed.doc;
+            //    //List<Field> fields = new List<Field>();
+            //    //fields.AddRange(doc.GetFields().CopyTo);
+            //    Field[] fields = new Field[doc.GetFields().Count];
+            //    doc.GetFields().CopyTo(fields, 0);
+            //    foreach (Field field in fields)
+            //    {
+            //        string key = field.Name();
+            //        string value = field.StringValue();
+            //        Lucene.Net.Analysis.TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StreamReader(value));
+            //        string result = highlighter.GetBestFragment(tokenStream, value);
+            //        Response.Write(key + "\t" + result+"\t" );
+            //    }
+            //    Response.Write("<br>");
+            //    //Response.Write(ed.doc.Get("TDZL"));
+            //    //Response.Write(ed.doc.Get("SYQR") + "<br>");
+            //    //IList<string> fields = (IList<string>)ed.doc.GetFields();
+            //    //foreach(string field in fields)
+            //    //  Response.Write(ed.doc.Get(field) + "<br>");
+            //}
             Response.Write("搜索测试完成，花费时间：" + tm.TotalMilliseconds.ToString() + "毫秒\n");
         }
     }

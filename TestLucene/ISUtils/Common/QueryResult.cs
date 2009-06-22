@@ -32,12 +32,25 @@ namespace ISUtils.Common
             {
                 IndexName = name;
                 Fields = (string[])fields.Clone(); 
-            }
+            }            
         }
         public Dictionary<SearchInfo, List<ExDocument>> docs;
+        public List<ExDocument> docList;
         public QueryResult()
         {
             docs = new Dictionary<SearchInfo, List<ExDocument>>();
+            docList = new List<ExDocument>();
+        }
+        public void AddResult(Hits hits, int maxMatches)
+        {
+            if (docList == null)
+                docList = new List<ExDocument>();
+            if (hits == null)
+                return;
+            for (int i = 0; i < maxMatches && i < hits.Length(); i++)
+            {
+                docList.Add(new ExDocument(hits.Doc(i), hits.Score(i)));
+            }
         }
         public void AddResult(SearchInfo info, Hits hits, int maxMatches)
         {

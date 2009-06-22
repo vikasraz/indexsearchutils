@@ -156,11 +156,11 @@ namespace TestLucene
             //testSearch();
             //TestChineseSegment();
             //TeseCSegment();
-            TestChineseSegmentIndexerSpeed();
+            //TestChineseSegmentIndexerSpeed();
             //AllAnalysisTest aat = new AllAnalysisTest();
             //aat.TestMethod("");
             //TestForQuery();
-            //TestChineseSearch();
+            TestChineseSearch();
             //Mainf();
             //TestForChineseSegment();
             Console.ReadKey();
@@ -187,18 +187,18 @@ namespace TestLucene
                 Console.WriteLine("SetQueryInfo");
                 ISUtils.Utils.SearchUtil.SetQueryInfo(info);
                 Console.WriteLine("UseDefaultChineseAnalyzer");
-                ISUtils.Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
+                //ISUtils.Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
                 //List<QueryResult.SearchInfo> qrsiList;
                 Console.WriteLine("Search");
-                IndexSearcher searcher = new IndexSearcher(@"E:\TEMP\in_MAIN1\");
-                //TDZL,QSXZ,SYQLX,SYQR,LZDDH
-                QueryParser queryParser = new QueryParser("LZDDH", new ChineseAnalyzer());
-                Query query = queryParser.Parse("中国人民解放军 93688");
-                //输出我们要查看的表达式
-                Console.WriteLine(query.ToString());
+                //IndexSearcher searcher = new IndexSearcher(@"E:\TEMP\in_MAIN1\");
+                ////TDZL,QSXZ,SYQLX,SYQR,LZDDH
+                //QueryParser queryParser = new QueryParser("LZDDH", new ChineseAnalyzer());
+                //Query query = queryParser.Parse("中国人民解放军 93688");
+                ////输出我们要查看的表达式
+                //Console.WriteLine(query.ToString());
                 DateTime start = DateTime.Now;
-                Hits hits = searcher.Search(query);
-
+                //Hits hits = searcher.Search(query);
+                Hits hits = ISUtils.Utils.SearchUtil.SearchEx();
                 TimeSpan tm = DateTime.Now - start;
                 for (int i = 0; i < hits.Length(); i++)
                 {
@@ -206,6 +206,7 @@ namespace TestLucene
                     Console.WriteLine(doc.ToString());
                     //Console.WriteLine(string.Format("title:{0} \nhistoryName:{1}", doc.Get("id"), doc.Get("historyName")));
                 }
+                Console.WriteLine(hits.Length());
                 Console.WriteLine("搜索测试完成，花费时间：" + tm.TotalMilliseconds.ToString() + "毫秒");
                 //List<Hits> hitsList = ISUtils.Utils.SearchUtil.Search(out qrsiList);
                 //QueryResult result = new QueryResult();

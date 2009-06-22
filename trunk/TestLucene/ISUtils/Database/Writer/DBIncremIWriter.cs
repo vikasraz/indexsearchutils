@@ -51,6 +51,9 @@ namespace ISUtils.Database.Writer
             catch (System.IO.IOException ioe)
             {
                 dict = FSDirectory.GetDirectory(directory, true);
+#if DEBUG
+                System.Console.WriteLine(ioe.StackTrace.ToString());
+#endif
             }
             try
             {
@@ -67,6 +70,9 @@ namespace ISUtils.Database.Writer
                 writer.SetRAMBufferSizeMB(ramBufferSize);
                 writer.SetMergeFactor(mergeFactor);
                 writer.SetMaxBufferedDocs(maxBufferedDocs);
+#if DEBUG
+                System.Console.WriteLine(ie.StackTrace.ToString());
+#endif
             }
             catch (Exception e)
             {

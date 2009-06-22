@@ -279,6 +279,9 @@ namespace ISUtils.Common
                         catch(Exception e)
                         {
                             src.DBType = DBTypeEnum.SQL_Server;
+#if DEBUG
+                            System.Console.WriteLine(e.StackTrace.ToString());
+#endif
                         }
                     else
                         src.DBType= DBTypeEnum.SQL_Server;

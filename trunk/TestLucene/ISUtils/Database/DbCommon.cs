@@ -58,6 +58,9 @@ namespace ISUtils.Database
             }
             catch (Exception e)
             {
+#if DEBUG
+                System.Console.WriteLine(e.StackTrace.ToString());
+#endif
                 return false;
             }
         }
@@ -106,6 +109,9 @@ namespace ISUtils.Database
             }
             catch (Exception e)
             {
+#if DEBUG
+                System.Console.WriteLine(e.StackTrace.ToString());
+#endif
                 return false;
             }
         }
@@ -177,6 +183,9 @@ namespace ISUtils.Database
             }
             catch (Exception e)
             {
+#if DEBUG
+                System.Console.WriteLine(e.StackTrace.ToString());
+#endif
                 return false;
             }
         }

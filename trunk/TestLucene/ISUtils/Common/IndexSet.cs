@@ -144,6 +144,9 @@ namespace ISUtils.Common
                         catch(Exception e)
                         {
                             index.Type=IndexTypeEnum.Ordinary;
+#if DEBUG
+                            System.Console.WriteLine(e.StackTrace.ToString());
+#endif
                         }
                     else
                         index.Type = IndexTypeEnum.Ordinary;

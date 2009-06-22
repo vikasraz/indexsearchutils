@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using Lucene.Net.Analysis;
 using System.Data;
-
+using ISUtils.Async;
 namespace ISUtils.Database.Writer
 {
+    public delegate void WriteRowCompletedEventHandler(object sender, WriteRowCompletedEventArgs e);
+    public delegate void WriteTableCompletedEventHandler(object sender, WriteTableCompletedEventArgs e);
+    public delegate void WriteDbProgressChangedEventHandler(object sender,WriteDbProgressChangedEventArgs e);
     public abstract class DbWriterBase : DataBaseWriter
     {
+        private bool isBusy = false;
+        public bool IsBusy
+        {
+            get { return isBusy; }
+        }
+        public event WriteTableCompletedEventHandler writeTableCompleted;
+        public event WriteRowCompletedEventHandler writeRowCompleted;
+        public event WriteDbProgressChangedEventHandler progressChanged;
         /**/
         /// <summary>
         /// 设定基本属性值

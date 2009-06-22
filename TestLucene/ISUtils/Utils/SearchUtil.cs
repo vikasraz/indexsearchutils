@@ -30,6 +30,8 @@ namespace ISUtils.Utils
                 List<IndexSet> indexList = IndexSet.GetIndexList(srcList);
                 searchSet = SearchSet.GetSearchSet(srcList);
                 dictSet = DictionarySet.GetDictionarySet(srcList);
+                ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
+                ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
                 if (indexDict == null)
                     indexDict = new Dictionary<IndexSet, Source>();
                 foreach (IndexSet set in indexList)
@@ -56,6 +58,8 @@ namespace ISUtils.Utils
         {
             SearchUtil.searchSet = searchSet;
             SearchUtil.dictSet = dictSet;
+            ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
+            ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
             if (indexDict == null)
                 indexDict = new Dictionary<IndexSet, Source>();
             foreach (IndexSet set in indexList)
@@ -86,13 +90,13 @@ namespace ISUtils.Utils
                 indexDict = new Dictionary<IndexSet, Source>();
             SearchUtil.dictSet = dictSet;
             SearchUtil.searchSet = searchSet;
+            ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
+            ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
         }
         public static void UseDefaultChineseAnalyzer(bool useChineseAnalyzer)
         {
             if (useChineseAnalyzer)
             {
-                ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath,dictSet.FilterPath, dictSet.CustomPaths);
-                ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
                 analyzer = new ISUtils.Analysis.Chinese.ChineseAnalyzer();
             }
             else
@@ -255,25 +259,41 @@ namespace ISUtils.Utils
 
             MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
             BooleanQuery queryRet = new BooleanQuery();
-            foreach (string word in wordAllContainArray)
+            foreach (string words in wordAllContainArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.MUST);
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach (string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST);
+                }
             }
-            foreach (string word in exactPhraseArray)
+            foreach (string words in exactPhraseArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.MUST);
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach(string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST);
+                }
             }
-            foreach (string word in exactPhraseArray)
+            foreach (string words in exactPhraseArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.SHOULD);
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach(string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.SHOULD);
+                }
             }
-            foreach (string word in wordNoIncludeArray)
+            foreach (string words in wordNoIncludeArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach(string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
+                }
             }
             return queryRet;
         }
@@ -293,50 +313,43 @@ namespace ISUtils.Utils
             string[] wordNoIncludeArray = SupportClass.String.Split(wordNotInclude);
 
             MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
-#if DEBUG 
-            MultiFieldQueryParser sparser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
-            BooleanQuery squery = new BooleanQuery();
-#endif
             BooleanQuery queryRet = new BooleanQuery();
-            foreach (string word in wordAllContainArray)
+            foreach (string words in wordAllContainArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.MUST);
-#if DEBUG
-                Query q=sparser.Parse(word);
-                squery.Add(q,BooleanClause.Occur.MUST);
-#endif
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach(string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST);
+                }
             }
-            foreach (string word in exactPhraseArray)
+            foreach (string words in exactPhraseArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.MUST);
-#if DEBUG
-                Query q = sparser.Parse(word);
-                squery.Add(q, BooleanClause.Occur.MUST);
-#endif
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach (string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST);
+                }
             }
-            foreach (string word in exactPhraseArray)
+            foreach (string words in exactPhraseArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.SHOULD);
-#if DEBUG
-                Query q = sparser.Parse(word);
-                squery.Add(q, BooleanClause.Occur.SHOULD);
-#endif
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach(string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.SHOULD);
+                }
             }
-            foreach (string word in wordNoIncludeArray)
+            foreach (string words in wordNoIncludeArray)
             {
-                Query query = parser.Parse(word);
-                queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
-#if DEBUG
-                Query q = sparser.Parse(word);
-                squery.Add(q, BooleanClause.Occur.MUST_NOT);
-#endif
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach(string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
+                }
             }
-#if DEBUG
-            System.Console.WriteLine(squery.ToString());
-#endif
             return queryRet;
         }
         public static List<Hits> Search()

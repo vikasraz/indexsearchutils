@@ -111,6 +111,79 @@ namespace ISUtils.CSegment
             ProcessLastChar(sentence, charCursor, ref resultList, result,maxLenElement);
             return resultList;
         }
+        protected override List<string> SegmentSentence(string sentence, out List<int> startList)
+        {
+            List<string> resultList = new List<string>();
+            startList = new List<int>();
+            if (string.IsNullOrEmpty(sentence))
+            {
+                return resultList;
+            }
+            if (this.SegmentDictionary.Segments.Count <= 0)
+            {
+                return resultList;
+            }
+            string currentChar;
+            string nextChar;
+            string currentTwoChars;
+            string maxLenElement = "";
+            StringBuilder result = new StringBuilder();
+            int charCursor = 0;
+            for (charCursor = 0; charCursor < sentence.Length - 1; charCursor++)
+            {
+                currentChar = sentence.Substring(charCursor, 1);
+                nextChar = sentence.Substring(charCursor + 1, 1);
+                //非汉字
+                if (!Character.IsChinese(currentChar))
+                {
+                    ProcessNonChinese(sentence, ref resultList, result, currentChar, nextChar);
+                    //#if DEBUG
+                    //                    System.Console.WriteLine(result.ToString());
+                    //#endif
+                    continue;
+                }
+                //下一字符非汉字
+                if (!Character.IsChinese(nextChar))
+                {
+                    result.Append(currentChar);
+                    resultList.Add(result.ToString());
+                    result.Remove(0, result.Length);
+                    continue;
+                }
+                //汉字
+                currentTwoChars = sentence.Substring(charCursor, 2);
+
+                //以当前两字符开头的词，在词库中不存在
+                if (!this.SegmentDictionary.Segments.ContainsKey(currentTwoChars))
+                {
+                    //当前字符是姓
+                    if (this.NameSegments.ContainsKey(currentChar))
+                    {
+                        result.Append(currentChar);
+                    }
+                    else if (this.NameSegments.ContainsKey(currentTwoChars))
+                    {
+                        result.Append(currentTwoChars);
+                    }
+                    else
+                    {
+                        result.Append(currentChar);
+                        resultList.Add(result.ToString());
+                        result.Remove(0, result.Length);
+                    }
+                    //#if DEBUG
+                    //                    System.Console.WriteLine(result.ToString());
+                    //#endif
+                    continue;
+                }
+                //以当前两字符开头的词，在词库中存在,取出所有匹配的词并抽取最大程度的词。
+                ProcessExistingElement(sentence, ref resultList, result, currentChar, currentTwoChars, ref charCursor, ref maxLenElement);
+            }
+
+            //处理最后一个字符
+            ProcessLastChar(sentence, charCursor, ref resultList, result, maxLenElement);
+            return resultList;
+        }
         /// 对单个句子分词。
         /// </summary>
         /// <param name="text"></param>
@@ -198,9 +271,90 @@ namespace ISUtils.CSegment
 //            System.Console.WriteLine();
 //#endif
         }
+        protected override void SegmentSentence(string text, ref StringBuilder result, out List<int> startList)
+        {
+            startList = new List<int>();
+            if (string.IsNullOrEmpty(text))
+            {
+                return;
+            }
 
+            if (this.SegmentDictionary.Segments.Count <= 0)
+            {
+                return;
+            }
 
+            string currentChar;
+            //CharType currentType=CharType.Other;
+            //CharType prevType = CharType.Other;
+            //CharType nextType = CharType.Other;
+            string nextChar;
+            string currentTwoChars;
+            string maxLenElement = "";
+            //#if DEBUG
+            //            System.Console.WriteLine("Befor:" + text);
+            //            int ninit = result.Length;
+            //#endif
+            int charCursor = 0;
+            for (charCursor = 0; charCursor < text.Length - 1; charCursor++)
+            {
+                currentChar = text.Substring(charCursor, 1);
+                nextChar = text.Substring(charCursor + 1, 1);
+                //非汉字
+                if (!Character.IsChinese(currentChar))
+                {
+                    ProcessNonChinese(text, result, currentChar, nextChar);
+                    continue;
+                }
+                //下一字符非汉字
+                if (!Character.IsChinese(nextChar))
+                {
+                    result.Append(currentChar);
+                    result.Append(this.Separator);
+                    continue;
+                }
+                //汉字
+                currentTwoChars = text.Substring(charCursor, 2);
 
+                //以当前两字符开头的词，在词库中不存在
+                if (!this.SegmentDictionary.Segments.ContainsKey(currentTwoChars))
+                {
+                    //当前字符是姓
+                    if (this.NameSegments.ContainsKey(currentChar))
+                    {
+                        result.Append(currentChar);
+                    }
+                    else if (this.NameSegments.ContainsKey(currentTwoChars))
+                    {
+                        result.Append(currentTwoChars);
+                    }
+                    else
+                    {
+                        result.Append(currentChar);
+                        result.Append(this.Separator);
+                    }
+                    //#if DEBUG
+                    //                    System.Console.WriteLine(result.ToString());
+                    //#endif
+                    continue;
+                }
+                //以当前两字符开头的词，在词库中存在,取出所有匹配的词并抽取最大程度的词。
+                ProcessExistingElement(text, result, currentChar, currentTwoChars, ref charCursor, ref maxLenElement);
+                //#if DEBUG
+                //                System.Console.WriteLine(result.ToString());
+                //#endif
+            }
+
+            //处理最后一个字符
+            //#if DEBUG
+            //            System.Console.WriteLine(result.ToString());
+            //#endif
+            ProcessLastChar(text, charCursor, result, maxLenElement);
+            //#if DEBUG
+            //            System.Console.WriteLine("After:" + result.ToString().Substring(ninit));
+            //            System.Console.WriteLine();
+            //#endif
+        }
         /// <summary>
         /// 处理非汉字
         /// </summary>

@@ -9,14 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Searchd</RootNamespace>
     <AssemblyName>Searchd</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
+    <SccProjectName>"%24/IndexSearch/TestLucene", UVQAAAAA</SccProjectName>
+    <SccLocalPath>..\..</SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

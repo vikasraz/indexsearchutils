@@ -5,6 +5,7 @@ using Lucene.Net.Analysis;
 using ISUtils.Common;
 using ISUtils.Database.Link;
 using ISUtils.Database.Writer;
+using ISUtils.Async;
 
 namespace ISUtils.Database.Indexer
 {
@@ -119,6 +120,49 @@ namespace ISUtils.Database.Indexer
             DbWriterBase writer = new DBCreateIWriter(analyzer, _directory,maxFieldLength,ramBufferSize,mergeFactor,maxBufferedDocs);
             writer.WriteDataTable(dt);
             linker.Close();
+        }
+        /**/
+        /// <summary>
+        /// 将数据库查询结果写入索引
+        /// </summary>
+        /// <param name="strSQL">数据库查询语句</param>
+        /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
+        /// <param name="maxBufferedDocs">文档内存最大存储数</param>
+        public override void WriteResultsWithEvent(string strSQL, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+        {
+            DBLinker linker;
+
+            switch (dbType)
+            {
+                case DBTypeEnum.SQL_Server:
+                    linker = new SqlServerLinker(_connectString);
+                    break;
+                case DBTypeEnum.OLE_DB:
+                    linker = new OleDbLinker(_connectString);
+                    break;
+                case DBTypeEnum.ODBC:
+                    linker = new OdbcLinker(_connectString);
+                    break;
+                case DBTypeEnum.Oracle:
+                    linker = new OracleLinker(_connectString);
+                    break;
+                default:
+                    linker = new SqlServerLinker(_connectString);
+                    break;
+            }
+            DataTable dt = linker.ExecuteSQL(strSQL);
+            DbWriterBase writer = new DBCreateIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            writer.OnProgressChanged += new WriteDbProgressChangedEventHandler(Writer_OnProgressChanged);
+            writer.WriteDataTableWithEvent(dt);
+            linker.Close();
+            IndexCompletedEventArgs args = new IndexCompletedEventArgs("CreateIndex");
+            OnIndexCompletedEvent(this, args);
+        }
+
+        void Writer_OnProgressChanged(object sender, ISUtils.Async.WriteDbProgressChangedEventArgs e)
+        {
+            IndexProgressChangedEventArgs args = new IndexProgressChangedEventArgs(e.CurrentRow * 100 / e.RowNum);
+            OnProgressChangedEvent(this, args);    
         }
         /**/
         /// <summary>

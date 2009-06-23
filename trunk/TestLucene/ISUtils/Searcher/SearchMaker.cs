@@ -211,8 +211,7 @@ namespace ISUtils.Searcher
             Hits hits = Utils.SearchUtil.SearchEx(out query);
             SupportClass.File.WriteToLog(path, "Hits " + hits.Length().ToString());
             Highlighter highlighter = new Highlighter(new QueryScorer(query));
-            int fragmentSize = 100;
-            highlighter.SetTextFragmenter(new SimpleFragmenter(fragmentSize));
+            highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
             Analyzer analyzer = new StandardAnalyzer();
             FormatedResult fResult = new FormatedResult();
             SupportClass.File.WriteToLog(path, "Before FormatedResutl Add Element.");

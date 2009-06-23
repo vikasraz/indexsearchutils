@@ -6,14 +6,20 @@ namespace ISUtils.Async
 {
     public class IndexProgressChangedEventArgs
     {
-        private int percent = 0;
-        public int Percentage
+        private int total = 0;
+        public int Total
         {
-            get { return percent; }
+            get { return total; }
         }
-        public IndexProgressChangedEventArgs(int percentage)
+        private int current = 0;
+        public int Current
         {
-            percent = percentage;
+            get { return current; }
+        }
+        public IndexProgressChangedEventArgs(int totalnum,int curnum)
+        {
+            total =totalnum;
+            current = curnum;
         }
     }
 }

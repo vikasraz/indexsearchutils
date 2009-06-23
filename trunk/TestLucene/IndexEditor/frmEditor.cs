@@ -1215,6 +1215,8 @@ namespace IndexEditor
             this.Cursor = Cursors.WaitCursor;
             ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
             toolStripProgressBar.Visible = true;
+            toolStripProgressBar.Minimum = 0;
+            toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建主索引！";
             ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary,OnIndexCompleted,OnProgressChanged);
@@ -1230,7 +1232,7 @@ namespace IndexEditor
         }
         private void OnProgressChanged(object sender, IndexProgressChangedEventArgs e)
         {
-            toolStripProgressBar.Value = e.Percentage;
+            toolStripProgressBar.Value = (e.Current*ISUtils.SupportClass.PERCENTAGEDIVE) / e.Total;
             Application.DoEvents();
         }
         private void btnReCreateIncrIndex_Click(object sender, EventArgs e)
@@ -1240,6 +1242,8 @@ namespace IndexEditor
             this.Cursor = Cursors.WaitCursor;
             ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
             toolStripProgressBar.Visible = true;
+            toolStripProgressBar.Minimum = 0;
+            toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建增量索引！";
             ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);

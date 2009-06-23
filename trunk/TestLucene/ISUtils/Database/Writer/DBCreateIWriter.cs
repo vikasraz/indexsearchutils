@@ -116,7 +116,7 @@ namespace ISUtils.Database.Writer
                 document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
-            Percent = RowNum / 100+1;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE+1;
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
@@ -150,7 +150,7 @@ namespace ISUtils.Database.Writer
                 document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
-            Percent = RowNum / 100 + 1;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {

@@ -10,6 +10,8 @@ namespace ISUtils
     {
         public static string LogPath=@"D:\TEMP.LOG";
         public const int MAX_ROWS_WRITE = 10000;
+        public const int PERCENTAGEDIVE = 10000;
+        public const int FRAGMENT_SIZE = 100;
         public const string Splitor = " \t,;#，；&|";
         public class String
         {

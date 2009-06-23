@@ -60,32 +60,39 @@ namespace ISUtils.Indexer
                 }
             }
         }
+        public bool CanIndex(TimeSpan span, IndexTypeEnum type)
+        {
+            if (type == IndexTypeEnum.Ordinary)
+            {
+                if (SupportClass.Time.IsTimeSame(DateTime.Now, indexer.MainIndexReCreateTime) &&
+                    SupportClass.Time.GetDays(span) % indexer.MainIndexReCreateTimeSpan == 0)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (SupportClass.Time.GetSeconds(span) % indexer.IncrIndexReCreateTimeSpan == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public Message ExecuteIndexer(TimeSpan span, IndexTypeEnum type)
         {
             Message msg=new Message();
-            try
+            if (CanIndex(span, type) == false)
             {
-                if (type == IndexTypeEnum.Ordinary)
-                {
-                    if (SupportClass.Time.IsTimeSame(DateTime.Now, indexer.MainIndexReCreateTime) &&
-                        SupportClass.Time.GetDays(span) % indexer.MainIndexReCreateTimeSpan == 0)
-                    {
-                        Execute(ordinaryDict,dictSet,indexer, true,ref msg);
-                        msg.Result = "ExecuteIndexer Success.";
-                        return msg;
-                    }
-                }
-                else
-                {
-                    if (SupportClass.Time.GetSeconds(span) % indexer.IncrIndexReCreateTimeSpan == 0)
-                    {
-                        Execute(incremenDict,dictSet,indexer, false,ref msg);
-                        msg.Result = "ExecuteIndexer Success.";
-                        return msg;
-                    }
-                }
                 msg.Result = "ExecuteIndexer does not run.";
                 msg.Success = false;
+                return msg;
+            }
+            try
+            {
+                Execute(ordinaryDict, dictSet, indexer, type == IndexTypeEnum.Ordinary, ref msg);
+                msg.Result = "ExecuteIndexer Success.";
+                msg.Success = true;
                 return msg;
             }
             catch (Exception e)
@@ -94,7 +101,7 @@ namespace ISUtils.Indexer
                 Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
 
 #endif
-                msg.Result = "Exception:" + e.Message;
+                msg.Result = "Exception:" + e.StackTrace.ToString();
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 return msg;
@@ -122,7 +129,7 @@ namespace ISUtils.Indexer
 #if DEBUG
                 Console.WriteLine("Execute Indexer Error.Reason:"+e.Message);
 #endif
-                msg.AddInfo("Write Index Error.Reason:"+e.Message);
+                msg.AddInfo("Write Index Error.Reason:"+e.StackTrace.ToString());
                 msg.Success=false;
                 msg.ExceptionOccur = true;
                 throw e;

@@ -6,6 +6,7 @@ using System.Data;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Documents;
+using ISUtils.Async;
 
 namespace ISUtils.Database.Writer
 {
@@ -83,7 +84,28 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTable(DataTable table)
         {
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / 100;
             WriteDataRowCollection(table.Rows);
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
+        public override void WriteDataTableWithEvent(DataTable table)
+        {
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / 100;
+            WriteDataRowCollection(table.Rows);
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
         }
         /**/
         /// <summary>
@@ -125,6 +147,19 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="collection">数据库中行数据</param>
         public override void WriteDataRowCollection(DataRowCollection collection)
+        {
+            foreach (DataRow row in collection)
+            {
+                WriteDataRow(row, 1.0f);
+            }
+            writer.Close();
+        }
+        /**/
+        /// <summary>
+        /// 对数据库行进行索引
+        /// </summary>
+        /// <param name="collection">数据库中行数据</param>
+        public override void WriteDataRowCollectionWithNoEvent(DataRowCollection collection)
         {
             foreach (DataRow row in collection)
             {

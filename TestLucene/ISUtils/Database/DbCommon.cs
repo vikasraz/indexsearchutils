@@ -8,9 +8,15 @@ using System.Data.OracleClient;
 using System.Data;
 using ISUtils.Common;
 using ISUtils.Database.Link;
+using ISUtils.Async;
 
 namespace ISUtils.Database
 {
+    public delegate void IndexCompletedEventHandler(object sender, IndexCompletedEventArgs e);
+    public delegate void IndexProgressChangedEventHandler(object sender, IndexProgressChangedEventArgs e);
+    public delegate void WriteRowCompletedEventHandler(object sender, WriteRowCompletedEventArgs e);
+    public delegate void WriteTableCompletedEventHandler(object sender, WriteTableCompletedEventArgs e);
+    public delegate void WriteDbProgressChangedEventHandler(object sender, WriteDbProgressChangedEventArgs e);
     public static class DbCommon
     {
         public static bool TestDbLink(DBTypeEnum dbType,string hostName,string db,string user,string pwd)

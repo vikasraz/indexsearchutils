@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using ISUtils.Common;
 using ISUtils.Utils;
+using ISUtils.Async;
+using ISUtils.Database;
 
 namespace IndexEditor
 {
@@ -1215,14 +1217,22 @@ namespace IndexEditor
             toolStripProgressBar.Visible = true;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建主索引！";
-            ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary, ref this.toolStripProgressBar);
+            ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary,OnIndexCompleted,OnProgressChanged);
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "构建主索引完毕！";
             ShowInformation("主索引构建完成");
             toolStripStatusLabelStatus.Text = "";
         }
-
+        private void OnIndexCompleted(object sender, IndexCompletedEventArgs e)
+        {
+            Application.DoEvents();
+        }
+        private void OnProgressChanged(object sender, IndexProgressChangedEventArgs e)
+        {
+            toolStripProgressBar.Value = e.Percentage;
+            Application.DoEvents();
+        }
         private void btnReCreateIncrIndex_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -1232,7 +1242,7 @@ namespace IndexEditor
             toolStripProgressBar.Visible = true;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建增量索引！";
-            ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Increment, ref this.toolStripProgressBar);
+            ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "构建增量索引完毕！";

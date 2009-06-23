@@ -73,33 +73,39 @@ namespace Indexer
             if (!busy)
             {
                 busy = true;
-                try
+                if (maker.CanIndex(span, IndexTypeEnum.Ordinary))
                 {
-                    Message msg = maker.ExecuteIndexer(span, IndexTypeEnum.Ordinary);
-                    if (msg.Success)
-                        WriteToLog(msg.ToString());
-                    else
-                        if (msg.ExceptionOccur)
+                    try
+                    {
+                        Message msg = maker.ExecuteIndexer(span, IndexTypeEnum.Ordinary);
+                        if (msg.Success)
                             WriteToLog(msg.ToString());
+                        else
+                            if (msg.ExceptionOccur)
+                                WriteToLog(msg.ToString());
+                    }
+                    catch (Exception exp)
+                    {
+                        WriteToLog("Exception for execute ordinary index.Reason:" + exp.Message);
+                        EventLog.WriteEntry("Exception for execute ordinary index.Reason:" + exp.Message);
+                    }
                 }
-                catch (Exception exp)
+                if (maker.CanIndex(span, IndexTypeEnum.Increment))
                 {
-                    WriteToLog("Exception for execute ordinary index.Reason:" + exp.Message);
-                    EventLog.WriteEntry("Exception for execute ordinary index.Reason:" + exp.Message);
-                }
-                try
-                {
-                    Message msg = maker.ExecuteIndexer(span, IndexTypeEnum.Increment);
-                    if (msg.Success)
-                        WriteToLog(msg.ToString());
-                    else
-                        if (msg.ExceptionOccur)
+                    try
+                    {
+                        Message msg = maker.ExecuteIndexer(span, IndexTypeEnum.Increment);
+                        if (msg.Success)
                             WriteToLog(msg.ToString());
-                }
-                catch (Exception exp)
-                {
-                    WriteToLog("Exception for execute increment index.Reason:" + exp.Message);
-                    EventLog.WriteEntry("Exception for execute increment index.Reason:" + exp.Message);
+                        else
+                            if (msg.ExceptionOccur)
+                                WriteToLog(msg.ToString());
+                    }
+                    catch (Exception exp)
+                    {
+                        WriteToLog("Exception for execute increment index.Reason:" + exp.Message);
+                        EventLog.WriteEntry("Exception for execute increment index.Reason:" + exp.Message);
+                    }
                 }
                 busy = false;
             }

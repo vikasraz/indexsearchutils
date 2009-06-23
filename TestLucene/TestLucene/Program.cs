@@ -17,8 +17,8 @@ namespace TestLucene
     //using for search index
     using Lucene.Net.Search;
     using Lucene.Net.QueryParsers;
-    using Test;
-    using Test.Analysis;
+    //using Test;
+    //using Test.Analysis;
     using ISUtils.Analysis.Chinese;
     using ISUtils.Common;
     using ISUtils.Utils;
@@ -93,8 +93,8 @@ namespace TestLucene
             Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
             string result = Segment.SegmentString(searchWords," ");
             Console.WriteLine(result);
-            AllAnalysisTest aat = new AllAnalysisTest();
-            aat.TestMethod(new string[] { "LZDDH", "SYQLX" }, result);
+            //AllAnalysisTest aat = new AllAnalysisTest();
+            //aat.TestMethod(new string[] { "LZDDH", "SYQLX" }, result);
             //Analyzer analyzer = new SimpleAnalyzer();
             //QueryParser queryParser = new QueryParser("LZDDH", analyzer);
             //Query query = queryParser.Parse(result);
@@ -336,10 +336,10 @@ namespace TestLucene
             //SearchIndex(analyzer, "IndexDir", "发布");
             //SimpleAnalyzerTest sat = new SimpleAnalyzerTest();
             //sat.ReusabeleTokenStreamTest();
-            AllAnalysisTest aat = new AllAnalysisTest();
-            aat.TestMethod();
-            StandardAnalyzerCaseTest sact = new StandardAnalyzerCaseTest();
-            sact.SearcherTest();
+            //AllAnalysisTest aat = new AllAnalysisTest();
+            //aat.TestMethod();
+            //StandardAnalyzerCaseTest sact = new StandardAnalyzerCaseTest();
+            //sact.SearcherTest();
             //DoubleTokenizerTest dtt = new DoubleTokenizerTest();
             //dtt.NextTest();
             //string path = @"d:\Indexer\seglib\";

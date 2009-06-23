@@ -6,6 +6,7 @@ using System.Data;
 using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Documents;
+using ISUtils.Async;
 #if DEBUG
 using System.IO;
 #endif
@@ -138,6 +139,9 @@ namespace ISUtils.Database.Writer
             }
             if (document == null)
                 document = new Document();
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / 100+1;
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
@@ -146,11 +150,47 @@ namespace ISUtils.Database.Writer
 #if DEBUG
             DateTime start = DateTime.Now;
 #endif
-            WriteDataRowCollection(table.Rows);
+            WriteDataRowCollectionWithNoEvent(table.Rows);
 #if DEBUG
             TimeSpan span=DateTime.Now -start;
             System.Console.WriteLine(string.Format("Speed:{0}ms/line",span.TotalMilliseconds/table.Rows.Count));
 #endif
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
+        public override void WriteDataTableWithEvent(DataTable table)
+        {
+            if (writer == null)
+            {
+                throw new Exception("The IndexWriter does not created.");
+            }
+            if (document == null)
+                document = new Document();
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / 100 + 1;
+            DataColumnCollection columns = table.Columns;
+            foreach (DataColumn column in columns)
+            {
+                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            }
+#if DEBUG
+            DateTime start = DateTime.Now;
+#endif
+            WriteDataRowCollection(table.Rows);
+#if DEBUG
+            TimeSpan span = DateTime.Now - start;
+            System.Console.WriteLine(string.Format("Speed:{0}ms/line", span.TotalMilliseconds / table.Rows.Count));
+#endif
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
         }
         /**/
         /// <summary>
@@ -223,18 +263,40 @@ namespace ISUtils.Database.Writer
         /// <param name="collection">数据库中行数据</param>
         public override void WriteDataRowCollection(DataRowCollection collection)
         {
-#if DEBUG
             int i = 0;
+#if DEBUG
             System.Console.WriteLine(string.Format("i={0},time={1}", i, DateTime.Now.ToLongTimeString()));
 #endif
             foreach (DataRow row in collection)
             {
                 WriteDataRow(row, 1.0f);
-#if DEBUG
                 i++;
+#if DEBUG
                 if (i % SupportClass.MAX_ROWS_WRITE == 0 )
                     System.Console.WriteLine(string.Format("i={0},time={1}",i,DateTime.Now.ToLongTimeString() ));
 #endif
+                WriteRowCompletedEventArgs args = new WriteRowCompletedEventArgs(RowNum, i);
+                base.OnWriteRowCompletedEvent(this, args);
+                if (i % Percent == 0)
+                {
+                    WriteDbProgressChangedEventArgs pargs = new WriteDbProgressChangedEventArgs(RowNum, i);
+                    base.OnProgressChangedEvent(this, pargs);
+                }
+            }
+            writer.Flush();
+            writer.Optimize();
+            writer.Close();
+        }
+        /**/
+        /// <summary>
+        /// 对数据库行进行索引
+        /// </summary>
+        /// <param name="collection">数据库中行数据</param>
+        public override void WriteDataRowCollectionWithNoEvent(DataRowCollection collection)
+        {
+            foreach (DataRow row in collection)
+            {
+                WriteDataRow(row, 1.0f);
             }
             writer.Flush();
             writer.Optimize();

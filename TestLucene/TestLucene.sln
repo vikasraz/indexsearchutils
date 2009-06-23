@@ -2,13 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLucene", "TestLucene\TestLucene.csproj", "{E584BE66-4CF3-44A8-98B0-4B4A83D2C79A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B4CB357E-B42D-4035-81D5-9436F09803D0} = {B4CB357E-B42D-4035-81D5-9436F09803D0}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Net-2.3.2-VS2005", "..\Lucene.net\C#\src\Lucene.Net\Lucene.Net-2.3.2-VS2005.csproj", "{F04CA2F4-E182-46A8-B914-F46AF5319E83}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "TestLucene\Test\Test.csproj", "{B4CB357E-B42D-4035-81D5-9436F09803D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "..\ICSharpCode\src\ICSharpCode.SharpZLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
 EndProject
@@ -20,10 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Searchd", "Searchd\Searchd.
 EndProject
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "F:\...\TestWeb\", "..\TestWeb", "{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}"
 	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""
+		SccProjectName = ""$/IndexSearch/TestLucene", UVQAAAAA"
 		SccAuxPath = ""
-		SccLocalPath = ""
-		SccProvider = ""
+		SccLocalPath = ".."
+		SccProvider = "MSSCCI:Microsoft Visual SourceSafe"
 		ProjectReferences = "{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}|ISUtils.dll;{901D5415-383C-4AA6-A256-879558841BEA}|Highlighter.Net.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/TestWeb"
 		Debug.AspNetCompiler.PhysicalPath = "..\TestWeb\"
@@ -47,9 +42,53 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISUtils", "ISUtils\ISUtils.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Highlighter.Net", "..\Lucene.net\C#\contrib\Highlighter.Net\Highlighter.Net\Highlighter.Net.csproj", "{901D5415-383C-4AA6-A256-879558841BEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Snowball.Net-2.0.0", "..\Lucene.net\C#\contrib\Snowball.Net\Snowball.Net\Snowball.Net-2.0.0.csproj", "{8F9D7A92-F122-413E-9D8D-027E4ECD327C}"
-EndProject
 Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 10
+		SccProjectName0 = \u0022$/IndexSearch/TestLucene\u0022,\u0020UVQAAAAA
+		SccLocalPath0 = ..
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection0 = TestLucene\\
+		SccProjectUniqueName1 = ..\\ICSharpCode\\src\\ICSharpCode.SharpZLib.csproj
+		SccLocalPath1 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection1 = ICSharpCode\\src\\
+		SccProjectUniqueName2 = ..\\Lucene.net\\C#\\contrib\\Highlighter.Net\\Highlighter.Net\\Highlighter.Net.csproj
+		SccLocalPath2 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection2 = Lucene.net\\C#\\contrib\\Highlighter.Net\\Highlighter.Net\\
+		SccProjectUniqueName3 = ..\\Lucene.net\\C#\\src\\Lucene.Net\\Lucene.Net-2.3.2-VS2005.csproj
+		SccLocalPath3 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection3 = Lucene.net\\C#\\src\\Lucene.Net\\
+		SccProjectUniqueName4 = IndexEditor\\IndexEditor.csproj
+		SccLocalPath4 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection4 = TestLucene\\IndexEditor\\
+		SccProjectUniqueName5 = Indexer\\Indexer.csproj
+		SccLocalPath5 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection5 = TestLucene\\Indexer\\
+		SccProjectUniqueName6 = ISUtils\\ISUtils.csproj
+		SccLocalPath6 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection6 = TestLucene\\ISUtils\\
+		SccProjectUniqueName7 = Searchd\\Searchd.csproj
+		SccLocalPath7 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection7 = TestLucene\\Searchd\\
+		SccProjectUniqueName8 = TestLucene\\TestLucene.csproj
+		SccLocalPath8 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection8 = TestLucene\\TestLucene\\
+		SccWebProject9 = true
+		SccProjectUniqueName9 = ..\\TestWeb
+		SccLocalPath9 = ..
+		CanCheckoutShared = false
+		SccProjectFilePathRelativizedFromConnection9 = TestWeb\\
+		SccProjectEnlistmentChoice9 = 2
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
 		Debug|Any CPU = Debug|Any CPU
@@ -85,18 +124,6 @@ Global
 		{F04CA2F4-E182-46A8-B914-F46AF5319E83}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{F04CA2F4-E182-46A8-B914-F46AF5319E83}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{F04CA2F4-E182-46A8-B914-F46AF5319E83}.Release|Win32.ActiveCfg = Release|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Release|.NET.ActiveCfg = Release|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{B4CB357E-B42D-4035-81D5-9436F09803D0}.Release|Win32.ActiveCfg = Release|Any CPU
 		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -181,18 +208,6 @@ Global
 		{901D5415-383C-4AA6-A256-879558841BEA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{901D5415-383C-4AA6-A256-879558841BEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{901D5415-383C-4AA6-A256-879558841BEA}.Release|Win32.ActiveCfg = Release|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Debug|.NET.ActiveCfg = Debug|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Release|.NET.ActiveCfg = Release|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{8F9D7A92-F122-413E-9D8D-027E4ECD327C}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

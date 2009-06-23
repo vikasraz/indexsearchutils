@@ -5,19 +5,33 @@ using System.Data;
 using ISUtils.Async;
 namespace ISUtils.Database.Writer
 {
-    public delegate void WriteRowCompletedEventHandler(object sender, WriteRowCompletedEventArgs e);
-    public delegate void WriteTableCompletedEventHandler(object sender, WriteTableCompletedEventArgs e);
-    public delegate void WriteDbProgressChangedEventHandler(object sender,WriteDbProgressChangedEventArgs e);
     public abstract class DbWriterBase : DataBaseWriter
     {
-        private bool isBusy = false;
+        public event WriteTableCompletedEventHandler OnWriteTableCompleted;
+        public event WriteRowCompletedEventHandler OnWriteRowCompleted;
+        public event WriteDbProgressChangedEventHandler OnProgressChanged;
+        protected int RowNum = 0;
+        protected int Percent = 1;
+        protected bool isBusy = false;
         public bool IsBusy
         {
             get { return isBusy; }
         }
-        public event WriteTableCompletedEventHandler writeTableCompleted;
-        public event WriteRowCompletedEventHandler writeRowCompleted;
-        public event WriteDbProgressChangedEventHandler progressChanged;
+        protected virtual void OnWriteTableCompletedEvent(object sender, WriteTableCompletedEventArgs e)
+        {
+            if (OnWriteTableCompleted != null)
+                OnWriteTableCompleted(sender, e);
+        }
+        protected virtual void OnWriteRowCompletedEvent(object sender, WriteRowCompletedEventArgs e)
+        {
+            if (OnWriteRowCompleted != null)
+                OnWriteRowCompleted(sender, e);
+        }
+        protected virtual void OnProgressChangedEvent(object sender, WriteDbProgressChangedEventArgs e)
+        {
+            if (OnProgressChanged != null)
+                OnProgressChanged(sender, e);
+        }
         /**/
         /// <summary>
         /// 设定基本属性值
@@ -44,6 +58,12 @@ namespace ISUtils.Database.Writer
         /// 对数据库表进行索引
         /// </summary>
         /// <param name="table">数据库表名</param>
+        public abstract void WriteDataTableWithEvent(DataTable table);
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
         public abstract void WriteDataTable(DataTable table,ref System.Windows.Forms.ProgressBar progressBar);
         /**/
         /// <summary>
@@ -64,6 +84,12 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="collection">数据库中行数据</param>
         public abstract void WriteDataRowCollection(DataRowCollection collection);
+        /**/
+        /// <summary>
+        /// 对数据库行进行索引
+        /// </summary>
+        /// <param name="collection">数据库中行数据</param>
+        public abstract void WriteDataRowCollectionWithNoEvent(DataRowCollection collection);
         /**/
         /// <summary>
         /// 对数据库行进行索引

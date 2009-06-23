@@ -4,6 +4,8 @@ using ISUtils.Common;
 using ISUtils.Database.Writer;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
+using ISUtils.Async;
+using ISUtils.Database;
 
 namespace ISUtils.Utils
 {
@@ -105,6 +107,21 @@ namespace ISUtils.Utils
                     if (indexSet.Type == type)
                     {
                         IWriter.WriteIndex(analyzer,indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
+                    }
+                }
+            }
+        }
+        public static void IndexWithEvent(IndexTypeEnum type,IndexCompletedEventHandler OnIndexCompleted,IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        IWriter.WriteIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary,OnIndexCompleted,OnProgressChanged);
                     }
                 }
             }

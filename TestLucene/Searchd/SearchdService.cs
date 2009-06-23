@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.IO;
+using System.Threading;
 using ISUtils.Searcher;
 using ISUtils.Common;
 
@@ -15,10 +16,78 @@ namespace Searchd
 {
     partial class SearchdService : ServiceBase
     {
-        private SearchMaker searcher;
-        private TcpListener listener;
-        private DateTime start;
+        private static SearchMaker searcher;
+        private static TcpListener listener;
+        private static DateTime start;
+        // Thread signal.
+        public static ManualResetEvent tcpClientConnected =new ManualResetEvent(false);
 
+        // Accept one client connection asynchronously.
+        public static void DoBeginAcceptTcpClient(TcpListener listener)
+        {
+            // Set the event to nonsignaled state.
+            tcpClientConnected.Reset();
+
+            // Start to listen for connections from a client.
+            //Console.WriteLine("Waiting for a connection...");
+            //EventLog.WriteEntry("Waiting for a connection...");
+            WriteToLog("Waiting for a connection...");
+
+            // Accept the connection. 
+            // BeginAcceptSocket() creates the accepted socket.
+            listener.BeginAcceptTcpClient(new AsyncCallback(DoAcceptTcpClientCallback),listener);
+
+            // Wait until a connection is made and processed before 
+            // continuing.
+            tcpClientConnected.WaitOne();
+        }
+
+        // Process the client connection.
+        public static void DoAcceptTcpClientCallback(IAsyncResult ar)
+        {
+            // Get the listener that handles the client request.
+            TcpListener listener = (TcpListener)ar.AsyncState;
+
+            // End the operation and display the received data on 
+            // the console.
+            TcpClient client = listener.EndAcceptTcpClient(ar);
+
+            // Process the connection here. (Add the client to a
+            // server table, read data, etc.)
+            //Console.WriteLine("Client connected completed");
+            NetworkStream ns = client.GetStream();
+            if (ns.CanRead && ns.CanWrite)
+            {
+                try
+                {
+                    WriteToLog("Try to execute search");
+                    Message msg = searcher.ExecuteSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", true);
+                    WriteToLog("After ExecuteSearch");
+                    if (msg.Success)
+                        WriteToLog(msg.ToString());
+                    WriteToLog("Write Success Message");
+                    if (!msg.Success && msg.ExceptionOccur)
+                        WriteToLog(msg.ToString());
+                }
+                catch (Exception ex)
+                {
+                    WriteToLog(ex.StackTrace.ToString());
+                    WriteToLog("Failed to Search. Reason: " + ex.Message);
+                    //EventLog.WriteEntry("Failed to Search. Reason: " + ex.Message);
+                    //ns.Close();
+                }
+            }
+            WriteToLog("GC Begin Collect");
+            //TimeSpan span = DateTime.Now - start;
+            //long hours = (long)span.TotalHours;
+            //if ( hours>=1 && DateTime.Now.Minute == start.Minute && DateTime.Now.Second == start.Second )
+            GC.Collect();
+            WriteToLog("After GC Collect");
+            //EventLog.WriteEntry("Client connected completed");
+            // Signal the calling thread to continue.
+            tcpClientConnected.Set();
+
+        }
         public SearchdService()
         {
             InitializeComponent();
@@ -54,7 +123,7 @@ namespace Searchd
             }
             //Console.WriteLine("START...");
             //Console.ReadKey();
-            this.timer.Enabled = true;
+            //this.timer.Enabled = true;
             //timeStart = DateTime.Now;
             WriteToLog("Searchd Start...");
             int port=3322;
@@ -67,46 +136,14 @@ namespace Searchd
             listener = new TcpListener(ipEntry.AddressList[0],port);
             listener.Start();
             start = DateTime.Now;
+            DoBeginAcceptTcpClient(listener);
         }
 
         protected override void OnStop()
         {
             // TODO: 在此处添加代码以执行停止服务所需的关闭操作。
             listener.Stop();
-            this.timer.Enabled = false;
             GC.Collect();
-        }
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            TcpClient client = listener.AcceptTcpClient();
-            NetworkStream ns = client.GetStream();
-            if (ns.CanRead && ns.CanWrite)
-            {
-                try
-                {
-                    WriteToLog("Try to execute search");
-                    Message msg = searcher.ExecuteSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt",true);
-                    WriteToLog("After ExecuteSearch");
-                    if (msg.Success)
-                        WriteToLog(msg.ToString());
-                    WriteToLog("Write Success Message");
-                    if (!msg.Success && msg.ExceptionOccur)
-                        WriteToLog(msg.ToString());
-                }
-                catch (Exception ex)
-                {
-                    WriteToLog(ex.StackTrace.ToString());
-                    WriteToLog("Failed to Search. Reason: " + ex.Message);
-                    EventLog.WriteEntry("Failed to Search. Reason: " + ex.Message);
-                    //ns.Close();
-                }
-            }
-            WriteToLog("GC Begin Collect");
-            //TimeSpan span = DateTime.Now - start;
-            //long hours = (long)span.TotalHours;
-            //if ( hours>=1 && DateTime.Now.Minute == start.Minute && DateTime.Now.Second == start.Second )
-            GC.Collect();
-            WriteToLog("After GC Collect");
         }
         public static void WriteToLog(string detail)
         {

@@ -28,22 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.timer = new System.Timers.Timer();
-            ((System.ComponentModel.ISupportInitialize)(this.timer)).BeginInit();
-            // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(this.Timer_Elapsed);
             // 
             // SearchdService
             // 
             this.ServiceName = "SearchdService";
-            ((System.ComponentModel.ISupportInitialize)(this.timer)).EndInit();
-
         }
 
         #endregion
-        private System.Timers.Timer timer;
+
     }
 }

@@ -161,7 +161,7 @@ namespace ISUtils.Database.Indexer
 
         void Writer_OnProgressChanged(object sender, ISUtils.Async.WriteDbProgressChangedEventArgs e)
         {
-            IndexProgressChangedEventArgs args = new IndexProgressChangedEventArgs(e.CurrentRow * 100 / e.RowNum);
+            IndexProgressChangedEventArgs args = new IndexProgressChangedEventArgs( e.RowNum,e.CurrentRow);
             OnProgressChangedEvent(this, args);    
         }
         /**/

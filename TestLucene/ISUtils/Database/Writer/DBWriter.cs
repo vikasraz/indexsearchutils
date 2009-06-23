@@ -86,7 +86,7 @@ namespace ISUtils.Database.Writer
         {
             this.isBusy = true;
             RowNum = table.Rows.Count;
-            Percent = RowNum / 100;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE+1;
             WriteDataRowCollection(table.Rows);
             WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
             base.OnWriteTableCompletedEvent(this, args);
@@ -101,7 +101,7 @@ namespace ISUtils.Database.Writer
         {
             this.isBusy = true;
             RowNum = table.Rows.Count;
-            Percent = RowNum / 100;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE+1;
             WriteDataRowCollection(table.Rows);
             WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
             base.OnWriteTableCompletedEvent(this, args);

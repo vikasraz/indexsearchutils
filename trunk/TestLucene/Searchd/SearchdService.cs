@@ -19,6 +19,7 @@ namespace Searchd
         private static SearchMaker searcher;
         private static TcpListener listener;
         private static DateTime start;
+        private Thread MainThread;
         // Thread signal.
         public static ManualResetEvent tcpClientConnected =new ManualResetEvent(false);
 
@@ -86,17 +87,34 @@ namespace Searchd
             //EventLog.WriteEntry("Client connected completed");
             // Signal the calling thread to continue.
             tcpClientConnected.Set();
-
+            DoBeginAcceptTcpClient(listener);
         }
         public SearchdService()
         {
             InitializeComponent();
+            MainThread = new Thread(new ThreadStart(ThreadFunc));
+            MainThread.Priority = ThreadPriority.Normal;
         }
 
         protected override void OnStart(string[] args)
         {
             // TODO: 在此处添加代码以启动服务。
             EventLog.WriteEntry("Searchd Start....");
+            MainThread.Start();
+        }
+
+        protected override void OnStop()
+        {
+            // TODO: 在此处添加代码以执行停止服务所需的关闭操作。
+            WriteToLog("In OnStop...");
+            MainThread.Abort();
+            listener.Stop();
+            WriteToLog("listener.Stop....");
+            GC.Collect();
+            WriteToLog("GC.Collect()...");
+        }
+        public static void ThreadFunc()
+        {
             string[] imagePathArgs = Environment.GetCommandLineArgs();
             string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.conf";
             if (imagePathArgs.Length >= 2)
@@ -109,7 +127,7 @@ namespace Searchd
             }
             catch (Exception e)
             {
-                EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory+"\n"+e.StackTrace.ToString());
+                //EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory + "\n" + e.StackTrace.ToString());
             }
             try
             {
@@ -118,7 +136,7 @@ namespace Searchd
             catch (Exception ex)
             {
                 WriteToLog(string.Format("Exception for open config file {0},{1}", configfile, ex.ToString()));
-                EventLog.WriteEntry(string.Format("Exception for open config file {0},{1}", configfile, ex.ToString()));
+                //EventLog.WriteEntry(string.Format("Exception for open config file {0},{1}", configfile, ex.ToString()));
                 throw;
             }
             //Console.WriteLine("START...");
@@ -126,24 +144,17 @@ namespace Searchd
             //this.timer.Enabled = true;
             //timeStart = DateTime.Now;
             WriteToLog("Searchd Start...");
-            int port=3322;
+            int port = 3322;
             if (searcher != null)
-                port=searcher.GetNetworkPort();
-            WriteToLog(string.Format("port={0}",port));
-            EventLog.WriteEntry(string.Format("port={0}", port));
+                port = searcher.GetNetworkPort();
+            WriteToLog(string.Format("port={0}", port));
+            //EventLog.WriteEntry(string.Format("port={0}", port));
             //IPAddress ipaddr=new IPAddress(
             IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
-            listener = new TcpListener(ipEntry.AddressList[0],port);
+            listener = new TcpListener(ipEntry.AddressList[0], port);
             listener.Start();
             start = DateTime.Now;
             DoBeginAcceptTcpClient(listener);
-        }
-
-        protected override void OnStop()
-        {
-            // TODO: 在此处添加代码以执行停止服务所需的关闭操作。
-            listener.Stop();
-            GC.Collect();
         }
         public static void WriteToLog(string detail)
         {

@@ -156,11 +156,11 @@ namespace TestLucene
             //testSearch();
             //TestChineseSegment();
             //TeseCSegment();
-            //TestChineseSegmentIndexerSpeed();
+            TestChineseSegmentIndexerSpeed();
             //AllAnalysisTest aat = new AllAnalysisTest();
             //aat.TestMethod("");
             //TestForQuery();
-            TestChineseSearch();
+            //TestChineseSearch();
             //Mainf();
             //TestForChineseSegment();
             Console.ReadKey();
@@ -246,7 +246,7 @@ namespace TestLucene
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
-            ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary);
+            ISUtils.Utils.IndexUtil.IndexEx(IndexTypeEnum.Ordinary);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(span.TotalMilliseconds.ToString());
         }

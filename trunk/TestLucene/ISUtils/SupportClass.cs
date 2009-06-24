@@ -9,6 +9,7 @@ namespace ISUtils
     public class SupportClass
     {
         public static string LogPath=@"D:\TEMP.LOG";
+        public const int RAM_FLUSH_NUM = 5000;
         public const int MAX_ROWS_WRITE = 10000;
         public const int PERCENTAGEDIVE = 10000;
         public const int FRAGMENT_SIZE = 100;

@@ -1219,7 +1219,7 @@ namespace IndexEditor
             toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建主索引！";
-            ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary,OnIndexCompleted,OnProgressChanged);
+            ISUtils.Utils.IndexUtil.IndexWithEventEx(IndexTypeEnum.Ordinary,OnIndexCompleted,OnProgressChanged);
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "构建主索引完毕！";
@@ -1246,7 +1246,7 @@ namespace IndexEditor
             toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建增量索引！";
-            ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+            ISUtils.Utils.IndexUtil.IndexWithEventEx(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "构建增量索引完毕！";

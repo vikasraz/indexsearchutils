@@ -117,7 +117,7 @@ namespace ISUtils.Indexer
                 //由于中文分词结果随中文词库的变化而变化，为了使索引不需要根据中文词库的变化而变化，
                 //故采用默认的Analyzer来进行分词，即StandardAnalyzer
                 //Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
-                Utils.IndexUtil.Index(create);
+                Utils.IndexUtil.IndexEx(create);
                 msg.AddInfo("All End at :"+DateTime.Now.ToLocalTime());
                 TimeSpan allSpan=DateTime.Now -allStart;
                 msg.AddInfo(string.Format("All Spend {0} millionseconds.",allSpan.TotalMilliseconds));

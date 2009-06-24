@@ -82,10 +82,15 @@
     <Compile Include="CSegment\WordSegmentBase.cs" />
     <Compile Include="Database\DbCommon.cs" />
     <Compile Include="Database\Indexer\DbIndexerBase.cs" />
+    <Compile Include="Database\Indexer\DBRamCreateIndexer.cs" />
+    <Compile Include="Database\Indexer\DBRamIncremIndexer.cs" />
     <Compile Include="Database\Link\DBLinker.cs" />
     <Compile Include="Database\Link\OracleLinker.cs" />
     <Compile Include="Database\Writer\DbWriterBase.cs" />
     <Compile Include="Async\WriteRowCompletedEventArgs.cs" />
+    <Compile Include="Database\Writer\DBRamCreateIWriter.cs" />
+    <Compile Include="Database\Writer\DBRamIncremIWriter.cs" />
+    <Compile Include="Database\Writer\RamIWriter.cs" />
     <Compile Include="Indexer\IndexMaker.cs" />
     <Compile Include="SupportClass.cs" />
     <Compile Include="Utils\IndexUtil.cs" />

@@ -174,6 +174,84 @@ namespace ISUtils.Utils
                 System.Windows.Forms.Application.DoEvents();
             }
         }
+        public static void IndexEx(IndexTypeEnum type)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        RamIWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
+                    }
+                }
+            }
+        }
+        public static void IndexWithEventEx(IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        RamIWriter.WriteIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                    }
+                }
+            }
+        }
+        public static void IndexEx(bool create)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    RamIWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
+                }
+            }
+        }
+        public static void IndexEx(IndexTypeEnum type, ref System.Windows.Forms.ToolStripProgressBar progressBar)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        System.Windows.Forms.Application.DoEvents();
+                        RamIWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, ref progressBar);
+                        System.Windows.Forms.Application.DoEvents();
+                    }
+                }
+                System.Windows.Forms.Application.DoEvents();
+            }
+        }
+        public static void IndexEx(IndexTypeEnum type, ref System.Windows.Forms.ProgressBar progressBar)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        System.Windows.Forms.Application.DoEvents();
+                        RamIWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, ref progressBar);
+                        System.Windows.Forms.Application.DoEvents();
+                    }
+                }
+                System.Windows.Forms.Application.DoEvents();
+            }
+        }
 
     }
 }

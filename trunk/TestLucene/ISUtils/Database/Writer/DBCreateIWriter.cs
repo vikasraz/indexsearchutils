@@ -61,7 +61,8 @@ namespace ISUtils.Database.Writer
         /// 析构函数
         ~DBCreateIWriter()
         {
-            writer.Close();
+            if (writer != null)
+                writer.Close();
         }
         /**/
         /// <summary>

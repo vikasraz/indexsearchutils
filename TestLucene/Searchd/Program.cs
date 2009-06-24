@@ -7,7 +7,8 @@ namespace Searchd
     static class Program
     {
         /// <summary>
-        /// 应用程序的主入口点。
+        /// 应用程序的主入口点。
+
 
         /// </summary>
         static void Main()
@@ -15,7 +16,8 @@ namespace Searchd
             ServiceBase[] ServicesToRun;
 
             // 同一进程中可以运行多个用户服务。若要将
-            // 另一个服务添加到此进程中，请更改下行以
+            // 另一个服务添加到此进程中，请更改下行以
+
 
             // 创建另一个服务对象。例如，
             //

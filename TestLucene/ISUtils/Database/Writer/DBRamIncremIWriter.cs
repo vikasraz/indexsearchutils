@@ -7,16 +7,13 @@ using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Documents;
 using ISUtils.Async;
-#if DEBUG
-using System.IO;
-#endif
 namespace ISUtils.Database.Writer
 {
     /**/
     /// <summary>
     /// 数据库的增量索引写入器
     /// </summary>
-    public class DBIncremIWriter : DbWriterBase, DataBaseWriter
+    public class DBRamIncremIWriter : DbWriterBase, DataBaseWriter
     {
         /**/
         /// <summary>
@@ -32,7 +29,11 @@ namespace ISUtils.Database.Writer
         /// <summary>
         /// 索引写入器
         /// </summary>
-        private IndexWriter writer;
+        private Analyzer analyzer;
+        private IndexWriter ramWriter;
+        private IndexWriter fsWriter;
+        private FSDirectory fsDir;
+        private RAMDirectory ramDir = new RAMDirectory();
         /**/
         /// <summary>
         /// 构造函数
@@ -40,37 +41,43 @@ namespace ISUtils.Database.Writer
         /// <param name="analyzer">分析器</param>
         /// <param name="directory">索引存储路径</param>
         /// <param name="create">创建索引还是增量索引</param>
-        public DBIncremIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+        public DBRamIncremIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
         {
-            Lucene.Net.Store.Directory dict;
             document=new Document();
             fieldDict=new Dictionary<string,Field>();
+            this.analyzer = analyzer;
             try
             {
-                dict = FSDirectory.GetDirectory(directory, false);
+                fsDir = FSDirectory.GetDirectory(directory, false);
             }
             catch (System.IO.IOException ioe)
             {
-                dict = FSDirectory.GetDirectory(directory, true);
+                fsDir = FSDirectory.GetDirectory(directory, true);
 #if DEBUG
                 System.Console.WriteLine(ioe.StackTrace.ToString());
 #endif
             }
             try
             {
-                writer = new IndexWriter(dict, analyzer, false);
-                writer.SetMaxFieldLength(maxFieldLength);
-                writer.SetRAMBufferSizeMB(ramBufferSize);
-                writer.SetMergeFactor(mergeFactor);
-                writer.SetMaxBufferedDocs(maxBufferedDocs);
+                if (ramDir == null)
+                    ramDir = new RAMDirectory();
+                fsWriter = new IndexWriter(fsDir, analyzer, false);
+                ramWriter = new IndexWriter(ramDir, analyzer, true);
+                fsWriter.SetMaxFieldLength(maxFieldLength);
+                fsWriter.SetRAMBufferSizeMB(ramBufferSize);
+                fsWriter.SetMergeFactor(mergeFactor);
+                fsWriter.SetMaxBufferedDocs(maxBufferedDocs);
             }
             catch (System.IO.IOException ie)
             {
-                writer = new IndexWriter(dict, analyzer, true);
-                writer.SetMaxFieldLength(maxFieldLength);
-                writer.SetRAMBufferSizeMB(ramBufferSize);
-                writer.SetMergeFactor(mergeFactor);
-                writer.SetMaxBufferedDocs(maxBufferedDocs);
+                if (ramDir == null)
+                    ramDir = new RAMDirectory();
+                fsWriter = new IndexWriter(fsDir, analyzer, true);
+                ramWriter = new IndexWriter(ramDir, analyzer, true);
+                fsWriter.SetMaxFieldLength(maxFieldLength);
+                fsWriter.SetRAMBufferSizeMB(ramBufferSize);
+                fsWriter.SetMergeFactor(mergeFactor);
+                fsWriter.SetMaxBufferedDocs(maxBufferedDocs);
 #if DEBUG
                 System.Console.WriteLine(ie.StackTrace.ToString());
 #endif
@@ -83,10 +90,10 @@ namespace ISUtils.Database.Writer
         /**/
         /// <summary>
         /// 析构函数
-        ~DBIncremIWriter()
+        ~DBRamIncremIWriter()
         {
-            if (writer !=null)
-               writer.Close();
+            fsWriter.Close();
+            ramWriter.Close();
         }
         /**/
         /// <summary>
@@ -97,15 +104,21 @@ namespace ISUtils.Database.Writer
         /// <param name="create">创建索引还是增量索引</param>
         public override void SetBasicProperties(Analyzer analyzer, string directory, bool create)
         {
-            if (writer != null)
+            this.analyzer = analyzer;
+            if (fsWriter != null && ramDir !=null)
             {
-                writer.Flush();
+                fsWriter.AddIndexes(new Directory[] { ramDir });
+                fsWriter.Flush();
+                ramWriter.Close();
             }
-            Lucene.Net.Store.Directory dict = FSDirectory.GetDirectory(directory, false);
             try
             {
-                writer = new IndexWriter(dict, analyzer, false);
-                writer.SetMaxFieldLength(int.MaxValue);
+                fsDir = FSDirectory.GetDirectory(directory, false);
+                if (ramDir == null)
+                    ramDir = new RAMDirectory();
+                fsWriter = new IndexWriter(fsDir, analyzer, false);
+                ramWriter = new IndexWriter(ramDir, analyzer, true);
+                fsWriter.SetMaxFieldLength(int.MaxValue);
             }
             catch (Exception e)
             {
@@ -120,12 +133,12 @@ namespace ISUtils.Database.Writer
         /// <param name="maxBufferedDocs">文档内存最大存储数</param>
         public override void SetOptimProperties(int mergeFactor, int maxBufferedDocs)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
-            writer.SetMergeFactor(mergeFactor);
-            writer.SetMaxBufferedDocs(maxBufferedDocs);
+            fsWriter.SetMergeFactor(mergeFactor);
+            fsWriter.SetMaxBufferedDocs(maxBufferedDocs);
         }
         /**/
         /// <summary>
@@ -134,7 +147,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTable(DataTable table)
         {
-            if (writer == null)
+            if (fsWriter == null || ramWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -167,7 +180,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTableWithEvent(DataTable table)
         {
-            if (writer == null)
+            if (fsWriter == null || ramWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -200,7 +213,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTable(DataTable table,ref System.Windows.Forms.ToolStripProgressBar progressBar)
         {
-            if (writer == null)
+            if (fsWriter == null || ramWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -220,7 +233,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTable(DataTable table, ref System.Windows.Forms.ProgressBar progressBar)
         {
-            if (writer == null)
+            if (fsWriter == null || ramWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -255,7 +268,7 @@ namespace ISUtils.Database.Writer
 //#endif
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
-            writer.AddDocument(document);
+            ramWriter.AddDocument(document);
         }
         /**/
         /// <summary>
@@ -283,10 +296,19 @@ namespace ISUtils.Database.Writer
                     WriteDbProgressChangedEventArgs pargs = new WriteDbProgressChangedEventArgs(RowNum, i);
                     base.OnProgressChangedEvent(this, pargs);
                 }
+                if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
+                {
+                    fsWriter.AddIndexes(new Directory[] { ramDir });
+                    ramWriter.Close();
+                    ramWriter = new IndexWriter(ramDir, analyzer, true);
+                }
             }
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
+            fsWriter.AddIndexes(new Directory[] { ramDir });
+            ramWriter.Close();
+            ramWriter = new IndexWriter(ramDir, analyzer, true);
+            fsWriter.Flush();
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
         /**/
         /// <summary>
@@ -295,13 +317,23 @@ namespace ISUtils.Database.Writer
         /// <param name="collection">数据库中行数据</param>
         public override void WriteDataRowCollectionWithNoEvent(DataRowCollection collection)
         {
+            int i = 0;
             foreach (DataRow row in collection)
             {
                 WriteDataRow(row, 1.0f);
+                if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
+                {
+                    fsWriter.AddIndexes(new Directory[] { ramDir });
+                    ramWriter.Close();
+                    ramWriter = new IndexWriter(ramDir, analyzer, true);
+                }
             }
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
+            fsWriter.AddIndexes(new Directory[] { ramDir });
+            ramWriter.Close();
+            ramWriter = new IndexWriter(ramDir, analyzer, true);
+            fsWriter.Flush();
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
         /**/
         /// <summary>
@@ -323,10 +355,19 @@ namespace ISUtils.Database.Writer
                     System.Windows.Forms.Application.DoEvents();
                     progressBar.Value = i;
                 }
+                if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
+                {
+                    fsWriter.AddIndexes(new Directory[] { ramDir });
+                    ramWriter.Close();
+                    ramWriter = new IndexWriter(ramDir, analyzer, true);
+                }
             }
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
+            fsWriter.AddIndexes(new Directory[] { ramDir });
+            ramWriter.Close();
+            ramWriter = new IndexWriter(ramDir, analyzer, true);
+            fsWriter.Flush();
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
         /**/
         /// <summary>
@@ -348,10 +389,19 @@ namespace ISUtils.Database.Writer
                     System.Windows.Forms.Application.DoEvents();
                     progressBar.Value = i;
                 }
+                if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
+                {
+                    fsWriter.AddIndexes(new Directory[] { ramDir });
+                    ramWriter.Close();
+                    ramWriter = new IndexWriter(ramDir, analyzer, true);
+                }
             }
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
+            fsWriter.AddIndexes(new Directory[] { ramDir });
+            ramWriter.Close();
+            ramWriter = new IndexWriter(ramDir, analyzer, true);
+            fsWriter.Flush();
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
         /**/
         /// <summary>
@@ -360,7 +410,7 @@ namespace ISUtils.Database.Writer
         /// <param name="directoryPaths">索引存储路径列表</param>
         public override void MergeIndexes(params string[] directoryPaths)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -369,10 +419,10 @@ namespace ISUtils.Database.Writer
             {
                 dictList.Add(FSDirectory.GetDirectory(directory, false));
             }
-            writer.AddIndexes(dictList.ToArray());
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
+            fsWriter.AddIndexes(dictList.ToArray());
+            fsWriter.Flush();
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
     }
 }

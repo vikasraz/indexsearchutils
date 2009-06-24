@@ -296,25 +296,37 @@ namespace ISUtils.Database.Writer
         public override void WriteDataRowCollectionWithNoEvent(DataRowCollection collection)
         {
             int i = 0;
-            foreach (DataRow row in collection)
+            try
             {
-                WriteDataRow(row, 1.0f);
-                i++;
-                if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
+                foreach (DataRow row in collection)
                 {
-                    fsWriter.AddIndexes(new Directory[] { ramDir });
-                    ramWriter.Close();
-                    ramWriter = new IndexWriter(ramDir, analyzer, true);
+                    WriteDataRow(row, 1.0f);
+                    i++;
+                    if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
+                    {
+                        fsWriter.AddIndexes(new Directory[] { ramDir });
+                        fsWriter.Flush();
+                        ramWriter.Close();
+                        ramWriter = new IndexWriter(ramDir, analyzer, true);
 #if DEBUG
-                    System.Console.WriteLine(i.ToString()+"\t"+DateTime.Now.ToLongTimeString());
+                        System.Console.WriteLine(i.ToString() + "\t" + DateTime.Now.ToLongTimeString());
 #endif
+                    }
                 }
+                fsWriter.AddIndexes(new Directory[] { ramDir });
+                fsWriter.Flush();
+                ramWriter.Close();
+                ramWriter = new IndexWriter(ramDir, analyzer, true);
+                fsWriter.Optimize();
+                fsWriter.Close();
             }
-            fsWriter.AddIndexes(new Directory[] { ramDir });
-            ramWriter.Close();
-            ramWriter = new IndexWriter(ramDir, analyzer, true);
-            fsWriter.Optimize();
-            fsWriter.Close();
+            catch (Exception e)
+            {
+#if DEBUG
+                System.Console.WriteLine(e.StackTrace.ToString());
+#endif
+                throw e;
+            }
         }
         /**/
         /// <summary>

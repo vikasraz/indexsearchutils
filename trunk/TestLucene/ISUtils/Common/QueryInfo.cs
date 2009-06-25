@@ -11,25 +11,62 @@ namespace ISUtils.Common
     [Serializable]
     public class QueryInfo
     {
-        private bool isFuzzySearch=true;
+        [Serializable]
+        public sealed class TableField
+        {
+            private string table = "";
+            private string field = "";
+            public TableField(string tablename, string fieldname)
+            {
+                table = tablename;
+                field = fieldname;
+            }
+        }
+        [Serializable]
+        public sealed class FilterCondition
+        {
+            private string table="";
+            private string field="";
+            private string[] values;
+            public FilterCondition(string tablename, string fieldname, params string[] valuelist)
+            {
+                table = tablename;
+                field = fieldname;
+                values = valuelist;
+            }
+            public FilterCondition(string srcFC)
+            {
+                //srcFC format: table.field in "value1,value2,value3,....,valuen"
+                string[] strArray = SupportClass.String.Split(srcFC, " .\t,，\"“");
+                if (strArray.Length < 4)
+                    throw new ArgumentException("srcFC has bad format!", "srcFC");
+                table = strArray[0];
+                field = strArray[1];
+                string[] valueArray = new string[strArray.Length - 3];
+                for (int i = 3; i < strArray.Length; i++)
+                    valueArray[i - 3] = strArray[i];
+                values = valueArray;
+            }
+        }
+        private bool isFuzzySearch = true;
         public bool IsFuzzySearch
         {
             get { return isFuzzySearch; }
             set { isFuzzySearch = value; }
         }
-        private string[] fields;
-        public string[] SearchFields
+        private string[] resultFields;
+        public string[] ResultFields
         {
-            get { return fields; }
-            set { fields = value; }
+            get { return resultFields; }
+            set { resultFields = value; }
         }
-        public void SetSearchFields(params string[] fieldArray)
+        public void SetResultFields(params string[] fieldArray)
         {
-            fields = fieldArray;
+            resultFields = fieldArray;
         }
-        public void SetSearchFileds(List<string> fieldList)
+        public void SetResultFileds(List<string> fieldList)
         {
-            fields = fieldList.ToArray();
+            resultFields = fieldList.ToArray();
         }
         private string[] tables;
         public string[] SearchTables

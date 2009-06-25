@@ -298,11 +298,13 @@ namespace ISUtils.Database.Writer
                 }
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);
@@ -323,11 +325,13 @@ namespace ISUtils.Database.Writer
                 WriteDataRow(row, 1.0f);
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);
@@ -357,11 +361,13 @@ namespace ISUtils.Database.Writer
                 }
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);
@@ -391,11 +397,13 @@ namespace ISUtils.Database.Writer
                 }
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);

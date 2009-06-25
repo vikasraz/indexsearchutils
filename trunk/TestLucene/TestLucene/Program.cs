@@ -163,7 +163,21 @@ namespace TestLucene
             //TestChineseSearch();
             //Mainf();
             //TestForChineseSegment();
+            //TestRam();
             Console.ReadKey();
+        }
+        static void TestRam()
+        {
+            FSDirectory fsDir = FSDirectory.GetDirectory("testdir", true);
+            RAMDirectory ramDir = new RAMDirectory();
+            IndexWriter fsWriter = new IndexWriter(fsDir, new StandardAnalyzer(), true);
+            IndexWriter ramWriter = new IndexWriter(ramDir, new StandardAnalyzer(), true);
+            AddDocument(ramWriter, "SQL Server 2008 的发布", "SQL Server 2008 的新特性");
+            AddDocument(ramWriter, "ASP.Net MVC框架配置与分析", "而今，微软推出了新的MVC开发框架，也就是Microsoft ASP.NET 3.5 Extensions");
+            ramWriter.Flush();
+            fsWriter.AddIndexes(new Directory[] { ramDir });
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
         static void TestChineseSearch()
         {
@@ -404,10 +418,10 @@ namespace TestLucene
         static void AddDocument(IndexWriter writer, string title, string content)
         {
             Document doc = new Document();
-            doc.Add(new Field("title", Segment.SegmentString(title, " "), Field.Store.COMPRESS, Field.Index.TOKENIZED));
-            doc.Add(new Field("content", Segment.SegmentString(content, " "), Field.Store.COMPRESS, Field.Index.TOKENIZED));
-            //doc.Add(new Field("title", title, Field.Store.COMPRESS, Field.Index.TOKENIZED));
-            //doc.Add(new Field("content", content, Field.Store.COMPRESS, Field.Index.TOKENIZED));
+            //doc.Add(new Field("title", Segment.SegmentString(title, " "), Field.Store.COMPRESS, Field.Index.TOKENIZED));
+            //doc.Add(new Field("content", Segment.SegmentString(content, " "), Field.Store.COMPRESS, Field.Index.TOKENIZED));
+            doc.Add(new Field("title", title, Field.Store.COMPRESS, Field.Index.TOKENIZED));
+            doc.Add(new Field("content", content, Field.Store.COMPRESS, Field.Index.TOKENIZED));
             //doc.GetField("tag").SetBoost(boost);
             Console.WriteLine(doc.ToString());
             writer.AddDocument(doc);

@@ -274,11 +274,13 @@ namespace ISUtils.Database.Writer
                 }
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);
@@ -304,8 +306,8 @@ namespace ISUtils.Database.Writer
                     i++;
                     if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                     {
+                        ramWriter.Flush();
                         fsWriter.AddIndexes(new Directory[] { ramDir });
-                        fsWriter.Flush();
                         ramWriter.Close();
                         ramWriter = new IndexWriter(ramDir, analyzer, true);
 #if DEBUG
@@ -313,8 +315,8 @@ namespace ISUtils.Database.Writer
 #endif
                     }
                 }
+                ramWriter.Flush();
                 fsWriter.AddIndexes(new Directory[] { ramDir });
-                fsWriter.Flush();
                 ramWriter.Close();
                 ramWriter = new IndexWriter(ramDir, analyzer, true);
                 fsWriter.Optimize();
@@ -354,11 +356,13 @@ namespace ISUtils.Database.Writer
                 }
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);
@@ -391,11 +395,13 @@ namespace ISUtils.Database.Writer
                 }
                 if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                 {
+                    ramWriter.Flush();
                     fsWriter.AddIndexes(new Directory[] { ramDir });
                     ramWriter.Close();
                     ramWriter = new IndexWriter(ramDir, analyzer, true);
                 }
             }
+            ramWriter.Flush();
             fsWriter.AddIndexes(new Directory[] { ramDir });
             ramWriter.Close();
             ramWriter = new IndexWriter(ramDir, analyzer, true);

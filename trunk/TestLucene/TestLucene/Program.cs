@@ -59,8 +59,8 @@ namespace TestLucene
             string path = @"d:\Indexer\config.conf";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.IndexNames = "in_incr1,in_incr2";
-            info.SearchWords = "国有";
+            info.FQuery.IndexNames = "in_incr1,in_incr2";
+            info.FQuery.SearchWords = "国有";
             DateTime start = DateTime.Now;
             QueryResult result = searcher.ExecuteSearch(info);
             TimeSpan span = DateTime.Now - start;
@@ -194,8 +194,8 @@ namespace TestLucene
                 indexList = parser.GetIndexList();
                 dictSet = parser.GetDictionarySet();
                 QueryInfo info = new QueryInfo();
-                info.IndexNames = "in_main1,in_main2";
-                info.SearchWords = "中国人民解放军 93688";
+                info.FQuery.IndexNames = "in_main1,in_main2";
+                info.FQuery.SearchWords = "中国人民解放军 93688";
                 Console.WriteLine("SetSearchSettings");
                 ISUtils.Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
                 Console.WriteLine("SetQueryInfo");
@@ -260,7 +260,7 @@ namespace TestLucene
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
-            ISUtils.Utils.IndexUtil.IndexEx(IndexTypeEnum.Ordinary);
+            ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(span.TotalMilliseconds.ToString());
         }

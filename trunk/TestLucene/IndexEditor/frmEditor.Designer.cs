@@ -447,11 +447,11 @@
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.panelIndexerSet);
-            this.splitContainer.Panel2.Controls.Add(this.panelSearchd);
             this.splitContainer.Panel2.Controls.Add(this.panelSource);
             this.splitContainer.Panel2.Controls.Add(this.panelDictionary);
             this.splitContainer.Panel2.Controls.Add(this.panelIndexSet);
+            this.splitContainer.Panel2.Controls.Add(this.panelIndexerSet);
+            this.splitContainer.Panel2.Controls.Add(this.panelSearchd);
             this.splitContainer.Size = new System.Drawing.Size(832, 498);
             this.splitContainer.SplitterDistance = 167;
             this.splitContainer.TabIndex = 13;

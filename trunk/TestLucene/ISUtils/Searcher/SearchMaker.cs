@@ -223,17 +223,31 @@ namespace ISUtils.Searcher
                 //fields.AddRange(doc.GetFields().CopyTo);
                 Field[] fields = new Field[doc.GetFields().Count];
                 doc.GetFields().CopyTo(fields, 0);
+                FormatedResult.FormatedDoc fd = new FormatedResult.FormatedDoc();
                 foreach (Field field in fields)
                 {
                     string key = field.Name();
                     string value = field.StringValue();
                     TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
-                    string result = highlighter.GetBestFragment(tokenStream, value);
+                    string result="";
+                    result = highlighter.GetBestFragment(tokenStream, value);
                     if (highlight)
-                        fResult.AddElement(key, result);
+                    {
+                        if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                        {
+                            fd.AddElement(key, result);
+                        }
+                        else
+                        {
+                            fd.AddElement(key, value);
+                        }
+                    }
                     else
-                        fResult.AddElement(key, value);
+                    {
+                        fd.AddElement(key, value);
+                    }
                 }
+                fResult.AddFormatedDoc(fd);
             }
             SupportClass.File.WriteToLog(path, "After FormatedResutl Add Result.");
             try

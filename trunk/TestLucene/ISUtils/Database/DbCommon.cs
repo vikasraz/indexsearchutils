@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Odbc;
@@ -194,6 +195,105 @@ namespace ISUtils.Database
 #endif
                 return false;
             }
+        }
+        public static void GetStructures(string configFilePath, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<string>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
+        {
+            List<string> srcList = SupportClass.File.GetFileText(configFilePath);
+            List<Source> sourceList = Source.GetSourceList(srcList);
+            List<IndexSet> indexList = IndexSet.GetIndexList(srcList);
+            Dictionary<IndexSet, Source>  indexDict = new Dictionary<IndexSet, Source>();
+            foreach (IndexSet set in indexList)
+            {
+                foreach (Source source in sourceList)
+                {
+                    if (source.SourceName == set.SourceName)
+                    {
+                        indexDict.Add(set, source);
+                        break;
+                    }
+                }
+            }
+            tableIndexDict = new Dictionary<string, List<IndexSet>>();
+            tableFieldDict = new Dictionary<string, List<string>>();
+            indexTableDict = new Dictionary<IndexSet, List<string>>();
+            Dictionary<string, int> tbDict = new Dictionary<string, int>();
+            foreach (IndexSet set in indexDict.Keys)
+            {
+                Dictionary<string, List<string>> tfDict = GetQueryTableFields(indexDict[set].DBType, indexDict[set].GetConnString(), indexDict[set].Query);
+                foreach (string table in tfDict.Keys)
+                {
+                    if (tableFieldDict.ContainsKey(table) == false)
+                    {
+                        tableFieldDict.Add(table, tfDict[table]);
+                    }
+                    if (tbDict.ContainsKey(table) == false)
+                    {
+                        tbDict.Add(table, table.Length);
+                    }
+                }
+                List<string> tbList = new List<string>();
+                tbList.AddRange(tfDict.Keys);
+                indexTableDict.Add(set,tbList);
+            }
+            foreach (string table in tbDict.Keys)
+            {
+                List<IndexSet> inList = new List<IndexSet>();
+                foreach (IndexSet set in indexTableDict.Keys)
+                {
+                    if (indexTableDict[set].Contains(table))
+                    {
+                        inList.Add(set);
+                    }
+                }
+                tableIndexDict.Add(table, inList);
+            }
+        }
+        public static Dictionary<string,List<string>> GetQueryTableFields(DBTypeEnum dbType,string connStr, string query)
+        {
+            Dictionary<string, List<string>> tableFieldDict = new Dictionary<string, List<string>>();
+            DBLinker linker;
+            try
+            {
+                switch (dbType)
+                {
+                    case DBTypeEnum.ODBC:
+                        linker = new OdbcLinker(connStr);
+                        break;
+                    case DBTypeEnum.OLE_DB:
+                        linker = new OleDbLinker(connStr);
+                        break;
+                    case DBTypeEnum.Oracle:
+                        linker = new OracleLinker(connStr);
+                        break;
+                    case DBTypeEnum.SQL_Server:
+                        linker = new SqlServerLinker(connStr);
+                        break;
+                    default:
+                        linker = new SqlServerLinker(connStr);
+                        break;
+                }
+                List<string> tableList = SupportClass.QueryParser.TablesInQuery(query);
+                foreach (string table in tableList)
+                {
+                    DataTable dt = linker.ExecuteSQL(SupportClass.QueryParser.TopOneOfTable(table));
+                    List<string> fieldList = new List<string>();
+                    foreach (DataColumn column in dt.Columns)
+                    {
+                        fieldList.Add(column.ColumnName);
+                    }
+                    if (tableFieldDict.ContainsKey(table) == false)
+                        tableFieldDict.Add(table, fieldList);
+                    dt.Clear();
+                }
+                linker.Close();
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                System.Console.WriteLine(e.StackTrace.ToString());
+#endif
+            }
+            return tableFieldDict;
         }
     }
 }

@@ -30,26 +30,42 @@ namespace ISUtils.Common
             }
             public override string ToString()
             {
-                return key +"\t"+value;
+                return key +":\t"+value;
             }
         }
-        private List<Element> elemList = new List<Element>();
-        public List<Element> ElemList
+        [Serializable]
+        public sealed class FormatedDoc
         {
-            get { return elemList; }
-            set { elemList = value; }
+            private List<Element> elemList = new List<Element>();
+            public List<Element> ElemList
+            {
+                get { return elemList; }
+                set { elemList = value; }
+            }
+            public void AddElement(string key, string value)
+            {
+                if (elemList == null)
+                    elemList = new List<Element>();
+                elemList.Add(new Element(key, value));
+            }
+            public void AddElement(Element elem)
+            {
+                if (elemList == null)
+                    elemList = new List<Element>();
+                elemList.Add(elem);
+            }
         }
-        public void AddElement(string key, string value)
+        private List<FormatedDoc> fdocList = new List<FormatedDoc>();
+        public List<FormatedDoc> FormatedDocList
         {
-            if (elemList == null)
-                elemList = new List<Element>();
-            elemList.Add(new Element(key, value));
+            get { return fdocList; }
+            set { fdocList = value; }
         }
-        public void AddElement(Element elem)
+        public void AddFormatedDoc(FormatedDoc fd)
         {
-            if (elemList == null)
-                elemList = new List<Element>();
-            elemList.Add(elem);
+            if (fdocList == null)
+                fdocList = new List<FormatedDoc>();
+            fdocList.Add(fd);
         }
     }
 }

@@ -939,6 +939,7 @@ namespace IndexEditor
             EnablePanelSourceControls(false);
             status = Status.Confirm;
             comboBoxSource.Enabled = true;
+            EnablePanelSourceButtons(status);
         }
 
         private void btnSourceCancel_Click(object sender, EventArgs e)
@@ -951,6 +952,7 @@ namespace IndexEditor
             EnablePanelSourceControls(false);
             status = Status.Cancel;
             comboBoxSource.Enabled = true;
+            EnablePanelSourceButtons(status);
         }
 
         private void btnSetBasePath_Click(object sender, EventArgs e)
@@ -1213,13 +1215,20 @@ namespace IndexEditor
             if (!init) return;
             toolStripStatusLabelStatus.Text = "开始构建主索引！";
             this.Cursor = Cursors.WaitCursor;
-            ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
             toolStripProgressBar.Visible = true;
             toolStripProgressBar.Minimum = 0;
             toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
             Application.DoEvents();
-            toolStripStatusLabelStatus.Text = "正在构建主索引！";
-            ISUtils.Utils.IndexUtil.IndexWithEventEx(IndexTypeEnum.Ordinary,OnIndexCompleted,OnProgressChanged);
+            try
+            {
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
+                toolStripStatusLabelStatus.Text = "正在构建主索引！";
+                ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.StackTrace.ToString());
+            }
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "构建主索引完毕！";
@@ -1232,7 +1241,7 @@ namespace IndexEditor
         }
         private void OnProgressChanged(object sender, IndexProgressChangedEventArgs e)
         {
-            toolStripProgressBar.Value = (e.Current*ISUtils.SupportClass.PERCENTAGEDIVE) / e.Total;
+            toolStripProgressBar.Value = toolStripProgressBar.Value+1;
             Application.DoEvents();
         }
         private void btnReCreateIncrIndex_Click(object sender, EventArgs e)
@@ -1240,13 +1249,20 @@ namespace IndexEditor
             if (!init) return;
             toolStripStatusLabelStatus.Text = "开始构建增量索引！";
             this.Cursor = Cursors.WaitCursor;
-            ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
             toolStripProgressBar.Visible = true;
             toolStripProgressBar.Minimum = 0;
             toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
             Application.DoEvents();
             toolStripStatusLabelStatus.Text = "正在构建增量索引！";
-            ISUtils.Utils.IndexUtil.IndexWithEventEx(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+            try
+            {
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
+                ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.StackTrace.ToString());
+            }
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "构建增量索引完毕！";

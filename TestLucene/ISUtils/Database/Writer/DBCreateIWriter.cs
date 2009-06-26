@@ -122,10 +122,14 @@ namespace ISUtils.Database.Writer
             foreach (DataColumn column in columns)
             {
                 fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+#if DEBUG
+                System.Console.WriteLine("Column Caption:\t" + column.Caption + "\nColumn Name:\t" + column.ColumnName + "\nColumn Type:\t" + column.DataType.ToString());
+#endif
             }
 #if DEBUG
             DateTime start=DateTime.Now;
             int count = table.Rows.Count;
+            System.Console.WriteLine("Table Name:\t"+table.TableName);
 #endif
             WriteDataRowCollectionWithNoEvent(table.Rows);
 #if DEBUG

@@ -10,7 +10,7 @@ namespace ISUtils
     {
         public static string LogPath=@"D:\TEMP.LOG";
         public const int RAM_FLUSH_NUM = 100000;
-        public const int MAX_ROWS_WRITE = 10000;
+        public const int MAX_ROWS_WRITE = 1000;
         public const int PERCENTAGEDIVE = 10000;
         public const int FRAGMENT_SIZE = 100;
         public const string Splitor = " \t,;#，；&|";
@@ -272,6 +272,96 @@ namespace ISUtils
                         }
                     }
                 }
+            }
+        }
+        public class Numerical
+        {
+            public static int Min( params int[] values)
+            {
+                int min = int.MaxValue;
+                foreach (int n in values)
+                    if (n < min)
+                        min = n;
+                return min;
+            }
+            public static int Max( params int[] values)
+            {
+                int max = int.MinValue;
+                foreach (int n in values)
+                    if (n > max)
+                        max = n;
+                return max;
+            }
+            public static int UMin(params int[] values)
+            {
+                int min = int.MaxValue;
+                foreach (int n in values)
+                {
+                    if (n >= 0 && n < min)
+                        min = n;
+                }
+                return min;
+            }
+        }
+        public class QueryParser
+        {
+            public static List<string> FieldsInQuery(string query)
+            {
+                List<string> fieldList = new List<string>();
+                int nend = query.Trim().ToLower().IndexOf("from") - 1;
+                string[] fs = String.Split(query.Trim().Substring(6, nend - 5), ",");
+                fieldList.AddRange(fs);
+                return fieldList;
+            }
+            public static List<string> TablesInQuery(string query)
+            {
+                List<string> tableList = new List<string>();
+                string lower = query.ToLower().Replace('\t', ' ');
+                int nfrom = lower.IndexOf("from") + 4;
+                int nwhere = lower.IndexOf("where") - 1;
+                int ngroup = lower.IndexOf("group") - 1;
+                int norder = lower.IndexOf("order") - 1;
+                int nend = Numerical.UMin(nwhere, ngroup, norder, lower.Length - 1);
+                string[] les = String.Split(lower.Substring(nfrom, nend - nfrom + 1)," ,");
+                tableList.AddRange(les);
+                return tableList;
+            }
+            public static string TopOneOfQuery(string query)
+            {
+                List<string> elemList = new List<string>();
+                elemList.AddRange(String.Split(query.ToLower(), " \t"));
+                if (!elemList.Contains("select") && !elemList.Contains("from"))
+                    throw new ArgumentException("query has a bad format.", "query");
+                string[] elems = String.Split(query.Replace('\t', ' '), " ");
+                StringBuilder ret = new StringBuilder();
+                if (elemList.Contains("top"))
+                {
+                    for (int i = 0; i < elems.Length; i++)
+                    {
+                        if (i == 2)
+                        {
+                            ret.Append("1 ");
+                        }
+                        else
+                        {
+                            ret.Append(elems[i] + " ");
+                        }
+                    }
+                }
+                else
+                {
+                    ret.Append("select top 1 ");
+                    for (int i = 1; i < elems.Length; i++)
+                    {
+                        ret.Append(elems[i] + " ");
+                    }
+                }
+                ret.Remove(ret.Length - 1, 1);
+                return ret.ToString();
+            }
+            public static string TopOneOfTable(string table)
+            {
+                return string.Format("select top 1 * from {0}", table);
             }
         }
         //public class Doc

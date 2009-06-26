@@ -250,9 +250,11 @@ namespace ISUtils.Utils
         }
         public static void SetQueryInfo(QueryInfo info)
         {
-            SetSearchWords(info.WordsAllContains,info.ExactPhraseContain,info.OneOfWordsAtLeastContain,info.WordNotInclude);
-            SetSearchIndexes(info.IndexNames);
-            SetSearchLimit(info.QueryAts);
+            if (info.IsFuzzySearch ==false)
+                throw new ArgumentException("info has a wrong type.","info");
+            SetSearchWords(info.FQuery.WordsAllContains, info.FQuery.ExactPhraseContain, info.FQuery.OneOfWordsAtLeastContain, info.FQuery.WordNotInclude);
+            SetSearchIndexes(info.FQuery.IndexNames);
+            SetSearchLimit(info.FQuery.QueryAts);
         }
         private static Query GetQuery(IndexSet indexSet)
         {

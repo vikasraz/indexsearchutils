@@ -46,8 +46,8 @@ public partial class _Default : System.Web.UI.Page
                 return;
             }
             QueryInfo info = new QueryInfo();
-            info.IndexNames = txtIndexName.Text;
-            info.SearchWords = txtSearch.Text;
+            info.FQuery.IndexNames = txtIndexName.Text;
+            info.FQuery.SearchWords = txtSearch.Text;
             DateTime now = DateTime.Now;
             try
             {
@@ -91,9 +91,13 @@ public partial class _Default : System.Web.UI.Page
             //Hits hits = searcher.Search(query);
 
             TimeSpan tm = DateTime.Now - now;
-            foreach (FormatedResult.Element elem in fr.ElemList)
+            foreach (FormatedResult.FormatedDoc fd in fr.FormatedDocList)
             {
-                Response.Write(elem.ToString() + "<br>");
+                Response.Write("----------------------------------------<br>");
+                foreach (FormatedResult.Element elem in fd.ElemList)
+                {
+                    Response.Write(elem.ToString() + "<br>");
+                }
             }
             //foreach (QueryResult.SearchInfo si in qr.docs.Keys)
             //{

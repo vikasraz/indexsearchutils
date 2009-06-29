@@ -1223,7 +1223,8 @@ namespace IndexEditor
             {
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
                 toolStripStatusLabelStatus.Text = "正在构建主索引！";
-                ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                //ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
             }
             catch (Exception ex)
             {
@@ -1257,7 +1258,8 @@ namespace IndexEditor
             try
             {
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
-                ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+                //ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+                ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Increment,ref toolStripProgressBar);
             }
             catch (Exception ex)
             {

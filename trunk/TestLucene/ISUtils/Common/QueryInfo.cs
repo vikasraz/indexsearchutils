@@ -13,8 +13,15 @@ namespace ISUtils.Common
     {
         #region "精确查询"
         [Serializable]
-        public sealed class TableField
+        public sealed class RangeConditon
         {
+            //true for open interval,else closed interval
+            private bool interval = false;
+            public bool IntervalType
+            {
+                get { return interval; }
+                set { interval = value; }
+            }
             private string table = "";
             private string field = "";
             public string Table
@@ -27,83 +34,41 @@ namespace ISUtils.Common
                 get { return field; }
                 set { field = value; }
             }
-            public TableField(string tablename, string fieldname)
+            private string from = "";
+            private string to = "";
+            public string RangeFrom
+            {
+                get { return from; }
+                set { from = value; }
+            }
+            public string RangeTo
+            {
+                get { return to; }
+                set { to = value; }
+            }
+            public RangeConditon()
+            { 
+            }
+            public RangeConditon(string tablename, string fieldname, string from, string to)
             {
                 table = tablename;
                 field = fieldname;
+                this.from = from;
+                this.to = to;
             }
-            public TableField(string srcTF)
-            {
-                string[] strArray = SupportClass.String.Split(srcTF, " .\t");
-                if (strArray.Length != 2)
-                    throw new ArgumentException("srcTF has bad format!", "srcTF");
-                table = strArray[0];
-                field = strArray[1];
-            }
-            public override string ToString()
-            {
-                return table +"."+field;
-            }
-        }
-        [Serializable]
-        public sealed class FilterCondition
-        {
-            private string table="";
-            private string field="";
-            private string[] values;
-            public string Table
-            {
-                get { return table; }
-                set { table = value; }
-            }
-            public string Field
-            {
-                get { return field; }
-                set { field = value; }
-            }
-            public string[] Values
-            {
-                get { return values; }
-                set { values = value; }
-            }
-            public FilterCondition(TableField tf, params string[] valueList)
-            {
-                table = tf.Table;
-                field = tf.Field;
-                values = valueList;
-            }
-            public FilterCondition(string tablename, string fieldname, params string[] valuelist)
+            public RangeConditon(string tablename, string fieldname, DateTime from, DateTime to)
             {
                 table = tablename;
                 field = fieldname;
-                values = valuelist;
+                this.from = SupportClass.Time.GetLuceneDate(from);
+                this.to = SupportClass.Time.GetLuceneDate(to);
             }
-            public FilterCondition(string srcFC)
+            public RangeConditon(string srcRC)
             {
-                //srcFC format: table.field in "value1,value2,value3,....,valuen"
-                string[] strArray = SupportClass.String.Split(srcFC, " .\t,，\"“");
-                if (strArray.Length < 4)
-                    throw new ArgumentException("srcFC has bad format!", "srcFC");
-                table = strArray[0];
-                field = strArray[1];
-                string[] valueArray = new string[strArray.Length - 3];
-                for (int i = 3; i < strArray.Length; i++)
-                    valueArray[i - 3] = strArray[i];
-                values = valueArray;
-            }
-            public override string ToString()
-            {
-                string ret = table + "." + field+" in (";
-                foreach (string s in values)
-                {
-                    ret += s + ",";
-                }
-                if (values.Length > 0)
-                {
-                    ret = ret.Substring(0, ret.Length - 1);
-                }
-                ret += ")";
-                return ret;
+                //table.field:[from TO to]
+                //table.field:{from TO to}
+                int pos = srcRC.IndexOf(':');
+                string[] strArray = SupportClass.String.Split(srcRC.Substring(0,pos), ".");
             }
         }
         [Serializable]
@@ -210,57 +175,6 @@ namespace ISUtils.Common
                 return ret.ToString();
             }
             #endregion
-        }
-        #endregion
-        #region "模糊查询"
-        [Serializable]
-        public sealed class FuzzyQuery
-        {
-            private string indexnames = "";
-            public string IndexNames
-            {
-                get { return indexnames; }
-                set { indexnames = value; }
-            }
-            private string wordsAllContains = "";
-            public string WordsAllContains
-            {
-                get { return wordsAllContains; }
-                set { wordsAllContains = value; }
-            }
-            private string exactPhraseContain = "";
-            public string ExactPhraseContain
-            {
-                get { return exactPhraseContain; }
-                set { exactPhraseContain = value; }
-            }
-            private string oneOfWordsAtLeastContain = "";
-            public string OneOfWordsAtLeastContain
-            {
-                get { return oneOfWordsAtLeastContain; }
-                set { oneOfWordsAtLeastContain = value; }
-            }
-            private string wordNotInclude = "";
-            public string WordNotInclude
-            {
-                get { return wordNotInclude; }
-                set { wordNotInclude = value; }
-            }
-            private string queryAts = "";
-            public string QueryAts
-            {
-                get { return queryAts; }
-                set { queryAts = value; }
-            }
-            public string SearchWords
-            {
-                get { return wordsAllContains; }
-                set { wordsAllContains = value; }
-            }
-            public override string ToString()
-            {
-                return indexnames + "\t" + queryAts + "\t" + wordsAllContains + "\t" + exactPhraseContain + "\t" + oneOfWordsAtLeastContain + "\t" + wordNotInclude;
-            }
         }
         #endregion
         private bool isFuzzySearch = true;

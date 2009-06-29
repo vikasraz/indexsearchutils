@@ -14,6 +14,18 @@ namespace ISUtils
         public const int PERCENTAGEDIVE = 10000;
         public const int FRAGMENT_SIZE = 100;
         public const string Splitor = " \t,;#，；&|";
+        public sealed class Offset
+        {
+            public int Start=0;
+            public int End=0;
+            public Offset()
+            { }
+            public Offset(int start, int end)
+            {
+                Start = start;
+                End = end;
+            }
+        }
         public class String
         {
             public const string seprator ="\t,;.，；";
@@ -119,17 +131,21 @@ namespace ISUtils
                 }
                 return offsets;
             }
-            public sealed class Offset
+            public static string LeftOf(string src, int len)
             {
-                public int Start=0;
-                public int End=0;
-                public Offset()
-                { }
-                public Offset(int start, int end)
-                {
-                    Start = start;
-                    End = end;
-                }
+                if (string.IsNullOrEmpty(src))
+                    return "";
+                if (len >= src.Length)
+                    return src;
+                return src.Substring(0, len);
+            }
+            public static string RightOf(string src, int len)
+            {
+                if (string.IsNullOrEmpty(src))
+                    return "";
+                if (len >= src.Length)
+                    return src;
+                return src.Substring(src.Length - len, len);
             }
         }
         public class File
@@ -249,6 +265,18 @@ namespace ISUtils
             {
                 return dta.Hour == dtb.Hour && dta.Minute == dtb.Minute && dta.Second == dtb.Second;
             }
+            public static string GetLuceneTime(DateTime date)
+            {
+                return date.ToString("HHmmss");
+            }
+            public static string GetLuceneDate(DateTime date)
+            {
+                return date.ToString("yyyyMMdd");
+            }
+            public static string GetLuceneDateTime(DateTime dt)
+            {
+                return dt.ToString("yyyyMMddHHmmss");
+            }
         }
         public class Result
         {
@@ -305,6 +333,20 @@ namespace ISUtils
         }
         public class QueryParser
         {
+            public static void TableFieldOf(string srcTF,out string table,out string field)
+            {
+                int pos=srcTF.LastIndexOf('.');
+                if (pos < 0)
+                {
+                    table = "";
+                    field = srcTF;
+                }
+                else
+                {
+                    table = srcTF.Substring(0, pos);
+                    field = srcTF.Substring(pos + 1, srcTF.Length - pos - 1);
+                }
+            }
             public static List<string> FieldsInQuery(string query)
             {
                 List<string> fieldList = new List<string>();

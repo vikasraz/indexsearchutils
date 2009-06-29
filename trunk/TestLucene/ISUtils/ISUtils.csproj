@@ -54,11 +54,15 @@
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\DBType.cs" />
     <Compile Include="Common\DictionarySet.cs" />
+    <Compile Include="Common\FieldInfo.cs" />
+    <Compile Include="Common\FilterCondition.cs" />
     <Compile Include="Common\FormatedResult.cs" />
+    <Compile Include="Common\FuzzyQuery.cs" />
     <Compile Include="Common\IndexSet.cs" />
     <Compile Include="Common\IndexerSet.cs" />
     <Compile Include="Common\IndexType.cs" />
     <Compile Include="Common\Message.cs" />
+    <Compile Include="Common\TableField.cs" />
     <Compile Include="CSegment\DictionaryLoader\BinDictionaryLoader.cs" />
     <Compile Include="CSegment\DictionaryLoader\DictionaryLoaderFactory.cs" />
     <Compile Include="CSegment\DictionaryLoader\IDictionaryLoader.cs" />

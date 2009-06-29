@@ -250,11 +250,16 @@ namespace ISUtils.Utils
         }
         public static void SetQueryInfo(QueryInfo info)
         {
-            if (info.IsFuzzySearch ==false)
-                throw new ArgumentException("info has a wrong type.","info");
-            SetSearchWords(info.FQuery.WordsAllContains, info.FQuery.ExactPhraseContain, info.FQuery.OneOfWordsAtLeastContain, info.FQuery.WordNotInclude);
-            SetSearchIndexes(info.FQuery.IndexNames);
-            SetSearchLimit(info.FQuery.QueryAts);
+            if (info.IsFuzzySearch)
+            {
+                SetSearchWords(info.FQuery.WordsAllContains, info.FQuery.ExactPhraseContain, info.FQuery.OneOfWordsAtLeastContain, info.FQuery.WordNotInclude);
+                SetSearchIndexes(info.FQuery.IndexNames);
+                SetSearchLimit(info.FQuery.QueryAts);
+            }
+            else
+            {
+               
+            }
         }
         private static Query GetQuery(IndexSet indexSet)
         {
@@ -406,126 +411,154 @@ namespace ISUtils.Utils
         public static List<Hits> Search()
         {
             List<Hits> hitsList = new List<Hits>();
-            if (searchIndexList.Count > 0)
+            try
             {
-                foreach (IndexSet indexSet in searchIndexList)
+                if (searchIndexList.Count > 0)
                 {
-                    IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                    Query query = GetQuery(indexSet);
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
 #if DEBUG
-                    System.Console.WriteLine(query.ToString());
+                        System.Console.WriteLine(query.ToString());
 #endif
-                    Hits hits = searcher.Search(query);
-                    hitsList.Add(hits);
+                        Hits hits = searcher.Search(query);
+                        hitsList.Add(hits);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        Hits hits = searcher.Search(query);
+                        hitsList.Add(hits);
+                    }
                 }
             }
-            else
+            catch (Exception e)
             {
-                foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                {
-                    IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                    Query query = GetQuery(indexSet);
-#if DEBUG
-                    System.Console.WriteLine(query.ToString());
-#endif
-                    Hits hits = searcher.Search(query);
-                    hitsList.Add(hits);
-                }
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hitsList;
         }
         public static Hits SearchEx()
         {
             Hits hits = null;
-            List<IndexReader> readerList = new List<IndexReader>();
-            if (searchIndexList.Count > 0)
+            try
             {
-                foreach (IndexSet indexSet in searchIndexList)
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
                 {
-                    readerList.Add(IndexReader.Open(indexSet.Path));
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
                 }
-            }
-            else
-            {
-                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                else
                 {
-                    readerList.Add(IndexReader.Open(indexSet.Path));
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
                 }
-            }
-            MultiReader multiReader = new MultiReader(readerList.ToArray());
-            IndexSearcher searcher = new IndexSearcher(multiReader);
-            Query query = GetQuery();
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                Query query = GetQuery();
 #if DEBUG
-            System.Console.WriteLine(query.ToString());
+                System.Console.WriteLine(query.ToString());
 #endif
-            SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-            hits = searcher.Search(query);
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                hits = searcher.Search(query);
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
             return hits;
         }
         public static Hits SearchEx(out Query query)
         {
             Hits hits = null;
             query = null;
-            List<IndexReader> readerList = new List<IndexReader>();
-            if (searchIndexList.Count > 0)
+            try
             {
-                foreach (IndexSet indexSet in searchIndexList)
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
                 {
-                    readerList.Add(IndexReader.Open(indexSet.Path));
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
                 }
-            }
-            else
-            {
-                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                else
                 {
-                    readerList.Add(IndexReader.Open(indexSet.Path));
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
                 }
-            }
-            MultiReader multiReader = new MultiReader(readerList.ToArray());
-            IndexSearcher searcher = new IndexSearcher(multiReader);
-            query = GetQuery();
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                query = GetQuery();
 #if DEBUG
-            System.Console.WriteLine(query.ToString());
+                System.Console.WriteLine(query.ToString());
 #endif
-            SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-            hits = searcher.Search(query);
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                hits = searcher.Search(query);
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
             return hits;
         }
         public static List<Hits> Search(out List<QueryResult.SearchInfo> siList)
         {
             List<Hits> hitsList = new List<Hits>();
             siList = new List<QueryResult.SearchInfo>();
-            if (searchIndexList.Count > 0)
+            try
             {
-                foreach (IndexSet indexSet in searchIndexList)
+                if (searchIndexList.Count > 0)
                 {
-                    IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                    QueryResult.SearchInfo si;
-                    Query query = GetQuery(indexSet, out si);
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
 #if DEBUG
-                    System.Console.WriteLine(query.ToString());
+                        System.Console.WriteLine(query.ToString());
 #endif
-                    SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                    Hits hits = searcher.Search(query);
-                    hitsList.Add(hits);
-                    siList.Add(si);
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        Hits hits = searcher.Search(query);
+                        hitsList.Add(hits);
+                        siList.Add(si);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        Hits hits = searcher.Search(query);
+                        hitsList.Add(hits);
+                        siList.Add(si);
+                    }
                 }
             }
-            else
+            catch (Exception e)
             {
-                foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                {
-                    IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                    QueryResult.SearchInfo si;
-                    Query query = GetQuery(indexSet, out si);
-#if DEBUG
-                    System.Console.WriteLine(query.ToString());
-#endif
-                    SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                    Hits hits = searcher.Search(query);
-                    hitsList.Add(hits);
-                    siList.Add(si);
-                }
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hitsList;
         }

@@ -196,7 +196,7 @@ namespace ISUtils.Database
                 return false;
             }
         }
-        public static void GetStructures(string configFilePath, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<string>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
+        public static void GetStructures(string configFilePath, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
         {
             List<string> srcList = SupportClass.File.GetFileText(configFilePath);
             List<Source> sourceList = Source.GetSourceList(srcList);
@@ -214,12 +214,12 @@ namespace ISUtils.Database
                 }
             }
             tableIndexDict = new Dictionary<string, List<IndexSet>>();
-            tableFieldDict = new Dictionary<string, List<string>>();
+            tableFieldDict = new Dictionary<string, List<FieldInfo>>();
             indexTableDict = new Dictionary<IndexSet, List<string>>();
             Dictionary<string, int> tbDict = new Dictionary<string, int>();
             foreach (IndexSet set in indexDict.Keys)
             {
-                Dictionary<string, List<string>> tfDict = GetQueryTableFields(indexDict[set].DBType, indexDict[set].GetConnString(), indexDict[set].Query);
+                Dictionary<string, List<FieldInfo>> tfDict = GetQueryTableFields(indexDict[set].DBType, indexDict[set].GetConnString(), indexDict[set].Query);
                 foreach (string table in tfDict.Keys)
                 {
                     if (tableFieldDict.ContainsKey(table) == false)
@@ -248,9 +248,95 @@ namespace ISUtils.Database
                 tableIndexDict.Add(table, inList);
             }
         }
-        public static Dictionary<string,List<string>> GetQueryTableFields(DBTypeEnum dbType,string connStr, string query)
+        public static void GetStructures(List<Source> sourceList, List<IndexSet> indexList, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
         {
-            Dictionary<string, List<string>> tableFieldDict = new Dictionary<string, List<string>>();
+            Dictionary<IndexSet, Source> indexDict = new Dictionary<IndexSet, Source>();
+            foreach (IndexSet set in indexList)
+            {
+                foreach (Source source in sourceList)
+                {
+                    if (source.SourceName == set.SourceName)
+                    {
+                        indexDict.Add(set, source);
+                        break;
+                    }
+                }
+            }
+            tableIndexDict = new Dictionary<string, List<IndexSet>>();
+            tableFieldDict = new Dictionary<string, List<FieldInfo>>();
+            indexTableDict = new Dictionary<IndexSet, List<string>>();
+            Dictionary<string, int> tbDict = new Dictionary<string, int>();
+            foreach (IndexSet set in indexDict.Keys)
+            {
+                Dictionary<string, List<FieldInfo>> tfDict = GetQueryTableFields(indexDict[set].DBType, indexDict[set].GetConnString(), indexDict[set].Query);
+                foreach (string table in tfDict.Keys)
+                {
+                    if (tableFieldDict.ContainsKey(table) == false)
+                    {
+                        tableFieldDict.Add(table, tfDict[table]);
+                    }
+                    if (tbDict.ContainsKey(table) == false)
+                    {
+                        tbDict.Add(table, table.Length);
+                    }
+                }
+                List<string> tbList = new List<string>();
+                tbList.AddRange(tfDict.Keys);
+                indexTableDict.Add(set, tbList);
+            }
+            foreach (string table in tbDict.Keys)
+            {
+                List<IndexSet> inList = new List<IndexSet>();
+                foreach (IndexSet set in indexTableDict.Keys)
+                {
+                    if (indexTableDict[set].Contains(table))
+                    {
+                        inList.Add(set);
+                    }
+                }
+                tableIndexDict.Add(table, inList);
+            }
+        }
+        public static void GetStructures(Dictionary<IndexSet, Source> indexDict, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
+        {
+            tableIndexDict = new Dictionary<string, List<IndexSet>>();
+            tableFieldDict = new Dictionary<string, List<FieldInfo>>();
+            indexTableDict = new Dictionary<IndexSet, List<string>>();
+            Dictionary<string, int> tbDict = new Dictionary<string, int>();
+            foreach (IndexSet set in indexDict.Keys)
+            {
+                Dictionary<string, List<FieldInfo>> tfDict = GetQueryTableFields(indexDict[set].DBType, indexDict[set].GetConnString(), indexDict[set].Query);
+                foreach (string table in tfDict.Keys)
+                {
+                    if (tableFieldDict.ContainsKey(table) == false)
+                    {
+                        tableFieldDict.Add(table, tfDict[table]);
+                    }
+                    if (tbDict.ContainsKey(table) == false)
+                    {
+                        tbDict.Add(table, table.Length);
+                    }
+                }
+                List<string> tbList = new List<string>();
+                tbList.AddRange(tfDict.Keys);
+                indexTableDict.Add(set, tbList);
+            }
+            foreach (string table in tbDict.Keys)
+            {
+                List<IndexSet> inList = new List<IndexSet>();
+                foreach (IndexSet set in indexTableDict.Keys)
+                {
+                    if (indexTableDict[set].Contains(table))
+                    {
+                        inList.Add(set);
+                    }
+                }
+                tableIndexDict.Add(table, inList);
+            }
+        }
+        public static Dictionary<string, List<FieldInfo>> GetQueryTableFields(DBTypeEnum dbType, string connStr, string query)
+        {
+            Dictionary<string, List<FieldInfo>> tableFieldDict = new Dictionary<string, List<FieldInfo>>();
             DBLinker linker;
             try
             {
@@ -276,10 +362,10 @@ namespace ISUtils.Database
                 foreach (string table in tableList)
                 {
                     DataTable dt = linker.ExecuteSQL(SupportClass.QueryParser.TopOneOfTable(table));
-                    List<string> fieldList = new List<string>();
+                    List<FieldInfo> fieldList = new List<FieldInfo>();
                     foreach (DataColumn column in dt.Columns)
                     {
-                        fieldList.Add(column.ColumnName);
+                        fieldList.Add(new FieldInfo(column.ColumnName,column.DataType));
                     }
                     if (tableFieldDict.ContainsKey(table) == false)
                         tableFieldDict.Add(table, fieldList);

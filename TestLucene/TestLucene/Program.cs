@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using System.Globalization;
 
 namespace TestLucene
 {
@@ -37,7 +38,7 @@ namespace TestLucene
         { 
             string src = "我们都是中国人";
             string[] tokens = new string[] { "我", "我们", "都", "是" ,"中国", "中国人","人" };
-            ISUtils.SupportClass.String.Offset[] offsets;
+            ISUtils.SupportClass.Offset[] offsets;
             offsets = ISUtils.SupportClass.String.GetOffsets(src, tokens);
             for (int i = 0; i < offsets.Length; i++ )
             {
@@ -156,7 +157,18 @@ namespace TestLucene
             //testSearch();
             //TestChineseSegment();
             //TeseCSegment();
-            TestChineseSegmentIndexerSpeed();
+            //RangeQuery query = new RangeQuery(new Term("date",DateTime.Parse("2006-01-01").ToShortDateString()), new Term("date", "20060130"), true);
+            //Console.WriteLine(query.ToString());
+            //Console.WriteLine(string.Format("{0}%2d%2d",DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day));
+            //DateTime dt = DateTime.Now;
+            //String[] format = {"d","D","f","F","g","G","m","r","s","t", "T","u", "U","y","dddd, MMMM dd yyyy","ddd, MMM d ","yy","dddd, MMMM dd","M/yy","dd-MM-yy","yyyyMMdd","yyyyMMddHHmmss","HHmmss"};
+            //String date;
+            //for (int i = 0; i < format.Length; i++)
+            //{
+            //    date = dt.ToString(format[i]);
+            //    Console.WriteLine(String.Concat(format[i], " :" , date));
+            //}
+            //TestChineseSegmentIndexerSpeed();
             //AllAnalysisTest aat = new AllAnalysisTest();
             //aat.TestMethod("");
             //TestForQuery();
@@ -164,6 +176,13 @@ namespace TestLucene
             //Mainf();
             //TestForChineseSegment();
             //TestRam();
+            string text = "ab.cde.fgh.ik";
+            string table, field;
+            ISUtils.SupportClass.QueryParser.TableFileOf(text, out table,out field);
+            Console.WriteLine(table);
+            Console.WriteLine(field);
+            Console.WriteLine(ISUtils.SupportClass.String.LeftOf(text, 30));
+            Console.WriteLine(ISUtils.SupportClass.String.RightOf(null, 30));
             Console.ReadKey();
         }
         static void TestRam()

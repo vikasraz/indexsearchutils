@@ -5,6 +5,7 @@ using Lucene.Net.Analysis.Standard;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Index;
+using Lucene.Net.Documents;
 using ISUtils.Common;
 
 namespace ISUtils.Utils
@@ -561,6 +562,378 @@ namespace ISUtils.Utils
                 SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hitsList;
+        }
+        public static List<Document> FastSearch()
+        {
+            List<Document> docList = new List<Document>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastSearchEx()
+        {
+            List<Document> docList = new List<Document>();
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                Query query = GetQuery();
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastSearchEx(out Query query)
+        {
+            List<Document> docList = new List<Document>();
+            query = null;
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                query = GetQuery();
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastSearch(out List<QueryResult.SearchInfo> siList)
+        {
+            List<Document> docList = new List<Document>();
+            siList = new List<QueryResult.SearchInfo>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                        siList.Add(si);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                        siList.Add(si);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastFieldSearch()
+        {
+            List<Document> docList = new List<Document>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastFieldSearch(out List<QueryResult.SearchInfo> siList)
+        {
+            List<Document> docList = new List<Document>();
+            siList = new List<QueryResult.SearchInfo>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                        siList.Add(si);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                        siList.Add(si);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastFieldSearchEx()
+        {
+            List<Document> docList = new List<Document>();
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                Query query = GetQuery();
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FastFieldSearchEx(out Query query)
+        {
+            List<Document> docList = new List<Document>();
+            query = null;
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                query = GetQuery();
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
         }
     }
 }

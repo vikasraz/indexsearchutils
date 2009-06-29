@@ -365,7 +365,7 @@ namespace ISUtils.Database
                     List<FieldInfo> fieldList = new List<FieldInfo>();
                     foreach (DataColumn column in dt.Columns)
                     {
-                        fieldList.Add(new FieldInfo(column.ColumnName,column.DataType));
+                        fieldList.Add(new FieldInfo(column.ColumnName,column.DataType,column.Unique));
                     }
                     if (tableFieldDict.ContainsKey(table) == false)
                         tableFieldDict.Add(table, fieldList);

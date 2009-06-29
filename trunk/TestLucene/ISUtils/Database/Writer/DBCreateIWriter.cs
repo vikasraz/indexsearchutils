@@ -123,7 +123,7 @@ namespace ISUtils.Database.Writer
             {
                 fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
 #if DEBUG
-                System.Console.WriteLine("Column Caption:\t" + column.Caption + "\nColumn Name:\t" + column.ColumnName + "\nColumn Type:\t" + column.DataType.ToString());
+                System.Console.WriteLine("Caption:\t" + column.Caption + "\tName:\t" + column.ColumnName + "\tType:\t" + column.DataType.ToString());
 #endif
             }
 #if DEBUG

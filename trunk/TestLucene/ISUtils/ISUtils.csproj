@@ -62,6 +62,8 @@
     <Compile Include="Common\IndexerSet.cs" />
     <Compile Include="Common\IndexType.cs" />
     <Compile Include="Common\Message.cs" />
+    <Compile Include="Common\SearchResult.cs" />
+    <Compile Include="Common\SpecialFieldSelector.cs" />
     <Compile Include="Common\TableField.cs" />
     <Compile Include="CSegment\DictionaryLoader\BinDictionaryLoader.cs" />
     <Compile Include="CSegment\DictionaryLoader\DictionaryLoaderFactory.cs" />

@@ -168,7 +168,7 @@ namespace TestLucene
             //    date = dt.ToString(format[i]);
             //    Console.WriteLine(String.Concat(format[i], " :" , date));
             //}
-            //TestChineseSegmentIndexerSpeed();
+            TestChineseSegmentIndexerSpeed();
             //AllAnalysisTest aat = new AllAnalysisTest();
             //aat.TestMethod("");
             //TestForQuery();
@@ -176,13 +176,6 @@ namespace TestLucene
             //Mainf();
             //TestForChineseSegment();
             //TestRam();
-            string text = "ab.cde.fgh.ik";
-            string table, field;
-            ISUtils.SupportClass.QueryParser.TableFileOf(text, out table,out field);
-            Console.WriteLine(table);
-            Console.WriteLine(field);
-            Console.WriteLine(ISUtils.SupportClass.String.LeftOf(text, 30));
-            Console.WriteLine(ISUtils.SupportClass.String.RightOf(null, 30));
             Console.ReadKey();
         }
         static void TestRam()

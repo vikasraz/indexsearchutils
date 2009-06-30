@@ -63,6 +63,7 @@
     <Compile Include="Common\IndexType.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\RangeCondition.cs" />
+    <Compile Include="Common\SearchInfo.cs" />
     <Compile Include="Common\SearchResult.cs" />
     <Compile Include="Common\SpecialFieldSelector.cs" />
     <Compile Include="Common\SqlQuery.cs" />
@@ -101,6 +102,12 @@
     <Compile Include="Database\Writer\DBRamIncremIWriter.cs" />
     <Compile Include="Database\Writer\RamIWriter.cs" />
     <Compile Include="Indexer\IndexMaker.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\Connection.cs" />
+    <Compile Include="Network\ConnectionCollection.cs" />
+    <Compile Include="Network\Server.cs" />
+    <Compile Include="Network\SocketBase.cs" />
+    <Compile Include="Network\SocketFactory.cs" />
     <Compile Include="SupportClass.cs" />
     <Compile Include="Utils\IndexUtil.cs" />
     <Compile Include="Utils\Parser.cs" />

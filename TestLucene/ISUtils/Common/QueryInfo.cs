@@ -18,12 +18,6 @@ namespace ISUtils.Common
             get { return indexnames; }
             set { indexnames = value; }
         }
-        private int maxMatches = 10;
-        public int MaxMatches
-        {
-            get { return maxMatches; }
-            set { maxMatches = value; }
-        }
         #region "模糊搜索"
         private string wordsAllContains = "";
         public string WordsAllContains

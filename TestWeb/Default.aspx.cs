@@ -45,23 +45,25 @@ public partial class _Default : System.Web.UI.Page
                 Response.Write(ex.StackTrace.ToString() + "<br>");
                 return;
             }
+            SearchInfo sinfo = new SearchInfo();
             QueryInfo info = new QueryInfo();
             info.IndexNames = txtIndexName.Text;
             info.SearchWords = txtSearch.Text;
+            sinfo.Query = info;           
             DateTime now = DateTime.Now;
             try
             {
-                formater.Serialize(ns, info);
+                formater.Serialize(ns, sinfo);
             }
             catch (SerializationException se)
             {
                 Response.Write(se.Message + "\n");
             }
-            FormatedResult fr= null;
+            SearchResult sr= null;
             try
             {
                 DateTime start = DateTime.Now;
-                fr = (FormatedResult)formater.Deserialize(ns);
+                sr = (SearchResult)formater.Deserialize(ns);
                 TimeSpan span = DateTime.Now - start;
                 Response.Write("反序列化:"+span.TotalMilliseconds.ToString() + "毫秒<br>");
             }
@@ -91,12 +93,14 @@ public partial class _Default : System.Web.UI.Page
             //Hits hits = searcher.Search(query);
 
             TimeSpan tm = DateTime.Now - now;
-            foreach (FormatedResult.FormatedDoc fd in fr.FormatedDocList)
+            foreach (Document doc in sr.Docs)
             {
                 Response.Write("----------------------------------------<br>");
-                foreach (FormatedResult.Element elem in fd.ElemList)
+                Field[] fields = new Field[doc.GetFields().Count];
+                doc.GetFields().CopyTo(fields, 0);
+                foreach (Field field in fields)
                 {
-                    Response.Write(elem.ToString() + "<br>");
+                    Response.Write(field.Name()+":\t"+field.StringValue() + "<br>");
                 }
             }
             //foreach (QueryResult.SearchInfo si in qr.docs.Keys)
@@ -190,6 +194,7 @@ public partial class _Default : System.Web.UI.Page
             Response.Write(ex.StackTrace.ToString() + "<br>");
             return;
         }
+        SearchInfo sinfo = new SearchInfo();
         QueryInfo info = new QueryInfo();
         info.IndexNames = txtIndexName.Text;
         if (!string.IsNullOrEmpty(txtFieldInclude.Text ) && !string.IsNullOrEmpty(txtWordsInclude.Text))
@@ -198,20 +203,21 @@ public partial class _Default : System.Web.UI.Page
             info.ExcludeList.Add(new ExcludeCondition("", txtFieldExclude.Text, txtWordsExclude.Text));
         if (!string.IsNullOrEmpty(txtFieldRange.Text) && !string.IsNullOrEmpty(txtRangeFrom.Text) && !string.IsNullOrEmpty(txtRangeTo.Text))
             info.RangeList.Add(new RangeCondition("", txtFieldRange.Text, txtRangeFrom.Text, txtRangeTo.Text, RangeType.Date));
+        sinfo.Query = info;
         DateTime now = DateTime.Now;
         try
         {
-            formater.Serialize(ns, info);
+            formater.Serialize(ns, sinfo);
         }
         catch (SerializationException se)
         {
             Response.Write(se.Message + "\n");
         }
-        FormatedResult fr = null;
+        SearchResult sr = null;
         try
         {
             DateTime start = DateTime.Now;
-            fr = (FormatedResult)formater.Deserialize(ns);
+            sr = (SearchResult)formater.Deserialize(ns);
             TimeSpan span = DateTime.Now - start;
             Response.Write("反序列化:" + span.TotalMilliseconds.ToString() + "毫秒<br>");
         }
@@ -224,12 +230,14 @@ public partial class _Default : System.Web.UI.Page
             ns.Close();
         }
         TimeSpan tm = DateTime.Now - now;
-        foreach (FormatedResult.FormatedDoc fd in fr.FormatedDocList)
+        foreach (Document doc in sr.Docs)
         {
             Response.Write("----------------------------------------<br>");
-            foreach (FormatedResult.Element elem in fd.ElemList)
+            Field[] fields = new Field[doc.GetFields().Count];
+            doc.GetFields().CopyTo(fields, 0);
+            foreach (Field field in fields)
             {
-                Response.Write(elem.ToString() + "<br>");
+                Response.Write(field.Name() + ":\t" + field.StringValue() + "<br>");
             }
         }
         Response.Write("搜索测试完成，花费时间：" + tm.TotalMilliseconds.ToString() + "毫秒\n");

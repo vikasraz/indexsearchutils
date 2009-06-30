@@ -44,6 +44,11 @@ namespace ISUtils.Common
         public const string PasswordFlag = "PASSWORD";
         /**/
         /// <summary>
+        ///主键的标志
+        /// </summary>
+        public const string PrimaryKeyFlag = "PRIMARYKEY";
+        /**/
+        /// <summary>
         /// 存储Source的名称
         /// </summary>
         private string sourcename = "";
@@ -154,6 +159,20 @@ namespace ISUtils.Common
             get { return password; }
             set { password = value; }
         }
+        /**/
+        /// <summary>
+        /// 存储主键
+        /// </summary>
+        private string primaryKey = "";
+        /**/
+        /// <summary>
+        /// 设定或返回主键
+        /// </summary>
+        public string PrimaryKey
+        {
+            get { return primaryKey; }
+            set { primaryKey = value; }
+        }
         public string GetFields()
         {
             if (fields == null)
@@ -206,9 +225,9 @@ namespace ISUtils.Common
         /// <returns>返回类型</returns>
         public override string ToString()
         {
-            string ret = string.Format("Souce[{0}]:DBType({1}),Host({2}),DB({3}),User({4}),Pwd({5}),Query({6}),Fields(",
+            string ret = string.Format("Souce[{0}]:DBType({1}),Host({2}),DB({3}),User({4}),Pwd({5}),Query({6}),PrimayKey({7}),Fields(",
                                      sourcename, DbType.GetDbTypeStr(dbtype), hostname, database, 
-                                     username, password, query);
+                                     username, password, query,primaryKey);
             if (fields != null && fields.Length > 0)
             {
                 foreach (string s in fields)
@@ -300,6 +319,21 @@ namespace ISUtils.Common
                         src.DataBase= split[1];
                     else
                         src.DataBase="";
+                    continue;
+                }
+                if (findSource && srcStart && SupportClass.String.StartsWithNoCase(SupportClass.String.FormatStr(s), Source.PrimaryKeyFlag))
+                {
+                    string format = SupportClass.String.FormatStr(s);
+                    string[] split = SupportClass.String.Split(format, Config.Devider);
+#if DEBUG
+                    Console.WriteLine(format);
+                    foreach (string a in split)
+                        Console.WriteLine(a);
+#endif
+                    if (split.Length >= 2)
+                        src.PrimaryKey = split[1];
+                    else
+                        src.PrimaryKey = "";
                     continue;
                 }
                 if (findSource && srcStart && SupportClass.String.StartsWithNoCase(SupportClass.String.FormatStr(s), Source.HostNameFlag))
@@ -400,17 +434,20 @@ namespace ISUtils.Common
             sw.WriteLine("\t#数据库名");
             sw.WriteLine("\t" + Source.DataBaseFlag.ToLower() + "=" + source.DataBase);
             sw.WriteLine();
+            sw.WriteLine("\t#用户名");
+            sw.WriteLine("\t" + Source.UserNameFlag.ToLower() + "=" + source.UserName);
+            sw.WriteLine();
+            sw.WriteLine("\t#密码");
+            sw.WriteLine("\t" + Source.PasswordFlag.ToLower() + "=" + source.Password);
+            sw.WriteLine();
             sw.WriteLine("\t#查询");
             sw.WriteLine("\t" + Source.QueryFlag.ToLower() + "=" + source.Query);
             sw.WriteLine();
             sw.WriteLine("\t#字段列表");
             sw.WriteLine("\t" + Source.FieldsFlag.ToLower() + "=" + source.GetFields());
             sw.WriteLine();
-            sw.WriteLine("\t#用户名");
-            sw.WriteLine("\t" + Source.UserNameFlag.ToLower() + "=" + source.UserName);
-            sw.WriteLine();
-            sw.WriteLine("\t#密码");
-            sw.WriteLine("\t" + Source.PasswordFlag.ToLower() + "=" + source.Password);
+            sw.WriteLine("\t#主键");
+            sw.WriteLine("\t" + Source.PrimaryKeyFlag.ToLower() + "=" + source.PrimaryKey);
             sw.WriteLine(Config.Suffix);
         }
     }

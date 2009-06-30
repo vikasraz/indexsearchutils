@@ -16,6 +16,8 @@ namespace ISUtils.Common
             public ExDocument() { }
             public ExDocument(Document dc, float s)
             {
+                if (dc == null)
+                    throw new ArgumentNullException("dc", "should input a true doc for ExDocument.");
                 doc=dc;
                 score =s;
             }
@@ -30,6 +32,12 @@ namespace ISUtils.Common
             }
             public SearchInfo(string name, string[] fields)
             {
+                if (string.IsNullOrEmpty(name))
+                    throw new ArgumentNullException("name", "name error in SearchInfo.");
+                if (fields==null)
+                    throw new ArgumentNullException("fields", "fields error in SearchInfo.");
+                if (fields.Length <=0)
+                    throw new ArgumentNullException("fields", "fields error in SearchInfo.");
                 IndexName = name;
                 Fields = (string[])fields.Clone(); 
             }            

@@ -168,7 +168,7 @@ namespace TestLucene
             //    date = dt.ToString(format[i]);
             //    Console.WriteLine(String.Concat(format[i], " :" , date));
             //}
-            TestChineseSegmentIndexerSpeed();
+            //TestChineseSegmentIndexerSpeed();
             //AllAnalysisTest aat = new AllAnalysisTest();
             //aat.TestMethod("");
             //TestForQuery();
@@ -176,6 +176,7 @@ namespace TestLucene
             //Mainf();
             //TestForChineseSegment();
             //TestRam();
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff"));
             Console.ReadKey();
         }
         static void TestRam()
@@ -224,7 +225,7 @@ namespace TestLucene
                 //Console.WriteLine(query.ToString());
                 DateTime start = DateTime.Now;
                 //Hits hits = searcher.Search(query);
-                Hits hits = ISUtils.Utils.SearchUtil.SearchEx();
+                Hits hits = ISUtils.Utils.SearchUtil.Search();
                 TimeSpan tm = DateTime.Now - start;
                 for (int i = 0; i < hits.Length(); i++)
                 {

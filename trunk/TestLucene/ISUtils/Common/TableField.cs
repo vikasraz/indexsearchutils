@@ -5,10 +5,10 @@ using System.Text;
 namespace ISUtils.Common
 {
     [Serializable]
-    public sealed class TableField
+    public class TableField
     {
-        private string table = "";
-        private string field = "";
+        protected string table = "";
+        protected string field = "";
         public string Table
         {
             get { return table; }
@@ -19,8 +19,15 @@ namespace ISUtils.Common
             get { return field; }
             set { field = value; }
         }
+        public TableField()
+        { 
+        }
         public TableField(string tablename, string fieldname)
         {
+            //if (string.IsNullOrEmpty(tablename))
+            //    throw new ArgumentException("tablename has bad format!", "tablename");
+            if (string.IsNullOrEmpty(fieldname))
+                throw new ArgumentException("fieldname has bad format!", "fieldname");
             table = tablename;
             field = fieldname;
         }
@@ -45,6 +52,10 @@ namespace ISUtils.Common
             if (string.IsNullOrEmpty(table))
                 return field;
             return table + "." + field;
+        }
+        public string GetString()
+        {
+            return ToString();
         }
     }
 }

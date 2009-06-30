@@ -169,4 +169,70 @@ public partial class _Default : System.Web.UI.Page
             Response.Write("搜索测试完成，花费时间：" + tm.TotalMilliseconds.ToString() + "毫秒\n");
         }
     }
+    protected void btnExactSearch_Click(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(txtSearch.Text) || string.IsNullOrEmpty(txtIP.Text))
+            return;
+        if (string.IsNullOrEmpty(txtFieldInclude.Text) && string.IsNullOrEmpty(txtFieldExclude.Text) &&
+            string.IsNullOrEmpty(txtRangeFrom.Text))
+            return;
+        TcpClient client;
+        NetworkStream ns;
+        BinaryFormatter formater;
+        try
+        {
+            client = new TcpClient(txtIP.Text, portNum);
+            ns = client.GetStream();
+            formater = new BinaryFormatter();
+        }
+        catch (Exception ex)
+        {
+            Response.Write(ex.StackTrace.ToString() + "<br>");
+            return;
+        }
+        QueryInfo info = new QueryInfo();
+        info.IsFuzzySearch = false;
+        info.SQuery.IndexNames = txtIndexName.Text;
+        if (!string.IsNullOrEmpty(txtFieldInclude.Text ) && !string.IsNullOrEmpty(txtWordsInclude.Text))
+            info.SQuery.FilterList.Add(new FilterCondition("", txtFieldInclude.Text, txtWordsInclude.Text));
+        if (!string.IsNullOrEmpty(txtFieldExclude.Text) && !string.IsNullOrEmpty(txtWordsExclude.Text))
+            info.SQuery.ExcludeList.Add(new ExcludeCondition("", txtFieldExclude.Text, txtWordsExclude.Text));
+        if (!string.IsNullOrEmpty(txtFieldRange.Text) && !string.IsNullOrEmpty(txtRangeFrom.Text) && !string.IsNullOrEmpty(txtRangeTo.Text))
+            info.SQuery.RangeList.Add(new RangeCondition("", txtFieldRange.Text, txtRangeFrom.Text, txtRangeTo.Text, RangeType.Date));
+        DateTime now = DateTime.Now;
+        try
+        {
+            formater.Serialize(ns, info);
+        }
+        catch (SerializationException se)
+        {
+            Response.Write(se.Message + "\n");
+        }
+        FormatedResult fr = null;
+        try
+        {
+            DateTime start = DateTime.Now;
+            fr = (FormatedResult)formater.Deserialize(ns);
+            TimeSpan span = DateTime.Now - start;
+            Response.Write("反序列化:" + span.TotalMilliseconds.ToString() + "毫秒<br>");
+        }
+        catch (SerializationException sep)
+        {
+            Response.Write(sep.Message + "\n");
+        }
+        finally
+        {
+            ns.Close();
+        }
+        TimeSpan tm = DateTime.Now - now;
+        foreach (FormatedResult.FormatedDoc fd in fr.FormatedDocList)
+        {
+            Response.Write("----------------------------------------<br>");
+            foreach (FormatedResult.Element elem in fd.ElemList)
+            {
+                Response.Write(elem.ToString() + "<br>");
+            }
+        }
+        Response.Write("搜索测试完成，花费时间：" + tm.TotalMilliseconds.ToString() + "毫秒\n");
+    }
 }

@@ -24,6 +24,8 @@ namespace ISUtils.Utils
         private static List<string> queryAtList = new List<string>();
         private static List<IndexSet> searchIndexList = new List<IndexSet>();
         private static bool initSettings=false;
+        private static bool useFuzzySearch = true;
+        private static SqlQuery exactQuery=new SqlQuery();
         public static void SetSearchSettings(string configFileName)
         {
             if (initSettings) return;
@@ -170,6 +172,7 @@ namespace ISUtils.Utils
             SearchUtil.exactPhraseContain = exactPhraseContain;
             SearchUtil.oneOfWordsAtLeastContain = oneOfWordsAtLeastContain;
             SearchUtil.wordNotInclude = wordNotInclude;
+            useFuzzySearch = true;
         }
         /**/
         /// <summary>
@@ -179,6 +182,7 @@ namespace ISUtils.Utils
         public static void SetSearchWords(string words)
         {
             SearchUtil.wordsAllContains = words;
+            useFuzzySearch = true;
         }
         private static void SetIndexFieldsList()
         {
@@ -225,6 +229,7 @@ namespace ISUtils.Utils
                 }
             }
             SetIndexFieldsList();
+            useFuzzySearch = true;
         }
         /**/
         /// <summary>
@@ -248,6 +253,7 @@ namespace ISUtils.Utils
                 }
             }
             SetIndexFieldsList();
+            useFuzzySearch = true;
         }
         public static void SetQueryInfo(QueryInfo info)
         {
@@ -256,10 +262,13 @@ namespace ISUtils.Utils
                 SetSearchWords(info.FQuery.WordsAllContains, info.FQuery.ExactPhraseContain, info.FQuery.OneOfWordsAtLeastContain, info.FQuery.WordNotInclude);
                 SetSearchIndexes(info.FQuery.IndexNames);
                 SetSearchLimit(info.FQuery.QueryAts);
+                useFuzzySearch = true;
             }
             else
             {
-               
+                exactQuery = info.SQuery;
+                SetSearchIndexes(info.SQuery.IndexNames);
+                useFuzzySearch = false;
             }
         }
         private static Query GetQuery(IndexSet indexSet)
@@ -388,30 +397,60 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
-        //private static Query GetQuery(out QueryResult.SearchInfo info)
-        //{
-        //    BooleanQuery queryRet = new BooleanQuery();
-        //    info = new QueryResult.SearchInfo();
-        //    if (searchIndexList.Count > 0)
-        //    {
-        //        foreach (IndexSet indexSet in searchIndexList)
-        //        {
-        //            queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.MUST);
-                    
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (IndexSet indexSet in indexFieldsDict.Keys)
-        //        {
-        //            queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.MUST);
-        //        }
-        //    }
-        //    return queryRet;
-        //}
-        public static List<Hits> Search()
+        private static Query GetQuery(SqlQuery sqlQuery)
+        {
+            BooleanQuery queryRet = new BooleanQuery();
+            foreach (FilterCondition fc in sqlQuery.FilterList)
+            {
+                QueryParser parser = new QueryParser(fc.GetString(), analyzer);
+                foreach(string value in fc.Values)
+                {
+                    string[] wordArray= SupportClass.String.Split(value);
+                    foreach(string words in wordArray)
+                    {
+                        List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                        foreach (string word in wordList)
+                        {
+                            Query query = parser.Parse(word);
+                            queryRet.Add(query, BooleanClause.Occur.SHOULD);
+                        }
+                    }
+                }
+            }
+            foreach (ExcludeCondition ec in sqlQuery.ExcludeList)
+            {
+                QueryParser parser = new QueryParser(ec.GetString(), analyzer);
+                foreach (string value in ec.Values)
+                {
+                    string[] wordArray = SupportClass.String.Split(value);
+                    foreach (string words in wordArray)
+                    {
+                        List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                        foreach (string word in wordList)
+                        {
+                            Query query = parser.Parse(word);
+                            queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
+                        }
+                    }
+                }
+            }
+            foreach (RangeCondition rc in sqlQuery.RangeList)
+            {
+                RangeQuery query = new RangeQuery(new Term(rc.GetString(), rc.RangeFrom), new Term(rc.GetString(), rc.RangeTo), rc.IntervalType);
+                queryRet.Add(query, BooleanClause.Occur.MUST);
+            }
+            return queryRet;
+        }
+        public static List<Hits> FuzzySearch()
         {
             List<Hits> hitsList = new List<Hits>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return hitsList;
+            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -447,9 +486,68 @@ namespace ISUtils.Utils
             }
             return hitsList;
         }
-        public static Hits SearchEx()
+        public static List<Hits> FuzzySearch(out List<QueryResult.SearchInfo> siList)
+        {
+            List<Hits> hitsList = new List<Hits>();
+            siList = new List<QueryResult.SearchInfo>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return hitsList;
+            }
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        Hits hits = searcher.Search(query);
+                        hitsList.Add(hits);
+                        siList.Add(si);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        Hits hits = searcher.Search(query);
+                        hitsList.Add(hits);
+                        siList.Add(si);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return hitsList;
+        }
+        public static Hits FuzzySearchEx()
         {
             Hits hits = null;
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return hits;
+            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -482,10 +580,17 @@ namespace ISUtils.Utils
             }
             return hits;
         }
-        public static Hits SearchEx(out Query query)
+        public static Hits FuzzySearchEx(out Query query)
         {
             Hits hits = null;
             query = null;
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return hits;
+            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -518,10 +623,72 @@ namespace ISUtils.Utils
             }
             return hits;
         }
-        public static List<Hits> Search(out List<QueryResult.SearchInfo> siList)
+        public static List<Document> FuzzyFastSearch()
         {
-            List<Hits> hitsList = new List<Hits>();
+            List<Document> docList = new List<Document>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FuzzyFastSearch(out List<QueryResult.SearchInfo> siList)
+        {
+            List<Document> docList = new List<Document>();
             siList = new List<QueryResult.SearchInfo>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -535,8 +702,13 @@ namespace ISUtils.Utils
                         System.Console.WriteLine(query.ToString());
 #endif
                         SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                        Hits hits = searcher.Search(query);
-                        hitsList.Add(hits);
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
                         siList.Add(si);
                     }
                 }
@@ -551,8 +723,13 @@ namespace ISUtils.Utils
                         System.Console.WriteLine(query.ToString());
 #endif
                         SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                        Hits hits = searcher.Search(query);
-                        hitsList.Add(hits);
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            docList.Add(doc);
+                        }
                         siList.Add(si);
                     }
                 }
@@ -561,379 +738,454 @@ namespace ISUtils.Utils
             {
                 SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
-            return hitsList;
+            return docList;
+        }
+        public static List<Document> FuzzyFastSearchEx()
+        {
+            List<Document> docList = new List<Document>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                Query query = GetQuery();
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FuzzyFastSearchEx(out Query query)
+        {
+            List<Document> docList = new List<Document>();
+            query = null;
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        readerList.Add(IndexReader.Open(indexSet.Path));
+                    }
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                query = GetQuery();
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FuzzyFastFieldSearch()
+        {
+            List<Document> docList = new List<Document>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FuzzyFastFieldSearch(out List<QueryResult.SearchInfo> siList)
+        {
+            List<Document> docList = new List<Document>();
+            siList = new List<QueryResult.SearchInfo>();
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            docList.Add(doc);
+                        }
+                        siList.Add(si);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        QueryResult.SearchInfo si;
+                        Query query = GetQuery(indexSet, out si);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            docList.Add(doc);
+                        }
+                        siList.Add(si);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> FuzzyFastFieldSearch(out Query mquery)
+        {
+            List<Document> docList = new List<Document>();
+            mquery = null;
+            if (!useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc, sfs);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        Query query = GetQuery(indexSet);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc, sfs);
+                            docList.Add(doc);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            mquery = GetQuery();
+            return docList;
+        }
+        public static Hits ExactSearch()
+        {
+            Hits hits = null;
+            if (useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return hits;
+            }
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                Query query = GetQuery(exactQuery);
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                hits = searcher.Search(query);
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return hits;
+        }
+        public static Hits ExactSearch(out Query query)
+        {
+            Hits hits = null;
+            query = null;
+            if (useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return hits;
+            }
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                query = GetQuery(exactQuery);
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                hits = searcher.Search(query);
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return hits;
+        }
+        public static List<Document> ExactFastSearch()
+        {
+            List<Document> docList = new List<Document>();
+            if (useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                Query query = GetQuery(exactQuery);
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static List<Document> ExactFastSearch(out Query query)
+        {
+            List<Document> docList = new List<Document>();
+            query = null;
+            if (useFuzzySearch)
+            {
+#if DEBUG
+                System.Console.WriteLine("使用不匹配的方法");
+#endif
+                return docList;
+            }
+            try
+            {
+                List<IndexReader> readerList = new List<IndexReader>();
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    readerList.Add(IndexReader.Open(indexSet.Path));
+                }
+                MultiReader multiReader = new MultiReader(readerList.ToArray());
+                IndexSearcher searcher = new IndexSearcher(multiReader);
+                query = GetQuery(exactQuery);
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    docList.Add(doc);
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return docList;
+        }
+        public static Hits Search()
+        {
+            if (useFuzzySearch)
+                return FuzzySearchEx();
+            else
+                return ExactSearch();
+        }
+        public static Hits Search(out Query query)
+        {
+            if (useFuzzySearch)
+                return FuzzySearchEx(out query);
+            else
+                return ExactSearch(out query);
         }
         public static List<Document> FastSearch()
         {
-            List<Document> docList = new List<Document>();
-            try
-            {
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
+            if (useFuzzySearch)
+                return FuzzyFastSearchEx();
+            else
+                return ExactFastSearch();
         }
-        public static List<Document> FastSearchEx()
+        public static List<Document> FastSearch(out Query query)
         {
-            List<Document> docList = new List<Document>();
-            try
-            {
-                List<IndexReader> readerList = new List<IndexReader>();
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                MultiReader multiReader = new MultiReader(readerList.ToArray());
-                IndexSearcher searcher = new IndexSearcher(multiReader);
-                Query query = GetQuery();
-#if DEBUG
-                System.Console.WriteLine(query.ToString());
-#endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                for (int i = 0; i < scoreDocs.Length; i++)
-                {
-                    Document doc = searcher.Doc(scoreDocs[i].doc);
-                    docList.Add(doc);
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
-        }
-        public static List<Document> FastSearchEx(out Query query)
-        {
-            List<Document> docList = new List<Document>();
-            query = null;
-            try
-            {
-                List<IndexReader> readerList = new List<IndexReader>();
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                MultiReader multiReader = new MultiReader(readerList.ToArray());
-                IndexSearcher searcher = new IndexSearcher(multiReader);
-                query = GetQuery();
-#if DEBUG
-                System.Console.WriteLine(query.ToString());
-#endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                for (int i = 0; i < scoreDocs.Length; i++)
-                {
-                    Document doc = searcher.Doc(scoreDocs[i].doc);
-                    docList.Add(doc);
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
-        }
-        public static List<Document> FastSearch(out List<QueryResult.SearchInfo> siList)
-        {
-            List<Document> docList = new List<Document>();
-            siList = new List<QueryResult.SearchInfo>();
-            try
-            {
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                        siList.Add(si);
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                        siList.Add(si);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
-        }
-        public static List<Document> FastFieldSearch()
-        {
-            List<Document> docList = new List<Document>();
-            try
-            {
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
-        }
-        public static List<Document> FastFieldSearch(out List<QueryResult.SearchInfo> siList)
-        {
-            List<Document> docList = new List<Document>();
-            siList = new List<QueryResult.SearchInfo>();
-            try
-            {
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                        siList.Add(si);
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
-#if DEBUG
-                        System.Console.WriteLine(query.ToString());
-#endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        for (int i = 0; i < scoreDocs.Length; i++)
-                        {
-                            Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
-                        }
-                        siList.Add(si);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
-        }
-        public static List<Document> FastFieldSearchEx()
-        {
-            List<Document> docList = new List<Document>();
-            try
-            {
-                List<IndexReader> readerList = new List<IndexReader>();
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                MultiReader multiReader = new MultiReader(readerList.ToArray());
-                IndexSearcher searcher = new IndexSearcher(multiReader);
-                Query query = GetQuery();
-#if DEBUG
-                System.Console.WriteLine(query.ToString());
-#endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                for (int i = 0; i < scoreDocs.Length; i++)
-                {
-                    Document doc = searcher.Doc(scoreDocs[i].doc);
-                    docList.Add(doc);
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
-        }
-        public static List<Document> FastFieldSearchEx(out Query query)
-        {
-            List<Document> docList = new List<Document>();
-            query = null;
-            try
-            {
-                List<IndexReader> readerList = new List<IndexReader>();
-                if (searchIndexList.Count > 0)
-                {
-                    foreach (IndexSet indexSet in searchIndexList)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                else
-                {
-                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                    {
-                        readerList.Add(IndexReader.Open(indexSet.Path));
-                    }
-                }
-                MultiReader multiReader = new MultiReader(readerList.ToArray());
-                IndexSearcher searcher = new IndexSearcher(multiReader);
-                query = GetQuery();
-#if DEBUG
-                System.Console.WriteLine(query.ToString());
-#endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
-                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
-                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                for (int i = 0; i < scoreDocs.Length; i++)
-                {
-                    Document doc = searcher.Doc(scoreDocs[i].doc);
-                    docList.Add(doc);
-                }
-            }
-            catch (Exception e)
-            {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
-            }
-            return docList;
+            if (useFuzzySearch)
+                return FuzzyFastSearchEx(out query);
+            else
+                return ExactFastSearch(out query);
         }
     }
 }

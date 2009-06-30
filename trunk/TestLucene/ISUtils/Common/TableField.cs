@@ -55,7 +55,9 @@ namespace ISUtils.Common
         }
         public string GetString()
         {
-            return ToString();
+            if (string.IsNullOrEmpty(table))
+                return field;
+            return table + "." + field;
         }
     }
 }

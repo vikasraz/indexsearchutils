@@ -8,6 +8,7 @@ namespace ISUtils
     using ISUtils.Common;
     public class SupportClass
     {
+        public static bool WriteLogAccess = false;
         public static string LogPath=@"D:\TEMP.LOG";
         public const int RAM_FLUSH_NUM = 100000;
         public const int MAX_ROWS_WRITE = 1000;
@@ -179,6 +180,26 @@ namespace ISUtils
                 }
                 sr.Close();
                 return results;
+            }
+            public static void WriteLog(string detail)
+            {
+                if (!WriteLogAccess) return;
+                if (IsFileExists(LogPath) == false)
+                    return;
+                try
+                {
+                    FileStream fs = new FileStream(LogPath, FileMode.Append);
+                    StreamWriter sw = new StreamWriter(fs);
+                    string str = "[" + Time.GetDateTime() + "]\t" + detail;
+                    sw.WriteLine(str);
+                    sw.Flush();
+                    sw.Close();
+                    fs.Close();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
             }
             public static void WriteToLog(string path, string detail)
             {

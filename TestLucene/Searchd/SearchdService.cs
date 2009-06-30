@@ -62,7 +62,7 @@ namespace Searchd
                 try
                 {
                     WriteToLog("Try to execute search");
-                    Message msg = searcher.ExecuteSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", true);
+                    Message msg = searcher.ExecuteFastSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", true);
                     WriteToLog("After ExecuteSearch");
                     if (msg.Success)
                         WriteToLog(msg.ToString());
@@ -162,7 +162,7 @@ namespace Searchd
             {
                 FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
-                string str = "[" + DateTime.Now.ToString() + "]\t" + detail;
+                string str = "[" + ISUtils.SupportClass.Time.GetDateTime()+ "]\t" + detail;
                 sw.WriteLine(str);
                 sw.Flush();
                 sw.Close();

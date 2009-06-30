@@ -25,6 +25,10 @@ namespace ISUtils.Common
             public Element() { }
             public Element(string key, string value)
             {
+                if (string.IsNullOrEmpty(key))
+                    throw new ArgumentNullException("key", "Should input key for formatedResult.Element.");
+                if (value == null)
+                    throw new ArgumentNullException("value", "value is null for formatedResult.Element.");
                 this.key = key;
                 this.value = value;
             }

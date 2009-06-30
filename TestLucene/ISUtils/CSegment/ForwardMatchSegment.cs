@@ -111,6 +111,11 @@ namespace ISUtils.CSegment
             ProcessLastChar(sentence, charCursor, ref resultList, result,maxLenElement);
             return resultList;
         }
+        /// <summary>
+        /// 对单个句子分词。
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         protected override List<string> SegmentSentence(string sentence, out List<int> startList)
         {
             List<string> resultList = new List<string>();
@@ -129,6 +134,7 @@ namespace ISUtils.CSegment
             string maxLenElement = "";
             StringBuilder result = new StringBuilder();
             int charCursor = 0;
+            startList.Add(charCursor);
             for (charCursor = 0; charCursor < sentence.Length - 1; charCursor++)
             {
                 currentChar = sentence.Substring(charCursor, 1);
@@ -184,6 +190,7 @@ namespace ISUtils.CSegment
             ProcessLastChar(sentence, charCursor, ref resultList, result, maxLenElement);
             return resultList;
         }
+        /// <summary>
         /// 对单个句子分词。
         /// </summary>
         /// <param name="text"></param>
@@ -201,16 +208,9 @@ namespace ISUtils.CSegment
             }
 
             string currentChar;
-            //CharType currentType=CharType.Other;
-            //CharType prevType = CharType.Other;
-            //CharType nextType = CharType.Other;
             string nextChar;
             string currentTwoChars;
             string maxLenElement="";
-//#if DEBUG
-//            System.Console.WriteLine("Befor:" + text);
-//            int ninit = result.Length;
-//#endif
             int charCursor = 0;
             for (charCursor = 0; charCursor < text.Length - 1; charCursor++)
             {
@@ -271,6 +271,11 @@ namespace ISUtils.CSegment
 //            System.Console.WriteLine();
 //#endif
         }
+        /// <summary>
+        /// 对单个句子分词。
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="result"></param>
         protected override void SegmentSentence(string text, ref StringBuilder result, out List<int> startList)
         {
             startList = new List<int>();
@@ -404,7 +409,6 @@ namespace ISUtils.CSegment
                 result.Append(currentChar);
             }
         }
-
         /// <summary>
         /// 以当前两字符开头的词，在词库中存在,取出所有匹配的词并抽取最大程度的词。
         /// </summary>
@@ -526,8 +530,13 @@ namespace ISUtils.CSegment
             }
             currentIndex += maxLenElement.Length - 1;
         }
-
-        private void ProcessLastChar(string text, int currentIndex, StringBuilder result,string lastMaxLenElement)
+        /// <summary>
+        /// 处理最后一个字符
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="currentIndex"></param>
+        /// <param name="result"></param>
+        private void ProcessLastChar(string text, int currentIndex, StringBuilder result, string lastMaxLenElement)
         {
             //如果最后一个字符还没有处理
             if (currentIndex < text.Length && !lastMaxLenElement.EndsWith(text.Substring(text.Length - 1)))
@@ -552,7 +561,5 @@ namespace ISUtils.CSegment
                 result.Remove(0, result.Length);
             }
         }
-
-
     }
 }

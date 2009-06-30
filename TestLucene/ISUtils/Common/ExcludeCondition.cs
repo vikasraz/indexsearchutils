@@ -5,7 +5,7 @@ using System.Text;
 namespace ISUtils.Common
 {
     [Serializable]
-    public sealed class FilterCondition:TableField
+    public sealed class ExcludeCondition:TableField
     {
         private string[] values;
         public string[] Values
@@ -13,38 +13,38 @@ namespace ISUtils.Common
             get { return values; }
             set { values = value; }
         }
-        public FilterCondition(TableField tf, params string[] valueList)
+        public ExcludeCondition(TableField tf, params string[] valueList)
             :base(tf.Table,tf.Field)
         {
             if (valueList.Length<=0)
-                throw new ArgumentNullException("valueList","Do not input any value for FilterCondition");
+                throw new ArgumentNullException("valueList","Do not input any value for ExcludeCondition");
             values = valueList;
         }
-        public FilterCondition(string tablename, string fieldname, params string[] valuelist)
+        public ExcludeCondition(string tablename, string fieldname, params string[] valuelist)
             :base(tablename,fieldname)
         {
             if (valuelist.Length <= 0)
-                throw new ArgumentNullException("valuelist", "Do not input any value for FilterCondition");
+                throw new ArgumentNullException("valuelist", "Do not input any value for ExcludeCondition");
             values = valuelist;
         }
-        public FilterCondition(string srcFC)
+        public ExcludeCondition(string srcEC)
         {
-            if (string.IsNullOrEmpty(srcFC))
-                throw new ArgumentException("srcFC has bad format!", "srcFC");
+            if (string.IsNullOrEmpty(srcEC))
+                throw new ArgumentException("srcEC has bad format!", "srcEC");
             //srcFC format: table.field in "value1,value2,value3,....,valuen"
-            int posIn = srcFC.ToLower().IndexOf("in");
-            if (posIn <= 0)
-                throw new ArgumentException("srcFC has bad format!", "srcFC");
-            string tf = SupportClass.String.LeftOf(srcFC, posIn);
-            SupportClass.QueryParser.TableFieldOf(tf, out table, out field);
+            int posNot = srcEC.ToLower().IndexOf("not");
+            if (posNot <= 0)
+                throw new ArgumentException("srcEC has bad format!", "srcEC");
+            string tf = SupportClass.String.LeftOf(srcEC, posNot);
+            SupportClass.QueryParser.TableFieldOf(tf, out table,out field);
             string leave;
-            leave = srcFC.Substring(posIn + 2);
+            leave = srcEC.Substring(posNot + 3);
             values = SupportClass.String.Split(leave, " \t,，\"“”");
         }
         public override string ToString()
         {
             string ret=base.ToString() ;
-            ret += " in (";
+            ret += " not (";
             foreach (string s in values)
             {
                 ret += s + ",";

@@ -188,7 +188,7 @@ namespace ISUtils
                 {
                     FileStream fs = new FileStream(path, FileMode.Append);
                     StreamWriter sw = new StreamWriter(fs);
-                    string str = "[" + DateTime.Now.ToString() + "]\t" + detail;
+                    string str = "[" + Time.GetDateTime() + "]\t" + detail;
                     sw.WriteLine(str);
                     sw.Flush();
                     sw.Close();
@@ -233,6 +233,10 @@ namespace ISUtils
         }
         public class Time
         {
+            public static string GetDateTime()
+            {
+                return DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff");
+            }
             public static long GetHours(TimeSpan span)
             {
                 return (long)span.TotalHours;

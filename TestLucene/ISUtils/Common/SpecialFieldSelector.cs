@@ -19,7 +19,7 @@ namespace ISUtils.Common
         }
         public FieldSelectorResult Accept(string fieldName)
         {
-            if (fieldName.Equals(m_szFieldName,StringComparison.OrdinalIgnoreCase))
+            if (string.Compare(fieldName,m_szFieldName,true)==0)
             {
                 return FieldSelectorResult.LOAD;
             }

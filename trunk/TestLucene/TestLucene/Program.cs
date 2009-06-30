@@ -60,9 +60,8 @@ namespace TestLucene
             string path = @"d:\Indexer\config.conf";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.IsFuzzySearch = false;
-            info.SQuery.IndexNames = "IN_IndexView_Monitoring_RSSPI,IN_IndexView_Monitoring_PM";
-            info.SQuery.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
+            info.IndexNames = "IN_IndexView_Monitoring_RSSPI,IN_IndexView_Monitoring_PM";
+            info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             DateTime start = DateTime.Now;
             Query query;
             List<Document> results = searcher.ExecuteFastSearch(info,out query);
@@ -221,8 +220,8 @@ namespace TestLucene
                 indexList = parser.GetIndexList();
                 dictSet = parser.GetDictionarySet();
                 QueryInfo info = new QueryInfo();
-                info.FQuery.IndexNames = "in_main1,in_main2";
-                info.FQuery.SearchWords = "中国人民解放军 93688";
+                info.IndexNames = "in_main1,in_main2";
+                info.SearchWords = "中国人民解放军 93688";
                 Console.WriteLine("SetSearchSettings");
                 ISUtils.Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
                 Console.WriteLine("SetQueryInfo");

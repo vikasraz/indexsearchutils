@@ -12,6 +12,7 @@ namespace ISUtils.Utils
 {
     public static class SearchUtil
     {
+        #region "私有全局变量"
         private static Dictionary<IndexSet, Source> indexDict = new Dictionary<IndexSet, Source>();
         private static Dictionary<IndexSet, List<string>> indexFieldsDict = new Dictionary<IndexSet, List<string>>();
         private static SearchSet searchSet = new  SearchSet();
@@ -23,9 +24,13 @@ namespace ISUtils.Utils
         private static string wordNotInclude="";
         private static List<string> queryAtList = new List<string>();
         private static List<IndexSet> searchIndexList = new List<IndexSet>();
+        private static List<FilterCondition> filterList = new List<FilterCondition>();
+        private static List<ExcludeCondition> excludeList = new List<ExcludeCondition>();
+        private static List<RangeCondition> rangeList = new List<RangeCondition>();
         private static bool initSettings=false;
-        private static bool useFuzzySearch = true;
-        private static SqlQuery exactQuery=new SqlQuery();
+        private static int maxMatches = 1000;
+        #endregion
+        #region "搜索基本设置"
         public static void SetSearchSettings(string configFileName)
         {
             if (initSettings) return;
@@ -34,6 +39,7 @@ namespace ISUtils.Utils
                 List<string> srcList = SupportClass.File.GetFileText(configFileName);
                 List<Source> sourceList = Source.GetSourceList(srcList);
                 List<IndexSet> indexList = IndexSet.GetIndexList(srcList);
+                searchIndexList.AddRange(indexList);
                 searchSet = SearchSet.GetSearchSet(srcList);
                 dictSet = DictionarySet.GetDictionarySet(srcList);
                 ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
@@ -68,6 +74,7 @@ namespace ISUtils.Utils
             SearchUtil.dictSet = dictSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
             ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
+            searchIndexList.AddRange(indexList);
             if (indexDict == null)
                 indexDict = new Dictionary<IndexSet, Source>();
             foreach (IndexSet set in indexList)
@@ -95,6 +102,7 @@ namespace ISUtils.Utils
                 indexDict = dict;
             else
                 indexDict = new Dictionary<IndexSet, Source>();
+            searchIndexList.AddRange(indexDict.Keys);
             SearchUtil.dictSet = dictSet;
             SearchUtil.searchSet = searchSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
@@ -110,6 +118,8 @@ namespace ISUtils.Utils
             else
                 analyzer = new StandardAnalyzer();
         }
+        #endregion
+        #region "搜索扩展设置"
         /**/
         /// <summary>
         /// 设置搜索索引
@@ -119,6 +129,7 @@ namespace ISUtils.Utils
         {
             if (searchIndexList == null)
                 searchIndexList = new  List<IndexSet>();
+            searchIndexList.Clear();
             foreach (string indexName in indexNames)
             {
                 string [] names=SupportClass.String.Split(indexName);
@@ -172,7 +183,6 @@ namespace ISUtils.Utils
             SearchUtil.exactPhraseContain = exactPhraseContain;
             SearchUtil.oneOfWordsAtLeastContain = oneOfWordsAtLeastContain;
             SearchUtil.wordNotInclude = wordNotInclude;
-            useFuzzySearch = true;
         }
         /**/
         /// <summary>
@@ -182,7 +192,6 @@ namespace ISUtils.Utils
         public static void SetSearchWords(string words)
         {
             SearchUtil.wordsAllContains = words;
-            useFuzzySearch = true;
         }
         private static void SetIndexFieldsList()
         {
@@ -192,22 +201,35 @@ namespace ISUtils.Utils
                 return;
             if (queryAtList == null)
                 return;
-            if (queryAtList.Count <= 0)
-                return;
             if (indexFieldsDict == null)
                 indexFieldsDict = new Dictionary<IndexSet, List<string>>();
             indexFieldsDict.Clear();
-            foreach (IndexSet indexSet in indexDict.Keys)
+            if (queryAtList.Count > 0)
             {
-                List<string> fieldList = new List<string>();
-                foreach (string field in indexDict[indexSet].Fields)
+                foreach (IndexSet indexSet in indexDict.Keys)
                 {
-                    if (queryAtList.Contains(field))
+                    List<string> fieldList = new List<string>();
+                    foreach (string field in indexDict[indexSet].Fields)
+                    {
+                        if (queryAtList.Contains(field))
+                        {
+                            fieldList.Add(field);
+                        }
+                    }
+                    indexFieldsDict.Add(indexSet, fieldList);
+                }
+            }
+            else
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    List<string> fieldList = new List<string>();
+                    foreach (string field in indexDict[indexSet].Fields)
                     {
                         fieldList.Add(field);
                     }
+                    indexFieldsDict.Add(indexSet, fieldList);
                 }
-                indexFieldsDict.Add(indexSet, fieldList);
             }
         }
         /**/
@@ -229,7 +251,6 @@ namespace ISUtils.Utils
                 }
             }
             SetIndexFieldsList();
-            useFuzzySearch = true;
         }
         /**/
         /// <summary>
@@ -253,25 +274,117 @@ namespace ISUtils.Utils
                 }
             }
             SetIndexFieldsList();
-            useFuzzySearch = true;
         }
+        public static void SetFilters(params FilterCondition[] filters)
+        {
+            if (filterList == null)
+                filterList = new List<FilterCondition>();
+            filterList.Clear();
+            filterList.AddRange(filters);
+        }
+        public static void SetFilters(List<FilterCondition> filters)
+        {
+            if (filterList == null)
+                filterList = new List<FilterCondition>();
+            filterList.Clear();
+            filterList.AddRange(filters);
+        }
+        public static void AddFilter(FilterCondition fc)
+        {
+            if (filterList == null)
+                filterList = new List<FilterCondition>();
+            filterList.Add(fc);
+        }
+        public static void AddFilters(params FilterCondition[] fcArray)
+        {
+            if (filterList == null)
+                filterList = new List<FilterCondition>();
+            filterList.AddRange(fcArray);
+        }
+        public static void AddFilters(List<FilterCondition> fcList)
+        {
+            if (filterList == null)
+                filterList = new List<FilterCondition>();
+            filterList.AddRange(fcList);
+        }
+        public static void SetExcludes(params ExcludeCondition[] excludes)
+        {
+            if (excludeList == null)
+                excludeList = new List<ExcludeCondition>();
+            excludeList.Clear();
+            excludeList.AddRange(excludes);
+        }
+        public static void SetExcludes(List<ExcludeCondition> excludes)
+        {
+            if (excludeList == null)
+                excludeList = new List<ExcludeCondition>();
+            excludeList.Clear();
+            excludeList.AddRange(excludes);
+        }
+        public static void AddExclude(ExcludeCondition ec)
+        {
+            if (excludeList == null)
+                excludeList = new List<ExcludeCondition>();
+            excludeList.Add(ec);
+        }
+        public static void AddExcludes(params ExcludeCondition[] ecArray)
+        {
+            if (excludeList == null)
+                excludeList = new List<ExcludeCondition>();
+            excludeList.AddRange(ecArray);
+        }
+        public static void AddExcludes(List<ExcludeCondition> ecList)
+        {
+            if (excludeList == null)
+                excludeList = new List<ExcludeCondition>();
+            excludeList.AddRange(ecList);
+        }
+        public static void SetRanges(List<RangeCondition> ranges)
+        {
+            if (rangeList == null)
+                rangeList = new List<RangeCondition>();
+            rangeList.Clear();
+            rangeList.AddRange(ranges);
+        }
+        public static void SetRanges(params RangeCondition[] ranges)
+        {
+            if (rangeList == null)
+                rangeList = new List<RangeCondition>();
+            rangeList.Clear();
+            rangeList.AddRange(ranges);
+        }
+        public static void AddRange(RangeCondition rc)
+        {
+            if (rangeList == null)
+                rangeList = new List<RangeCondition>();
+            rangeList.Add(rc);
+        }
+        public static void AddRanges(params RangeCondition[] rangeArray)
+        {
+            if (rangeList == null)
+                rangeList = new List<RangeCondition>();
+            rangeList.AddRange(rangeArray);
+        }
+        public static void AddRanges(List<RangeCondition> rcList)
+        {
+            if (rangeList == null)
+                rangeList = new List<RangeCondition>();
+            rangeList.AddRange(rcList);
+        }       
+        #endregion
+        #region "搜索设置接口"
         public static void SetQueryInfo(QueryInfo info)
         {
-            if (info.IsFuzzySearch)
-            {
-                SetSearchWords(info.FQuery.WordsAllContains, info.FQuery.ExactPhraseContain, info.FQuery.OneOfWordsAtLeastContain, info.FQuery.WordNotInclude);
-                SetSearchIndexes(info.FQuery.IndexNames);
-                SetSearchLimit(info.FQuery.QueryAts);
-                useFuzzySearch = true;
-            }
-            else
-            {
-                exactQuery = info.SQuery;
-                SetSearchIndexes(info.SQuery.IndexNames);
-                useFuzzySearch = false;
-            }
+            SetSearchIndexes(info.IndexNames);
+            SetSearchWords(info.WordsAllContains, info.ExactPhraseContain, info.OneOfWordsAtLeastContain, info.WordNotInclude);
+            SetSearchLimit(info.QueryAts);
+            SetFilters(info.FilterList);
+            SetExcludes(info.ExcludeList);
+            SetRanges(info.RangeList);
         }
-        private static Query GetQuery(IndexSet indexSet)
+        #endregion
+        #region "私有公共方法"
+        private static Query GetFuzzyQuery(IndexSet indexSet)
         {
             string[] fields;
             if (indexFieldsDict.Count > 0 && indexFieldsDict.ContainsKey(indexSet))
@@ -323,7 +436,7 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
-        private static Query GetQuery(IndexSet indexSet, out QueryResult.SearchInfo info)
+        private static Query GetFuzzyQuery(IndexSet indexSet, out QueryResult.SearchInfo info)
         {
             string[] fields;
             info = new QueryResult.SearchInfo();
@@ -378,38 +491,18 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
-        private static Query GetQuery()
+        private static Query GetExactQuery()
         {
             BooleanQuery queryRet = new BooleanQuery();
-            if (searchIndexList.Count > 0)
-            {
-                foreach (IndexSet indexSet in searchIndexList)
-                {
-                    queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.SHOULD);
-                }
-            }
-            else
-            {
-                foreach (IndexSet indexSet in indexFieldsDict.Keys)
-                {
-                    queryRet.Add(GetQuery(indexSet), BooleanClause.Occur.SHOULD);
-                }
-            }
-            return queryRet;
-        }
-        private static Query GetQuery(SqlQuery sqlQuery)
-        {
-            BooleanQuery queryRet = new BooleanQuery();
-            //SupportClass.File.WriteLog(analyzer.ToString());
-            foreach (FilterCondition fc in sqlQuery.FilterList)
+            foreach (FilterCondition fc in filterList)
             {
                 //SupportClass.File.WriteLog("fc :" + fc.ToString());
                 QueryParser parser = new QueryParser(fc.GetString(), analyzer);
-                foreach(string value in fc.Values)
+                foreach (string value in fc.Values)
                 {
                     //SupportClass.File.WriteLog("fc loop,value of fc.values:" + value);
-                    string[] wordArray= SupportClass.String.Split(value);
-                    foreach(string words in wordArray)
+                    string[] wordArray = SupportClass.String.Split(value);
+                    foreach (string words in wordArray)
                     {
                         //SupportClass.File.WriteLog("word loop,word of value split:" + words);
                         List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
@@ -422,7 +515,7 @@ namespace ISUtils.Utils
                     }
                 }
             }
-            foreach (ExcludeCondition ec in sqlQuery.ExcludeList)
+            foreach (ExcludeCondition ec in excludeList)
             {
                 //SupportClass.File.WriteLog("ec :" + ec.ToString());
                 QueryParser parser = new QueryParser(ec.GetString(), analyzer);
@@ -443,7 +536,7 @@ namespace ISUtils.Utils
                     }
                 }
             }
-            foreach (RangeCondition rc in sqlQuery.RangeList)
+            foreach (RangeCondition rc in rangeList)
             {
                 SupportClass.File.WriteLog("rc:" + rc.ToString());
                 RangeQuery query = new RangeQuery(new Term(rc.GetString(), rc.RangeFrom), new Term(rc.GetString(), rc.RangeTo), rc.IntervalType);
@@ -452,16 +545,31 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
+        private static Query GetQuery()
+        {
+            BooleanQuery queryRet = new BooleanQuery();
+            if (searchIndexList.Count > 0)
+            {
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    queryRet.Add(GetFuzzyQuery(indexSet), BooleanClause.Occur.SHOULD);
+                }
+            }
+            else
+            {
+                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                {
+                    queryRet.Add(GetFuzzyQuery(indexSet), BooleanClause.Occur.SHOULD);
+                }
+            }
+            queryRet.Add(GetExactQuery(), BooleanClause.Occur.SHOULD);
+            return queryRet;
+        }
+        #endregion
+        #region "模糊搜索接口"
         public static List<Hits> FuzzySearch()
         {
             List<Hits> hitsList = new List<Hits>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return hitsList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -469,7 +577,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in searchIndexList)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -482,7 +590,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -501,13 +609,6 @@ namespace ISUtils.Utils
         {
             List<Hits> hitsList = new List<Hits>();
             siList = new List<QueryResult.SearchInfo>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return hitsList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -516,7 +617,7 @@ namespace ISUtils.Utils
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
+                        Query query = GetFuzzyQuery(indexSet, out si);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -532,7 +633,7 @@ namespace ISUtils.Utils
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
+                        Query query = GetFuzzyQuery(indexSet, out si);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -552,13 +653,6 @@ namespace ISUtils.Utils
         public static Hits FuzzySearchEx()
         {
             Hits hits = null;
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return hits;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -595,13 +689,6 @@ namespace ISUtils.Utils
         {
             Hits hits = null;
             query = null;
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return hits;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -637,13 +724,6 @@ namespace ISUtils.Utils
         public static List<Document> FuzzyFastSearch()
         {
             List<Document> docList = new List<Document>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -651,7 +731,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in searchIndexList)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -669,7 +749,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -693,13 +773,6 @@ namespace ISUtils.Utils
         {
             List<Document> docList = new List<Document>();
             siList = new List<QueryResult.SearchInfo>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -708,7 +781,7 @@ namespace ISUtils.Utils
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
+                        Query query = GetFuzzyQuery(indexSet, out si);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -729,7 +802,7 @@ namespace ISUtils.Utils
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
+                        Query query = GetFuzzyQuery(indexSet, out si);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -754,13 +827,6 @@ namespace ISUtils.Utils
         public static List<Document> FuzzyFastSearchEx()
         {
             List<Document> docList = new List<Document>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -803,13 +869,6 @@ namespace ISUtils.Utils
         {
             List<Document> docList = new List<Document>();
             query = null;
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -851,13 +910,6 @@ namespace ISUtils.Utils
         public static List<Document> FuzzyFastFieldSearch()
         {
             List<Document> docList = new List<Document>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -865,7 +917,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in searchIndexList)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -884,7 +936,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -909,13 +961,6 @@ namespace ISUtils.Utils
         {
             List<Document> docList = new List<Document>();
             siList = new List<QueryResult.SearchInfo>();
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -924,7 +969,7 @@ namespace ISUtils.Utils
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
+                        Query query = GetFuzzyQuery(indexSet, out si);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -946,7 +991,7 @@ namespace ISUtils.Utils
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
-                        Query query = GetQuery(indexSet, out si);
+                        Query query = GetFuzzyQuery(indexSet, out si);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -973,13 +1018,6 @@ namespace ISUtils.Utils
         {
             List<Document> docList = new List<Document>();
             mquery = null;
-            if (!useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 if (searchIndexList.Count > 0)
@@ -987,7 +1025,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in searchIndexList)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -1007,7 +1045,7 @@ namespace ISUtils.Utils
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
-                        Query query = GetQuery(indexSet);
+                        Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
@@ -1030,16 +1068,11 @@ namespace ISUtils.Utils
             mquery = GetQuery();
             return docList;
         }
+        #endregion
+        #region "精确搜索接口"
         public static Hits ExactSearch()
         {
             Hits hits = null;
-            if (useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return hits;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -1049,7 +1082,7 @@ namespace ISUtils.Utils
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
                 IndexSearcher searcher = new IndexSearcher(multiReader);
-                Query query = GetQuery(exactQuery);
+                Query query = GetQuery();
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
@@ -1066,13 +1099,6 @@ namespace ISUtils.Utils
         {
             Hits hits = null;
             query = null;
-            if (useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return hits;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -1082,7 +1108,7 @@ namespace ISUtils.Utils
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
                 IndexSearcher searcher = new IndexSearcher(multiReader);
-                query = GetQuery(exactQuery);
+                query = GetQuery();
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
@@ -1098,13 +1124,6 @@ namespace ISUtils.Utils
         public static List<Document> ExactFastSearch()
         {
             List<Document> docList = new List<Document>();
-            if (useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -1114,7 +1133,7 @@ namespace ISUtils.Utils
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
                 IndexSearcher searcher = new IndexSearcher(multiReader);
-                Query query = GetQuery(exactQuery);
+                Query query = GetQuery();
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
@@ -1136,13 +1155,6 @@ namespace ISUtils.Utils
         {
             List<Document> docList = new List<Document>();
             query = null;
-            if (useFuzzySearch)
-            {
-#if DEBUG
-                System.Console.WriteLine("使用不匹配的方法");
-#endif
-                return docList;
-            }
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -1152,7 +1164,7 @@ namespace ISUtils.Utils
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
                 IndexSearcher searcher = new IndexSearcher(multiReader);
-                query = GetQuery(exactQuery);
+                query = GetQuery();
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
@@ -1170,33 +1182,24 @@ namespace ISUtils.Utils
             }
             return docList;
         }
+        #endregion
+        #region "通用搜索接口"
         public static Hits Search()
         {
-            if (useFuzzySearch)
-                return FuzzySearchEx();
-            else
-                return ExactSearch();
+            return ExactSearch();
         }
         public static Hits Search(out Query query)
         {
-            if (useFuzzySearch)
-                return FuzzySearchEx(out query);
-            else
-                return ExactSearch(out query);
+            return ExactSearch(out query);
         }
         public static List<Document> FastSearch()
         {
-            if (useFuzzySearch)
-                return FuzzyFastSearchEx();
-            else
-                return ExactFastSearch();
+            return ExactFastSearch();
         }
         public static List<Document> FastSearch(out Query query)
         {
-            if (useFuzzySearch)
-                return FuzzyFastSearchEx(out query);
-            else
-                return ExactFastSearch(out query);
+            return ExactFastSearch(out query);
         }
+        #endregion
     }
 }

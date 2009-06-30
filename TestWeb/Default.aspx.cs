@@ -46,8 +46,8 @@ public partial class _Default : System.Web.UI.Page
                 return;
             }
             QueryInfo info = new QueryInfo();
-            info.FQuery.IndexNames = txtIndexName.Text;
-            info.FQuery.SearchWords = txtSearch.Text;
+            info.IndexNames = txtIndexName.Text;
+            info.SearchWords = txtSearch.Text;
             DateTime now = DateTime.Now;
             try
             {
@@ -191,14 +191,13 @@ public partial class _Default : System.Web.UI.Page
             return;
         }
         QueryInfo info = new QueryInfo();
-        info.IsFuzzySearch = false;
-        info.SQuery.IndexNames = txtIndexName.Text;
+        info.IndexNames = txtIndexName.Text;
         if (!string.IsNullOrEmpty(txtFieldInclude.Text ) && !string.IsNullOrEmpty(txtWordsInclude.Text))
-            info.SQuery.FilterList.Add(new FilterCondition("", txtFieldInclude.Text, txtWordsInclude.Text));
+            info.FilterList.Add(new FilterCondition("", txtFieldInclude.Text, txtWordsInclude.Text));
         if (!string.IsNullOrEmpty(txtFieldExclude.Text) && !string.IsNullOrEmpty(txtWordsExclude.Text))
-            info.SQuery.ExcludeList.Add(new ExcludeCondition("", txtFieldExclude.Text, txtWordsExclude.Text));
+            info.ExcludeList.Add(new ExcludeCondition("", txtFieldExclude.Text, txtWordsExclude.Text));
         if (!string.IsNullOrEmpty(txtFieldRange.Text) && !string.IsNullOrEmpty(txtRangeFrom.Text) && !string.IsNullOrEmpty(txtRangeTo.Text))
-            info.SQuery.RangeList.Add(new RangeCondition("", txtFieldRange.Text, txtRangeFrom.Text, txtRangeTo.Text, RangeType.Date));
+            info.RangeList.Add(new RangeCondition("", txtFieldRange.Text, txtRangeFrom.Text, txtRangeTo.Text, RangeType.Date));
         DateTime now = DateTime.Now;
         try
         {

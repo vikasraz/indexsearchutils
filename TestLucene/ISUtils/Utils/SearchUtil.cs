@@ -400,44 +400,55 @@ namespace ISUtils.Utils
         private static Query GetQuery(SqlQuery sqlQuery)
         {
             BooleanQuery queryRet = new BooleanQuery();
+            //SupportClass.File.WriteLog(analyzer.ToString());
             foreach (FilterCondition fc in sqlQuery.FilterList)
             {
+                //SupportClass.File.WriteLog("fc :" + fc.ToString());
                 QueryParser parser = new QueryParser(fc.GetString(), analyzer);
                 foreach(string value in fc.Values)
                 {
+                    //SupportClass.File.WriteLog("fc loop,value of fc.values:" + value);
                     string[] wordArray= SupportClass.String.Split(value);
                     foreach(string words in wordArray)
                     {
+                        //SupportClass.File.WriteLog("word loop,word of value split:" + words);
                         List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
                         foreach (string word in wordList)
                         {
                             Query query = parser.Parse(word);
-                            queryRet.Add(query, BooleanClause.Occur.SHOULD);
+                            queryRet.Add(query, BooleanClause.Occur.MUST);
+                            //SupportClass.File.WriteLog(queryRet.ToString());
                         }
                     }
                 }
             }
             foreach (ExcludeCondition ec in sqlQuery.ExcludeList)
             {
+                //SupportClass.File.WriteLog("ec :" + ec.ToString());
                 QueryParser parser = new QueryParser(ec.GetString(), analyzer);
                 foreach (string value in ec.Values)
                 {
+                    //SupportClass.File.WriteLog("ec loop,value of ec.values:" + value);
                     string[] wordArray = SupportClass.String.Split(value);
                     foreach (string words in wordArray)
                     {
+                        //SupportClass.File.WriteLog("word loop,word of value split:" + words);
                         List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
                         foreach (string word in wordList)
                         {
                             Query query = parser.Parse(word);
                             queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
+                            //SupportClass.File.WriteLog(queryRet.ToString());
                         }
                     }
                 }
             }
             foreach (RangeCondition rc in sqlQuery.RangeList)
             {
+                SupportClass.File.WriteLog("rc:" + rc.ToString());
                 RangeQuery query = new RangeQuery(new Term(rc.GetString(), rc.RangeFrom), new Term(rc.GetString(), rc.RangeTo), rc.IntervalType);
                 queryRet.Add(query, BooleanClause.Occur.MUST);
+                SupportClass.File.WriteLog(queryRet.ToString());
             }
             return queryRet;
         }

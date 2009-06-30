@@ -60,13 +60,27 @@ namespace TestLucene
             string path = @"d:\Indexer\config.conf";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.FQuery.IndexNames = "in_incr1,in_incr2";
-            info.FQuery.SearchWords = "国有";
+            info.IsFuzzySearch = false;
+            info.SQuery.IndexNames = "IN_IndexView_Monitoring_RSSPI,IN_IndexView_Monitoring_PM";
+            info.SQuery.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             DateTime start = DateTime.Now;
-            QueryResult result = searcher.ExecuteSearch(info);
+            Query query;
+            List<Document> results = searcher.ExecuteFastSearch(info,out query);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(string.Format("Spend {0} ", span.ToString()));
-            ISUtils.SupportClass.Result.Output(result);
+            //ISUtils.SupportClass.Result.Output(result);
+            foreach (Document doc in results)
+            {
+                Field[] fields = new Field[doc.GetFields().Count];
+                doc.GetFields().CopyTo(fields, 0);
+                foreach (Field field in fields)
+                {
+                    string key = field.Name();
+                    string value = field.StringValue();
+                    Console.WriteLine(key + ":\t" + value);
+                }
+                Console.WriteLine("--------------------------------");
+            }
         }
         static void TeseCSegment()
         {
@@ -154,7 +168,7 @@ namespace TestLucene
             //char ch = '中';
             //Console.WriteLine(ch);
             ////testDB();
-            //testSearch();
+            testSearch();
             //TestChineseSegment();
             //TeseCSegment();
             //RangeQuery query = new RangeQuery(new Term("date",DateTime.Parse("2006-01-01").ToShortDateString()), new Term("date", "20060130"), true);
@@ -176,7 +190,7 @@ namespace TestLucene
             //Mainf();
             //TestForChineseSegment();
             //TestRam();
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff"));
+            //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff"));
             Console.ReadKey();
         }
         static void TestRam()

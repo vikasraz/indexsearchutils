@@ -362,6 +362,7 @@ namespace ISUtils.Searcher
                 SupportClass.File.WriteToLog(path, msg.ToString());
                 return msg;
             }
+            SupportClass.WriteLogAccess = true;
             SupportClass.LogPath = path;
             Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
             Utils.SearchUtil.SetQueryInfo(info);
@@ -440,9 +441,11 @@ namespace ISUtils.Searcher
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
                 SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.WriteLogAccess = false;
                 return msg;
             }
             SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.WriteLogAccess = false;
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -682,6 +685,13 @@ namespace ISUtils.Searcher
             QueryResult result = new QueryResult();
             result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
             return result;
+        }
+        public List<Document> ExecuteFastSearch(QueryInfo info,out Query query)
+        {
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
+            Utils.SearchUtil.SetQueryInfo(info);
+            List<Document> docList = Utils.SearchUtil.FastSearch(out query);
+            return docList;
         }
     }
 }

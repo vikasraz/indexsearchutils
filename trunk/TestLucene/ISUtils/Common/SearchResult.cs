@@ -8,6 +8,24 @@ namespace ISUtils.Common
     [Serializable]
     public class SearchResult
     {
+        private int pageNum = 0;
+        public int PageNum
+        {
+            get { return pageNum; }
+            set { pageNum = value; }
+        }
+        private Lucene.Net.Search.Query query;
+        public Lucene.Net.Search.Query Query
+        {
+            get { return query; }
+            set { query = value; }
+        }
+        private int totalPages = 1;
+        public int TotalPages
+        {
+            get { return totalPages; }
+            set { totalPages = value; }
+        }
         private List<Document> docList = new List<Document>();
         public List<Document> Docs
         {

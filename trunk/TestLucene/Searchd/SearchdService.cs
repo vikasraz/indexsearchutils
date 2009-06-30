@@ -9,8 +9,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.IO;
 using System.Threading;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using ISUtils.Searcher;
 using ISUtils.Common;
+using Lucene.Net.Search;
+using Lucene.Net.Documents;
 
 namespace Searchd
 {
@@ -19,6 +23,8 @@ namespace Searchd
         private static SearchMaker searcher;
         private static TcpListener listener;
         private static DateTime start;
+        private static Dictionary<QueryInfo, List<Document>> searchResultDict;
+        private static Dictionary<QueryInfo, Query> searchQueryDict;
         private Thread MainThread;
         // Thread signal.
         public static ManualResetEvent tcpClientConnected =new ManualResetEvent(false);
@@ -59,23 +65,49 @@ namespace Searchd
             NetworkStream ns = client.GetStream();
             if (ns.CanRead && ns.CanWrite)
             {
-                try
+                SearchInfo searchInfo = GetSearchInfo(ns);
+                WriteToLog(searchInfo.ToString());
+                if (searchResultDict == null)
+                    searchResultDict = new Dictionary<QueryInfo, List<Document>>();
+                if (searchQueryDict == null)
+                    searchQueryDict = new Dictionary<QueryInfo, Query>();
+                if (searchResultDict.ContainsKey(searchInfo.Query))
                 {
-                    WriteToLog("Try to execute search");
-                    Message msg = searcher.ExecuteFastSearch(ref ns, System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", true);
-                    WriteToLog("After ExecuteSearch");
-                    if (msg.Success)
-                        WriteToLog(msg.ToString());
-                    WriteToLog("Write Success Message");
-                    if (!msg.Success && msg.ExceptionOccur)
-                        WriteToLog(msg.ToString());
+                    List<Document> docList=searchResultDict[searchInfo.Query];
+                    SearchResult result = new SearchResult();
+                    result.PageNum = searchInfo.PageNum;
+                    result.TotalPages = TotalPages(docList.Count, searchInfo.PageSize);
+                    result.Docs.AddRange(GetPage(docList,searchInfo.PageSize,searchInfo.PageNum));
+                    result.Query = searchQueryDict[searchInfo.Query];
+                    SendResult(ns, result);
+                    ns.Close();
                 }
-                catch (Exception ex)
+                else
                 {
-                    WriteToLog(ex.StackTrace.ToString());
-                    WriteToLog("Failed to Search. Reason: " + ex.Message);
-                    //EventLog.WriteEntry("Failed to Search. Reason: " + ex.Message);
-                    //ns.Close();
+                    try
+                    {
+                        Query query;
+                        WriteToLog("Try to execute search");
+                        List<Document> docList = searcher.ExecuteFastSearch(searchInfo.Query, out query);
+                        WriteToLog("After ExecuteSearch");
+                        searchResultDict.Add(searchInfo.Query, docList);
+                        searchQueryDict.Add(searchInfo.Query, query);
+
+                        SearchResult result = new SearchResult();
+                        result.PageNum = 1;
+                        result.TotalPages = TotalPages(docList.Count, searchInfo.PageSize);
+                        result.Docs.AddRange(GetPage(docList, searchInfo.PageSize, 1));
+                        result.Query = searchQueryDict[searchInfo.Query];
+                        SendResult(ns, result);
+                        ns.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteToLog(ex.StackTrace.ToString());
+                        WriteToLog("Failed to Search. Reason: " + ex.Message);
+                        //EventLog.WriteEntry("Failed to Search. Reason: " + ex.Message);
+                        //ns.Close();
+                    }
                 }
             }
             WriteToLog("GC Begin Collect");
@@ -173,5 +205,46 @@ namespace Searchd
                 throw e;
             }
         }
+        public static SearchInfo GetSearchInfo(NetworkStream ns)
+        {
+            SearchInfo info = null;
+            BinaryFormatter formater = new BinaryFormatter();
+            try
+            {
+                info = (SearchInfo)formater.Deserialize(ns);
+            }
+            catch (SerializationException se)
+            {
+                WriteToLog(se.StackTrace.ToString());
+            }
+            return info;
+        }
+        public static void SendResult(NetworkStream ns, SearchResult result)
+        {
+            BinaryFormatter formater = new BinaryFormatter();
+            try
+            {
+                formater.Serialize(ns, result);
+            }
+            catch (SerializationException e)
+            {
+                WriteToLog(e.StackTrace.ToString());
+            }
+        }
+        public static int TotalPages(int totalNum, int pageSize)
+        {
+            if (totalNum % pageSize == 0)
+                return totalNum / pageSize;
+            else
+                return totalNum / pageSize + 1;
+        }
+        public static List<Document> GetPage(List<Document> docList, int pageSize, int pageNum)
+        {
+            List<Document> resultList = new List<Document>();
+            for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < docList.Count; i++)
+                resultList.Add(docList[i]);
+            return resultList;
+        }
+
     }
 }

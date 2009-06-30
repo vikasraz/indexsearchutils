@@ -116,5 +116,15 @@ namespace ISUtils.Common
         {
             return base.ToString()+":["+rangeFrom+" TO "+rangeTo+"]";
         }
+        //public override bool Equals(object obj)
+        //{
+        //    if (!(obj is RangeCondition))
+        //        return false;
+        //    return table == ((RangeCondition)obj).table && 
+        //          field == ((RangeCondition)obj).field && 
+        //          rangeFrom == ((RangeCondition)obj).rangeFrom &&
+        //          rangeTo == ((RangeCondition)obj).rangeTo &&
+        //          type == ((RangeCondition)obj).type ;
+        //}
     }
 }

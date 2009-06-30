@@ -191,6 +191,52 @@ namespace ISUtils.Common
                 ret.Remove(ret.Length - 5, 1);
             return ret.ToString();
         }
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+        //public override bool Equals(object obj)
+        //{
+        //    if (!(obj is QueryInfo))
+        //        return false;
+        //    if (this.indexnames != ((QueryInfo)obj).indexnames)
+        //        return false;
+        //    if (this.exactPhraseContain != ((QueryInfo)obj).exactPhraseContain)
+        //        return false;
+        //    if (this.oneOfWordsAtLeastContain != ((QueryInfo)obj).oneOfWordsAtLeastContain)
+        //        return false;
+        //    if (this.queryAts != ((QueryInfo)obj).queryAts)
+        //        return false;
+        //    if (this.wordNotInclude != ((QueryInfo)obj).wordNotInclude)
+        //        return false;
+        //    if (this.wordsAllContains != ((QueryInfo)obj).wordsAllContains)
+        //        return false;
+        //    if (this.filterConList.Count != ((QueryInfo)obj).filterConList.Count)
+        //        return false;
+        //    if (this.excludeList.Count != ((QueryInfo)obj).excludeList.Count)
+        //        return false;
+        //    if (this.rangeConList.Count != ((QueryInfo)obj).rangeConList.Count)
+        //        return false;
+        //    if (this.indexnames != ((QueryInfo)obj).indexnames)
+        //        return false;
+        //    if (this.indexnames != ((QueryInfo)obj).indexnames)
+        //        return false;
+        //    if (this.indexnames != ((QueryInfo)obj).indexnames)
+        //        return false;
+        //    return base.Equals(obj);
+        //}
         #endregion
     }
+    public class QueryInfoComparer : System.Collections.IEqualityComparer
+    {
+        public new bool Equals(object x, object y)
+        {
+            return x.ToString().Equals(y.ToString());
+        }
+        public int GetHashCode(object obj)
+        {
+            return obj.GetHashCode();
+        }
+    }
+
 }

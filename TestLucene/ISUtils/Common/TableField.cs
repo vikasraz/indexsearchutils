@@ -59,5 +59,11 @@ namespace ISUtils.Common
                 return field;
             return table + "." + field;
         }
+        //public override bool Equals(object obj)
+        //{
+        //    if (!(obj is TableField))
+        //        return false;
+        //    return table == ((TableField)obj).table && field == ((TableField)obj).field;
+        //}
     }
 }

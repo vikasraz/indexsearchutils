@@ -28,7 +28,7 @@ namespace ISUtils.Common
                     pageSize = DEFPAGESIZE;
             }
         }
-        private int pageNum = 0;
+        private int pageNum = 1;
         public int PageNum
         {
             get 
@@ -41,6 +41,10 @@ namespace ISUtils.Common
                 if (pageNum <= 0)
                     pageNum = 1;
             }
+        }
+        public override string ToString()
+        {
+            return queryInfo.ToString()+"\tPageSize="+pageSize.ToString()+"\tPageNum="+pageNum.ToString();
         }
     }
 }

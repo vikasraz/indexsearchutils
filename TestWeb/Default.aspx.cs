@@ -34,6 +34,7 @@ public partial class _Default : System.Web.UI.Page
             TcpClient client;
             NetworkStream ns;
             BinaryFormatter formater;
+            DateTime now = DateTime.Now;
             try
             {
                 client = new TcpClient(txtIP.Text, portNum);
@@ -50,7 +51,6 @@ public partial class _Default : System.Web.UI.Page
             info.IndexNames = txtIndexName.Text;
             info.SearchWords = txtSearch.Text;
             sinfo.Query = info;           
-            DateTime now = DateTime.Now;
             try
             {
                 formater.Serialize(ns, sinfo);
@@ -93,6 +93,7 @@ public partial class _Default : System.Web.UI.Page
             //Hits hits = searcher.Search(query);
 
             TimeSpan tm = DateTime.Now - now;
+            Response.Write(sr.ToString() + "<br>");
             foreach (Document doc in sr.Docs)
             {
                 Response.Write("----------------------------------------<br>");
@@ -183,6 +184,7 @@ public partial class _Default : System.Web.UI.Page
         TcpClient client;
         NetworkStream ns;
         BinaryFormatter formater;
+        DateTime now = DateTime.Now;
         try
         {
             client = new TcpClient(txtIP.Text, portNum);
@@ -204,7 +206,6 @@ public partial class _Default : System.Web.UI.Page
         if (!string.IsNullOrEmpty(txtFieldRange.Text) && !string.IsNullOrEmpty(txtRangeFrom.Text) && !string.IsNullOrEmpty(txtRangeTo.Text))
             info.RangeList.Add(new RangeCondition("", txtFieldRange.Text, txtRangeFrom.Text, txtRangeTo.Text, RangeType.Date));
         sinfo.Query = info;
-        DateTime now = DateTime.Now;
         try
         {
             formater.Serialize(ns, sinfo);
@@ -230,6 +231,7 @@ public partial class _Default : System.Web.UI.Page
             ns.Close();
         }
         TimeSpan tm = DateTime.Now - now;
+        Response.Write(sr.ToString() + "<br>");
         foreach (Document doc in sr.Docs)
         {
             Response.Write("----------------------------------------<br>");

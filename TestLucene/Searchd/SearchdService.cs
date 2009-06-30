@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,9 +23,8 @@ namespace Searchd
     {
         private static SearchMaker searcher;
         private static TcpListener listener;
-        private static DateTime start;
-        private static Dictionary<QueryInfo, List<Document>> searchResultDict;
-        private static Dictionary<QueryInfo, Query> searchQueryDict;
+        private static Hashtable searchResults;
+        private static Hashtable searchQueries;
         private Thread MainThread;
         // Thread signal.
         public static ManualResetEvent tcpClientConnected =new ManualResetEvent(false);
@@ -62,42 +62,46 @@ namespace Searchd
             // Process the connection here. (Add the client to a
             // server table, read data, etc.)
             //Console.WriteLine("Client connected completed");
+            DateTime now = DateTime.Now;
             NetworkStream ns = client.GetStream();
             if (ns.CanRead && ns.CanWrite)
             {
                 SearchInfo searchInfo = GetSearchInfo(ns);
                 WriteToLog(searchInfo.ToString());
-                if (searchResultDict == null)
-                    searchResultDict = new Dictionary<QueryInfo, List<Document>>();
-                if (searchQueryDict == null)
-                    searchQueryDict = new Dictionary<QueryInfo, Query>();
-                if (searchResultDict.ContainsKey(searchInfo.Query))
+                if (searchResults == null)
+                    searchResults = new Hashtable(new QueryInfoComparer());
+                if (searchQueries == null)
+                    searchQueries = new Hashtable(new QueryInfoComparer());
+                if (searchResults.ContainsKey(searchInfo.Query))
                 {
-                    List<Document> docList=searchResultDict[searchInfo.Query];
+                    WriteToLog("该搜索已经存在！");
+                    List<Document> docList = (List<Document>)searchResults[searchInfo.Query];
+                    WriteToLog("Total Hits:" + docList.Count.ToString());
                     SearchResult result = new SearchResult();
                     result.PageNum = searchInfo.PageNum;
                     result.TotalPages = TotalPages(docList.Count, searchInfo.PageSize);
-                    result.Docs.AddRange(GetPage(docList,searchInfo.PageSize,searchInfo.PageNum));
-                    result.Query = searchQueryDict[searchInfo.Query];
+                    result.Docs.AddRange(GetPage(docList, searchInfo.PageSize, searchInfo.PageNum));
+                    result.Query = (Query)searchQueries[searchInfo.Query];
+                    WriteToLog(result.ToString());
                     SendResult(ns, result);
                     ns.Close();
                 }
                 else
                 {
+                    WriteToLog("该搜索首次进行！");
                     try
                     {
                         Query query;
-                        WriteToLog("Try to execute search");
                         List<Document> docList = searcher.ExecuteFastSearch(searchInfo.Query, out query);
-                        WriteToLog("After ExecuteSearch");
-                        searchResultDict.Add(searchInfo.Query, docList);
-                        searchQueryDict.Add(searchInfo.Query, query);
-
+                        searchResults.Add(searchInfo.Query, docList);
+                        searchQueries.Add(searchInfo.Query, query);
+                        WriteToLog("Total Hits:" + docList.Count.ToString());
                         SearchResult result = new SearchResult();
                         result.PageNum = 1;
                         result.TotalPages = TotalPages(docList.Count, searchInfo.PageSize);
                         result.Docs.AddRange(GetPage(docList, searchInfo.PageSize, 1));
-                        result.Query = searchQueryDict[searchInfo.Query];
+                        result.Query = query;
+                        WriteToLog(result.ToString());
                         SendResult(ns, result);
                         ns.Close();
                     }
@@ -110,14 +114,8 @@ namespace Searchd
                     }
                 }
             }
-            WriteToLog("GC Begin Collect");
-            //TimeSpan span = DateTime.Now - start;
-            //long hours = (long)span.TotalHours;
-            //if ( hours>=1 && DateTime.Now.Minute == start.Minute && DateTime.Now.Second == start.Second )
-            GC.Collect();
-            WriteToLog("After GC Collect");
-            //EventLog.WriteEntry("Client connected completed");
-            // Signal the calling thread to continue.
+            TimeSpan span = DateTime.Now - now;
+            WriteToLog("花费时间："+span.TotalMilliseconds.ToString());
             tcpClientConnected.Set();
             DoBeginAcceptTcpClient(listener);
         }
@@ -185,7 +183,6 @@ namespace Searchd
             IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
             listener = new TcpListener(ipEntry.AddressList[0], port);
             listener.Start();
-            start = DateTime.Now;
             DoBeginAcceptTcpClient(listener);
         }
         public static void WriteToLog(string detail)
@@ -241,6 +238,8 @@ namespace Searchd
         public static List<Document> GetPage(List<Document> docList, int pageSize, int pageNum)
         {
             List<Document> resultList = new List<Document>();
+            if (pageNum <= 0)
+                pageNum = 1;
             for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < docList.Count; i++)
                 resultList.Add(docList[i]);
             return resultList;

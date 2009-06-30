@@ -65,5 +65,9 @@ namespace ISUtils.Common
                 this.docList = new List<Document>();
             this.docList.Add(doc);
         }
+        public override string ToString()
+        {
+            return "TotalPage="+totalPages.ToString()+"\tPageNum="+pageNum.ToString()+"\t"+query.ToString();
+        }
     }
 }

@@ -247,7 +247,10 @@ namespace ISUtils.Database.Writer
 //#if DEBUG
 //                Console.WriteLine("Column: name " + column.ColumnName + "\tvalue " + row[column].ToString());
 //#endif
-                fieldDict[column.ColumnName].SetValue(row[column].ToString());
+                if (column.GetType() is DateTime)
+                    fieldDict[column.ColumnName].SetValue(SupportClass.Time.GetLuceneDate((DateTime)row[column]));
+                else
+                    fieldDict[column.ColumnName].SetValue(row[column].ToString());
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
 //#if DEBUG

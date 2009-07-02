@@ -130,6 +130,11 @@ namespace ISUtils.Utils
             if (searchIndexList == null)
                 searchIndexList = new  List<IndexSet>();
             searchIndexList.Clear();
+            if (indexNames.Length <=0)
+            {
+                searchIndexList.AddRange(indexDict.Keys);
+                return;
+            }
             foreach (string indexName in indexNames)
             {
                 string [] names=SupportClass.String.Split(indexName);
@@ -156,6 +161,11 @@ namespace ISUtils.Utils
             if (searchIndexList == null)
                 searchIndexList = new  List<IndexSet>();
             searchIndexList.Clear();
+            if (string.IsNullOrEmpty(indexNames))
+            {
+                searchIndexList.AddRange(indexDict.Keys);
+                return;
+            }
             string[] names = SupportClass.String.Split(indexNames);
             foreach (string name in names)
             {

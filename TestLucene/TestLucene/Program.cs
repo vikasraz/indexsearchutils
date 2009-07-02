@@ -62,12 +62,42 @@ namespace TestLucene
             QueryInfo info = new QueryInfo();
             info.IndexNames = "IN_IndexView_Monitoring_RSSPI,IN_IndexView_Monitoring_PM";
             info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
+            info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
+            info.RangeList.Add(new RangeCondition("","KGSJ","20000501","20090702"));
+            SearchInfo si=new SearchInfo();
+            //si.Query =info;
+            FileStream fs = new FileStream(@"F:\search.xml", FileMode.Open);
+
+            System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(SearchInfo));
+            //xsr.Serialize(fs,si);
+            si = (SearchInfo)xsr.Deserialize(fs);
+            fs.Close();
+            Console.WriteLine(si.ToString());
             DateTime start = DateTime.Now;
             Query query;
             List<Document> results = searcher.ExecuteFastSearch(info,out query);
-            TimeSpan span = DateTime.Now - start;
-            Console.WriteLine(string.Format("Spend {0} ", span.ToString()));
-            //ISUtils.SupportClass.Result.Output(result);
+            Console.WriteLine(query.ToString());
+            SearchResult sr = new SearchResult();
+            //sr.PageNum = 1;
+            //sr.TotalPages = 1;
+            //sr.Docs.AddRange(results);
+            //System.Xml.XmlWriter writer = new System.Xml.XmlTextWriter(@"F:\result.xml", null);
+            //FileStream fs = new FileStream(@"F:\result.xml", FileMode.Append);
+
+            //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(SearchResult));
+            //xsr.Serialize(fs,sr);
+            //fs.Close();
+            //FileStream fs = new FileStream(@"F:\result.xml", FileMode.Open);
+            
+            //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(SearchResult));
+            //sr=(SearchResult)xsr.Deserialize(fs);
+            //fs.Close();
+            //Console.WriteLine(sr.ToString());
+
+            //writer.Close();
+            //TimeSpan span = DateTime.Now - start;
+            //Console.WriteLine(string.Format("Spend {0} ", span.ToString()));
+            ////ISUtils.SupportClass.Result.Output(result);
             foreach (Document doc in results)
             {
                 Field[] fields = new Field[doc.GetFields().Count];
@@ -191,6 +221,9 @@ namespace TestLucene
             //TestRam();
             //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff"));
             Console.ReadKey();
+        }
+        static void TestQuery()
+        {
         }
         static void TestRam()
         {

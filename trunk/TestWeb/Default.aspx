@@ -33,7 +33,8 @@
             <asp:Label ID="Label9" runat="server" Height="21px" Text="到" Width="24px"></asp:Label>
             <asp:TextBox ID="txtRangeTo" runat="server" Height="20px" Width="239px"></asp:TextBox><br />
             <asp:Button ID="btnExactSearch" runat="server" Height="74px" OnClick="btnExactSearch_Click"
-                Text="精确搜索" Width="282px" /></asp:Panel>
+                Text="精确搜索" Width="282px" /><br />
+            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/commonsearch.aspx">国土资源综合搜索</asp:HyperLink></asp:Panel>
        </div>
     </form>
 </body>

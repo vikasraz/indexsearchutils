@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace ISUtils.Common
 {
     [Serializable]
-    public class SearchInfo
+    public class SearchInfo : IXmlSerializable
     {
+        #region "常量"
         public const int DEFPAGESIZE=10;
-        private QueryInfo queryInfo;
+        #endregion
+        #region "属性"
+        private QueryInfo queryInfo=new QueryInfo();
         public QueryInfo Query
         {
             get { return queryInfo; }
@@ -42,9 +48,186 @@ namespace ISUtils.Common
                     pageNum = 1;
             }
         }
+        #endregion
+        #region "重写"
         public override string ToString()
         {
             return queryInfo.ToString()+"\tPageSize="+pageSize.ToString()+"\tPageNum="+pageNum.ToString();
         }
+        #endregion
+        #region "IXmlSerializable"
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+        public void ReadXml(XmlReader reader)
+        {
+            string startElementName = reader.Name;
+            string currentElementName,currentNodeName,currentItemName;
+            string table,field,from,to;
+            bool interval;
+            List<string> itemList=new List<string>();
+            this.queryInfo.FilterList.Clear();
+            this.queryInfo.ExcludeList.Clear();
+            this.queryInfo.RangeList.Clear();
+            do
+            {
+                currentElementName = reader.Name;
+                if (currentElementName == startElementName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                {
+                    reader.Read();
+                    break;
+                }
+                switch (currentElementName)
+                {
+                    case "PageNum":
+                        this.pageNum = int.Parse(reader.ReadElementString());
+                        break;
+
+                    case "PageSize":
+                        this.pageSize = int.Parse(reader.ReadElementString());
+                        break;
+
+                    case "QueryInfo":
+                        this.queryInfo.IndexNames = reader.GetAttribute("IndexNames");
+                        this.queryInfo.QueryAts = reader.GetAttribute("QueryAts");
+                        this.queryInfo.WordsAllContains = reader.GetAttribute("WordsAllContains");
+                        this.queryInfo.ExactPhraseContain = reader.GetAttribute("ExactPhraseContain");
+                        this.queryInfo.OneOfWordsAtLeastContain = reader.GetAttribute("OneOfWordsAtLeastContain");
+                        this.queryInfo.WordNotInclude = reader.GetAttribute("WordNotInclude");
+                        do
+                        {
+                            currentNodeName = reader.Name;
+                            if (currentNodeName == currentElementName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                            {
+                                break;
+                            }
+                            switch (currentNodeName)
+                            {
+                                case "FilterCondition":
+                                    table = reader.GetAttribute("Table");
+                                    field = reader.GetAttribute("Field");
+                                    itemList.Clear();
+                                    do 
+                                    {
+                                        currentItemName=reader.Name;
+                                        if (currentItemName == currentNodeName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                                        {
+                                            break;
+                                        }
+                                        switch (currentItemName)
+                                        {
+                                            case "Item":
+                                                itemList.Add(reader.ReadElementString());
+                                                reader.Read();
+                                                break;
+                                            default :
+                                                reader.Read();
+                                                break;
+                                        }
+                                    } while (true);
+                                    this.queryInfo.FilterList.Add(new FilterCondition(table, field, itemList.ToArray()));
+                                    reader.Read();
+                                    break;
+                                case "ExcludeCondition":
+                                    table = reader.GetAttribute("Table");
+                                    field = reader.GetAttribute("Field");
+                                    itemList.Clear();
+                                    do
+                                    {
+                                        currentItemName = reader.Name;
+                                        if (currentItemName == currentNodeName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                                        {
+                                            break;
+                                        }
+                                        switch (currentItemName)
+                                        {
+                                            case "Item":
+                                                itemList.Add(reader.ReadElementString());
+                                                reader.Read();
+                                                break;
+                                            default:
+                                                reader.Read();
+                                                break;
+                                        }
+                                    } while (true);
+                                    this.queryInfo.ExcludeList.Add(new ExcludeCondition(table, field, itemList.ToArray()));
+                                    reader.Read();
+                                    break;
+                                case "RangeCondition":
+                                    table = reader.GetAttribute("Table");
+                                    field = reader.GetAttribute("Field");
+                                    from = reader.GetAttribute("From");
+                                    to = reader.GetAttribute("To");
+                                    interval = bool.Parse(reader.GetAttribute("Interval"));
+                                    RangeCondition rc = new RangeCondition(table, field, from, to);
+                                    rc.IntervalType = interval;
+                                    this.queryInfo.RangeList.Add(rc);
+                                    reader.Read();
+                                    break;
+                                default:
+                                    reader.Read();
+                                    break;
+                            }
+                        } while (true);
+                        reader.Read();
+                        break;
+                    default:
+                        reader.Read();
+                        break;
+
+                }
+            } while (true);
+        }
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteElementString("PageNum", pageNum.ToString());
+            writer.WriteElementString("PageSize", pageSize.ToString());
+            writer.WriteStartElement("QueryInfo");
+            writer.WriteAttributeString("IndexNames", queryInfo.IndexNames);
+            writer.WriteAttributeString("QueryAts", queryInfo.QueryAts);
+            writer.WriteAttributeString("WordsAllContains", queryInfo.WordsAllContains);
+            writer.WriteAttributeString("ExactPhraseContain", queryInfo.ExactPhraseContain);
+            writer.WriteAttributeString("OneOfWordsAtLeastContain", queryInfo.OneOfWordsAtLeastContain);
+            writer.WriteAttributeString("WordNotInclude", queryInfo.WordNotInclude);
+            foreach (FilterCondition fc in queryInfo.FilterList)
+            {
+                writer.WriteStartElement("FilterCondition");
+                writer.WriteAttributeString("Table", fc.Table);
+                writer.WriteAttributeString("Field", fc.Field);
+                writer.WriteStartElement("Values");
+                foreach (string value in fc.Values) 
+                {
+                    writer.WriteElementString("Item", value);
+                }
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+            foreach (ExcludeCondition ec in queryInfo.ExcludeList)
+            {
+                writer.WriteStartElement("ExcludeCondition");
+                writer.WriteAttributeString("Table", ec.Table);
+                writer.WriteAttributeString("Field", ec.Field);
+                writer.WriteStartElement("Values");
+                foreach (string value in ec.Values) 
+                {
+                    writer.WriteElementString("Item", value);
+                }
+                writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+            foreach (RangeCondition rc in queryInfo.RangeList)
+            {
+                writer.WriteStartElement("RangeCondition");
+                writer.WriteAttributeString("Table", rc.Table);
+                writer.WriteAttributeString("Field", rc.Field);
+                writer.WriteAttributeString("From", rc.RangeFrom);
+                writer.WriteAttributeString("To", rc.RangeTo);
+                writer.WriteAttributeString("Interval", rc.IntervalType.ToString());
+                writer.WriteEndElement();
+            }
+            writer.WriteEndElement();
+        }
+        #endregion
     }
 }

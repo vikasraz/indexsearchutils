@@ -219,11 +219,11 @@ namespace ISUtils.Utils
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     List<string> fieldList = new List<string>();
-                    foreach (string field in indexDict[indexSet].Fields)
+                    foreach (FieldProperties field in indexDict[indexSet].Fields)
                     {
-                        if (queryAtList.Contains(field))
+                        if (queryAtList.Contains(field.Field))
                         {
-                            fieldList.Add(field);
+                            fieldList.Add(field.Field);
                         }
                     }
                     indexFieldsDict.Add(indexSet, fieldList);
@@ -234,9 +234,9 @@ namespace ISUtils.Utils
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     List<string> fieldList = new List<string>();
-                    foreach (string field in indexDict[indexSet].Fields)
+                    foreach (FieldProperties field in indexDict[indexSet].Fields)
                     {
-                        fieldList.Add(field);
+                        fieldList.Add(field.Field);
                     }
                     indexFieldsDict.Add(indexSet, fieldList);
                 }
@@ -400,7 +400,7 @@ namespace ISUtils.Utils
             if (indexFieldsDict.Count > 0 && indexFieldsDict.ContainsKey(indexSet))
                 fields = indexFieldsDict[indexSet].ToArray();
             else
-                fields = indexDict[indexSet].Fields;
+                fields = indexDict[indexSet].StringFields;
             string[] wordAllContainArray = SupportClass.String.Split(wordsAllContains);
             string[] exactPhraseArray = SupportClass.String.Split(exactPhraseContain);
             string[] oneWordContainArray = SupportClass.String.Split(oneOfWordsAtLeastContain);
@@ -454,7 +454,7 @@ namespace ISUtils.Utils
             if (indexFieldsDict.Count > 0 && indexFieldsDict.ContainsKey(indexSet))
                 fields = indexFieldsDict[indexSet].ToArray();
             else
-                fields = indexDict[indexSet].Fields;
+                fields = indexDict[indexSet].StringFields;
             info.Fields = fields;
             string[] wordAllContainArray = SupportClass.String.Split(wordsAllContains);
             string[] exactPhraseArray = SupportClass.String.Split(exactPhraseContain);
@@ -731,9 +731,10 @@ namespace ISUtils.Utils
             }
             return hits;
         }
-        public static List<Document> FuzzyFastSearch()
+        public static List<SearchRecord> FuzzyFastSearch()
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            List<SearchField> sfList=new List<SearchField>();
             try
             {
                 if (searchIndexList.Count > 0)
@@ -750,7 +751,14 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
+                            Field[] fields=new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields,0);
+                            sfList.Clear();
+                            foreach(Field field in fields)
+                            {
+                                sfList.Add(new SearchField(field,indexDict[indexSet].FieldDict[field.Name()]));
+                            }
+                            recordList.Add(new SearchRecord(indexSet,sfList));
                         }
                     }
                 }
@@ -768,7 +776,14 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            sfList.Clear();
+                            foreach (Field field in fields)
+                            {
+                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
                         }
                     }
                 }
@@ -777,11 +792,12 @@ namespace ISUtils.Utils
             {
                 SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
-            return docList;
+            return recordList;
         }
-        public static List<Document> FuzzyFastSearch(out List<QueryResult.SearchInfo> siList)
+        public static List<SearchRecord> FuzzyFastSearch(out List<QueryResult.SearchInfo> siList)
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            List<SearchField> sfList = new List<SearchField>();
             siList = new List<QueryResult.SearchInfo>();
             try
             {
@@ -801,7 +817,14 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            sfList.Clear();
+                            foreach (Field field in fields)
+                            {
+                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
                         }
                         siList.Add(si);
                     }
@@ -822,7 +845,14 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
-                            docList.Add(doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            sfList.Clear();
+                            foreach (Field field in fields)
+                            {
+                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
                         }
                         siList.Add(si);
                     }
@@ -832,11 +862,11 @@ namespace ISUtils.Utils
             {
                 SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
-            return docList;
+            return recordList;
         }
-        public static List<Document> FuzzyFastSearchEx()
+        public static List<SearchRecord> FuzzyFastSearchEx()
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -875,9 +905,9 @@ namespace ISUtils.Utils
             }
             return docList;
         }
-        public static List<Document> FuzzyFastSearchEx(out Query query)
+        public static List<SearchRecord> FuzzyFastSearchEx(out Query query)
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             query = null;
             try
             {
@@ -917,9 +947,9 @@ namespace ISUtils.Utils
             }
             return docList;
         }
-        public static List<Document> FuzzyFastFieldSearch()
+        public static List<SearchRecord> FuzzyFastFieldSearch()
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             try
             {
                 if (searchIndexList.Count > 0)
@@ -967,9 +997,9 @@ namespace ISUtils.Utils
             }
             return docList;
         }
-        public static List<Document> FuzzyFastFieldSearch(out List<QueryResult.SearchInfo> siList)
+        public static List<SearchRecord> FuzzyFastFieldSearch(out List<QueryResult.SearchInfo> siList)
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             siList = new List<QueryResult.SearchInfo>();
             try
             {
@@ -1024,9 +1054,9 @@ namespace ISUtils.Utils
             }
             return docList;
         }
-        public static List<Document> FuzzyFastFieldSearch(out Query mquery)
+        public static List<SearchRecord> FuzzyFastFieldSearch(out Query mquery)
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             mquery = null;
             try
             {
@@ -1131,9 +1161,9 @@ namespace ISUtils.Utils
             }
             return hits;
         }
-        public static List<Document> ExactFastSearch()
+        public static List<SearchRecord> ExactFastSearch()
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             try
             {
                 List<IndexReader> readerList = new List<IndexReader>();
@@ -1161,9 +1191,9 @@ namespace ISUtils.Utils
             }
             return docList;
         }
-        public static List<Document> ExactFastSearch(out Query query)
+        public static List<SearchRecord> ExactFastSearch(out Query query)
         {
-            List<Document> docList = new List<Document>();
+            List<SearchRecord> docList = new List<SearchRecord>();
             query = null;
             try
             {
@@ -1202,13 +1232,75 @@ namespace ISUtils.Utils
         {
             return ExactSearch(out query);
         }
-        public static List<Document> FastSearch()
+        public static List<SearchRecord> FastSearch()
         {
             return ExactFastSearch();
         }
-        public static List<Document> FastSearch(out Query query)
+        public static List<SearchRecord> FastSearch(out Query query)
         {
             return ExactFastSearch(out query);
+        }
+        public static List<SearchRecord> SearchEx(out Query query)
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            List<SearchField> sfList = new List<SearchField>();
+            query = GetQuery();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            sfList.Clear();
+                            foreach (Field field in fields)
+                            {
+                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            sfList.Clear();
+                            foreach (Field field in fields)
+                            {
+                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
         }
         #endregion
     }

@@ -75,7 +75,7 @@ namespace TestLucene
             Console.WriteLine(si.ToString());
             DateTime start = DateTime.Now;
             Query query;
-            List<Document> results = searcher.ExecuteFastSearch(info,out query);
+            List<SearchRecord> results = searcher.ExecuteFastSearch(info,out query);
             Console.WriteLine(query.ToString());
             SearchResult sr = new SearchResult();
             //sr.PageNum = 1;
@@ -98,14 +98,12 @@ namespace TestLucene
             //TimeSpan span = DateTime.Now - start;
             //Console.WriteLine(string.Format("Spend {0} ", span.ToString()));
             ////ISUtils.SupportClass.Result.Output(result);
-            foreach (Document doc in results)
+            foreach (SearchRecord doc in results)
             {
-                Field[] fields = new Field[doc.GetFields().Count];
-                doc.GetFields().CopyTo(fields, 0);
-                foreach (Field field in fields)
+                foreach (SearchField field in doc.Fields)
                 {
-                    string key = field.Name();
-                    string value = field.StringValue();
+                    string key = field.Name;
+                    string value = field.Value;
                     Console.WriteLine(key + ":\t" + value);
                 }
                 Console.WriteLine("--------------------------------");

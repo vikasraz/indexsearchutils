@@ -75,12 +75,12 @@ namespace Searchd
                 if (searchResults.ContainsKey(searchInfo.Query))
                 {
                     WriteToLog("该搜索已经存在！");
-                    List<Document> docList = (List<Document>)searchResults[searchInfo.Query];
-                    WriteToLog("Total Hits:" + docList.Count.ToString());
+                    List<SearchRecord> recordList = (List<SearchRecord>)searchResults[searchInfo.Query];
+                    WriteToLog("Total Hits:" + recordList.Count.ToString());
                     SearchResult result = new SearchResult();
                     result.PageNum = searchInfo.PageNum;
-                    result.TotalPages = TotalPages(docList.Count, searchInfo.PageSize);
-                    result.Docs.AddRange(GetPage(docList, searchInfo.PageSize, searchInfo.PageNum));
+                    result.TotalPages = TotalPages(recordList.Count, searchInfo.PageSize);
+                    result.Records.AddRange(GetPage(recordList, searchInfo.PageSize, searchInfo.PageNum));
                     result.Query = (Query)searchQueries[searchInfo.Query];
                     WriteToLog(result.ToString());
                     SendResult(ns, result);
@@ -92,14 +92,14 @@ namespace Searchd
                     try
                     {
                         Query query;
-                        List<Document> docList = searcher.ExecuteFastSearch(searchInfo.Query, out query);
-                        searchResults.Add(searchInfo.Query, docList);
+                        List<SearchRecord> recordList = searcher.ExecuteFastSearch(searchInfo.Query, out query,searchInfo.HighLight);
+                        searchResults.Add(searchInfo.Query, recordList);
                         searchQueries.Add(searchInfo.Query, query);
-                        WriteToLog("Total Hits:" + docList.Count.ToString());
+                        WriteToLog("Total Hits:" + recordList.Count.ToString());
                         SearchResult result = new SearchResult();
                         result.PageNum = 1;
-                        result.TotalPages = TotalPages(docList.Count, searchInfo.PageSize);
-                        result.Docs.AddRange(GetPage(docList, searchInfo.PageSize, 1));
+                        result.TotalPages = TotalPages(recordList.Count, searchInfo.PageSize);
+                        result.Records.AddRange(GetPage(recordList, searchInfo.PageSize, 1));
                         result.Query = query;
                         WriteToLog(result.ToString());
                         SendResult(ns, result);
@@ -235,13 +235,13 @@ namespace Searchd
             else
                 return totalNum / pageSize + 1;
         }
-        public static List<Document> GetPage(List<Document> docList, int pageSize, int pageNum)
+        public static List<SearchRecord> GetPage(List<SearchRecord> recordList, int pageSize, int pageNum)
         {
-            List<Document> resultList = new List<Document>();
+            List<SearchRecord> resultList = new List<SearchRecord>();
             if (pageNum <= 0)
                 pageNum = 1;
-            for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < docList.Count; i++)
-                resultList.Add(docList[i]);
+            for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < recordList.Count; i++)
+                resultList.Add(recordList[i]);
             return resultList;
         }
 

@@ -13,38 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IndexEditor", "IndexEditor\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Searchd", "Searchd\Searchd.csproj", "{5343DF36-56B4-428E-947E-3D09B579F3AD}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "F:\...\TestWeb\", "..\TestWeb", "{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}"
-	ProjectSection(WebsiteProperties) = preProject
-		SccProjectName = ""$/IndexSearch/TestLucene", UVQAAAAA"
-		SccAuxPath = ""
-		SccLocalPath = ".."
-		SccProvider = "MSSCCI:Microsoft Visual SourceSafe"
-		ProjectReferences = "{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}|ISUtils.dll;{901D5415-383C-4AA6-A256-879558841BEA}|Highlighter.Net.dll;"
-		Debug.AspNetCompiler.VirtualPath = "/TestWeb"
-		Debug.AspNetCompiler.PhysicalPath = "..\TestWeb\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\TestWeb\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/TestWeb"
-		Release.AspNetCompiler.PhysicalPath = "..\TestWeb\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\TestWeb\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "1299"
-		DefaultWebSiteLanguage = "Visual C#"
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISUtils", "ISUtils\ISUtils.csproj", "{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Highlighter.Net", "..\Lucene.net\C#\contrib\Highlighter.Net\Highlighter.Net\Highlighter.Net.csproj", "{901D5415-383C-4AA6-A256-879558841BEA}"
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 10
+		SccNumberOfProjects = 9
 		SccProjectName0 = \u0022$/IndexSearch/TestLucene\u0022,\u0020UVQAAAAA
 		SccLocalPath0 = ..
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
@@ -82,12 +57,6 @@ Global
 		SccLocalPath8 = ..
 		CanCheckoutShared = false
 		SccProjectFilePathRelativizedFromConnection8 = TestLucene\\TestLucene\\
-		SccWebProject9 = true
-		SccProjectUniqueName9 = ..\\TestWeb
-		SccLocalPath9 = ..
-		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection9 = TestWeb\\
-		SccProjectEnlistmentChoice9 = 2
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -172,18 +141,6 @@ Global
 		{5343DF36-56B4-428E-947E-3D09B579F3AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5343DF36-56B4-428E-947E-3D09B579F3AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5343DF36-56B4-428E-947E-3D09B579F3AD}.Release|Win32.ActiveCfg = Release|Any CPU
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Debug|.NET.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Debug|.NET.Build.0 = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Debug|Any CPU.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Debug|Mixed Platforms.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Debug|Mixed Platforms.Build.0 = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Debug|Win32.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Release|.NET.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Release|.NET.Build.0 = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Release|Any CPU.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Release|Mixed Platforms.ActiveCfg = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Release|Mixed Platforms.Build.0 = Debug|.NET
-		{B1E582AF-2E5C-4AC9-B53B-8219B47F6B21}.Release|Win32.ActiveCfg = Debug|.NET
 		{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}.Debug|.NET.ActiveCfg = Debug|Any CPU
 		{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}.Debug|Any CPU.Build.0 = Debug|Any CPU

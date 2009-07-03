@@ -15,4 +15,28 @@ public partial class profsearch : System.Web.UI.Page
     {
 
     }
+    protected void btnAllSelArea_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem item in checkListArea.Items)
+            item.Selected = true;
+    }
+    protected void btnAllUnSelArea_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem item in checkListArea.Items)
+            item.Selected = false;
+    }
+    protected void btnAllSelDetails_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem item in checkListDetails.Items)
+            item.Selected = true;
+    }
+    protected void btnAllUnSelDetails_Click(object sender, EventArgs e)
+    {
+        foreach (ListItem item in checkListDetails.Items)
+            item.Selected = false;
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+
+    }
 }

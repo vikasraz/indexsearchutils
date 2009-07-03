@@ -19,14 +19,19 @@ namespace ISUtils.Searcher
 {
     public class SearchMaker
     {
+        #region 私有变量
         private List<Source> sourceList;
         private List<IndexSet> indexList;
         private DictionarySet dictSet;
         private SearchSet searchd;
+        #endregion
+        #region 属性
         public int Port
         {
             get { return searchd.Port; }
         }
+        #endregion
+        #region 构造函数
         public SearchMaker(string filename)
         {
             try
@@ -45,10 +50,14 @@ namespace ISUtils.Searcher
                 throw;
             }
         }
+        #endregion
+        #region 其它方法
         public int GetNetworkPort()
         {
             return searchd.Port;
         }
+        #endregion
+        #region 搜索接口
         public Message ExecuteSearch(ref NetworkStream ns,string path)
         {
             Message msg = new Message();
@@ -307,7 +316,7 @@ namespace ISUtils.Searcher
             //而采用中文分词进行预处理后，再进行搜索操作
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             List<QueryResult.SearchInfo> qrsiList;
-            List<Document> docList = Utils.SearchUtil.FuzzyFastSearch(out qrsiList);
+            List<SearchRecord> docList = Utils.SearchUtil.FuzzyFastSearch(out qrsiList);
             SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
             SearchResult result = new SearchResult(docList);
             //result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
@@ -372,7 +381,7 @@ namespace ISUtils.Searcher
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             //List<QueryResult.SearchInfo> qrsiList;
             Query query;
-            List<Document> docList = Utils.SearchUtil.FastSearch(out query);
+            List<SearchRecord> docList = Utils.SearchUtil.FastSearch(out query);
             if (query != null)
             {
                 SupportClass.File.WriteToLog(path, query.ToString());
@@ -393,16 +402,11 @@ namespace ISUtils.Searcher
             for (int i = 0; i < docList.Count && i < searchd.MaxMatches; i++)
             {
                 //Response.Write(ed.doc.ToString() + "<br>");
-                Document doc = docList[i];
-                //List<Field> fields = new List<Field>();
-                //fields.AddRange(doc.GetFields().CopyTo);
-                Field[] fields = new Field[doc.GetFields().Count];
-                doc.GetFields().CopyTo(fields, 0);
                 FormatedResult.FormatedDoc fd = new FormatedResult.FormatedDoc();
-                foreach (Field field in fields)
+                foreach (SearchField field in docList[i].Fields)
                 {
-                    string key = field.Name();
-                    string value = field.StringValue();
+                    string key = field.Name;
+                    string value = field.Value;
                     TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
                     string result = "";
                     result = highlighter.GetBestFragment(tokenStream, value);
@@ -484,7 +488,7 @@ namespace ISUtils.Searcher
             //而采用中文分词进行预处理后，再进行搜索操作
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             //List<QueryResult.SearchInfo> qrsiList;
-            List<Document> docList= Utils.SearchUtil.FastSearch();
+            List<SearchRecord> docList= Utils.SearchUtil.FastSearch();
             SupportClass.File.WriteToLog(path, "Hits " + docList.Count.ToString());
             SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
             SearchResult result = new SearchResult(docList);
@@ -546,7 +550,7 @@ namespace ISUtils.Searcher
             //而采用中文分词进行预处理后，再进行搜索操作
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             List<QueryResult.SearchInfo> qrsiList;
-            List<Document> docList = Utils.SearchUtil.FuzzyFastFieldSearch(out qrsiList);
+            List<SearchRecord> docList = Utils.SearchUtil.FuzzyFastFieldSearch(out qrsiList);
             SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
             SearchResult result = new SearchResult(docList);
             //result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
@@ -609,7 +613,7 @@ namespace ISUtils.Searcher
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             //List<QueryResult.SearchInfo> qrsiList;
             Query query;
-            List<Document> docList = Utils.SearchUtil.FuzzyFastFieldSearch(out query);
+            List<SearchRecord> docList = Utils.SearchUtil.FuzzyFastFieldSearch(out query);
             SupportClass.File.WriteToLog(path, "Hits " + docList.Count.ToString());
             Highlighter highlighter = new Highlighter(new QueryScorer(query));
             highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
@@ -618,17 +622,11 @@ namespace ISUtils.Searcher
             SupportClass.File.WriteToLog(path, "Before FormatedResutl Add Element.");
             for (int i = 0; i < docList.Count && i < searchd.MaxMatches; i++)
             {
-                //Response.Write(ed.doc.ToString() + "<br>");
-                Document doc = docList[i];
-                //List<Field> fields = new List<Field>();
-                //fields.AddRange(doc.GetFields().CopyTo);
-                Field[] fields = new Field[doc.GetFields().Count];
-                doc.GetFields().CopyTo(fields, 0);
                 FormatedResult.FormatedDoc fd = new FormatedResult.FormatedDoc();
-                foreach (Field field in fields)
+                foreach (SearchField field in docList[i].Fields)
                 {
-                    string key = field.Name();
-                    string value = field.StringValue();
+                    string key = field.Name;
+                    string value = field.Value;
                     TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
                     string result = "";
                     result = highlighter.GetBestFragment(tokenStream, value);
@@ -686,12 +684,41 @@ namespace ISUtils.Searcher
             result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
             return result;
         }
-        public List<Document> ExecuteFastSearch(QueryInfo info,out Query query)
+        public List<SearchRecord> ExecuteFastSearch(QueryInfo info,out Query query)
         {
             Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
             Utils.SearchUtil.SetQueryInfo(info);
-            List<Document> docList = Utils.SearchUtil.FastSearch(out query);
-            return docList;
+            List<SearchRecord> recordList = Utils.SearchUtil.SearchEx(out query);
+            return recordList;
         }
+        public List<SearchRecord> ExecuteFastSearch(QueryInfo info, out Query query, bool highlight)
+        {
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
+            Utils.SearchUtil.SetQueryInfo(info);
+            List<SearchRecord> recordList = Utils.SearchUtil.SearchEx(out query);
+            if (highlight)
+            {
+                Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                Analyzer analyzer = new StandardAnalyzer();
+                for (int i = 0; i < recordList.Count; i++)
+                {
+                    for (int j = 0; j < recordList[i].Fields.Count; j++)
+                    {
+                        string key = recordList[i].Fields[j].Name;
+                        string value = recordList[i].Fields[j].Value;
+                        TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                        string result = "";
+                        result = highlighter.GetBestFragment(tokenStream, value);
+                        if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                        {
+                            recordList[i].Fields[j].Value = result;
+                        }
+                    }
+                }
+            }
+            return recordList;
+        }
+        #endregion
     }
 }

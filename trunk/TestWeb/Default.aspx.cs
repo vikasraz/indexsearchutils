@@ -94,14 +94,12 @@ public partial class _Default : System.Web.UI.Page
 
             TimeSpan tm = DateTime.Now - now;
             Response.Write(sr.ToString() + "<br>");
-            foreach (Document doc in sr.Docs)
+            foreach (SearchRecord record in sr.Records)
             {
                 Response.Write("----------------------------------------<br>");
-                Field[] fields = new Field[doc.GetFields().Count];
-                doc.GetFields().CopyTo(fields, 0);
-                foreach (Field field in fields)
+                foreach (SearchField field in record.Fields)
                 {
-                    Response.Write(field.Name()+":\t"+field.StringValue() + "<br>");
+                    Response.Write(field.Name+":\t"+field.Value + "<br>");
                 }
             }
             //foreach (QueryResult.SearchInfo si in qr.docs.Keys)
@@ -232,14 +230,12 @@ public partial class _Default : System.Web.UI.Page
         }
         TimeSpan tm = DateTime.Now - now;
         Response.Write(sr.ToString() + "<br>");
-        foreach (Document doc in sr.Docs)
+        foreach (SearchRecord record in sr.Records)
         {
             Response.Write("----------------------------------------<br>");
-            Field[] fields = new Field[doc.GetFields().Count];
-            doc.GetFields().CopyTo(fields, 0);
-            foreach (Field field in fields)
+            foreach (SearchField field in record.Fields)
             {
-                Response.Write(field.Name() + ":\t" + field.StringValue() + "<br>");
+                Response.Write(field.Name + ":\t" + field.Value + "<br>");
             }
         }
         Response.Write("搜索测试完成，花费时间：" + tm.TotalMilliseconds.ToString() + "毫秒\n");

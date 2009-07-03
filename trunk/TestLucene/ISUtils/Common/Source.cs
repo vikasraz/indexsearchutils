@@ -7,6 +7,7 @@ namespace ISUtils.Common
     [Serializable]
     public class Source
     {
+        #region 标志设置
         /**/
         /// <summary>
         /// 数据库类型的标志
@@ -34,6 +35,11 @@ namespace ISUtils.Common
         public const string FieldsFlag = "FIELDS";
         /**/
         /// <summary>
+        /// 索引权重的标志
+        /// </summary>
+        public const string BoostsFlag = "BOOSTS";
+        /**/
+        /// <summary>
         /// 用户名的标志
         /// </summary>
         public const string UserNameFlag = "USERNAME";
@@ -47,6 +53,8 @@ namespace ISUtils.Common
         ///主键的标志
         /// </summary>
         public const string PrimaryKeyFlag = "PRIMARYKEY";
+        #endregion
+        #region 属性
         /**/
         /// <summary>
         /// 存储Source的名称
@@ -121,15 +129,42 @@ namespace ISUtils.Common
         /// <summary>
         /// 存储索引字段名称
         /// </summary>
-        private string[] fields;
+        private FieldProperties[] fields;
         /**/
         /// <summary>
         /// 设定或返回索引字段名称
         /// </summary>
-        public string[] Fields
+        public FieldProperties[] Fields
         {
             get { return fields; }
-            set { fields = (string[])value.Clone(); }
+            set 
+            { 
+                fields = (FieldProperties[])value.Clone();
+                if (fields != null)
+                { 
+                    if (fieldDict ==null)
+                        fieldDict = new Dictionary<string, FieldProperties>();
+                    foreach (FieldProperties fb in fields)
+                        fieldDict.Add(fb.Field, fb);
+                }
+            }
+        }
+        private Dictionary<string, FieldProperties> fieldDict = new Dictionary<string, FieldProperties>();
+        public string[] StringFields
+        {
+            get
+            {
+                string[] szFields = new string[fieldDict.Count];
+                fieldDict.Keys.CopyTo(szFields, 0);
+                return szFields;
+            }
+        }
+        public Dictionary<string, FieldProperties> FieldDict
+        {
+            get
+            {
+                return fieldDict;
+            }
         }
         /**/
         /// <summary>
@@ -173,14 +208,16 @@ namespace ISUtils.Common
             get { return primaryKey; }
             set { primaryKey = value; }
         }
+        #endregion
+        #region 方法
         public string GetFields()
         {
             if (fields == null)
                 return "";
             string ret=" ";
-            foreach (string s in fields)
+            foreach (FieldProperties fb in fields)
             {
-                ret += "," + s;
+                ret += "," + fb.ToString();
             }
             return ret.Substring(ret.IndexOf(',')+1).Trim();
         }
@@ -193,6 +230,38 @@ namespace ISUtils.Common
         {
             return GetConnectString(this);
         }
+        public bool AllContains(params string[] fieldArray)
+        {
+            bool ret = true;
+            foreach (string field in fieldArray)
+            {
+                ret = ret && fieldDict.ContainsKey(field);
+            }
+            return ret;
+        }
+        #endregion
+        #region 重写
+        /**/
+        /// <summary>
+        /// 获取Source的内容
+        /// </summary>
+        /// <returns>返回类型</returns>
+        public override string ToString()
+        {
+            string ret = string.Format("Souce[{0}]:DBType({1}),Host({2}),DB({3}),User({4}),Pwd({5}),Query({6}),PrimayKey({7}),Fields(",
+                                     sourcename, DbType.GetDbTypeStr(dbtype), hostname, database,
+                                     username, password, query, primaryKey);
+            if (fields != null && fields.Length > 0)
+            {
+                foreach (FieldProperties fb in fields)
+                    ret += fb.ToString() + ",";
+                ret = ret.Substring(0, ret.Length - 1);
+            }
+            ret += ")";
+            return base.ToString() + "\t" + ret;
+        }
+        #endregion
+        #region 公共方法
         /**/
         /// <summary>
         /// 获取Source的连接字符串
@@ -217,25 +286,6 @@ namespace ISUtils.Common
                     break;
             }
             return connectstr;
-        }
-        /**/
-        /// <summary>
-        /// 获取Source的内容
-        /// </summary>
-        /// <returns>返回类型</returns>
-        public override string ToString()
-        {
-            string ret = string.Format("Souce[{0}]:DBType({1}),Host({2}),DB({3}),User({4}),Pwd({5}),Query({6}),PrimayKey({7}),Fields(",
-                                     sourcename, DbType.GetDbTypeStr(dbtype), hostname, database, 
-                                     username, password, query,primaryKey);
-            if (fields != null && fields.Length > 0)
-            {
-                foreach (string s in fields)
-                    ret += s + ",";
-                ret = ret.Substring(0, ret.Length - 1);
-            }
-            ret += ")";
-            return base.ToString()+"\t"+ret;
         }
         /**/
         /// <summary>
@@ -384,16 +434,34 @@ namespace ISUtils.Common
                 if (findSource && srcStart && SupportClass.String.StartsWithNoCase(SupportClass.String.FormatStr(s), Source.FieldsFlag))
                 {
                     string format = SupportClass.String.FormatStr(s);
-                    string[] split = SupportClass.String.Split(format, Config.Devider);
+                    int pos = format.IndexOf('=');
+                    string rest = format.Substring(pos + 1);
+                    if (rest.IndexOf(')') > 0)
+                    {
+                        List<FieldProperties> fpList = new List<FieldProperties>();
+                        string[] split = SupportClass.String.Split(rest, ")");
+#if DEBUG
+                        Console.WriteLine(format);
+                        foreach (string a in split)
+                            Console.WriteLine(a);
+#endif
+                        foreach (string token in split)
+                            fpList.Add(new FieldProperties(token));
+                        src.fields = fpList.ToArray();
+                    }
+                    else
+                    {
+                        List<FieldProperties> fpList = new List<FieldProperties>();
+                        string[] split = SupportClass.String.Split(rest, ",");
 #if DEBUG
                     Console.WriteLine(format);
                     foreach (string a in split)
                         Console.WriteLine(a);
 #endif
-                    string[] fs = new string[split.Length - 1];
-                    for (int i = 1; i < split.Length; i++)
-                        fs[i - 1] = split[i];
-                    src.Fields = fs;
+                        foreach (string token in split)
+                            fpList.Add(new FieldProperties(token));
+                        src.fields = fpList.ToArray();
+                    }
                     continue;
                 }
                 if (findSource && srcStart && SupportClass.String.StartsWithNoCase(SupportClass.String.FormatStr(s), Source.UserNameFlag))
@@ -450,5 +518,6 @@ namespace ISUtils.Common
             sw.WriteLine("\t" + Source.PrimaryKeyFlag.ToLower() + "=" + source.PrimaryKey);
             sw.WriteLine(Config.Suffix);
         }
+        #endregion
     }
 }

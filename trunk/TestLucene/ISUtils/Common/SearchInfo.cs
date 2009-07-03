@@ -48,6 +48,12 @@ namespace ISUtils.Common
                     pageNum = 1;
             }
         }
+        private bool highLight = false;
+        public bool HighLight
+        {
+            get { return highLight; }
+            set { highLight = value; }
+        }
         #endregion
         #region "重写"
         public override string ToString()
@@ -87,7 +93,9 @@ namespace ISUtils.Common
                     case "PageSize":
                         this.pageSize = int.Parse(reader.ReadElementString());
                         break;
-
+                    case "HighLight":
+                        this.highLight = bool.Parse(reader.ReadElementString());
+                        break;
                     case "QueryInfo":
                         this.queryInfo.IndexNames = reader.GetAttribute("IndexNames");
                         this.queryInfo.QueryAts = reader.GetAttribute("QueryAts");
@@ -183,6 +191,7 @@ namespace ISUtils.Common
         {
             writer.WriteElementString("PageNum", pageNum.ToString());
             writer.WriteElementString("PageSize", pageSize.ToString());
+            writer.WriteElementString("HighLight", highLight.ToString());
             writer.WriteStartElement("QueryInfo");
             writer.WriteAttributeString("IndexNames", queryInfo.IndexNames);
             writer.WriteAttributeString("QueryAts", queryInfo.QueryAts);

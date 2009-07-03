@@ -24,8 +24,8 @@ public partial class searchutils : System.Web.UI.Page
     {
         string searchWords = Request.QueryString["SearchWords"];
         //Response.Write(searchWords);
-        string hostname = "192.168.1.102";
-        int port = 3312;
+        string hostname = ConfigurationManager.AppSettings["HostName"];
+        int port = int.Parse(ConfigurationManager.AppSettings["PortNum"]);
         TcpClient client;
         NetworkStream ns;
         BinaryFormatter formater;

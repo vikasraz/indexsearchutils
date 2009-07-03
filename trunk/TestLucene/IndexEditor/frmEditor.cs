@@ -225,7 +225,7 @@ namespace IndexEditor
                 source.SourceName = textBoxSourceName.Text;
                 source.DBType = ISUtils.Common.DbType.GetDbType(comboBoxSourceType.Text);
                 source.DataBase = textBoxDataBase.Text;
-                source.Fields = textBoxFields.Text.Split(new char[]{'\t',',',' '});
+                source.Fields = FieldProperties.ToArray(textBoxFields.Text.Split(new char[]{'\t',',',' '}));
                 source.HostName = textBoxHostName.Text;
                 source.Password = textBoxPassword.Text;
                 source.Query = textBoxQuery.Text;

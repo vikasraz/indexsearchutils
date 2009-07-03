@@ -30,18 +30,18 @@ namespace ISUtils.Common
             get { return totalPages; }
             set { totalPages = value; }
         }
-        private List<Document> docList = new List<Document>();
-        public List<Document> Docs
+        private List<SearchRecord> recordList = new List<SearchRecord>();
+        public List<SearchRecord> Records
         {
             get 
             {
-                if (docList == null)
-                    docList = new List<Document>();
-                return docList;
+                if (recordList == null)
+                    recordList = new List<SearchRecord>();
+                return recordList;
             }
             set
             {
-                docList = value;
+                recordList = value;
             }
         }
         #endregion
@@ -49,29 +49,51 @@ namespace ISUtils.Common
         public SearchResult()
         { 
         }
+        public SearchResult(List<SearchRecord> recordList)
+        {
+            this.recordList = recordList;
+        }
         public SearchResult(List<Document> docList)
         {
-            this.docList = docList;
+            this.recordList = SearchRecord.ToList(docList);
         }
         #endregion
         #region "添加数据接口"
         public void AddResult(List<Document> docList)
         {
-            if (this.docList == null)
-                this.docList = new List<Document>();
-            this.docList.AddRange(docList);
+            if (this.recordList == null)
+                this.recordList = new List<SearchRecord>();
+            this.recordList.AddRange(SearchRecord.ToList(docList));
         }
         public void AddResult(Document[] docs)
         {
-            if (this.docList == null)
-                this.docList = new List<Document>();
-            this.docList.AddRange(docs); 
+            if (this.recordList == null)
+                this.recordList = new List<SearchRecord>();
+            this.recordList.AddRange(SearchRecord.ToList(docs)); 
         }
         public void AddResult(Document doc)
         {
-            if (this.docList == null)
-                this.docList = new List<Document>();
-            this.docList.Add(doc);
+            if (this.recordList == null)
+                this.recordList = new List<SearchRecord>();
+            this.recordList.Add(new SearchRecord(doc));
+        }
+        public void AddResult(List<SearchRecord> recordList)
+        {
+            if (this.recordList == null)
+                this.recordList = new List<SearchRecord>();
+            this.recordList.AddRange(recordList);
+        }
+        public void AddResult(SearchRecord[] records)
+        {
+            if (this.recordList == null)
+                this.recordList = new List<SearchRecord>();
+            this.recordList.AddRange(records);
+        }
+        public void AddResult(SearchRecord record)
+        {
+            if (this.recordList == null)
+                this.recordList = new List<SearchRecord>();
+            this.recordList.Add(record);
         }
         #endregion
         #region "重写"
@@ -105,11 +127,11 @@ namespace ISUtils.Common
             string startElementName = reader.Name;
             string currentElementName;
             string currentNodeName;
-            string fieldName;
-            string fieldValue;
+            string fieldName,fieldValue,fieldCaption;
             float fieldBoost;
+            bool isTitle;
 
-            this.docList.Clear();
+            this.recordList.Clear();
             do
             {
                 currentElementName = reader.Name;
@@ -129,7 +151,10 @@ namespace ISUtils.Common
                         break;
 
                     case "Doc":
-                        Document doc = new Document();
+                        SearchRecord record = new SearchRecord();
+                        record.Name = reader.GetAttribute("Name");
+                        record.Caption = reader.GetAttribute("Caption");
+                        record.IndexName = reader.GetAttribute("Index");
                         do
                         {
                             currentNodeName = reader.Name;
@@ -143,8 +168,9 @@ namespace ISUtils.Common
                                     fieldName=reader.GetAttribute("Name");
                                     fieldValue= reader.GetAttribute("Value");
                                     fieldBoost = float.Parse(reader.GetAttribute("Boost"));
-                                    doc.Add(new Field(fieldName,fieldValue, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-                                    doc.GetField(fieldName).SetBoost(fieldBoost);
+                                    fieldCaption = reader.GetAttribute("Caption");
+                                    isTitle = bool.Parse(reader.GetAttribute("IsTitle"));
+                                    record.Add(new SearchField(fieldName,fieldCaption,fieldValue,fieldBoost,isTitle));
                                     reader.Read();
                                     break;
                                 default:
@@ -152,7 +178,7 @@ namespace ISUtils.Common
                                     break;
                             }
                         } while (true);
-                        this.docList.Add(doc);
+                        this.recordList.Add(record);
                         reader.Read();
                         break;
                     default:
@@ -166,17 +192,20 @@ namespace ISUtils.Common
         {
             writer.WriteElementString("PageNum", pageNum.ToString());
             writer.WriteElementString("TotalPages", totalPages.ToString());
-            foreach (Document doc in docList)
+            foreach (SearchRecord record in recordList)
             {
                 writer.WriteStartElement("Doc");
-                Field[] fields = new Field[doc.GetFields().Count];
-                doc.GetFields().CopyTo(fields, 0);
-                foreach (Field field in fields)
+                writer.WriteAttributeString("Name", record.Name);
+                writer.WriteAttributeString("Caption", record.Caption);
+                writer.WriteAttributeString("Index", record.IndexName);
+                foreach (SearchField field in record.Fields)
                 {
                     writer.WriteStartElement("Field");
-                    writer.WriteAttributeString("Name",field.Name());
-                    writer.WriteAttributeString("Value", field.StringValue());
-                    writer.WriteAttributeString("Boost", field.GetBoost().ToString());
+                    writer.WriteAttributeString("Name",field.Name);
+                    writer.WriteAttributeString("Caption", field.Caption);
+                    writer.WriteAttributeString("Value", field.Value);
+                    writer.WriteAttributeString("Boost", field.Boost.ToString());
+                    writer.WriteAttributeString("IsTitle", field.IsTitle.ToString());
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();

@@ -688,7 +688,7 @@ namespace ISUtils.Searcher
         {
             Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
             Utils.SearchUtil.SetQueryInfo(info);
-            List<SearchRecord> recordList = Utils.SearchUtil.SearchEx(out query);
+            List<SearchRecord> recordList = Utils.SearchUtil.FastSearch(out query);
             return recordList;
         }
         public List<SearchRecord> ExecuteFastSearch(QueryInfo info, out Query query, bool highlight)

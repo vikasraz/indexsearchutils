@@ -447,20 +447,20 @@ namespace ISUtils.Common
 #endif
                         foreach (string token in split)
                             fpList.Add(new FieldProperties(token));
-                        src.fields = fpList.ToArray();
+                        src.Fields = fpList.ToArray();
                     }
                     else
                     {
                         List<FieldProperties> fpList = new List<FieldProperties>();
                         string[] split = SupportClass.String.Split(rest, ",");
 #if DEBUG
-                    Console.WriteLine(format);
-                    foreach (string a in split)
-                        Console.WriteLine(a);
+                        Console.WriteLine(format);
+                        foreach (string a in split)
+                            Console.WriteLine(a);
 #endif
                         foreach (string token in split)
                             fpList.Add(new FieldProperties(token));
-                        src.fields = fpList.ToArray();
+                        src.Fields = fpList.ToArray();
                     }
                     continue;
                 }

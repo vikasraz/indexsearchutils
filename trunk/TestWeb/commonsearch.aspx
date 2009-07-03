@@ -15,21 +15,28 @@
                     国土资源综合搜索</td>
             </tr>
             <tr>
-                <td colspan="3" rowspan="1" style="width: 840px; height: 196px; text-align: left">
-                </td>
-                <td colspan="1" rowspan="5" style="width: 26px; text-align: left">
-                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/profsearch.aspx" Height="16px" Width="64px">高级搜索</asp:HyperLink>
-                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/searchsetting.aspx" Height="18px" Width="68px">搜索设置</asp:HyperLink>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" rowspan="4" style="width: 840px; text-align: left; height: 212px;">
+                <td colspan="3" rowspan="5" style="width: 840px; height: 189px; text-align: left">
                     <asp:TextBox ID="txtSearch" runat="server" Height="18px" Width="759px"  AutoPostBack="True">请输入搜索关键词</asp:TextBox>&nbsp;<asp:ImageButton
                         ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/App_GlobalResources/search.jpg"
                         Width="18px" />
                     <div id="divSearch" style="width: 766px; height: 173px; text-align: left" atomicselection="true">
                     </div>
                 </td>
+                <td colspan="1" rowspan="5" style="width: 26px; text-align: left; height: 189px;">
+                    <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/profsearch.aspx" Height="16px" Width="64px">高级搜索</asp:HyperLink><br>
+                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/searchsetting.aspx" Height="18px" Width="68px">搜索设置</asp:HyperLink>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                </td>
+            </tr>
+            <tr>
             </tr>
             <tr>
             </tr>

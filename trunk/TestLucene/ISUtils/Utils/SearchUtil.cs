@@ -1251,6 +1251,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
@@ -1265,7 +1267,7 @@ namespace ISUtils.Utils
                             sfList.Clear();
                             foreach (Field field in fields)
                             {
-                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                                sfList.Add(new SearchField(field, fpDict[field.Name()]));
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }
@@ -1275,6 +1277,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
@@ -1289,7 +1293,7 @@ namespace ISUtils.Utils
                             sfList.Clear();
                             foreach (Field field in fields)
                             {
-                                sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
+                                sfList.Add(new SearchField(field, fpDict[field.Name()]));
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }

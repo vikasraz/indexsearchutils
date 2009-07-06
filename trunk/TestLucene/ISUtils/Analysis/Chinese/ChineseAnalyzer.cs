@@ -29,8 +29,6 @@ namespace ISUtils.Analysis.Chinese
         /// </summary>
         public override TokenStream TokenStream(string fieldName, System.IO.TextReader reader)
         {
-            //throw new Exception("The method or operation is not implemented.");
-
             //if (tokenizer == null)
             //   tokenizer=new ChineseTokenizer(reader);
            return new ChineseTokenizer(reader);

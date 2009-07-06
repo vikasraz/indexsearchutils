@@ -1223,8 +1223,10 @@ namespace IndexEditor
             {
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
                 toolStripStatusLabelStatus.Text = "正在构建主索引！";
-                //ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
-                ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
+                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
+                toolStripStatusLabelStatus.Text = "构建主索引完毕！";
+                ShowInformation("主索引构建完成");
             }
             catch (Exception ex)
             {
@@ -1232,8 +1234,6 @@ namespace IndexEditor
             }
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
-            toolStripStatusLabelStatus.Text = "构建主索引完毕！";
-            ShowInformation("主索引构建完成");
             toolStripStatusLabelStatus.Text = "";
         }
         private void OnIndexCompleted(object sender, IndexCompletedEventArgs e)
@@ -1258,8 +1258,10 @@ namespace IndexEditor
             try
             {
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
-                //ISUtils.Utils.IndexUtil.IndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
-                ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Increment,ref toolStripProgressBar);
+                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+                //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Increment,ref toolStripProgressBar);
+                toolStripStatusLabelStatus.Text = "构建增量索引完毕！";
+                ShowInformation("增量索引构建完成");
             }
             catch (Exception ex)
             {
@@ -1267,8 +1269,6 @@ namespace IndexEditor
             }
             toolStripProgressBar.Visible = false;
             this.Cursor = Cursors.Default;
-            toolStripStatusLabelStatus.Text = "构建增量索引完毕！";
-            ShowInformation("增量索引构建完成");
             toolStripStatusLabelStatus.Text = "";
         }
 

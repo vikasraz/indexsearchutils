@@ -16,12 +16,15 @@ namespace ISUtils.Indexer
 {
     public class IndexMaker
     {
+        #region Var
         private List<Source> sourceList;
         private List<IndexSet> indexList;
         private IndexerSet indexer;
         private DictionarySet dictSet;
         private Dictionary<IndexSet,Source> ordinaryDict;
         private Dictionary<IndexSet,Source> incremenDict;
+        #endregion
+        #region Contructor
         public IndexMaker(string filename)
         {
             try
@@ -41,6 +44,8 @@ namespace ISUtils.Indexer
             }
             Init();
         }
+        #endregion
+        #region Private Func
         private void Init()
         {
             ordinaryDict = new Dictionary<IndexSet,Source>();
@@ -60,6 +65,8 @@ namespace ISUtils.Indexer
                 }
             }
         }
+        #endregion
+        #region Function
         public bool CanIndex(TimeSpan span, IndexTypeEnum type)
         {
             if (type == IndexTypeEnum.Ordinary)
@@ -107,7 +114,35 @@ namespace ISUtils.Indexer
                 return msg;
             }
         }
-        public static void Execute(Dictionary<IndexSet, Source> dict,DictionarySet dictSet,IndexerSet indexer,bool create,ref Message msg)
+        public Message ExecuteBoostIndexer(TimeSpan span, IndexTypeEnum type)
+        {
+            Message msg = new Message();
+            if (CanIndex(span, type) == false)
+            {
+                msg.Result = "ExecuteIndexer does not run.";
+                msg.Success = false;
+                return msg;
+            }
+            try
+            {
+                BoostExecute(ordinaryDict, dictSet, indexer, type == IndexTypeEnum.Ordinary, ref msg);
+                msg.Result = "ExecuteIndexer Success.";
+                msg.Success = true;
+                return msg;
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
+
+#endif
+                msg.Result = "Exception:" + e.StackTrace.ToString();
+                msg.Success = false;
+                msg.ExceptionOccur = true;
+                return msg;
+            }
+        }
+        public static void BoostExecute(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
         {
             try
             {
@@ -117,7 +152,35 @@ namespace ISUtils.Indexer
                 //由于中文分词结果随中文词库的变化而变化，为了使索引不需要根据中文词库的变化而变化，
                 //故采用默认的Analyzer来进行分词，即StandardAnalyzer
                 //Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
-                Utils.IndexUtil.IndexEx(create);
+                Utils.IndexUtil.BoostIndex(create);
+                msg.AddInfo("All End at :" + DateTime.Now.ToLocalTime());
+                TimeSpan allSpan = DateTime.Now - allStart;
+                msg.AddInfo(string.Format("All Spend {0} millionseconds.", allSpan.TotalMilliseconds));
+                msg.Success = true;
+                msg.Result = "Execute Success.";
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
+#endif
+                msg.AddInfo("Write Index Error.Reason:" + e.StackTrace.ToString());
+                msg.Success = false;
+                msg.ExceptionOccur = true;
+                throw e;
+            }
+        }
+        public static void Execute(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
+        {
+            try
+            {
+                DateTime allStart = DateTime.Now;
+                msg.AddInfo("All Start at :" + allStart.ToLocalTime());
+                Utils.IndexUtil.SetIndexSettings(dict, dictSet, indexer);
+                //由于中文分词结果随中文词库的变化而变化，为了使索引不需要根据中文词库的变化而变化，
+                //故采用默认的Analyzer来进行分词，即StandardAnalyzer
+                //Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+                Utils.IndexUtil.Index(create);
                 msg.AddInfo("All End at :"+DateTime.Now.ToLocalTime());
                 TimeSpan allSpan=DateTime.Now -allStart;
                 msg.AddInfo(string.Format("All Spend {0} millionseconds.",allSpan.TotalMilliseconds));
@@ -135,5 +198,6 @@ namespace ISUtils.Indexer
                 throw e;
             }
         }
+        #endregion
     }
 }

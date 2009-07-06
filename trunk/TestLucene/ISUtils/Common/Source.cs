@@ -144,8 +144,13 @@ namespace ISUtils.Common
                 { 
                     if (fieldDict ==null)
                         fieldDict = new Dictionary<string, FieldProperties>();
+                    if (boostDict == null)
+                        boostDict = new Dictionary<string, float>();
                     foreach (FieldProperties fb in fields)
+                    {
                         fieldDict.Add(fb.Field, fb);
+                        boostDict.Add(fb.Field, fb.Boost);
+                    }
                 }
             }
         }
@@ -165,6 +170,11 @@ namespace ISUtils.Common
             {
                 return fieldDict;
             }
+        }
+        private Dictionary<string, float> boostDict = new Dictionary<string, float>();
+        public Dictionary<string, float> FieldBoostDict
+        {
+            get { return boostDict; }
         }
         /**/
         /// <summary>

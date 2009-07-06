@@ -175,7 +175,9 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
-                Field field=new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                Field field = new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                if (fieldsBoostDict.ContainsKey(column.ColumnName))
+                    field.SetBoost(fieldsBoostDict[column.ColumnName]);
                 fieldDict.Add(column.ColumnName, field);
             }
 #if DEBUG
@@ -212,7 +214,10 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
-                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+                Field field = new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                if (fieldsBoostDict.ContainsKey(column.ColumnName))
+                    field.SetBoost(fieldsBoostDict[column.ColumnName]);
+                fieldDict.Add(column.ColumnName, field);
             }
 #if DEBUG
             DateTime start = DateTime.Now;
@@ -335,7 +340,7 @@ namespace ISUtils.Database.Writer
             int i = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
 #if DEBUG
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
@@ -378,7 +383,7 @@ namespace ISUtils.Database.Writer
             {
                 foreach (DataRow row in collection)
                 {
-                    WriteDataRow(row, 1.0f);
+                    WriteDataRow(row);
                     i++;
                     if (i / SupportClass.RAM_FLUSH_NUM >= 1 && i % SupportClass.RAM_FLUSH_NUM == 0)
                     {
@@ -423,7 +428,7 @@ namespace ISUtils.Database.Writer
             progressBar.Value  = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
                 {
@@ -462,7 +467,7 @@ namespace ISUtils.Database.Writer
             progressBar.Value = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
                 {

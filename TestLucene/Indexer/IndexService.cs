@@ -77,7 +77,7 @@ namespace Indexer
                 {
                     try
                     {
-                        Message msg = maker.ExecuteIndexer(span, IndexTypeEnum.Ordinary);
+                        Message msg = maker.ExecuteBoostIndexer(span, IndexTypeEnum.Ordinary);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else
@@ -94,7 +94,7 @@ namespace Indexer
                 {
                     try
                     {
-                        Message msg = maker.ExecuteIndexer(span, IndexTypeEnum.Increment);
+                        Message msg = maker.ExecuteBoostIndexer(span, IndexTypeEnum.Increment);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else

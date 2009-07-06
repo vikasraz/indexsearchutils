@@ -34,7 +34,7 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
         /// <param name="boost">数据的权重</param>
-        void WriteDataRow(DataRow row, float boost);
+        void WriteDataRow(DataRow row);
         /**/
         /// <summary>
         /// 对数据库行进行索引

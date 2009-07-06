@@ -11,12 +11,14 @@ namespace ISUtils.Utils
 {
     public static class IndexUtil
     {
+        #region static private vars
         private static Dictionary<IndexSet, Source> indexDict=new Dictionary<IndexSet,Source>();
         private static IndexerSet indexerSet=new IndexerSet();
         private static DictionarySet dictSet=new DictionarySet();
         private static Analyzer analyzer = new StandardAnalyzer();
         private static bool initSettings = false;
-
+        #endregion
+        #region settings
         public static void SetIndexSettings(string configFileName)
         {
             if (initSettings) return;
@@ -96,6 +98,9 @@ namespace ISUtils.Utils
             else
                 analyzer = new StandardAnalyzer();
         }
+        #endregion
+        #region Index
+        #region No Ram,No boost
         public static void Index(IndexTypeEnum type)
         {
             if (!initSettings)
@@ -174,6 +179,52 @@ namespace ISUtils.Utils
                 System.Windows.Forms.Application.DoEvents();
             }
         }
+        #endregion
+        #region No Ram,Boost
+        public static void BoostIndex(IndexTypeEnum type)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
+                    }
+                }
+            }
+        }
+        public static void BoostIndexWithEvent(IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == type)
+                    {
+                        IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                    }
+                }
+            }
+        }
+        public static void BoostIndex(bool create)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
+                }
+            }
+        }
+        #endregion
+        #region Use Ram,No Boost
         public static void IndexEx(IndexTypeEnum type)
         {
             if (!initSettings)
@@ -252,6 +303,7 @@ namespace ISUtils.Utils
                 System.Windows.Forms.Application.DoEvents();
             }
         }
-
+        #endregion
+        #endregion
     }
 }

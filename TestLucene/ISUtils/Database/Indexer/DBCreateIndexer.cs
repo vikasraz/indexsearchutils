@@ -11,6 +11,7 @@ namespace ISUtils.Database.Indexer
 {
     public class DBCreateIndexer : DbIndexerBase,DataBaseIndexer
     {
+        #region Property
         /**/
         /// <summary>
         /// 数据库连接字符串
@@ -38,11 +39,15 @@ namespace ISUtils.Database.Indexer
         {
             get { return _directory; }
         }
+        #endregion
+        #region Private Var
         /**/
         /// <summary>
         /// 数据库类型
         /// </summary>
         private DBTypeEnum dbType = DBTypeEnum.SQL_Server;
+        #endregion
+        #region Function
         /**/
         /// <summary>
         /// 构造函数
@@ -128,6 +133,77 @@ namespace ISUtils.Database.Indexer
         /// <param name="strSQL">数据库查询语句</param>
         /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
         /// <param name="maxBufferedDocs">文档内存最大存储数</param>
+        public override void WriteResults(string strSQL, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs, Dictionary<string, float> fieldBoostDict)
+        {
+            DBLinker linker;
+
+            switch (dbType)
+            {
+                case DBTypeEnum.SQL_Server:
+                    linker = new SqlServerLinker(_connectString);
+                    break;
+                case DBTypeEnum.OLE_DB:
+                    linker = new OleDbLinker(_connectString);
+                    break;
+                case DBTypeEnum.ODBC:
+                    linker = new OdbcLinker(_connectString);
+                    break;
+                case DBTypeEnum.Oracle:
+                    linker = new OracleLinker(_connectString);
+                    break;
+                default:
+                    linker = new SqlServerLinker(_connectString);
+                    break;
+            }
+            DataTable dt = linker.ExecuteSQL(strSQL);
+            DbWriterBase writer = new DBCreateIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            writer.WriteDataTable(dt,fieldBoostDict);
+            linker.Close();
+        }
+        /**/
+        /// <summary>
+        /// 将数据库查询结果写入索引
+        /// </summary>
+        /// <param name="strSQL">数据库查询语句</param>
+        /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
+        /// <param name="maxBufferedDocs">文档内存最大存储数</param>
+        public override void WriteResultsWithEvent(string strSQL, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs, Dictionary<string, float> fieldBoostDict)
+        {
+            DBLinker linker;
+
+            switch (dbType)
+            {
+                case DBTypeEnum.SQL_Server:
+                    linker = new SqlServerLinker(_connectString);
+                    break;
+                case DBTypeEnum.OLE_DB:
+                    linker = new OleDbLinker(_connectString);
+                    break;
+                case DBTypeEnum.ODBC:
+                    linker = new OdbcLinker(_connectString);
+                    break;
+                case DBTypeEnum.Oracle:
+                    linker = new OracleLinker(_connectString);
+                    break;
+                default:
+                    linker = new SqlServerLinker(_connectString);
+                    break;
+            }
+            DataTable dt = linker.ExecuteSQL(strSQL);
+            DbWriterBase writer = new DBCreateIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            writer.OnProgressChanged += new WriteDbProgressChangedEventHandler(Writer_OnProgressChanged);
+            writer.WriteDataTableWithEvent(dt,fieldBoostDict);
+            linker.Close();
+            IndexCompletedEventArgs args = new IndexCompletedEventArgs("CreateIndex");
+            OnIndexCompletedEvent(this, args);
+        }
+        /**/
+        /// <summary>
+        /// 将数据库查询结果写入索引
+        /// </summary>
+        /// <param name="strSQL">数据库查询语句</param>
+        /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
+        /// <param name="maxBufferedDocs">文档内存最大存储数</param>
         public override void WriteResultsWithEvent(string strSQL, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
         {
             DBLinker linker;
@@ -158,7 +234,6 @@ namespace ISUtils.Database.Indexer
             IndexCompletedEventArgs args = new IndexCompletedEventArgs("CreateIndex");
             OnIndexCompletedEvent(this, args);
         }
-
         void Writer_OnProgressChanged(object sender, ISUtils.Async.WriteDbProgressChangedEventArgs e)
         {
             IndexProgressChangedEventArgs args = new IndexProgressChangedEventArgs( e.RowNum,e.CurrentRow);
@@ -232,5 +307,6 @@ namespace ISUtils.Database.Indexer
             writer.WriteDataTable(dt, ref progressBar);
             linker.Close();
         }
+        #endregion
     }
 }

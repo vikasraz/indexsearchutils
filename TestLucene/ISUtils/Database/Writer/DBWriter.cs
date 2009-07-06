@@ -97,6 +97,36 @@ namespace ISUtils.Database.Writer
         /// 对数据库表进行索引
         /// </summary>
         /// <param name="table">数据库表名</param>
+        public override void WriteDataTable(DataTable table, Dictionary<string, float> fieldsBoostDict)
+        {
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
+            WriteDataRowCollection(table.Rows);
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
+        public override void WriteDataTableWithEvent(DataTable table, Dictionary<string, float> fieldsBoostDict)
+        {
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
+            WriteDataRowCollection(table.Rows);
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
         public override void WriteDataTableWithEvent(DataTable table)
         {
             this.isBusy = true;
@@ -153,7 +183,7 @@ namespace ISUtils.Database.Writer
         {
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
             }
             writer.Close();
         }
@@ -166,7 +196,7 @@ namespace ISUtils.Database.Writer
         {
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
             }
             writer.Close();
         }
@@ -183,7 +213,7 @@ namespace ISUtils.Database.Writer
             int i = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
                 {
@@ -206,7 +236,7 @@ namespace ISUtils.Database.Writer
             int i = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
                 {

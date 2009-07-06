@@ -145,6 +145,88 @@ namespace ISUtils.Database.Writer
         /// 对数据库表进行索引
         /// </summary>
         /// <param name="table">数据库表名</param>
+        public override void WriteDataTable(DataTable table, Dictionary<string, float> fieldsBoostDict)
+        {
+            if (writer == null)
+            {
+                throw new Exception("The IndexWriter does not created.");
+            }
+            if (fieldsBoostDict == null)
+                throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
+            if (document == null)
+                document = new Document();
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
+            DataColumnCollection columns = table.Columns;
+            foreach (DataColumn column in columns)
+            {
+                Field field=new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                if (fieldsBoostDict.ContainsKey(column.ColumnName))
+                    field.SetBoost(fieldsBoostDict[column.ColumnName]);
+                fieldDict.Add(column.ColumnName, field);
+#if DEBUG
+                System.Console.WriteLine("Caption:\t" + column.Caption + "\tName:\t" + column.ColumnName + "\tType:\t" + column.DataType.ToString());
+#endif
+            }
+#if DEBUG
+            DateTime start = DateTime.Now;
+            int count = table.Rows.Count;
+            System.Console.WriteLine("Table Name:\t" + table.TableName);
+#endif
+            WriteDataRowCollectionWithNoEvent(table.Rows);
+#if DEBUG
+            TimeSpan span = DateTime.Now - start;
+            System.Console.WriteLine(string.Format("Speed:{0}ms/line", span.TotalMilliseconds / count));
+#endif
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
+        public override void WriteDataTableWithEvent(DataTable table, Dictionary<string, float> fieldsBoostDict)
+        {
+            if (writer == null)
+            {
+                throw new Exception("The IndexWriter does not created.");
+            }
+            if (fieldsBoostDict == null)
+                throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
+            if (document == null)
+                document = new Document();
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
+            DataColumnCollection columns = table.Columns;
+            foreach (DataColumn column in columns)
+            {
+                Field field = new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                if (fieldsBoostDict.ContainsKey(column.ColumnName))
+                    field.SetBoost(fieldsBoostDict[column.ColumnName]);
+                fieldDict.Add(column.ColumnName, field);
+            }
+#if DEBUG
+            DateTime start = DateTime.Now;
+            int count = table.Rows.Count;
+#endif
+            WriteDataRowCollection(table.Rows);
+#if DEBUG
+            TimeSpan span = DateTime.Now - start;
+            System.Console.WriteLine(string.Format("Speed:{0}ms/line", span.TotalMilliseconds / count));
+#endif
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
         public override void WriteDataTableWithEvent(DataTable table)
         {
             if (writer == null)
@@ -248,7 +330,7 @@ namespace ISUtils.Database.Writer
             int i = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
 #if DEBUG
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
@@ -277,7 +359,7 @@ namespace ISUtils.Database.Writer
         {
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
             }
             writer.Optimize();
             writer.Close();
@@ -299,7 +381,7 @@ namespace ISUtils.Database.Writer
             progressBar.Value  = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
                 {
@@ -328,7 +410,7 @@ namespace ISUtils.Database.Writer
             progressBar.Value = 0;
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row, 1.0f);
+                WriteDataRow(row);
                 i++;
                 if (i % SupportClass.MAX_ROWS_WRITE == 0)
                 {

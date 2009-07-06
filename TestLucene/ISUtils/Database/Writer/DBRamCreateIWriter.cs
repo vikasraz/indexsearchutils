@@ -159,6 +159,79 @@ namespace ISUtils.Database.Writer
         /// 对数据库表进行索引
         /// </summary>
         /// <param name="table">数据库表名</param>
+        public override void WriteDataTable(DataTable table, Dictionary<string, float> fieldsBoostDict)
+        {
+            if (fsWriter == null || ramWriter == null)
+            {
+                throw new Exception("The IndexWriter does not created.");
+            }
+            if (fieldsBoostDict == null)
+                throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
+            if (document == null)
+                document = new Document();
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
+            DataColumnCollection columns = table.Columns;
+            foreach (DataColumn column in columns)
+            {
+                Field field=new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
+                fieldDict.Add(column.ColumnName, field);
+            }
+#if DEBUG
+            DateTime start = DateTime.Now;
+            int count = table.Rows.Count;
+#endif
+            WriteDataRowCollectionWithNoEvent(table.Rows);
+#if DEBUG
+            TimeSpan span = DateTime.Now - start;
+            System.Console.WriteLine(string.Format("Speed:{0}ms/line", span.TotalMilliseconds / count));
+#endif
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
+        public override void WriteDataTableWithEvent(DataTable table, Dictionary<string, float> fieldsBoostDict)
+        {
+            if (fsWriter == null || ramWriter == null)
+            {
+                throw new Exception("The IndexWriter does not created.");
+            }
+            if (fieldsBoostDict == null)
+                throw new ArgumentNullException("fieldsBoost", "fieldsBoost is not valid.");
+            if (document == null)
+                document = new Document();
+            this.isBusy = true;
+            RowNum = table.Rows.Count;
+            Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
+            DataColumnCollection columns = table.Columns;
+            foreach (DataColumn column in columns)
+            {
+                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            }
+#if DEBUG
+            DateTime start = DateTime.Now;
+            int count = table.Rows.Count;
+#endif
+            WriteDataRowCollection(table.Rows);
+#if DEBUG
+            TimeSpan span = DateTime.Now - start;
+            System.Console.WriteLine(string.Format("Speed:{0}ms/line", span.TotalMilliseconds / count));
+#endif
+            WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
+            base.OnWriteTableCompletedEvent(this, args);
+            this.isBusy = false;
+        }
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
         public override void WriteDataTableWithEvent(DataTable table)
         {
             if (fsWriter == null || ramWriter == null)
@@ -234,7 +307,7 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
         /// <param name="boost">数据的权重</param>
-        public override void WriteDataRow(DataRow row, float boost)
+        public override void WriteDataRow(DataRow row)
         {
             DataColumnCollection columns = row.Table.Columns;
             foreach (DataColumn column in columns)

@@ -23,6 +23,7 @@ public partial class searchutils : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         string searchWords = Request.QueryString["SearchWords"];
+        string indexNames = Request.QueryString["IndexNames"];
         //Response.Write(searchWords);
         string hostname = ConfigurationManager.AppSettings["HostName"];
         int port = int.Parse(ConfigurationManager.AppSettings["PortNum"]);
@@ -39,6 +40,7 @@ public partial class searchutils : System.Web.UI.Page
             QueryInfo info = new QueryInfo();
             info.IndexNames = "";
             info.SearchWords = searchWords;
+            info.IndexNames = indexNames;
             sinfo.Query = info;
             formater.Serialize(ns, sinfo);
             SearchResult sr = (SearchResult)formater.Deserialize(ns);

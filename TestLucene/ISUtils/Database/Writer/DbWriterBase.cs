@@ -58,7 +58,19 @@ namespace ISUtils.Database.Writer
         /// 对数据库表进行索引
         /// </summary>
         /// <param name="table">数据库表名</param>
+        public abstract void WriteDataTable(DataTable table,Dictionary<string,float> fieldsBoostDict);
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
         public abstract void WriteDataTableWithEvent(DataTable table);
+        /**/
+        /// <summary>
+        /// 对数据库表进行索引
+        /// </summary>
+        /// <param name="table">数据库表名</param>
+        public abstract void WriteDataTableWithEvent(DataTable table, Dictionary<string, float> fieldsBoostDict);
         /**/
         /// <summary>
         /// 对数据库表进行索引
@@ -77,7 +89,7 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
         /// <param name="boost">数据的权重</param>
-        public abstract void WriteDataRow(DataRow row, float boost);
+        public abstract void WriteDataRow(DataRow row);
         /**/
         /// <summary>
         /// 对数据库行进行索引

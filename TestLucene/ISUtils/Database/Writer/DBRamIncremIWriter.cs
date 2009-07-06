@@ -252,7 +252,7 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
         /// <param name="boost">数据的权重</param>
-        public override void WriteDataRow(DataRow row, float boost)
+        public override void WriteDataRow(DataRow row)
         {
             DataColumnCollection columns = row.Table.Columns;
             foreach (DataColumn column in columns)

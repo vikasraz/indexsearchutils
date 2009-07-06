@@ -192,32 +192,19 @@ namespace TestLucene
         }
         static void Main()
         {
-            //char ch = '中';
-            //Console.WriteLine(ch);
-            ////testDB();
-            testSearch();
-            //TestChineseSegment();
-            //TeseCSegment();
-            //RangeQuery query = new RangeQuery(new Term("date",DateTime.Parse("2006-01-01").ToShortDateString()), new Term("date", "20060130"), true);
-            //Console.WriteLine(query.ToString());
-            //Console.WriteLine(string.Format("{0}%2d%2d",DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day));
-            //DateTime dt = DateTime.Now;
-            //String[] format = {"d","D","f","F","g","G","m","r","s","t", "T","u", "U","y","dddd, MMMM dd yyyy","ddd, MMM d ","yy","dddd, MMMM dd","M/yy","dd-MM-yy","yyyyMMdd","yyyyMMddHHmmss","HHmmss"};
-            //String date;
-            //for (int i = 0; i < format.Length; i++)
-            //{
-            //    date = dt.ToString(format[i]);
-            //    Console.WriteLine(String.Concat(format[i], " :" , date));
-            //}
-            //TestChineseSegmentIndexerSpeed();
-            //AllAnalysisTest aat = new AllAnalysisTest();
-            //aat.TestMethod("");
-            //TestForQuery();
-            //TestChineseSearch();
-            //Mainf();
-            //TestForChineseSegment();
-            //TestRam();
-            //Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff"));
+            Config config = new Config(@"D:\Indexer\config.conf");
+            Config nc = new Config();
+            FileStream writer = new FileStream(@"F:\config.xml", FileMode.Create);
+
+            System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
+            xsr.Serialize(writer, config);
+            writer.Close();
+
+            FileStream reader = new FileStream(@"F:\config.xml", FileMode.Open);
+
+            nc = (Config)xsr.Deserialize(reader);
+            reader.Close();
+
             Console.ReadKey();
         }
         static void TestQuery()

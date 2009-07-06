@@ -7,6 +7,7 @@ namespace ISUtils.Common
     [Serializable]
     public class IndexSet
     {
+        #region  FLAGS
         /**/
         /// <summary>
         /// 索引类型的标志
@@ -17,6 +18,8 @@ namespace ISUtils.Common
         /// 索引路径的标志
         /// </summary>
         public const string PathFlag = "PATH";
+        #endregion
+        #region Property
         /**/
         /// <summary>
         /// 存储索引名称
@@ -73,6 +76,8 @@ namespace ISUtils.Common
             get { return path; }
             set { path = value; }
         }
+        #endregion
+        #region Override
         /**/
         /// <summary>
         /// 获取Index内容
@@ -83,6 +88,8 @@ namespace ISUtils.Common
             string ret = string.Format("Index[{0}]:Source({1}),Type({2}),Path({3})",indexname, sourcename, IndexType.GetIndexTypeStr(type),path);
             return base.ToString()+"\t"+ret;
         }
+        #endregion
+        #region Static Func
         /**/
         /// <summary>
         /// 获取字符串列表中的索引列表
@@ -204,5 +211,6 @@ namespace ISUtils.Common
             sw.WriteLine("\t" + IndexSet.PathFlag.ToLower() + "=" + indexSet.Path);
             sw.WriteLine(Config.Suffix);
         }
+        #endregion
     }
 }

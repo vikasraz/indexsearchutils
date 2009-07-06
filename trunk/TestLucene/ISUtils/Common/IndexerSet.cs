@@ -7,6 +7,7 @@ namespace ISUtils.Common
     [Serializable]
     public class IndexerSet
     {
+        #region Flags
         /**/
         /// <summary>
         /// 字段最大长度
@@ -42,6 +43,8 @@ namespace ISUtils.Common
         ///文档内存最大存储数的标志
         /// </summary>
         public const string IndexerMaxBufferedDocsFlag = "MAX_BUFFERED_DOCS";
+        #endregion
+        #region Property
         /**/
         /// <summary>
         /// 存储主索引重建时间
@@ -140,6 +143,8 @@ namespace ISUtils.Common
             get { return maxBufferedDocs; }
             set { maxBufferedDocs = value; }
         }
+        #endregion
+        #region Override
         /**/
         /// <summary>
         /// 获取Indexer内容
@@ -152,6 +157,8 @@ namespace ISUtils.Common
                                      mergeFactor, maxBufferedDocs);
             return base.ToString()+"\t"+ret;
         }
+        #endregion
+        #region Static Func
         /**/
         /// <summary>
         /// 获取字符串列表中的索引器
@@ -305,5 +312,6 @@ namespace ISUtils.Common
             sw.WriteLine("\t" + IndexerSet.IndexerMaxBufferedDocsFlag.ToLower() + "=" + indexerSet.MaxBufferedDocs.ToString());
             sw.WriteLine(Config.Suffix);
         }
+        #endregion
     }
 }

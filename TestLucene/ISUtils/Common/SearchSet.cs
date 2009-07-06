@@ -11,11 +11,45 @@ namespace ISUtils.Common
     [Serializable]
     public class SearchSet
     {
+        #region Flags
         /**/
         /// <summary>
         /// IP地址的标志
         /// </summary>
         public const string AddressFlag = "ADDRESS";
+        /**/
+        /// <summary>
+        /// 端口的标志
+        /// </summary>
+        public const string PortFlag = "PORT";
+        /**/
+        /// <summary>
+        /// 结果信息的标志
+        /// </summary>
+        public const string LogPathFlag = "LOG";
+        /**/
+        /// <summary>
+        /// 查询信息路径的标志
+        /// </summary>
+        public const string QueryLogPathFlag = "QUERY_LOG";
+        /**/
+        /// <summary>
+        /// 超时时间的标志
+        /// </summary>
+        public const string TimeOutFlag = "READ_TIMEOUT";
+        /**/
+        /// <summary>
+        /// 最大匹配记录数的标志
+        /// </summary>
+        public const string MaxChildrenFlag = "MAX_CHILDREN";
+        /**/
+        /// <summary>
+        /// 最大匹配记录数的标志
+        /// </summary>
+        public const string MaxMatchesFlag = "MAX_MATCHES";
+        public const string MaxTransFlag = "MAX_TRANS";
+        #endregion
+        #region Property
         /**/
         /// <summary>
         /// 存储IP地址
@@ -32,14 +66,9 @@ namespace ISUtils.Common
         }
         /**/
         /// <summary>
-        /// 端口的标志
-        /// </summary>
-        public const string PortFlag = "PORT";
-        /**/
-        /// <summary>
         /// 存储端口
         /// </summary>
-        private int port = 3322;
+        private int port = 3312;
         /**/
         /// <summary>
         /// 设定或返回端口
@@ -49,11 +78,6 @@ namespace ISUtils.Common
             get { return port; }
             set { port = value; }
         }
-        /**/
-        /// <summary>
-        /// 结果信息的标志
-        /// </summary>
-        public const string LogPathFlag = "LOG";
         /**/
         /// <summary>
         /// 存储结果信息
@@ -70,11 +94,6 @@ namespace ISUtils.Common
         }
         /**/
         /// <summary>
-        /// 查询信息路径的标志
-        /// </summary>
-        public const string QueryLogPathFlag = "QUERY_LOG";
-        /**/
-        /// <summary>
         /// 存储查询信息路径
         /// </summary>
         private string querylogpath;
@@ -87,11 +106,6 @@ namespace ISUtils.Common
             get { return querylogpath; }
             set { querylogpath = value; }
         }
-        /**/
-        /// <summary>
-        /// 超时时间的标志
-        /// </summary>
-        public const string TimeOutFlag = "READ_TIMEOUT";
         /**/
         /// <summary>
         /// 存储超时时间
@@ -108,11 +122,6 @@ namespace ISUtils.Common
         }
         /**/
         /// <summary>
-        /// 最大匹配记录数的标志
-        /// </summary>
-        public const string MaxChildrenFlag = "MAX_CHILDREN";
-        /**/
-        /// <summary>
         /// 存储最大匹配记录数
         /// </summary>
         private int maxchildren = 0;
@@ -127,11 +136,6 @@ namespace ISUtils.Common
         }
         /**/
         /// <summary>
-        /// 最大匹配记录数的标志
-        /// </summary>
-        public const string MaxMatchesFlag = "MAX_MATCHES";
-        /**/
-        /// <summary>
         /// 存储最大匹配记录数
         /// </summary>
         private int maxmatches = 1000;
@@ -144,13 +148,14 @@ namespace ISUtils.Common
             get { return maxmatches; }
             set { maxmatches = value; }
         }
-        public const string MaxTransFlag = "MAX_TRANS";
         private int maxtrans = 100;
         public int MaxTrans
         {
             get { return maxtrans; }
             set { maxtrans = value; }
         }
+        #endregion
+        #region Override
         /**/
         /// <summary>
         /// 获取SearchSet内容
@@ -164,6 +169,8 @@ namespace ISUtils.Common
                                      querylogpath, timeout, maxchildren,maxmatches);
             return base.ToString() + "\t" + ret;
         }
+        #endregion
+        #region Static Func
         /**/
         /// <summary>
         /// 获取字符串列表中的搜索引擎设置
@@ -333,5 +340,6 @@ namespace ISUtils.Common
             sw.WriteLine("\t" + SearchSet.MaxTransFlag.ToLower() + "=" + searchSet.MaxTrans.ToString());
             sw.WriteLine(Config.Suffix);
         }
+        #endregion
     }
 }

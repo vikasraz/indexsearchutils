@@ -192,9 +192,9 @@ namespace TestLucene
         }
         static void Main()
         {
-            Config config = new Config(@"D:\Indexer\config.conf",false);
+            Config config = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
             Config nc ;//= new Config();
-            FileStream writer = new FileStream(@"F:\config.xml", FileMode.Create);
+            FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
 
             System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
             xsr.Serialize(writer, config);

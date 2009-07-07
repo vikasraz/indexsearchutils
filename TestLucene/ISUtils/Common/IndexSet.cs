@@ -15,6 +15,11 @@ namespace ISUtils.Common
         public const string TypeFlag = "TYPE";
         /**/
         /// <summary>
+        /// 索引类型的标志
+        /// </summary>
+        public const string CaptionFlag = "CAPTION";
+        /**/
+        /// <summary>
         /// 索引路径的标志
         /// </summary>
         public const string PathFlag = "PATH";
@@ -33,6 +38,12 @@ namespace ISUtils.Common
         {
             get { return indexname;}
             set { indexname =value;}
+        }
+        private string caption = "";
+        public string Caption
+        {
+            get { return caption; }
+            set { caption = value; }
         }
         /**/
         /// <summary>
@@ -187,6 +198,21 @@ namespace ISUtils.Common
                         index.SourceName = split[1];
                     else
                         index.SourceName = "";
+                    continue;
+                }
+                if (findIndex && indexStart && SupportClass.String.StartsWithNoCase(SupportClass.String.FormatStr(s), IndexSet.CaptionFlag))
+                {
+                    string format = SupportClass.String.FormatStr(s);
+                    string[] split = SupportClass.String.Split(format, Config.Devider);
+#if DEBUG
+                    Console.WriteLine(format);
+                    foreach (string a in split)
+                        Console.WriteLine(a);
+#endif
+                    if (split.Length >= 2)
+                        index.Caption = split[1];
+                    else
+                        index.Caption = "";
                     continue;
                 }
             }

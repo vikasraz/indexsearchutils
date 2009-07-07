@@ -146,7 +146,7 @@ namespace Searchd
         public static void ThreadFunc()
         {
             string[] imagePathArgs = Environment.GetCommandLineArgs();
-            string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.conf";
+            string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.xml";
             if (imagePathArgs.Length >= 2)
             {
                 configfile = imagePathArgs[1];

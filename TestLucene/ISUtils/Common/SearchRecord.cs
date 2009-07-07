@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Lucene.Net.Documents;
 
 namespace ISUtils.Common
@@ -133,8 +134,26 @@ namespace ISUtils.Common
         {           
         }
         public SearchRecord(IndexSet set, List<SearchField> fields)
-            : this(set.IndexName, set.IndexName, set.IndexName, fields)
+            : this(set.IndexName, set.Caption, set.IndexName, fields)
         { 
+        }
+        #endregion
+        #region Override
+        public override string ToString()
+        {
+            StringBuilder title = new StringBuilder();
+            StringBuilder content = new StringBuilder();
+            title.Append(name+" "+caption + " ");
+            foreach (SearchField sf in fieldList)
+            {
+                if (sf.IsTitle)
+                    title.Append(sf.Name+":"+sf.Value + "\t");
+                else
+                    content.Append(sf.Name +":"+sf.Value + "\t");
+            }
+            title.Append("\n");
+            content.Append("\n");
+            return title.ToString() + content.ToString();
         }
         #endregion
         #region 方法
@@ -143,6 +162,37 @@ namespace ISUtils.Common
             if (fieldList == null)
                 fieldList = new List<SearchField>();
             fieldList.Add(field);
+        }
+        public string ToWebString()
+        {
+            StringBuilder title = new StringBuilder();
+            StringBuilder content=new StringBuilder();
+            title.Append(caption + "&nbsp;");
+            foreach (SearchField sf in fieldList)
+            {
+                if (sf.IsTitle)
+                    title.Append(sf.Value + "&nbsp;");
+                else
+                    content.Append(sf.Value + "&nbsp;");
+            }
+            title.Append("<br>");
+            content.Append("<br>");
+            return title.ToString() + content.ToString();
+        }
+        public void GetWebInfo(out string szTitle, out string szContent)
+        {
+            StringBuilder title = new StringBuilder();
+            StringBuilder content = new StringBuilder();
+            title.Append(caption + "&nbsp;");
+            foreach (SearchField sf in fieldList)
+            {
+                if (sf.IsTitle)
+                    title.Append(sf.Value + "&nbsp;");
+                else
+                    content.Append(sf.Value + "&nbsp;");
+            }
+            szTitle = title.ToString();
+            szContent = content.ToString();
         }
         #endregion
         #region 全局方法

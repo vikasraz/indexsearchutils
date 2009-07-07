@@ -28,7 +28,7 @@ namespace Indexer
             EventLog.WriteEntry("Indexer Start....");
             EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory);
             string[] imagePathArgs = Environment.GetCommandLineArgs();
-            string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.conf";
+            string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.xml";
             if (imagePathArgs.Length >= 2)
             {
                 configfile = imagePathArgs[1];

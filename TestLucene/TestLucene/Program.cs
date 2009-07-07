@@ -192,18 +192,18 @@ namespace TestLucene
         }
         static void Main()
         {
-            Config config = new Config(@"D:\Indexer\config.conf");
-            Config nc = new Config();
+            Config config = new Config(@"D:\Indexer\config.conf",false);
+            Config nc ;//= new Config();
             FileStream writer = new FileStream(@"F:\config.xml", FileMode.Create);
 
             System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
             xsr.Serialize(writer, config);
             writer.Close();
 
-            FileStream reader = new FileStream(@"F:\config.xml", FileMode.Open);
+            //FileStream reader = new FileStream(@"F:\config.xml", FileMode.Open);
 
-            nc = (Config)xsr.Deserialize(reader);
-            reader.Close();
+            nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"F:\config.xml",typeof(Config));
+            //reader.Close();
 
             Console.ReadKey();
         }
@@ -232,7 +232,7 @@ namespace TestLucene
                 List<IndexSet> indexList;
                 DictionarySet dictSet;
                 SearchSet searchd;
-                Parser parser = new Parser(path);
+                Config parser = new Config(path,false);
                 searchd = parser.GetSearchd();
                 sourceList = parser.GetSourceList();
                 indexList = parser.GetIndexList();
@@ -299,7 +299,7 @@ namespace TestLucene
             //string dict = @"d:\Indexer\seglib\";
             //Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
             //Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
-            ISUtils.Utils.IndexUtil.SetIndexSettings(path);
+            ISUtils.Utils.IndexUtil.SetIndexSettings(path,false);
             //ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());

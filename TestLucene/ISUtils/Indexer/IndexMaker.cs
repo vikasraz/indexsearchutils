@@ -29,7 +29,7 @@ namespace ISUtils.Indexer
         {
             try
             {
-                Parser parser = new Parser(filename);
+                Config parser = new Config(filename,true);
                 sourceList = parser.GetSourceList();
                 indexList = parser.GetIndexList();
                 indexer = parser.GetIndexer();

@@ -36,7 +36,7 @@ namespace ISUtils.Searcher
         {
             try
             {
-                Parser parser = new Parser(filename);
+                Config parser = new Config(filename,true);
                 searchd = parser.GetSearchd();
                 sourceList = parser.GetSourceList();
                 indexList = parser.GetIndexList();
@@ -693,29 +693,16 @@ namespace ISUtils.Searcher
         }
         public List<SearchRecord> ExecuteFastSearch(QueryInfo info, out Query query, bool highlight)
         {
+            List<SearchRecord> recordList;
             Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
             Utils.SearchUtil.SetQueryInfo(info);
-            List<SearchRecord> recordList = Utils.SearchUtil.SearchEx(out query);
             if (highlight)
             {
-                Highlighter highlighter = new Highlighter(new QueryScorer(query));
-                highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
-                Analyzer analyzer = new StandardAnalyzer();
-                for (int i = 0; i < recordList.Count; i++)
-                {
-                    for (int j = 0; j < recordList[i].Fields.Count; j++)
-                    {
-                        string key = recordList[i].Fields[j].Name;
-                        string value = recordList[i].Fields[j].Value;
-                        TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
-                        string result = "";
-                        result = highlighter.GetBestFragment(tokenStream, value);
-                        if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
-                        {
-                            recordList[i].Fields[j].Value = result;
-                        }
-                    }
-                }
+                recordList = Utils.SearchUtil.HighLightSearch(out query);
+            }
+            else
+            {
+                recordList = Utils.SearchUtil.SearchEx(out query);
             }
             return recordList;
         }

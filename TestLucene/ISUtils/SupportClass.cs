@@ -269,7 +269,11 @@ namespace ISUtils
             }
             public static Config GetConfigFromExcelFile(string path)
             {
- 
+                Config config = new Config();
+                Dictionary<IndexSet, Source> dict = Database.DbCommon.GetExcelSettings(path);
+                config.SourceList.AddRange(dict.Values);
+                config.IndexList.AddRange(dict.Keys);
+                return config;
             }
         }
         public class Time

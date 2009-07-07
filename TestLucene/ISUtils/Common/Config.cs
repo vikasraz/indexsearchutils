@@ -221,9 +221,12 @@ namespace ISUtils.Common
             writer.WriteElementString("NumberPath", dictSet.NumberPath);
             writer.WriteElementString("FilterPath", dictSet.FilterPath);
             writer.WriteStartElement("CustomPaths");
-            foreach (string path in dictSet.CustomPaths)
+            if (dictSet.CustomPaths != null)
             {
-                writer.WriteElementString("Path", path);
+                foreach (string path in dictSet.CustomPaths)
+                {
+                    writer.WriteElementString("Path", path);
+                }
             }
             writer.WriteEndElement();
             writer.WriteEndElement();

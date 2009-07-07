@@ -399,17 +399,135 @@ namespace ISUtils.Database
                 throw new ArgumentException("path is not valid.", "path");
             DataTable table = ExcelLinker.GetDataTableFromFile(path);
             Dictionary<IndexSet, Source> dict = new Dictionary<IndexSet, Source>();
-            string tableName = "";
+            string tableName = "",currentTableName;
+            Source source=null;
+            IndexSet indexSet=null;
+            List<FieldProperties> fpList=new List<FieldProperties>();
+            bool change=false;
             foreach (DataRow row in table.Rows)
             {
+                FieldProperties fp=new FieldProperties();
+                #region DataColumn
                 foreach (DataColumn column in table.Columns)
                 {
+#if DEBUG
+                    System.Console.Write(row[column] + "\t");
+#endif
                     if (column.ColumnName.Equals("Table"))
                     {
-                      
+                        currentTableName = row[column].ToString();
+                        if (currentTableName != tableName)
+                        {
+                            if (source != null && indexSet != null)
+                            {
+                                source.Fields=fpList.ToArray();
+                                dict.Add(indexSet, source);
+                            }
+                            tableName = currentTableName;
+                            fpList.Clear();
+                            source = new Source();
+                            indexSet = new IndexSet();
+                            source.SourceName = row[column].ToString();
+                            source.Query = "select * from " + row[column].ToString();
+                            indexSet.IndexName = row[column].ToString();
+                            indexSet.SourceName = row[column].ToString();
+                            change =true;
+                        }
+                        else
+                        {
+                            change =false;
+                        }
+                    }
+                    else if (column.ColumnName.Equals("TableCaption"))
+                    {
+                        if (change && string.IsNullOrEmpty(row[column].ToString()) == false)
+                            indexSet.Caption = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("DbType"))
+                    {
+                        if (change && string.IsNullOrEmpty(row[column].ToString()) == false)
+                            source.DBType = ISUtils.Common.DbType.GetDbType(row[column].ToString());
+                    }
+                    else if (column.ColumnName.Equals("HostName"))
+                    {
+                        if (change && string.IsNullOrEmpty(row[column].ToString()) == false)
+                            source.HostName = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("DataBase"))
+                    {
+                        if (change && string.IsNullOrEmpty(row[column].ToString()) == false)
+                            source.DataBase = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("UserName"))
+                    {
+                        if (change && string.IsNullOrEmpty(row[column].ToString()) == false)
+                            source.UserName = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("Password"))
+                    {
+                        if (change && string.IsNullOrEmpty(row[column].ToString()) == false)
+                            source.Password = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("Field"))
+                    {
+                        if (string.IsNullOrEmpty(row[column].ToString()) == false)
+                            fp.Field = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("Caption"))
+                    {
+                        if (string.IsNullOrEmpty(row[column].ToString()) == false)
+                            fp.Caption = row[column].ToString();
+                    }
+                    else if (column.ColumnName.Equals("IsTitle"))
+                    {
+                        if (string.IsNullOrEmpty(row[column].ToString()) == false)
+                        {
+                            if (row[column].Equals("标题"))
+                            {
+                                fp.TitleOrContent=true;
+                            }
+                            else if (row[column].Equals("内容"))
+                            {
+                                fp.TitleOrContent =false;
+                            }
+                            else 
+                            {
+                                try
+                                {
+                                    fp.TitleOrContent =bool.Parse(row[column].ToString());
+                                }
+                                catch(Exception e)
+                                {
+                                    fp.TitleOrContent =false;
+                                }
+                            }
+                        }
+                    }
+                    else if (column.ColumnName.Equals("Boost"))
+                    {
+                        if (string.IsNullOrEmpty(row[column].ToString()) == false)
+                        {
+                            try
+                            {
+                                fp.Boost = float.Parse(row[column].ToString());
+                            }
+                            catch (Exception e)
+                            {
+                                fp.Boost = 1.0f;
+                            }
+                        }
+                    }
+                    else
+                    { 
                     }
                 }
+                #endregion
+                fpList.Add(fp);
+#if DEBUG
+                System.Console.WriteLine();
+#endif
             }
+            return dict;
         }
     }
 }

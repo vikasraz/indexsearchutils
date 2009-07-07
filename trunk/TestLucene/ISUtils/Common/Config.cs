@@ -70,6 +70,7 @@ namespace ISUtils.Common
         public List<Source> SourceList
         {
             get { return sourceList; }
+            set { sourceList = value; }
         }
         /**/
         /// <summary>
@@ -83,6 +84,7 @@ namespace ISUtils.Common
         public List<IndexSet> IndexList
         {
             get { return indexList; }
+            set { indexList = value; }
         }
         /**/
         /// <summary>
@@ -96,6 +98,7 @@ namespace ISUtils.Common
         public IndexerSet IndexerSet
         {
             get { return indexer; }
+            set { indexer = value; }
         }
         /**/
         /// <summary>
@@ -109,6 +112,7 @@ namespace ISUtils.Common
         public SearchSet SearchSet
         {
             get { return searchd; }
+            set { searchd = value; }
         }
         /**/
         /// <summary>
@@ -122,6 +126,7 @@ namespace ISUtils.Common
         public DictionarySet DictionarySet
         {
             get { return dictSet; }
+            set { dictSet = value; }
         }
         #endregion
         #region Constructor
@@ -137,18 +142,31 @@ namespace ISUtils.Common
         /// 构造函数
         /// </summary>
         /// <param name="configFilePath">配置文件路径</param>
-        public Config(string configFilePath)
+        public Config(string configFilePath,bool isXmlFile)
         {
             if (configFilePath == null)
                 throw new ArgumentNullException("configFilePath", "configFilePath must no be null!");
             if (SupportClass.File.IsFileExists(configFilePath) == false)
                 throw new ArgumentException("configFilePath must be exists!", "configFilePath");
-            List<string> src = SupportClass.File.GetFileText(configFilePath);
-            sourceList = Source.GetSourceList(src);
-            indexList = IndexSet.GetIndexList(src);
-            indexer = IndexerSet.GetIndexer(src);
-            searchd = SearchSet.GetSearchSet(src);
-            dictSet = DictionarySet.GetDictionarySet(src);
+            if (isXmlFile)
+            {
+                Config config ;
+                config = (Config)SupportClass.File.GetObjectFromXmlFile(configFilePath,typeof(Config));
+                this.dictSet = config.dictSet;
+                this.indexer = config.indexer;
+                this.indexList = config.indexList;
+                this.searchd = config.searchd;
+                this.sourceList = config.sourceList;
+            }
+            else
+            {
+                List<string> src = SupportClass.File.GetFileText(configFilePath);
+                sourceList = Source.GetSourceList(src);
+                indexList = IndexSet.GetIndexList(src);
+                indexer = IndexerSet.GetIndexer(src);
+                searchd = SearchSet.GetSearchSet(src);
+                dictSet = DictionarySet.GetDictionarySet(src);
+            }
         }
         #endregion
         #region IXmlSerializable
@@ -189,6 +207,7 @@ namespace ISUtils.Common
             {
                 writer.WriteStartElement("Index");
                 writer.WriteAttributeString("Name", indexSet.IndexName);
+                writer.WriteAttributeString("Caption", indexSet.Caption);
                 writer.WriteAttributeString("Type", IndexType.GetIndexTypeStr(indexSet.Type));
                 writer.WriteElementString("Source", indexSet.SourceName);
                 writer.WriteElementString("Path", indexSet.Path);
@@ -326,6 +345,7 @@ namespace ISUtils.Common
                         #region Read Index
                         IndexSet indexSet = new IndexSet();
                         indexSet.IndexName = reader.GetAttribute("Name");
+                        indexSet.Caption = reader.GetAttribute("Caption");
                         indexSet.Type = IndexType.GetIndexType(reader.GetAttribute("Type"));
                         do
                         {
@@ -493,6 +513,28 @@ namespace ISUtils.Common
 
                 }
             } while (true);
+        }
+        #endregion
+        #region Function
+        public List<Source> GetSourceList()
+        {
+            return sourceList;
+        }
+        public List<IndexSet> GetIndexList()
+        {
+            return indexList;
+        }
+        public DictionarySet GetDictionarySet()
+        {
+            return dictSet;
+        }
+        public IndexerSet GetIndexer()
+        {
+            return indexer;
+        }
+        public SearchSet GetSearchd()
+        {
+            return searchd;
         }
         #endregion
     }

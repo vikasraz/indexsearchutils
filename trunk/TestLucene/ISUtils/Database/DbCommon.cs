@@ -164,14 +164,26 @@ namespace ISUtils.Database
                     linker.Close();
                     return false;
                 }
-                string[] fieldArray = SupportClass.String.Split(fields,"\t, ");
+                List<FieldProperties> fpList = new List<FieldProperties>();
+                if (fields.IndexOf(')') > 0)
+                {
+                    string[] split = SupportClass.String.Split(fields, ")");
+                    foreach (string token in split)
+                        fpList.Add(new FieldProperties(token));
+                }
+                else
+                {
+                    string[] split = SupportClass.String.Split(fields, ",");
+                    foreach (string token in split)
+                        fpList.Add(new FieldProperties(token));
+                }
                 bool find;
-                foreach (string field in fieldArray)
+                foreach (FieldProperties fp in fpList)
                 {
                     find = false;
                     foreach(DataColumn column in dt.Columns)
                     {
-                        if(column.ColumnName.ToLower().CompareTo(field.ToLower())==0)
+                        if(column.ColumnName.ToLower().CompareTo(fp.Field.ToLower())==0)
                         {
                             find = true;
                             break;
@@ -380,6 +392,24 @@ namespace ISUtils.Database
 #endif
             }
             return tableFieldDict;
+        }
+        public static Dictionary<IndexSet,Source> GetExcelSettings(string path)
+        {
+            if (SupportClass.File.IsFileExists(path) == false)
+                throw new ArgumentException("path is not valid.", "path");
+            DataTable table = ExcelLinker.GetDataTableFromFile(path);
+            Dictionary<IndexSet, Source> dict = new Dictionary<IndexSet, Source>();
+            string tableName = "";
+            foreach (DataRow row in table.Rows)
+            {
+                foreach (DataColumn column in table.Columns)
+                {
+                    if (column.ColumnName.Equals("Table"))
+                    {
+                      
+                    }
+                }
+            }
         }
     }
 }

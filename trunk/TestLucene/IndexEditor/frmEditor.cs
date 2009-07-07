@@ -15,6 +15,7 @@ namespace IndexEditor
 {
     public partial class frmEditor : Form
     {
+        #region Private Vars
         private DictionarySet dictSet;
         private IndexerSet indexerSet;
         private SearchSet searchSet;
@@ -26,40 +27,26 @@ namespace IndexEditor
         private Status status = Status.Cancel;
         private bool init = false;
         private bool makeChange = false;
-
+        #endregion
+        #region Const Var
         public const string DictionaryFilter ="文本文件 (*.txt;*.dat;*.ini)|*.txt;*.dat;*.ini|" + 
                                             "所有文件(*.*)|*.*";
         public const string OutputFilter = "文本文件 (*.txt;*.log;*.conf)|*.txt;*.log;*.conf|" +
                                             "所有文件(*.*)|*.*";
+        #endregion
+        #region Public Var
         public string AppPath="";
         public string CommandLineOptions=" ";
+        #endregion
+        #region Constructor
         public frmEditor()
         {
             InitializeComponent();
             AppPath = System.AppDomain.CurrentDomain.BaseDirectory;
-            CommandLineOptions = " " + AppPath + @"\config.conf";
+            CommandLineOptions = " " + AppPath + @"\config.xml";
         }
-        private bool InitData(string filename)
-        {
-            try
-            {
-                Parser parser = new Parser(filename);
-                searchSet = parser.GetSearchd();
-                sourceList = parser.GetSourceList();
-                indexList = parser.GetIndexList();
-                dictSet = parser.GetDictionarySet();
-                indexerSet = parser.GetIndexer();
-                return true;
-            }
-            catch (Exception ex)
-            {
-#if DEBUG
-                Console.WriteLine(string.Format("Exception for open file {0},{1}", filename, ex.ToString()));
-#endif
-                ShowError(string.Format("Exception for open file {0},{1}", filename, ex.ToString()));
-                return false;
-            }
-        }
+        #endregion
+        #region Form Event
         private void Form_SizeChanged(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -74,13 +61,62 @@ namespace IndexEditor
             this.WindowState = FormWindowState.Normal;
             this.notifyIcon.Visible = false;
         }
+        private void frmEditor_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
+        {
+            if (init)
+            {
+                if (!makeChange)
+                {
+                    this.Dispose(true);
+                }
+                else
+                {
+                    ShowWarning("尚未保存更改！");
+                    e.Cancel = true;
+                }
+            }
+            else
+            {
+                this.Dispose(true);
+            }
+        }
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            toolStripStatusLabelIndexer.Text = "索引" + GetSystemServiceStatus("Indexer");
+            toolStripStatusLabelSearchd.Text = "搜索" + GetSystemServiceStatus("Searchd");
+        }
+        private void listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView.FocusedItem != null)
+            {
+                if (listView.SelectedItems != null && listView.SelectedItems.Count > 0)
+                {
+                    //message = listView.SelectedItems[0].Text+listView.SelectedItems[0].Index.ToString();
+                    //string message ="no item select";
+                    //string caption = "no server name specified";
+                    //MessageBoxButtons buttons = MessageBoxButtons.OK;
+                    //DialogResult result;
+                    //// displays the messagebox.
+                    //result = MessageBox.Show(this, message, caption, buttons,
+                    //MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);//,MessageBoxOptions.);
+                    //if (result == DialogResult.Yes)
+                    //{
+                    //    //do your action here.
+                    //}
+                    panelShow = (PanelShowType)listView.SelectedItems[0].Index;
+                    ShowPanel((PanelShowType)listView.SelectedItems[0].Index);
+                }
+            }
+        }
+        #endregion
+        #region Public Dialog Function
         private void ShowInformation(string msg)
         {
             string caption = this.Text;
             MessageBoxButtons buttons = MessageBoxButtons.OK;
             MessageBoxIcon icon = MessageBoxIcon.Information;
             MessageBoxDefaultButton defbtn = MessageBoxDefaultButton.Button1;
-            DialogResult result = MessageBox.Show(this, msg, caption, buttons,icon, defbtn);
+            DialogResult result = MessageBox.Show(this, msg, caption, buttons, icon, defbtn);
         }
         private void ShowExclamation(string msg)
         {
@@ -115,30 +151,8 @@ namespace IndexEditor
             DialogResult result = MessageBox.Show(this, msg, caption, buttons, icon, defbtn);
             return result == DialogResult.Yes;
         }
-
-        private void listView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listView.FocusedItem != null)
-            {
-                if (listView.SelectedItems != null && listView.SelectedItems.Count > 0)
-                {
-                    //message = listView.SelectedItems[0].Text+listView.SelectedItems[0].Index.ToString();
-                    //string message ="no item select";
-                    //string caption = "no server name specified";
-                    //MessageBoxButtons buttons = MessageBoxButtons.OK;
-                    //DialogResult result;
-                    //// displays the messagebox.
-                    //result = MessageBox.Show(this, message, caption, buttons,
-                    //MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);//,MessageBoxOptions.);
-                    //if (result == DialogResult.Yes)
-                    //{
-                    //    //do your action here.
-                    //}
-                    panelShow = (PanelShowType)listView.SelectedItems[0].Index;
-                    ShowPanel((PanelShowType)listView.SelectedItems[0].Index);
-                }
-            }
-        }
+        #endregion
+        #region Enum
         public enum PanelShowType
         {
             Source,
@@ -155,6 +169,30 @@ namespace IndexEditor
             Confirm,
             Cancel
         }
+        #endregion
+        #region Data Control Function
+        #region Common 
+        private bool InitData(string filename)
+        {
+            try
+            {
+                Config parser = new Config(filename,true);
+                searchSet = parser.GetSearchd();
+                sourceList = parser.GetSourceList();
+                indexList = parser.GetIndexList();
+                dictSet = parser.GetDictionarySet();
+                indexerSet = parser.GetIndexer();
+                return true;
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Console.WriteLine(string.Format("Exception for open file {0},{1}", filename, ex.ToString()));
+#endif
+                ShowError(string.Format("Exception for open file {0},{1}", filename, ex.ToString()));
+                return false;
+            }
+        }
         private void ShowPanel(PanelShowType showType)
         {
             System.Windows.Forms.Panel[] panels = new Panel[] { panelSource,panelIndexSet,panelIndexerSet,panelSearchd,panelDictionary};
@@ -164,6 +202,8 @@ namespace IndexEditor
             }
             panels[(int)showType].Visible = true;
         }
+        #endregion
+        #region Source
         private void EnablePanelSourceControls(bool enabled)
         {
             Control[] controls = new Control[] { textBoxSourceName,
@@ -225,16 +265,18 @@ namespace IndexEditor
                 source.SourceName = textBoxSourceName.Text;
                 source.DBType = ISUtils.Common.DbType.GetDbType(comboBoxSourceType.Text);
                 source.DataBase = textBoxDataBase.Text;
-                source.Fields = FieldProperties.ToArray(textBoxFields.Text.Split(new char[]{'\t',',',' '}));
+                source.Fields = FieldProperties.ToArray(textBoxFields.Text);
                 source.HostName = textBoxHostName.Text;
                 source.Password = textBoxPassword.Text;
                 source.Query = textBoxQuery.Text;
                 source.UserName = textBoxUserName.Text;
             }
         }
+        #endregion
         private void EnablePanelIndexControls(bool enabled)
         {
-            Control[] controls = new Control[] { textBoxIndexName, 
+            Control[] controls = new Control[] { textBoxIndexName,
+                                                textBoxIndexCaption,
                                                 comboBoxIndexType, 
                                                 comboBoxSouceSel,
                                                 textBoxIndexPath,
@@ -247,6 +289,7 @@ namespace IndexEditor
         private void ClearPanelIndexControls()
         {
             Control[] controls = new Control[] { textBoxIndexName, 
+                                                textBoxIndexCaption,
                                                 comboBoxIndexType,
                                                 comboBoxSouceSel,
                                                 textBoxIndexPath };
@@ -272,6 +315,7 @@ namespace IndexEditor
             {
                 if (indexSet == null) return;
                 textBoxIndexName.Text = indexSet.IndexName;
+                textBoxIndexCaption.Text = indexSet.Caption;
                 comboBoxIndexType.Text = IndexType.GetIndexTypeStr(indexSet.Type);
                 comboBoxSouceSel.Text = indexSet.SourceName;
                 textBoxIndexPath.Text = indexSet.Path;
@@ -280,6 +324,7 @@ namespace IndexEditor
             {
                 if (indexSet == null) indexSet = new IndexSet();
                 indexSet.IndexName = textBoxIndexName.Text;
+                indexSet.Caption = textBoxIndexCaption.Text;
                 indexSet.Type = IndexType.GetIndexType(comboBoxIndexType.Text);
                 indexSet.SourceName = comboBoxSouceSel.Text;
                 indexSet.Path = textBoxIndexPath.Text;
@@ -299,20 +344,6 @@ namespace IndexEditor
                 control.Enabled = enabled;
             }
         }
-        //private void ClearPanelIndexerControls()
-        //{
-        //    Control[] controls = new Control[] { dateTimePickerMainReCreate, 
-        //                                        numericUpDownMainCreateTimeSpan, 
-        //                                        numericUpDownIncrTimeSpan, 
-        //                                        numericUpDownRamBufferSize,
-        //                                        numericUpDownMaxFieldLength,
-        //                                        numericUpDownMaxBufferedDocs,
-        //                                        numericUpDownMergeFactor};
-        //    foreach (Control control in controls)
-        //    {
-        //        control.Text = "";
-        //    }
-        //}
         private void InitPanelIndexerControls()
         {
             UpdatePanelIndexerData(true);
@@ -433,6 +464,38 @@ namespace IndexEditor
                 dictSet.CustomPaths=paths;
             }
         }
+        private void EnableControls(bool enabled, params Control[] controls)
+        {
+            foreach (Control control in controls)
+            {
+                control.Enabled = enabled;
+            }
+        }
+        private void EnableControls(params Control[] controls)
+        {
+            foreach (Control control in controls)
+            {
+                control.Enabled = !control.Enabled;
+            }
+        }
+        private void EnablePanelSourceButtons(Status status)
+        {
+            Control[] buttons = new Control[] { btnAddSource, btnEditSource, btnDelSource, btnSourceConfim, btnSourceCancel };
+            switch (status)
+            {
+                case Status.Cancel:
+                case Status.Confirm:
+                case Status.Insert:
+                case Status.Edit:
+                    EnableControls(buttons);
+                    break;
+                case Status.Delete:
+                default:
+                    break;
+            }
+        }
+        #endregion
+        #region File Dialog
         private string GetFileSavePath(string filter)
         {
             SaveFileDialog saveDialog = new SaveFileDialog();
@@ -471,6 +534,8 @@ namespace IndexEditor
                 filenames = openDialog.FileNames;
             return filenames;
         }
+        #endregion
+        #region Folder Function
         private string GetFolderPath()
         {
             FolderBrowserDialog folderDialog = new FolderBrowserDialog();
@@ -481,6 +546,8 @@ namespace IndexEditor
                 folder = folderDialog.SelectedPath;
             return folder;
         }
+        #endregion
+        #region Service Function
         private bool SystemServiceExists(string service)
         {
             System.ServiceProcess.ServiceController[] services;
@@ -509,7 +576,25 @@ namespace IndexEditor
                 //sc.MachineName = "localhost";
                 sc.ServiceName = service;
                 sc.Refresh();
-                return sc.Status.ToString();
+                switch (sc.Status)
+                {
+                    case System.ServiceProcess.ServiceControllerStatus.StartPending:
+                        return "服务正在启动！";
+                    case System.ServiceProcess.ServiceControllerStatus.ContinuePending:
+                        return "服务即将继续！";
+                    case System.ServiceProcess.ServiceControllerStatus.Paused:
+                        return "服务已暂停！";
+                    case System.ServiceProcess.ServiceControllerStatus.PausePending:
+                        return "服务即将暂停！";
+                    case System.ServiceProcess.ServiceControllerStatus.Running:
+                        return "服务正在运行！";
+                    case System.ServiceProcess.ServiceControllerStatus.Stopped:
+                        return "服务未运行！";
+                    case System.ServiceProcess.ServiceControllerStatus.StopPending:
+                        return "服务正在停止！";
+                    default :
+                        return "服务状态未知！";
+                }
             }
             catch (Exception e)
             {
@@ -631,6 +716,8 @@ namespace IndexEditor
             }
 
         }
+        #endregion
+        #region Menu Event
         void menuItem_Hide_Click(object sender, System.EventArgs e)
         {
             throw new System.Exception("The method or operation is not implemented.");
@@ -647,6 +734,8 @@ namespace IndexEditor
         {
             this.Close();
         }
+        #endregion
+        #region Panel Searchd Control Event
         private void btnSearchdConfirm_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -654,7 +743,6 @@ namespace IndexEditor
             UpdatePanelSearchData(false);
             EnablePanelSearchControls(false);
         }
-
         private void btnEditSearchd_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -662,80 +750,76 @@ namespace IndexEditor
             UpdatePanelSearchData(true);
             EnablePanelSearchControls(true);
         }
-
         private void btnSearchdService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (SystemServiceExists("Searchd"))
             {
-                ShowInformation("Service Searchd has been installed!");
+                ShowInformation("搜索服务已经安装!");
             }
             else
             {
                 if (InstallSystemServic("Searchd", AppPath + @"\Searchd.exe", CommandLineOptions))
                 {
-                    ShowInformation("Service Searchd install success!");
+                    ShowInformation("搜索服务安装成功!");
                 }
                 else
                 {
-                    ShowInformation("Service Searchd install failed!");
+                    ShowInformation("搜索服务安装失败!");
                 }
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnSearchdStartService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (StartSystemService("Searchd"))
             {
-                ShowInformation("Searchd Service Start Successs!");
+                ShowInformation("搜索服务启动成功!");
             }
             else
             {
-                ShowInformation("Searchd Service Start Failed!");
+                ShowInformation("搜索服务启动失败!");
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnSearchdStopService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (StopSystemService("Searchd"))
             {
-                ShowInformation("Searchd Service Stop Successs!");
+                ShowInformation("搜索服务停止成功!");
             }
             else
             {
-                ShowInformation("Searchd Service Stop Failed!");
+                ShowInformation("搜索服务停止失败!");
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnSetSearchdPath_Click(object sender, EventArgs e)
         {
             string path=GetFileSavePath(OutputFilter);
             if (!string.IsNullOrEmpty(path))
                textBoxSearchdPath.Text = path;
         }
-
         private void btnSetQueryPath_Click(object sender, EventArgs e)
         {
             string path = GetFileSavePath(OutputFilter);
             if (!string.IsNullOrEmpty(path))
                 textBoxQueryPath.Text = path;
         }
-
+        #endregion
+        #region Panel Source Control Event
         private void btnTestDBLink_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxSourceName.Text))
                 return;
             this.Cursor = Cursors.WaitCursor;
             UpdatePanelSourceData(false);
-            if(source ==null)return;
+            if (source == null) return;
             try
             {
-                bool success = ISUtils.Database.DbCommon.TestDbLink(source.DBType, source.HostName,source.DataBase, source.UserName, source.Password);
+                bool success = ISUtils.Database.DbCommon.TestDbLink(source.DBType, source.HostName, source.DataBase, source.UserName, source.Password);
                 if (success)
                     ShowInformation("数据库连接测试成功！");
                 else
@@ -748,7 +832,6 @@ namespace IndexEditor
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnTestQuery_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxSourceName.Text))
@@ -758,7 +841,7 @@ namespace IndexEditor
             if (source == null) return;
             try
             {
-                bool success = ISUtils.Database.DbCommon.TestQuery(source.DBType, source.HostName, source.DataBase, source.UserName, source.Password,source.Query);
+                bool success = ISUtils.Database.DbCommon.TestQuery(source.DBType, source.HostName, source.DataBase, source.UserName, source.Password, source.Query);
                 if (success)
                     ShowInformation("数据库查询测试成功！");
                 else
@@ -771,7 +854,6 @@ namespace IndexEditor
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnTestFields_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxSourceName.Text))
@@ -781,7 +863,7 @@ namespace IndexEditor
             if (source == null) return;
             try
             {
-                bool success = ISUtils.Database.DbCommon.TestFields(source.DBType, source.HostName, source.DataBase, source.UserName, source.Password,source.Query,source.GetFields());
+                bool success = ISUtils.Database.DbCommon.TestFields(source.DBType, source.HostName, source.DataBase, source.UserName, source.Password, source.Query, source.GetFields());
                 if (success)
                     ShowInformation("数据库字段测试成功！");
                 else
@@ -794,36 +876,6 @@ namespace IndexEditor
             }
             this.Cursor = Cursors.Default;
         }
-        private void EnableControls(bool enabled, params Control[] controls)
-        {
-            foreach (Control control in controls)
-            {
-                control.Enabled = enabled;
-            }
-        }
-        private void EnableControls(params Control[] controls)
-        {
-            foreach (Control control in controls)
-            {
-                control.Enabled = !control.Enabled;
-            }
-        }
-        private void EnablePanelSourceButtons(Status status)
-        {
-            Control[] buttons = new Control[] { btnAddSource,btnEditSource,btnDelSource,btnSourceConfim,btnSourceCancel};
-            switch (status)
-            {
-                case Status.Cancel:
-                case Status.Confirm:
-                case Status.Insert:
-                case Status.Edit:
-                    EnableControls(buttons);
-                    break;
-                case Status.Delete:
-                default :
-                    break;
-            }
-        }
         private void btnAddSource_Click(object sender, EventArgs e)
         {
             if (sourceList == null) return;
@@ -834,7 +886,6 @@ namespace IndexEditor
             EnablePanelSourceButtons(status);
             comboBoxSource.Enabled = false;
         }
-
         private void btnEditSource_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxSourceName.Text))
@@ -845,7 +896,6 @@ namespace IndexEditor
             EnablePanelSourceButtons(status);
             comboBoxSource.Enabled = false;
         }
-
         private void btnDelSource_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxSourceName.Text))
@@ -857,6 +907,8 @@ namespace IndexEditor
             if (sourceList.Count <= 0)
                 return;
             status = Status.Delete;
+            if (ShowQuestion("确认删除吗？") == false)
+                return;
             sourceList.Remove(source);
             foreach (IndexSet set in indexList)
             {
@@ -884,7 +936,6 @@ namespace IndexEditor
             UpdatePanelSourceData(true);
             EnablePanelSourceButtons(status);
         }
-
         private void btnSourceConfim_Click(object sender, EventArgs e)
         {
             switch (status)
@@ -941,7 +992,6 @@ namespace IndexEditor
             comboBoxSource.Enabled = true;
             EnablePanelSourceButtons(status);
         }
-
         private void btnSourceCancel_Click(object sender, EventArgs e)
         {
             if (sourceList != null && sourceList.Count>0)
@@ -954,28 +1004,36 @@ namespace IndexEditor
             comboBoxSource.Enabled = true;
             EnablePanelSourceButtons(status);
         }
-
+        private void comboBoxSouce_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InitPanelSourceControls(comboBoxSource.SelectedItem.ToString());
+        }
+        void textBoxFields_Click(object sender, System.EventArgs e)
+        {
+            frmFields frm = new frmFields(textBoxFields);
+            DialogResult result = frm.ShowDialog();
+            textBoxFields.Text = frm.StringFields;
+        }
+        #endregion
+        #region Panel Dictionary Control Event
         private void btnSetBasePath_Click(object sender, EventArgs e)
         {
             string path = GetFileOpenPath(DictionaryFilter);
             if (!string.IsNullOrEmpty(path))
             textBoxBasePath.Text =path;
         }
-
         private void btnSetNamePath_Click(object sender, EventArgs e)
         {
             string path = GetFileOpenPath(DictionaryFilter);
             if (!string.IsNullOrEmpty(path))
                 textBoxNamePath.Text = path;
         }
-
         private void btnSetNumberPath_Click(object sender, EventArgs e)
         {
             string path = GetFileOpenPath(DictionaryFilter);
             if (!string.IsNullOrEmpty(path))
                 textBoxNumberPath.Text = path;
         }
-
         private void btnSetCustomPaths_Click(object sender, EventArgs e)
         {
             Dictionary<string, int> dict=new Dictionary<string,int>();
@@ -995,21 +1053,18 @@ namespace IndexEditor
                 }
             }
         }
-
         private void btnSetFilterPath_Click(object sender, EventArgs e)
         {
             string path = GetFileOpenPath(DictionaryFilter);
             if (!string.IsNullOrEmpty(path))
                 textBoxFilterPath.Text = path;
         }
-
         private void btnChangeDictSet_Click(object sender, EventArgs e)
         {
             if (!init) return;
             EnablePanelDictControls(true);
             EnableControls(btnChangeDictSet, btnDictConfirm);
         }
-
         private void btnDictConfirm_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -1018,87 +1073,85 @@ namespace IndexEditor
             makeChange = true;
             EnableControls(btnChangeDictSet, btnDictConfirm);
         }
-
         private void btnDictService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (SystemServiceExists("Indexer"))
             {
-                ShowInformation("Service Indexer has been installed!");
+                ShowInformation("索引服务已经安装!");
             }
             else
             {
                 if (InstallSystemServic("Indexer", AppPath + @"\Indexer.exe", CommandLineOptions))
                 {
-                    ShowInformation("Service Indexer install success!");
+                    ShowInformation("索引服务安装成功!");
                 }
                 else
                 {
-                    ShowInformation("Service Indexer install failed!");
+                    ShowInformation("索引服务安装失败!");
                 }
             }
             if (SystemServiceExists("Searchd"))
             {
-                ShowInformation("Service Searchd has been installed!");
+                ShowInformation("搜索服务已经安装!");
             }
             else
             {
                 if (InstallSystemServic("Searchd", AppPath + @"\Searchd.exe", CommandLineOptions))
                 {
-                    ShowInformation("Service Searchd install success!");
+                    ShowInformation("搜索服务安装成功!");
                 }
                 else
                 {
-                    ShowInformation("Service Searchd install failed!");
+                    ShowInformation("搜索服务安装失败!");
                 }
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnDictStartService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (StartSystemService("Indexer"))
             {
-                ShowInformation("Indexer Service Start Successs!");
+                ShowInformation("索引服务成功启动!");
             }
             else
             {
-                ShowInformation("Indexer Service Start Failed!");
+                ShowInformation("索引服务启动失败!");
             }
-            if (StartSystemService("Indexer"))
+            if (StartSystemService("Searchd"))
             {
-                ShowInformation("Indexer Service Start Successs!");
+                ShowInformation("搜索服务成功启动!");
             }
             else
             {
-                ShowInformation("Indexer Service Start Failed!");
+                ShowInformation("搜索服务启动失败!");
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnDictStopService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (StopSystemService("Indexer"))
             {
-                ShowInformation("Indexer Service Stop Successs!");
+                ShowInformation("索引服务成功停止!");
             }
             else
             {
-                ShowInformation("Indexer Service Stop Failed!");
+                ShowInformation("索引服务停止失败!");
             }
             if (StopSystemService("Searchd"))
             {
-                ShowInformation("Searchd Service Stop Successs!");
+                ShowInformation("搜索服务成功停止!");
             }
             else
             {
-                ShowInformation("Searchd Service Stop Failed!");
+                ShowInformation("搜索服务停止失败!");
             }
             this.Cursor = Cursors.Default;
         }
-
+        #endregion
+        #region Panel Index Control Event
         private void btnAddIndex_Click(object sender, EventArgs e)
         {
             if (indexList == null) return;
@@ -1109,7 +1162,6 @@ namespace IndexEditor
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
             comboBoxIndex.Enabled = false;
         }
-
         private void btnEditIndex_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxIndexName.Text))
@@ -1120,7 +1172,6 @@ namespace IndexEditor
             status = Status.Edit;
             comboBoxIndex.Enabled = false;
         }
-
         private void btnDelIndex_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxIndexName.Text))
@@ -1132,16 +1183,18 @@ namespace IndexEditor
             if (indexList.Count <= 0)
                 return;
             status = Status.Delete;
-            indexList.Remove(indexSet);
-            InitComboBoxIndex(indexList);
-            if (indexList.Count > 0)
-                indexSet = indexList[0];
-            else
-                indexSet = new IndexSet();
-            InitComboBoxIndex(indexList);
-            UpdatePanelSourceData(true);
+            if (ShowQuestion("确认删除吗？"))
+            {
+                indexList.Remove(indexSet);
+                InitComboBoxIndex(indexList);
+                if (indexList.Count > 0)
+                    indexSet = indexList[0];
+                else
+                    indexSet = new IndexSet();
+                InitComboBoxIndex(indexList);
+                UpdatePanelSourceData(true);
+            }
         }
-
         private void btnIndexConfirm_Click(object sender, EventArgs e)
         {
             switch (status)
@@ -1189,7 +1242,6 @@ namespace IndexEditor
             comboBoxIndex.Enabled = true;
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
         }
-
         private void btnIndexCancel_Click(object sender, EventArgs e)
         {
             if (indexList != null && indexList.Count > 0)
@@ -1202,14 +1254,18 @@ namespace IndexEditor
             comboBoxIndex.Enabled = true;
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
         }
-
         private void btnSetIndexPath_Click(object sender, EventArgs e)
         {
             string path=GetFolderPath();
             if (!string.IsNullOrEmpty(path))
                 textBoxIndexPath.Text = path;
         }
-
+        private void comboBoxIndex_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InitPanelIndexControls(comboBoxIndex.SelectedItem.ToString());
+        }
+        #endregion
+        #region Panel Indexer Control Event
         private void btnMainIndexReCreate_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -1221,7 +1277,7 @@ namespace IndexEditor
             Application.DoEvents();
             try
             {
-                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml",true);
                 toolStripStatusLabelStatus.Text = "正在构建主索引！";
                 ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
                 //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
@@ -1257,7 +1313,7 @@ namespace IndexEditor
             toolStripStatusLabelStatus.Text = "正在构建增量索引！";
             try
             {
-                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.conf");
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml",true);
                 ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
                 //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Increment,ref toolStripProgressBar);
                 toolStripStatusLabelStatus.Text = "构建增量索引完毕！";
@@ -1271,7 +1327,6 @@ namespace IndexEditor
             this.Cursor = Cursors.Default;
             toolStripStatusLabelStatus.Text = "";
         }
-
         private void btnEditIndexer_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -1279,7 +1334,6 @@ namespace IndexEditor
             UpdatePanelIndexerData(true);
             EnablePanelIndexerControls(true);
         }
-
         private void btnIndexerConfirm_Click(object sender, EventArgs e)
         {
             if (!init) return;
@@ -1287,71 +1341,54 @@ namespace IndexEditor
             UpdatePanelIndexerData(false);
             EnablePanelIndexerControls(false);
         }
-
         private void btnIndexerService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (SystemServiceExists("Indexer"))
             {
-                ShowInformation("Service Indexer has been installed!");
+                ShowInformation("索引服务已经安装!");
             }
             else
             {
                 if (InstallSystemServic("Indexer", AppPath + @"\Indexer.exe", CommandLineOptions))
                 {
-                    ShowInformation("Service Indexer install success!");
+                    ShowInformation("索引服务成功安装!");
                 }
                 else
                 {
-                    ShowInformation("Service Indexer install failed!");
+                    ShowInformation("索引服务安装失败!");
                 }
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnIndexerStartService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (StartSystemService("Indexer"))
             {
-                ShowInformation("Indexer Service Start Successs!");
+                ShowInformation("索引服务成功启动!");
             }
             else
             {
-                ShowInformation("Indexer Service Start Failed!");
+                ShowInformation("索引服务启动失败!");
             }
             this.Cursor = Cursors.Default;
         }
-
         private void btnIndexerStopService_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
             if (StopSystemService("Indexer"))
             {
-                ShowInformation("Indexer Service Stop Successs!");
+                ShowInformation("索引服务成功停止!");
             }
             else
             {
-                ShowInformation("Indexer Service Stop Failed!");
+                ShowInformation("索引服务停止失败!");
             }
             this.Cursor = Cursors.Default;
         }
-
-        private void comboBoxIndex_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            InitPanelIndexControls(comboBoxIndex.SelectedItem.ToString());
-        }
-
-        private void comboBoxSouce_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            InitPanelSourceControls(comboBoxSource.SelectedItem.ToString());
-        }
-
-        private void timer_Tick(object sender, EventArgs e)
-        {
-            toolStripStatusLabelIndexer.Text = "Indexer Service "+ GetSystemServiceStatus("Indexer");
-            toolStripStatusLabelSearchd.Text = "Searchd Service "+ GetSystemServiceStatus("Searchd");
-        }
+        #endregion
+        #region GUI Control Function
         private void InitComboBoxSource(List<Source> sourceList)
         {
             comboBoxSource.Items.Clear();
@@ -1402,69 +1439,6 @@ namespace IndexEditor
             InitPanelDictControls();
             InitButtonsEnabled();
         }
-        private void toolStripMenuItemOpen_Click(object sender, EventArgs e)
-        {
-            if (!init)
-            {
-                if (!ISUtils.SupportClass.File.IsFileExists(AppPath +@"\config.conf"))
-                {
-                    ShowInformation(AppPath + @"\config.conf does not exists!");
-                }
-                if (InitData(AppPath + @"\config.conf"))
-                {
-                    InitGUIControls();
-                    ShowInformation("成功加载配置文件！");
-                    init = true;
-                }
-                else
-                {
-                    ShowInformation("加载配置文件失败！");
-                }
-            }
-        }
-
-        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
-        {
-            if (init)
-            {
-                if (!makeChange)
-                    this.Close();
-                else
-                    ShowWarning("尚未保存更改！");
-            }
-            else
-            {
-                this.Close();
-            }
-        }
-        void frmEditor_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
-        {
-            if (init)
-            {
-                if (!makeChange)
-                {
-                    this.Dispose(true);
-                }
-                else
-                {
-                    ShowWarning("尚未保存更改！");
-                    e.Cancel = true;
-                }
-            }
-            else
-            {
-                this.Dispose(true);
-            }
-        }
-        private void toolStripMenuItemSave_Click(object sender, EventArgs e)
-        {
-            if (init && makeChange)
-            {
-                ISUtils.SupportClass.File.WriteConfigFile(AppPath + @"\config.conf", sourceList, indexList, dictSet, indexerSet, searchSet);
-                makeChange = false;
-                ShowInformation("保存成功！");
-            }
-        }
         private void SetProgress(params int[] values)
         {
             if (toolStripProgressBar.Visible == false)
@@ -1488,6 +1462,61 @@ namespace IndexEditor
             if (toolStripProgressBar.Value == toolStripProgressBar.Maximum)
                 toolStripProgressBar.Visible = false;
         }
+        #endregion
+        #region ToolStripMenuItem Event
+        private void toolStripMenuItemOpen_Click(object sender, EventArgs e)
+        {
+            if (!init)
+            {
+                if (!ISUtils.SupportClass.File.IsFileExists(AppPath +@"\config.xml"))
+                {
+                    ShowInformation("文件"+AppPath + @"\config.xml不存在!");
+                }
+                if (InitData(AppPath + @"\config.xml"))
+                {
+                    InitGUIControls();
+                    ShowInformation("成功加载配置文件！");
+                    init = true;
+                }
+                else
+                {
+                    ShowInformation("加载配置文件失败！");
+                }
+            }
+        }
+
+        private void toolStripMenuItemExit_Click(object sender, EventArgs e)
+        {
+            if (init)
+            {
+                if (!makeChange)
+                    this.Close();
+                else
+                    if (ShowQuestion("尚未保存更改！\n是否现在退出?"))
+                    {
+                        this.Close();
+                    }
+            }
+            else
+            {
+                this.Close();
+            }
+        }
+        private void toolStripMenuItemSave_Click(object sender, EventArgs e)
+        {
+            if (init && makeChange)
+            {
+                Config config = new Config();
+                config.SourceList = sourceList;
+                config.IndexList = indexList;
+                config.DictionarySet = dictSet;
+                config.IndexerSet = indexerSet;
+                config.SearchSet = searchSet;
+                ISUtils.SupportClass.File.WriteObjectToXmlFile(AppPath + @"\config.xml",config,typeof(Config));
+                makeChange = false;
+                ShowInformation("保存成功！");
+            }
+        }
 
         private void toolStripMenuItemSaveAs_Click(object sender, EventArgs e)
         {
@@ -1501,25 +1530,24 @@ namespace IndexEditor
                 }
             }
         }
-
+#endregion
+        #region ToolStripButton Event
         private void toolStripButtonOpen_Click(object sender, EventArgs e)
         {
             toolStripMenuItemOpen_Click(sender, e);
         }
-
         private void toolStripButtonSave_Click(object sender, EventArgs e)
         {
             toolStripMenuItemSave_Click(sender, e);
         }
-
         private void toolStripButtonSaveAs_Click(object sender, EventArgs e)
         {
             toolStripMenuItemSaveAs_Click(sender, e);
         }
-
         private void toolStripButtonExit_Click(object sender, EventArgs e)
         {
             toolStripMenuItemExit_Click(sender, e);
         }
+        #endregion
     }
 }

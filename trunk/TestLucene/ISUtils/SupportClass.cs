@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Xml.Serialization;
 using Lucene.Net.Documents;
 namespace ISUtils
 {
@@ -155,7 +156,6 @@ namespace ISUtils
             {
                 return System.IO.File.Exists(filename);
             }
-
             /**/
             /// <summary>
             /// 返回文本文件内容
@@ -250,6 +250,26 @@ namespace ISUtils
                 {
                     throw e;
                 }
+            }
+            public static object GetObjectFromXmlFile(string path, Type type)
+            {
+                object obj = new object();
+                FileStream reader = new FileStream(path, FileMode.Open);
+                XmlSerializer xsr = new XmlSerializer(type);
+                obj = xsr.Deserialize(reader);
+                reader.Close();
+                return obj;
+            }
+            public static void WriteObjectToXmlFile(string path, object obj, Type type)
+            {
+                FileStream writer = new FileStream(path, FileMode.Create);
+                XmlSerializer xsr = new XmlSerializer(type);
+                xsr.Serialize(writer, obj);
+                writer.Close();
+            }
+            public static Config GetConfigFromExcelFile(string path)
+            {
+ 
             }
         }
         public class Time

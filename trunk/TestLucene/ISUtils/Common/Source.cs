@@ -146,6 +146,8 @@ namespace ISUtils.Common
                         fieldDict = new Dictionary<string, FieldProperties>();
                     if (boostDict == null)
                         boostDict = new Dictionary<string, float>();
+                    fieldDict.Clear();
+                    boostDict.Clear();
                     foreach (FieldProperties fb in fields)
                     {
                         fieldDict.Add(fb.Field, fb);

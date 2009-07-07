@@ -19,17 +19,30 @@ namespace ISUtils.Utils
         private static bool initSettings = false;
         #endregion
         #region settings
-        public static void SetIndexSettings(string configFileName)
+        public static void SetIndexSettings(string configFileName,bool isXmlFile)
         {
             if (initSettings) return;
             initSettings = true;
             try
             {
-                List<string> srcList = SupportClass.File.GetFileText(configFileName);
-                List<Source> sourceList = Source.GetSourceList(srcList);
-                List<IndexSet> indexList = IndexSet.GetIndexList(srcList);
-                indexerSet = IndexerSet.GetIndexer(srcList);
-                dictSet = DictionarySet.GetDictionarySet(srcList);
+                List<Source> sourceList;
+                List<IndexSet> indexList;
+                if (isXmlFile)
+                {
+                    Config config = (Config)SupportClass.File.GetObjectFromXmlFile(configFileName, typeof(Config));
+                    sourceList = config.SourceList;
+                    indexList = config.IndexList;
+                    indexerSet = config.IndexerSet;
+                    dictSet = config.DictionarySet;
+                }
+                else
+                {
+                    List<string> srcList = SupportClass.File.GetFileText(configFileName);
+                    sourceList = Source.GetSourceList(srcList);
+                    indexList = IndexSet.GetIndexList(srcList);
+                    indexerSet = IndexerSet.GetIndexer(srcList);
+                    dictSet = DictionarySet.GetDictionarySet(srcList);
+                }
                 if (indexDict == null)
                     indexDict = new Dictionary<IndexSet, Source>();
                 foreach (IndexSet set in indexList)

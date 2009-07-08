@@ -62,10 +62,62 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.listView = new System.Windows.Forms.ListView();
+            this.panelSource = new System.Windows.Forms.Panel();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnSourceCancel = new System.Windows.Forms.Button();
+            this.imageListButtons = new System.Windows.Forms.ImageList(this.components);
+            this.btnSourceConfim = new System.Windows.Forms.Button();
+            this.btnDelSource = new System.Windows.Forms.Button();
+            this.btnEditSource = new System.Windows.Forms.Button();
+            this.btnAddSource = new System.Windows.Forms.Button();
+            this.btnTestFields = new System.Windows.Forms.Button();
+            this.btnTestQuery = new System.Windows.Forms.Button();
+            this.btnTestDBLink = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxQuery = new System.Windows.Forms.TextBox();
+            this.comboBoxSourceType = new System.Windows.Forms.ComboBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxUserName = new System.Windows.Forms.TextBox();
+            this.textBoxDataBase = new System.Windows.Forms.TextBox();
+            this.textBoxFields = new System.Windows.Forms.TextBox();
+            this.textBoxHostName = new System.Windows.Forms.TextBox();
+            this.textBoxSourceName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxSource = new System.Windows.Forms.ComboBox();
+            this.panelDictionary = new System.Windows.Forms.Panel();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.btnChangeDictSet = new System.Windows.Forms.Button();
+            this.btnDictStopService = new System.Windows.Forms.Button();
+            this.btnDictStartService = new System.Windows.Forms.Button();
+            this.btnDictService = new System.Windows.Forms.Button();
+            this.btnDictConfirm = new System.Windows.Forms.Button();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.btnSetCustomPaths = new System.Windows.Forms.Button();
+            this.btnSetFilterPath = new System.Windows.Forms.Button();
+            this.btnSetNumberPath = new System.Windows.Forms.Button();
+            this.btnSetNamePath = new System.Windows.Forms.Button();
+            this.btnSetBasePath = new System.Windows.Forms.Button();
+            this.textBoxFilterPath = new System.Windows.Forms.TextBox();
+            this.textBoxNumberPath = new System.Windows.Forms.TextBox();
+            this.textBoxNamePath = new System.Windows.Forms.TextBox();
+            this.textBoxBasePath = new System.Windows.Forms.TextBox();
+            this.listBoxCustomPaths = new System.Windows.Forms.ListBox();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
             this.panelIndexSet = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnDelIndex = new System.Windows.Forms.Button();
-            this.imageListButtons = new System.Windows.Forms.ImageList(this.components);
             this.btnEditIndex = new System.Windows.Forms.Button();
             this.btnAddIndex = new System.Windows.Forms.Button();
             this.btnIndexCancel = new System.Windows.Forms.Button();
@@ -135,58 +187,6 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
-            this.panelSource = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnSourceCancel = new System.Windows.Forms.Button();
-            this.btnSourceConfim = new System.Windows.Forms.Button();
-            this.btnDelSource = new System.Windows.Forms.Button();
-            this.btnEditSource = new System.Windows.Forms.Button();
-            this.btnAddSource = new System.Windows.Forms.Button();
-            this.btnTestFields = new System.Windows.Forms.Button();
-            this.btnTestQuery = new System.Windows.Forms.Button();
-            this.btnTestDBLink = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxQuery = new System.Windows.Forms.TextBox();
-            this.comboBoxSourceType = new System.Windows.Forms.ComboBox();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
-            this.textBoxUserName = new System.Windows.Forms.TextBox();
-            this.textBoxDataBase = new System.Windows.Forms.TextBox();
-            this.textBoxFields = new System.Windows.Forms.TextBox();
-            this.textBoxHostName = new System.Windows.Forms.TextBox();
-            this.textBoxSourceName = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxSource = new System.Windows.Forms.ComboBox();
-            this.panelDictionary = new System.Windows.Forms.Panel();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.btnChangeDictSet = new System.Windows.Forms.Button();
-            this.btnDictStopService = new System.Windows.Forms.Button();
-            this.btnDictStartService = new System.Windows.Forms.Button();
-            this.btnDictService = new System.Windows.Forms.Button();
-            this.btnDictConfirm = new System.Windows.Forms.Button();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.btnSetCustomPaths = new System.Windows.Forms.Button();
-            this.btnSetFilterPath = new System.Windows.Forms.Button();
-            this.btnSetNumberPath = new System.Windows.Forms.Button();
-            this.btnSetNamePath = new System.Windows.Forms.Button();
-            this.btnSetBasePath = new System.Windows.Forms.Button();
-            this.textBoxFilterPath = new System.Windows.Forms.TextBox();
-            this.textBoxNumberPath = new System.Windows.Forms.TextBox();
-            this.textBoxNamePath = new System.Windows.Forms.TextBox();
-            this.textBoxBasePath = new System.Windows.Forms.TextBox();
-            this.listBoxCustomPaths = new System.Windows.Forms.ListBox();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
-            this.label40 = new System.Windows.Forms.Label();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label44 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.NicontextMenu.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -195,6 +195,12 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            this.panelSource.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panelDictionary.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.panelIndexSet.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -214,12 +220,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxMatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeOut)).BeginInit();
-            this.panelSource.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.panelDictionary.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox10.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList
@@ -449,11 +449,11 @@
             // 
             // splitContainer.Panel2
             // 
+            this.splitContainer.Panel2.Controls.Add(this.panelIndexerSet);
+            this.splitContainer.Panel2.Controls.Add(this.panelSearchd);
             this.splitContainer.Panel2.Controls.Add(this.panelSource);
             this.splitContainer.Panel2.Controls.Add(this.panelDictionary);
             this.splitContainer.Panel2.Controls.Add(this.panelIndexSet);
-            this.splitContainer.Panel2.Controls.Add(this.panelIndexerSet);
-            this.splitContainer.Panel2.Controls.Add(this.panelSearchd);
             this.splitContainer.Size = new System.Drawing.Size(832, 498);
             this.splitContainer.SplitterDistance = 167;
             this.splitContainer.TabIndex = 13;
@@ -483,6 +483,594 @@
             this.listView.TabIndex = 0;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
+            // 
+            // panelSource
+            // 
+            this.panelSource.Controls.Add(this.groupBox2);
+            this.panelSource.Controls.Add(this.groupBox1);
+            this.panelSource.Controls.Add(this.label1);
+            this.panelSource.Controls.Add(this.comboBoxSource);
+            this.panelSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelSource.Location = new System.Drawing.Point(0, 0);
+            this.panelSource.Name = "panelSource";
+            this.panelSource.Size = new System.Drawing.Size(661, 498);
+            this.panelSource.TabIndex = 0;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnSourceCancel);
+            this.groupBox2.Controls.Add(this.btnSourceConfim);
+            this.groupBox2.Controls.Add(this.btnDelSource);
+            this.groupBox2.Controls.Add(this.btnEditSource);
+            this.groupBox2.Controls.Add(this.btnAddSource);
+            this.groupBox2.Controls.Add(this.btnTestFields);
+            this.groupBox2.Controls.Add(this.btnTestQuery);
+            this.groupBox2.Controls.Add(this.btnTestDBLink);
+            this.groupBox2.Location = new System.Drawing.Point(473, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(178, 482);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            // 
+            // btnSourceCancel
+            // 
+            this.btnSourceCancel.Enabled = false;
+            this.btnSourceCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSourceCancel.ImageIndex = 7;
+            this.btnSourceCancel.ImageList = this.imageListButtons;
+            this.btnSourceCancel.Location = new System.Drawing.Point(0, 422);
+            this.btnSourceCancel.Name = "btnSourceCancel";
+            this.btnSourceCancel.Size = new System.Drawing.Size(178, 59);
+            this.btnSourceCancel.TabIndex = 3;
+            this.btnSourceCancel.Text = "取消操作";
+            this.btnSourceCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSourceCancel.UseVisualStyleBackColor = true;
+            this.btnSourceCancel.Click += new System.EventHandler(this.btnSourceCancel_Click);
+            // 
+            // imageListButtons
+            // 
+            this.imageListButtons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListButtons.ImageStream")));
+            this.imageListButtons.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListButtons.Images.SetKeyName(0, "testdblink.jpg");
+            this.imageListButtons.Images.SetKeyName(1, "testquery.jpg");
+            this.imageListButtons.Images.SetKeyName(2, "testsourcefields.jpg");
+            this.imageListButtons.Images.SetKeyName(3, "newsource.jpg");
+            this.imageListButtons.Images.SetKeyName(4, "editsource.jpg");
+            this.imageListButtons.Images.SetKeyName(5, "sourcedelete.jpg");
+            this.imageListButtons.Images.SetKeyName(6, "sourceconfirm.jpg");
+            this.imageListButtons.Images.SetKeyName(7, "sourcecancel.jpg");
+            this.imageListButtons.Images.SetKeyName(8, "indexcreate.jpg");
+            this.imageListButtons.Images.SetKeyName(9, "indexservice.jpg");
+            this.imageListButtons.Images.SetKeyName(10, "startservice.png");
+            this.imageListButtons.Images.SetKeyName(11, "stopservice.png");
+            // 
+            // btnSourceConfim
+            // 
+            this.btnSourceConfim.Enabled = false;
+            this.btnSourceConfim.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSourceConfim.ImageIndex = 6;
+            this.btnSourceConfim.ImageList = this.imageListButtons;
+            this.btnSourceConfim.Location = new System.Drawing.Point(0, 363);
+            this.btnSourceConfim.Name = "btnSourceConfim";
+            this.btnSourceConfim.Size = new System.Drawing.Size(178, 59);
+            this.btnSourceConfim.TabIndex = 3;
+            this.btnSourceConfim.Text = "确定操作";
+            this.btnSourceConfim.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSourceConfim.UseVisualStyleBackColor = true;
+            this.btnSourceConfim.Click += new System.EventHandler(this.btnSourceConfim_Click);
+            // 
+            // btnDelSource
+            // 
+            this.btnDelSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDelSource.ImageIndex = 5;
+            this.btnDelSource.ImageList = this.imageListButtons;
+            this.btnDelSource.Location = new System.Drawing.Point(0, 304);
+            this.btnDelSource.Name = "btnDelSource";
+            this.btnDelSource.Size = new System.Drawing.Size(178, 59);
+            this.btnDelSource.TabIndex = 3;
+            this.btnDelSource.Text = "删除数据源";
+            this.btnDelSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelSource.UseVisualStyleBackColor = true;
+            this.btnDelSource.Click += new System.EventHandler(this.btnDelSource_Click);
+            // 
+            // btnEditSource
+            // 
+            this.btnEditSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEditSource.ImageIndex = 4;
+            this.btnEditSource.ImageList = this.imageListButtons;
+            this.btnEditSource.Location = new System.Drawing.Point(0, 245);
+            this.btnEditSource.Name = "btnEditSource";
+            this.btnEditSource.Size = new System.Drawing.Size(178, 59);
+            this.btnEditSource.TabIndex = 3;
+            this.btnEditSource.Text = "修改数据源";
+            this.btnEditSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEditSource.UseVisualStyleBackColor = true;
+            this.btnEditSource.Click += new System.EventHandler(this.btnEditSource_Click);
+            // 
+            // btnAddSource
+            // 
+            this.btnAddSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddSource.ImageIndex = 3;
+            this.btnAddSource.ImageList = this.imageListButtons;
+            this.btnAddSource.Location = new System.Drawing.Point(0, 186);
+            this.btnAddSource.Name = "btnAddSource";
+            this.btnAddSource.Size = new System.Drawing.Size(178, 59);
+            this.btnAddSource.TabIndex = 3;
+            this.btnAddSource.Text = "添加数据源";
+            this.btnAddSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddSource.UseVisualStyleBackColor = true;
+            this.btnAddSource.Click += new System.EventHandler(this.btnAddSource_Click);
+            // 
+            // btnTestFields
+            // 
+            this.btnTestFields.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTestFields.ImageIndex = 2;
+            this.btnTestFields.ImageList = this.imageListButtons;
+            this.btnTestFields.Location = new System.Drawing.Point(0, 127);
+            this.btnTestFields.Name = "btnTestFields";
+            this.btnTestFields.Size = new System.Drawing.Size(178, 59);
+            this.btnTestFields.TabIndex = 3;
+            this.btnTestFields.Text = "测试查询字段";
+            this.btnTestFields.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTestFields.UseVisualStyleBackColor = true;
+            this.btnTestFields.Click += new System.EventHandler(this.btnTestFields_Click);
+            // 
+            // btnTestQuery
+            // 
+            this.btnTestQuery.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTestQuery.ImageIndex = 1;
+            this.btnTestQuery.ImageList = this.imageListButtons;
+            this.btnTestQuery.Location = new System.Drawing.Point(0, 68);
+            this.btnTestQuery.Name = "btnTestQuery";
+            this.btnTestQuery.Size = new System.Drawing.Size(178, 59);
+            this.btnTestQuery.TabIndex = 3;
+            this.btnTestQuery.Text = "测试查询语句";
+            this.btnTestQuery.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTestQuery.UseVisualStyleBackColor = true;
+            this.btnTestQuery.Click += new System.EventHandler(this.btnTestQuery_Click);
+            // 
+            // btnTestDBLink
+            // 
+            this.btnTestDBLink.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTestDBLink.ImageIndex = 0;
+            this.btnTestDBLink.ImageList = this.imageListButtons;
+            this.btnTestDBLink.Location = new System.Drawing.Point(0, 9);
+            this.btnTestDBLink.Name = "btnTestDBLink";
+            this.btnTestDBLink.Size = new System.Drawing.Size(178, 59);
+            this.btnTestDBLink.TabIndex = 2;
+            this.btnTestDBLink.Text = "测试数据库连接";
+            this.btnTestDBLink.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTestDBLink.UseVisualStyleBackColor = true;
+            this.btnTestDBLink.Click += new System.EventHandler(this.btnTestDBLink_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBoxQuery);
+            this.groupBox1.Controls.Add(this.comboBoxSourceType);
+            this.groupBox1.Controls.Add(this.textBoxPassword);
+            this.groupBox1.Controls.Add(this.textBoxUserName);
+            this.groupBox1.Controls.Add(this.textBoxDataBase);
+            this.groupBox1.Controls.Add(this.textBoxFields);
+            this.groupBox1.Controls.Add(this.textBoxHostName);
+            this.groupBox1.Controls.Add(this.textBoxSourceName);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Location = new System.Drawing.Point(19, 51);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(437, 437);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "数据源信息：";
+            // 
+            // textBoxQuery
+            // 
+            this.textBoxQuery.Location = new System.Drawing.Point(89, 189);
+            this.textBoxQuery.Multiline = true;
+            this.textBoxQuery.Name = "textBoxQuery";
+            this.textBoxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxQuery.Size = new System.Drawing.Size(342, 211);
+            this.textBoxQuery.TabIndex = 11;
+            // 
+            // comboBoxSourceType
+            // 
+            this.comboBoxSourceType.FormattingEnabled = true;
+            this.comboBoxSourceType.Items.AddRange(new object[] {
+            "SqlServer",
+            "Oracle",
+            "OleDB",
+            "ODBC"});
+            this.comboBoxSourceType.Location = new System.Drawing.Point(89, 54);
+            this.comboBoxSourceType.Name = "comboBoxSourceType";
+            this.comboBoxSourceType.Size = new System.Drawing.Size(257, 20);
+            this.comboBoxSourceType.TabIndex = 9;
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword.Location = new System.Drawing.Point(89, 161);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '*';
+            this.textBoxPassword.Size = new System.Drawing.Size(257, 21);
+            this.textBoxPassword.TabIndex = 8;
+            // 
+            // textBoxUserName
+            // 
+            this.textBoxUserName.Location = new System.Drawing.Point(89, 134);
+            this.textBoxUserName.Name = "textBoxUserName";
+            this.textBoxUserName.Size = new System.Drawing.Size(257, 21);
+            this.textBoxUserName.TabIndex = 8;
+            // 
+            // textBoxDataBase
+            // 
+            this.textBoxDataBase.Location = new System.Drawing.Point(89, 107);
+            this.textBoxDataBase.Name = "textBoxDataBase";
+            this.textBoxDataBase.Size = new System.Drawing.Size(257, 21);
+            this.textBoxDataBase.TabIndex = 8;
+            // 
+            // textBoxFields
+            // 
+            this.textBoxFields.Location = new System.Drawing.Point(89, 406);
+            this.textBoxFields.Name = "textBoxFields";
+            this.textBoxFields.Size = new System.Drawing.Size(342, 21);
+            this.textBoxFields.TabIndex = 8;
+            this.textBoxFields.Click += new System.EventHandler(this.textBoxFields_Click);
+            // 
+            // textBoxHostName
+            // 
+            this.textBoxHostName.Location = new System.Drawing.Point(89, 80);
+            this.textBoxHostName.Name = "textBoxHostName";
+            this.textBoxHostName.Size = new System.Drawing.Size(257, 21);
+            this.textBoxHostName.TabIndex = 8;
+            // 
+            // textBoxSourceName
+            // 
+            this.textBoxSourceName.Location = new System.Drawing.Point(89, 26);
+            this.textBoxSourceName.Name = "textBoxSourceName";
+            this.textBoxSourceName.Size = new System.Drawing.Size(257, 21);
+            this.textBoxSourceName.TabIndex = 8;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 409);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 12);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "搜索字段：";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 192);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 6;
+            this.label8.Tag = " ";
+            this.label8.Text = "查  询：";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 167);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 12);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "密  码：";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 138);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(71, 12);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "用 户 名 ：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 111);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 12);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "数据库名称：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.SystemColors.Control;
+            this.label4.Location = new System.Drawing.Point(6, 87);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "主机名称：";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 58);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "数据库类型：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(77, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "数据源名称：";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(43, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "数据源：";
+            // 
+            // comboBoxSource
+            // 
+            this.comboBoxSource.FormattingEnabled = true;
+            this.comboBoxSource.Location = new System.Drawing.Point(108, 25);
+            this.comboBoxSource.Name = "comboBoxSource";
+            this.comboBoxSource.Size = new System.Drawing.Size(257, 20);
+            this.comboBoxSource.TabIndex = 2;
+            this.comboBoxSource.SelectedIndexChanged += new System.EventHandler(this.comboBoxSouce_SelectedIndexChanged);
+            // 
+            // panelDictionary
+            // 
+            this.panelDictionary.Controls.Add(this.groupBox9);
+            this.panelDictionary.Controls.Add(this.groupBox10);
+            this.panelDictionary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDictionary.Location = new System.Drawing.Point(0, 0);
+            this.panelDictionary.Name = "panelDictionary";
+            this.panelDictionary.Size = new System.Drawing.Size(661, 498);
+            this.panelDictionary.TabIndex = 11;
+            this.panelDictionary.Visible = false;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.btnChangeDictSet);
+            this.groupBox9.Controls.Add(this.btnDictStopService);
+            this.groupBox9.Controls.Add(this.btnDictStartService);
+            this.groupBox9.Controls.Add(this.btnDictService);
+            this.groupBox9.Controls.Add(this.btnDictConfirm);
+            this.groupBox9.Location = new System.Drawing.Point(19, 16);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(448, 102);
+            this.groupBox9.TabIndex = 12;
+            this.groupBox9.TabStop = false;
+            // 
+            // btnChangeDictSet
+            // 
+            this.btnChangeDictSet.ImageIndex = 4;
+            this.btnChangeDictSet.ImageList = this.imageListButtons;
+            this.btnChangeDictSet.Location = new System.Drawing.Point(2, 9);
+            this.btnChangeDictSet.Name = "btnChangeDictSet";
+            this.btnChangeDictSet.Size = new System.Drawing.Size(89, 90);
+            this.btnChangeDictSet.TabIndex = 3;
+            this.btnChangeDictSet.Text = "修改设置";
+            this.btnChangeDictSet.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnChangeDictSet.UseVisualStyleBackColor = true;
+            this.btnChangeDictSet.Click += new System.EventHandler(this.btnChangeDictSet_Click);
+            // 
+            // btnDictStopService
+            // 
+            this.btnDictStopService.ImageIndex = 11;
+            this.btnDictStopService.ImageList = this.imageListButtons;
+            this.btnDictStopService.Location = new System.Drawing.Point(358, 9);
+            this.btnDictStopService.Name = "btnDictStopService";
+            this.btnDictStopService.Size = new System.Drawing.Size(89, 90);
+            this.btnDictStopService.TabIndex = 3;
+            this.btnDictStopService.Text = "停止服务";
+            this.btnDictStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictStopService.UseVisualStyleBackColor = true;
+            this.btnDictStopService.Click += new System.EventHandler(this.btnDictStopService_Click);
+            // 
+            // btnDictStartService
+            // 
+            this.btnDictStartService.ImageIndex = 10;
+            this.btnDictStartService.ImageList = this.imageListButtons;
+            this.btnDictStartService.Location = new System.Drawing.Point(269, 9);
+            this.btnDictStartService.Name = "btnDictStartService";
+            this.btnDictStartService.Size = new System.Drawing.Size(89, 90);
+            this.btnDictStartService.TabIndex = 3;
+            this.btnDictStartService.Text = "开始服务";
+            this.btnDictStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictStartService.UseVisualStyleBackColor = true;
+            this.btnDictStartService.Click += new System.EventHandler(this.btnDictStartService_Click);
+            // 
+            // btnDictService
+            // 
+            this.btnDictService.ImageIndex = 9;
+            this.btnDictService.ImageList = this.imageListButtons;
+            this.btnDictService.Location = new System.Drawing.Point(180, 9);
+            this.btnDictService.Name = "btnDictService";
+            this.btnDictService.Size = new System.Drawing.Size(89, 90);
+            this.btnDictService.TabIndex = 3;
+            this.btnDictService.Text = "设置系统服务";
+            this.btnDictService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictService.UseVisualStyleBackColor = true;
+            this.btnDictService.Click += new System.EventHandler(this.btnDictService_Click);
+            // 
+            // btnDictConfirm
+            // 
+            this.btnDictConfirm.Enabled = false;
+            this.btnDictConfirm.ImageIndex = 6;
+            this.btnDictConfirm.ImageList = this.imageListButtons;
+            this.btnDictConfirm.Location = new System.Drawing.Point(91, 9);
+            this.btnDictConfirm.Name = "btnDictConfirm";
+            this.btnDictConfirm.Size = new System.Drawing.Size(89, 90);
+            this.btnDictConfirm.TabIndex = 3;
+            this.btnDictConfirm.Text = "确定操作";
+            this.btnDictConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictConfirm.UseVisualStyleBackColor = true;
+            this.btnDictConfirm.Click += new System.EventHandler(this.btnDictConfirm_Click);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.btnSetCustomPaths);
+            this.groupBox10.Controls.Add(this.btnSetFilterPath);
+            this.groupBox10.Controls.Add(this.btnSetNumberPath);
+            this.groupBox10.Controls.Add(this.btnSetNamePath);
+            this.groupBox10.Controls.Add(this.btnSetBasePath);
+            this.groupBox10.Controls.Add(this.textBoxFilterPath);
+            this.groupBox10.Controls.Add(this.textBoxNumberPath);
+            this.groupBox10.Controls.Add(this.textBoxNamePath);
+            this.groupBox10.Controls.Add(this.textBoxBasePath);
+            this.groupBox10.Controls.Add(this.listBoxCustomPaths);
+            this.groupBox10.Controls.Add(this.label37);
+            this.groupBox10.Controls.Add(this.label38);
+            this.groupBox10.Controls.Add(this.label40);
+            this.groupBox10.Controls.Add(this.label43);
+            this.groupBox10.Controls.Add(this.label44);
+            this.groupBox10.Location = new System.Drawing.Point(21, 140);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(620, 297);
+            this.groupBox10.TabIndex = 11;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "词库设置：";
+            // 
+            // btnSetCustomPaths
+            // 
+            this.btnSetCustomPaths.Location = new System.Drawing.Point(558, 111);
+            this.btnSetCustomPaths.Name = "btnSetCustomPaths";
+            this.btnSetCustomPaths.Size = new System.Drawing.Size(33, 23);
+            this.btnSetCustomPaths.TabIndex = 4;
+            this.btnSetCustomPaths.Text = "...";
+            this.btnSetCustomPaths.UseVisualStyleBackColor = true;
+            this.btnSetCustomPaths.Click += new System.EventHandler(this.btnSetCustomPaths_Click);
+            // 
+            // btnSetFilterPath
+            // 
+            this.btnSetFilterPath.Location = new System.Drawing.Point(558, 260);
+            this.btnSetFilterPath.Name = "btnSetFilterPath";
+            this.btnSetFilterPath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetFilterPath.TabIndex = 4;
+            this.btnSetFilterPath.Text = "...";
+            this.btnSetFilterPath.UseVisualStyleBackColor = true;
+            this.btnSetFilterPath.Click += new System.EventHandler(this.btnSetFilterPath_Click);
+            // 
+            // btnSetNumberPath
+            // 
+            this.btnSetNumberPath.Location = new System.Drawing.Point(558, 80);
+            this.btnSetNumberPath.Name = "btnSetNumberPath";
+            this.btnSetNumberPath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetNumberPath.TabIndex = 4;
+            this.btnSetNumberPath.Text = "...";
+            this.btnSetNumberPath.UseVisualStyleBackColor = true;
+            this.btnSetNumberPath.Click += new System.EventHandler(this.btnSetNumberPath_Click);
+            // 
+            // btnSetNamePath
+            // 
+            this.btnSetNamePath.Location = new System.Drawing.Point(558, 52);
+            this.btnSetNamePath.Name = "btnSetNamePath";
+            this.btnSetNamePath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetNamePath.TabIndex = 4;
+            this.btnSetNamePath.Text = "...";
+            this.btnSetNamePath.UseVisualStyleBackColor = true;
+            this.btnSetNamePath.Click += new System.EventHandler(this.btnSetNamePath_Click);
+            // 
+            // btnSetBasePath
+            // 
+            this.btnSetBasePath.Location = new System.Drawing.Point(558, 24);
+            this.btnSetBasePath.Name = "btnSetBasePath";
+            this.btnSetBasePath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetBasePath.TabIndex = 4;
+            this.btnSetBasePath.Text = "...";
+            this.btnSetBasePath.UseVisualStyleBackColor = true;
+            this.btnSetBasePath.Click += new System.EventHandler(this.btnSetBasePath_Click);
+            // 
+            // textBoxFilterPath
+            // 
+            this.textBoxFilterPath.Location = new System.Drawing.Point(143, 261);
+            this.textBoxFilterPath.Name = "textBoxFilterPath";
+            this.textBoxFilterPath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxFilterPath.TabIndex = 3;
+            // 
+            // textBoxNumberPath
+            // 
+            this.textBoxNumberPath.Location = new System.Drawing.Point(143, 81);
+            this.textBoxNumberPath.Name = "textBoxNumberPath";
+            this.textBoxNumberPath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxNumberPath.TabIndex = 3;
+            // 
+            // textBoxNamePath
+            // 
+            this.textBoxNamePath.Location = new System.Drawing.Point(143, 53);
+            this.textBoxNamePath.Name = "textBoxNamePath";
+            this.textBoxNamePath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxNamePath.TabIndex = 3;
+            // 
+            // textBoxBasePath
+            // 
+            this.textBoxBasePath.Location = new System.Drawing.Point(143, 25);
+            this.textBoxBasePath.Name = "textBoxBasePath";
+            this.textBoxBasePath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxBasePath.TabIndex = 3;
+            // 
+            // listBoxCustomPaths
+            // 
+            this.listBoxCustomPaths.FormattingEnabled = true;
+            this.listBoxCustomPaths.ItemHeight = 12;
+            this.listBoxCustomPaths.Location = new System.Drawing.Point(143, 113);
+            this.listBoxCustomPaths.Name = "listBoxCustomPaths";
+            this.listBoxCustomPaths.Size = new System.Drawing.Size(414, 136);
+            this.listBoxCustomPaths.TabIndex = 2;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(24, 265);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(89, 12);
+            this.label37.TabIndex = 1;
+            this.label37.Text = "过滤词库路径：";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(22, 113);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(101, 12);
+            this.label38.TabIndex = 1;
+            this.label38.Text = "自定义词库路径：";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(24, 85);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(89, 12);
+            this.label40.TabIndex = 1;
+            this.label40.Text = "数值词库路径：";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(22, 57);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(89, 12);
+            this.label43.TabIndex = 1;
+            this.label43.Text = "姓氏词库路径：";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(24, 29);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(77, 12);
+            this.label44.TabIndex = 0;
+            this.label44.Text = "主词库路径：";
             // 
             // panelIndexSet
             // 
@@ -522,23 +1110,6 @@
             this.btnDelIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnDelIndex.UseVisualStyleBackColor = true;
             this.btnDelIndex.Click += new System.EventHandler(this.btnDelIndex_Click);
-            // 
-            // imageListButtons
-            // 
-            this.imageListButtons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListButtons.ImageStream")));
-            this.imageListButtons.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListButtons.Images.SetKeyName(0, "testdblink.jpg");
-            this.imageListButtons.Images.SetKeyName(1, "testquery.jpg");
-            this.imageListButtons.Images.SetKeyName(2, "testsourcefields.jpg");
-            this.imageListButtons.Images.SetKeyName(3, "newsource.jpg");
-            this.imageListButtons.Images.SetKeyName(4, "editsource.jpg");
-            this.imageListButtons.Images.SetKeyName(5, "sourcedelete.jpg");
-            this.imageListButtons.Images.SetKeyName(6, "sourceconfirm.jpg");
-            this.imageListButtons.Images.SetKeyName(7, "sourcecancel.jpg");
-            this.imageListButtons.Images.SetKeyName(8, "indexcreate.jpg");
-            this.imageListButtons.Images.SetKeyName(9, "indexservice.jpg");
-            this.imageListButtons.Images.SetKeyName(10, "startservice.png");
-            this.imageListButtons.Images.SetKeyName(11, "stopservice.png");
             // 
             // btnEditIndex
             // 
@@ -1442,577 +2013,6 @@
             this.label34.TabIndex = 0;
             this.label34.Text = "IP地址：";
             // 
-            // panelSource
-            // 
-            this.panelSource.Controls.Add(this.groupBox2);
-            this.panelSource.Controls.Add(this.groupBox1);
-            this.panelSource.Controls.Add(this.label1);
-            this.panelSource.Controls.Add(this.comboBoxSource);
-            this.panelSource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSource.Location = new System.Drawing.Point(0, 0);
-            this.panelSource.Name = "panelSource";
-            this.panelSource.Size = new System.Drawing.Size(661, 498);
-            this.panelSource.TabIndex = 0;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.btnSourceCancel);
-            this.groupBox2.Controls.Add(this.btnSourceConfim);
-            this.groupBox2.Controls.Add(this.btnDelSource);
-            this.groupBox2.Controls.Add(this.btnEditSource);
-            this.groupBox2.Controls.Add(this.btnAddSource);
-            this.groupBox2.Controls.Add(this.btnTestFields);
-            this.groupBox2.Controls.Add(this.btnTestQuery);
-            this.groupBox2.Controls.Add(this.btnTestDBLink);
-            this.groupBox2.Location = new System.Drawing.Point(473, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(178, 482);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            // 
-            // btnSourceCancel
-            // 
-            this.btnSourceCancel.Enabled = false;
-            this.btnSourceCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSourceCancel.ImageIndex = 7;
-            this.btnSourceCancel.ImageList = this.imageListButtons;
-            this.btnSourceCancel.Location = new System.Drawing.Point(0, 422);
-            this.btnSourceCancel.Name = "btnSourceCancel";
-            this.btnSourceCancel.Size = new System.Drawing.Size(178, 59);
-            this.btnSourceCancel.TabIndex = 3;
-            this.btnSourceCancel.Text = "取消操作";
-            this.btnSourceCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSourceCancel.UseVisualStyleBackColor = true;
-            this.btnSourceCancel.Click += new System.EventHandler(this.btnSourceCancel_Click);
-            // 
-            // btnSourceConfim
-            // 
-            this.btnSourceConfim.Enabled = false;
-            this.btnSourceConfim.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSourceConfim.ImageIndex = 6;
-            this.btnSourceConfim.ImageList = this.imageListButtons;
-            this.btnSourceConfim.Location = new System.Drawing.Point(0, 363);
-            this.btnSourceConfim.Name = "btnSourceConfim";
-            this.btnSourceConfim.Size = new System.Drawing.Size(178, 59);
-            this.btnSourceConfim.TabIndex = 3;
-            this.btnSourceConfim.Text = "确定操作";
-            this.btnSourceConfim.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSourceConfim.UseVisualStyleBackColor = true;
-            this.btnSourceConfim.Click += new System.EventHandler(this.btnSourceConfim_Click);
-            // 
-            // btnDelSource
-            // 
-            this.btnDelSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDelSource.ImageIndex = 5;
-            this.btnDelSource.ImageList = this.imageListButtons;
-            this.btnDelSource.Location = new System.Drawing.Point(0, 304);
-            this.btnDelSource.Name = "btnDelSource";
-            this.btnDelSource.Size = new System.Drawing.Size(178, 59);
-            this.btnDelSource.TabIndex = 3;
-            this.btnDelSource.Text = "删除数据源";
-            this.btnDelSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDelSource.UseVisualStyleBackColor = true;
-            this.btnDelSource.Click += new System.EventHandler(this.btnDelSource_Click);
-            // 
-            // btnEditSource
-            // 
-            this.btnEditSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEditSource.ImageIndex = 4;
-            this.btnEditSource.ImageList = this.imageListButtons;
-            this.btnEditSource.Location = new System.Drawing.Point(0, 245);
-            this.btnEditSource.Name = "btnEditSource";
-            this.btnEditSource.Size = new System.Drawing.Size(178, 59);
-            this.btnEditSource.TabIndex = 3;
-            this.btnEditSource.Text = "修改数据源";
-            this.btnEditSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEditSource.UseVisualStyleBackColor = true;
-            this.btnEditSource.Click += new System.EventHandler(this.btnEditSource_Click);
-            // 
-            // btnAddSource
-            // 
-            this.btnAddSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddSource.ImageIndex = 3;
-            this.btnAddSource.ImageList = this.imageListButtons;
-            this.btnAddSource.Location = new System.Drawing.Point(0, 186);
-            this.btnAddSource.Name = "btnAddSource";
-            this.btnAddSource.Size = new System.Drawing.Size(178, 59);
-            this.btnAddSource.TabIndex = 3;
-            this.btnAddSource.Text = "添加数据源";
-            this.btnAddSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAddSource.UseVisualStyleBackColor = true;
-            this.btnAddSource.Click += new System.EventHandler(this.btnAddSource_Click);
-            // 
-            // btnTestFields
-            // 
-            this.btnTestFields.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTestFields.ImageIndex = 2;
-            this.btnTestFields.ImageList = this.imageListButtons;
-            this.btnTestFields.Location = new System.Drawing.Point(0, 127);
-            this.btnTestFields.Name = "btnTestFields";
-            this.btnTestFields.Size = new System.Drawing.Size(178, 59);
-            this.btnTestFields.TabIndex = 3;
-            this.btnTestFields.Text = "测试查询字段";
-            this.btnTestFields.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestFields.UseVisualStyleBackColor = true;
-            this.btnTestFields.Click += new System.EventHandler(this.btnTestFields_Click);
-            // 
-            // btnTestQuery
-            // 
-            this.btnTestQuery.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTestQuery.ImageIndex = 1;
-            this.btnTestQuery.ImageList = this.imageListButtons;
-            this.btnTestQuery.Location = new System.Drawing.Point(0, 68);
-            this.btnTestQuery.Name = "btnTestQuery";
-            this.btnTestQuery.Size = new System.Drawing.Size(178, 59);
-            this.btnTestQuery.TabIndex = 3;
-            this.btnTestQuery.Text = "测试查询语句";
-            this.btnTestQuery.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestQuery.UseVisualStyleBackColor = true;
-            this.btnTestQuery.Click += new System.EventHandler(this.btnTestQuery_Click);
-            // 
-            // btnTestDBLink
-            // 
-            this.btnTestDBLink.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTestDBLink.ImageIndex = 0;
-            this.btnTestDBLink.ImageList = this.imageListButtons;
-            this.btnTestDBLink.Location = new System.Drawing.Point(0, 9);
-            this.btnTestDBLink.Name = "btnTestDBLink";
-            this.btnTestDBLink.Size = new System.Drawing.Size(178, 59);
-            this.btnTestDBLink.TabIndex = 2;
-            this.btnTestDBLink.Text = "测试数据库连接";
-            this.btnTestDBLink.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestDBLink.UseVisualStyleBackColor = true;
-            this.btnTestDBLink.Click += new System.EventHandler(this.btnTestDBLink_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.textBoxQuery);
-            this.groupBox1.Controls.Add(this.comboBoxSourceType);
-            this.groupBox1.Controls.Add(this.textBoxPassword);
-            this.groupBox1.Controls.Add(this.textBoxUserName);
-            this.groupBox1.Controls.Add(this.textBoxDataBase);
-            this.groupBox1.Controls.Add(this.textBoxFields);
-            this.groupBox1.Controls.Add(this.textBoxHostName);
-            this.groupBox1.Controls.Add(this.textBoxSourceName);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(19, 51);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(437, 437);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "数据源信息：";
-            // 
-            // textBoxQuery
-            // 
-            this.textBoxQuery.Location = new System.Drawing.Point(89, 189);
-            this.textBoxQuery.Multiline = true;
-            this.textBoxQuery.Name = "textBoxQuery";
-            this.textBoxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxQuery.Size = new System.Drawing.Size(342, 211);
-            this.textBoxQuery.TabIndex = 11;
-            // 
-            // comboBoxSourceType
-            // 
-            this.comboBoxSourceType.FormattingEnabled = true;
-            this.comboBoxSourceType.Items.AddRange(new object[] {
-            "SqlServer",
-            "Oracle",
-            "OleDB",
-            "ODBC"});
-            this.comboBoxSourceType.Location = new System.Drawing.Point(89, 54);
-            this.comboBoxSourceType.Name = "comboBoxSourceType";
-            this.comboBoxSourceType.Size = new System.Drawing.Size(257, 20);
-            this.comboBoxSourceType.TabIndex = 9;
-            // 
-            // textBoxPassword
-            // 
-            this.textBoxPassword.Location = new System.Drawing.Point(89, 161);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(257, 21);
-            this.textBoxPassword.TabIndex = 8;
-            // 
-            // textBoxUserName
-            // 
-            this.textBoxUserName.Location = new System.Drawing.Point(89, 134);
-            this.textBoxUserName.Name = "textBoxUserName";
-            this.textBoxUserName.Size = new System.Drawing.Size(257, 21);
-            this.textBoxUserName.TabIndex = 8;
-            // 
-            // textBoxDataBase
-            // 
-            this.textBoxDataBase.Location = new System.Drawing.Point(89, 107);
-            this.textBoxDataBase.Name = "textBoxDataBase";
-            this.textBoxDataBase.Size = new System.Drawing.Size(257, 21);
-            this.textBoxDataBase.TabIndex = 8;
-            // 
-            // textBoxFields
-            // 
-            this.textBoxFields.Location = new System.Drawing.Point(89, 406);
-            this.textBoxFields.Name = "textBoxFields";
-            this.textBoxFields.Size = new System.Drawing.Size(342, 21);
-            this.textBoxFields.TabIndex = 8;
-            this.textBoxFields.Click += new System.EventHandler(this.textBoxFields_Click);
-            // 
-            // textBoxHostName
-            // 
-            this.textBoxHostName.Location = new System.Drawing.Point(89, 80);
-            this.textBoxHostName.Name = "textBoxHostName";
-            this.textBoxHostName.Size = new System.Drawing.Size(257, 21);
-            this.textBoxHostName.TabIndex = 8;
-            // 
-            // textBoxSourceName
-            // 
-            this.textBoxSourceName.Location = new System.Drawing.Point(89, 26);
-            this.textBoxSourceName.Name = "textBoxSourceName";
-            this.textBoxSourceName.Size = new System.Drawing.Size(257, 21);
-            this.textBoxSourceName.TabIndex = 8;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 409);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 12);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "搜索字段：";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 192);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 6;
-            this.label8.Tag = " ";
-            this.label8.Text = "查  询：";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 167);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 12);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "密  码：";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 138);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 12);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "用 户 名 ：";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 111);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 12);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "数据库名称：";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(6, 87);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 12);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "主机名称：";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 58);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 12);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "数据库类型：";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "数据源名称：";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "数据源：";
-            // 
-            // comboBoxSource
-            // 
-            this.comboBoxSource.FormattingEnabled = true;
-            this.comboBoxSource.Location = new System.Drawing.Point(108, 25);
-            this.comboBoxSource.Name = "comboBoxSource";
-            this.comboBoxSource.Size = new System.Drawing.Size(257, 20);
-            this.comboBoxSource.TabIndex = 2;
-            this.comboBoxSource.SelectedIndexChanged += new System.EventHandler(this.comboBoxSouce_SelectedIndexChanged);
-            // 
-            // panelDictionary
-            // 
-            this.panelDictionary.Controls.Add(this.groupBox9);
-            this.panelDictionary.Controls.Add(this.groupBox10);
-            this.panelDictionary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDictionary.Location = new System.Drawing.Point(0, 0);
-            this.panelDictionary.Name = "panelDictionary";
-            this.panelDictionary.Size = new System.Drawing.Size(661, 498);
-            this.panelDictionary.TabIndex = 11;
-            this.panelDictionary.Visible = false;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.btnChangeDictSet);
-            this.groupBox9.Controls.Add(this.btnDictStopService);
-            this.groupBox9.Controls.Add(this.btnDictStartService);
-            this.groupBox9.Controls.Add(this.btnDictService);
-            this.groupBox9.Controls.Add(this.btnDictConfirm);
-            this.groupBox9.Location = new System.Drawing.Point(19, 16);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(448, 102);
-            this.groupBox9.TabIndex = 12;
-            this.groupBox9.TabStop = false;
-            // 
-            // btnChangeDictSet
-            // 
-            this.btnChangeDictSet.ImageIndex = 4;
-            this.btnChangeDictSet.ImageList = this.imageListButtons;
-            this.btnChangeDictSet.Location = new System.Drawing.Point(2, 9);
-            this.btnChangeDictSet.Name = "btnChangeDictSet";
-            this.btnChangeDictSet.Size = new System.Drawing.Size(89, 90);
-            this.btnChangeDictSet.TabIndex = 3;
-            this.btnChangeDictSet.Text = "修改设置";
-            this.btnChangeDictSet.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnChangeDictSet.UseVisualStyleBackColor = true;
-            this.btnChangeDictSet.Click += new System.EventHandler(this.btnChangeDictSet_Click);
-            // 
-            // btnDictStopService
-            // 
-            this.btnDictStopService.ImageIndex = 11;
-            this.btnDictStopService.ImageList = this.imageListButtons;
-            this.btnDictStopService.Location = new System.Drawing.Point(358, 9);
-            this.btnDictStopService.Name = "btnDictStopService";
-            this.btnDictStopService.Size = new System.Drawing.Size(89, 90);
-            this.btnDictStopService.TabIndex = 3;
-            this.btnDictStopService.Text = "停止服务";
-            this.btnDictStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictStopService.UseVisualStyleBackColor = true;
-            this.btnDictStopService.Click += new System.EventHandler(this.btnDictStopService_Click);
-            // 
-            // btnDictStartService
-            // 
-            this.btnDictStartService.ImageIndex = 10;
-            this.btnDictStartService.ImageList = this.imageListButtons;
-            this.btnDictStartService.Location = new System.Drawing.Point(269, 9);
-            this.btnDictStartService.Name = "btnDictStartService";
-            this.btnDictStartService.Size = new System.Drawing.Size(89, 90);
-            this.btnDictStartService.TabIndex = 3;
-            this.btnDictStartService.Text = "开始服务";
-            this.btnDictStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictStartService.UseVisualStyleBackColor = true;
-            this.btnDictStartService.Click += new System.EventHandler(this.btnDictStartService_Click);
-            // 
-            // btnDictService
-            // 
-            this.btnDictService.ImageIndex = 9;
-            this.btnDictService.ImageList = this.imageListButtons;
-            this.btnDictService.Location = new System.Drawing.Point(180, 9);
-            this.btnDictService.Name = "btnDictService";
-            this.btnDictService.Size = new System.Drawing.Size(89, 90);
-            this.btnDictService.TabIndex = 3;
-            this.btnDictService.Text = "设置系统服务";
-            this.btnDictService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictService.UseVisualStyleBackColor = true;
-            this.btnDictService.Click += new System.EventHandler(this.btnDictService_Click);
-            // 
-            // btnDictConfirm
-            // 
-            this.btnDictConfirm.Enabled = false;
-            this.btnDictConfirm.ImageIndex = 6;
-            this.btnDictConfirm.ImageList = this.imageListButtons;
-            this.btnDictConfirm.Location = new System.Drawing.Point(91, 9);
-            this.btnDictConfirm.Name = "btnDictConfirm";
-            this.btnDictConfirm.Size = new System.Drawing.Size(89, 90);
-            this.btnDictConfirm.TabIndex = 3;
-            this.btnDictConfirm.Text = "确定操作";
-            this.btnDictConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictConfirm.UseVisualStyleBackColor = true;
-            this.btnDictConfirm.Click += new System.EventHandler(this.btnDictConfirm_Click);
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.btnSetCustomPaths);
-            this.groupBox10.Controls.Add(this.btnSetFilterPath);
-            this.groupBox10.Controls.Add(this.btnSetNumberPath);
-            this.groupBox10.Controls.Add(this.btnSetNamePath);
-            this.groupBox10.Controls.Add(this.btnSetBasePath);
-            this.groupBox10.Controls.Add(this.textBoxFilterPath);
-            this.groupBox10.Controls.Add(this.textBoxNumberPath);
-            this.groupBox10.Controls.Add(this.textBoxNamePath);
-            this.groupBox10.Controls.Add(this.textBoxBasePath);
-            this.groupBox10.Controls.Add(this.listBoxCustomPaths);
-            this.groupBox10.Controls.Add(this.label37);
-            this.groupBox10.Controls.Add(this.label38);
-            this.groupBox10.Controls.Add(this.label40);
-            this.groupBox10.Controls.Add(this.label43);
-            this.groupBox10.Controls.Add(this.label44);
-            this.groupBox10.Location = new System.Drawing.Point(21, 140);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(620, 297);
-            this.groupBox10.TabIndex = 11;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "词库设置：";
-            // 
-            // btnSetCustomPaths
-            // 
-            this.btnSetCustomPaths.Location = new System.Drawing.Point(558, 111);
-            this.btnSetCustomPaths.Name = "btnSetCustomPaths";
-            this.btnSetCustomPaths.Size = new System.Drawing.Size(33, 23);
-            this.btnSetCustomPaths.TabIndex = 4;
-            this.btnSetCustomPaths.Text = "...";
-            this.btnSetCustomPaths.UseVisualStyleBackColor = true;
-            this.btnSetCustomPaths.Click += new System.EventHandler(this.btnSetCustomPaths_Click);
-            // 
-            // btnSetFilterPath
-            // 
-            this.btnSetFilterPath.Location = new System.Drawing.Point(558, 260);
-            this.btnSetFilterPath.Name = "btnSetFilterPath";
-            this.btnSetFilterPath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetFilterPath.TabIndex = 4;
-            this.btnSetFilterPath.Text = "...";
-            this.btnSetFilterPath.UseVisualStyleBackColor = true;
-            this.btnSetFilterPath.Click += new System.EventHandler(this.btnSetFilterPath_Click);
-            // 
-            // btnSetNumberPath
-            // 
-            this.btnSetNumberPath.Location = new System.Drawing.Point(558, 80);
-            this.btnSetNumberPath.Name = "btnSetNumberPath";
-            this.btnSetNumberPath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetNumberPath.TabIndex = 4;
-            this.btnSetNumberPath.Text = "...";
-            this.btnSetNumberPath.UseVisualStyleBackColor = true;
-            this.btnSetNumberPath.Click += new System.EventHandler(this.btnSetNumberPath_Click);
-            // 
-            // btnSetNamePath
-            // 
-            this.btnSetNamePath.Location = new System.Drawing.Point(558, 52);
-            this.btnSetNamePath.Name = "btnSetNamePath";
-            this.btnSetNamePath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetNamePath.TabIndex = 4;
-            this.btnSetNamePath.Text = "...";
-            this.btnSetNamePath.UseVisualStyleBackColor = true;
-            this.btnSetNamePath.Click += new System.EventHandler(this.btnSetNamePath_Click);
-            // 
-            // btnSetBasePath
-            // 
-            this.btnSetBasePath.Location = new System.Drawing.Point(558, 24);
-            this.btnSetBasePath.Name = "btnSetBasePath";
-            this.btnSetBasePath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetBasePath.TabIndex = 4;
-            this.btnSetBasePath.Text = "...";
-            this.btnSetBasePath.UseVisualStyleBackColor = true;
-            this.btnSetBasePath.Click += new System.EventHandler(this.btnSetBasePath_Click);
-            // 
-            // textBoxFilterPath
-            // 
-            this.textBoxFilterPath.Location = new System.Drawing.Point(143, 261);
-            this.textBoxFilterPath.Name = "textBoxFilterPath";
-            this.textBoxFilterPath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxFilterPath.TabIndex = 3;
-            // 
-            // textBoxNumberPath
-            // 
-            this.textBoxNumberPath.Location = new System.Drawing.Point(143, 81);
-            this.textBoxNumberPath.Name = "textBoxNumberPath";
-            this.textBoxNumberPath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxNumberPath.TabIndex = 3;
-            // 
-            // textBoxNamePath
-            // 
-            this.textBoxNamePath.Location = new System.Drawing.Point(143, 53);
-            this.textBoxNamePath.Name = "textBoxNamePath";
-            this.textBoxNamePath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxNamePath.TabIndex = 3;
-            // 
-            // textBoxBasePath
-            // 
-            this.textBoxBasePath.Location = new System.Drawing.Point(143, 25);
-            this.textBoxBasePath.Name = "textBoxBasePath";
-            this.textBoxBasePath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxBasePath.TabIndex = 3;
-            // 
-            // listBoxCustomPaths
-            // 
-            this.listBoxCustomPaths.FormattingEnabled = true;
-            this.listBoxCustomPaths.ItemHeight = 12;
-            this.listBoxCustomPaths.Location = new System.Drawing.Point(143, 113);
-            this.listBoxCustomPaths.Name = "listBoxCustomPaths";
-            this.listBoxCustomPaths.Size = new System.Drawing.Size(414, 136);
-            this.listBoxCustomPaths.TabIndex = 2;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(24, 265);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(89, 12);
-            this.label37.TabIndex = 1;
-            this.label37.Text = "过滤词库路径：";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(22, 113);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(101, 12);
-            this.label38.TabIndex = 1;
-            this.label38.Text = "自定义词库路径：";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(24, 85);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(89, 12);
-            this.label40.TabIndex = 1;
-            this.label40.Text = "数值词库路径：";
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(22, 57);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(89, 12);
-            this.label43.TabIndex = 1;
-            this.label43.Text = "姓氏词库路径：";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(24, 29);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(77, 12);
-            this.label44.TabIndex = 0;
-            this.label44.Text = "主词库路径：";
-            // 
             // timer
             // 
             this.timer.Enabled = true;
@@ -2043,6 +2043,15 @@
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             this.splitContainer.ResumeLayout(false);
+            this.panelSource.ResumeLayout(false);
+            this.panelSource.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.panelDictionary.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
             this.panelIndexSet.ResumeLayout(false);
             this.panelIndexSet.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -2066,15 +2075,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxMatches)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeOut)).EndInit();
-            this.panelSource.ResumeLayout(false);
-            this.panelSource.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.panelDictionary.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

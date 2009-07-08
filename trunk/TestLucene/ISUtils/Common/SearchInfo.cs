@@ -58,7 +58,7 @@ namespace ISUtils.Common
         #region "重写"
         public override string ToString()
         {
-            return queryInfo.ToString()+"\tPageSize="+pageSize.ToString()+"\tPageNum="+pageNum.ToString();
+            return queryInfo.ToString()+"\tPageSize="+pageSize.ToString()+"\tPageNum="+pageNum.ToString()+"\tHighLight="+highLight.ToString();
         }
         #endregion
         #region "IXmlSerializable"

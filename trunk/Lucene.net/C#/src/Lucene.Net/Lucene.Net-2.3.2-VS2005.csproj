@@ -762,8 +762,6 @@
     <Content Include="Analysis\Standard\Package.html" />
     <Content Include="Document\Package.html" />
     <Content Include="Index\Package.html" />
-    <Content Include="Overview.html" />
-    <Content Include="Package.html" />
     <Content Include="QueryParser\Package.html" />
     <Content Include="Search\Function\Package.html" />
     <Content Include="Search\Package.html" />

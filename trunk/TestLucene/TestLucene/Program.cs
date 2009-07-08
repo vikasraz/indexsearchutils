@@ -57,27 +57,28 @@ namespace TestLucene
         }
         static void testSearch()
         {
-            string path = @"d:\Indexer\config.conf";
+            string path = @"d:\Indexer\config.xml";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.IndexNames = "IN_IndexView_Monitoring_RSSPI,IN_IndexView_Monitoring_PM";
-            info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
-            info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
-            info.RangeList.Add(new RangeCondition("","KGSJ","20000501","20090702"));
+            info.IndexNames = "IndexView_Monitoring_HCOV,IndexView_Monitoring_LI,IndexView_Monitoring_PM,IndexView_Monitoring_RSSPI";
+            info.SearchWords = "东丽";
+            //info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
+            //info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
+            //info.RangeList.Add(new RangeCondition("","KGSJ","20000501","20090702"));
             SearchInfo si=new SearchInfo();
             //si.Query =info;
-            FileStream fs = new FileStream(@"F:\search.xml", FileMode.Open);
+            //FileStream fs = new FileStream(@"F:\search.xml", FileMode.Open);
 
-            System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(SearchInfo));
-            //xsr.Serialize(fs,si);
-            si = (SearchInfo)xsr.Deserialize(fs);
-            fs.Close();
-            Console.WriteLine(si.ToString());
+            //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(SearchInfo));
+            ////xsr.Serialize(fs,si);
+            //si = (SearchInfo)xsr.Deserialize(fs);
+            //fs.Close();
+            //Console.WriteLine(si.ToString());
             DateTime start = DateTime.Now;
             Query query;
             List<SearchRecord> results = searcher.ExecuteFastSearch(info,out query,true);
-            Console.WriteLine(query.ToString());
-            SearchResult sr = new SearchResult();
+            //Console.WriteLine(query.ToString());
+            //SearchResult sr = new SearchResult();
             //sr.PageNum = 1;
             //sr.TotalPages = 1;
             //sr.Docs.AddRange(results);
@@ -192,19 +193,19 @@ namespace TestLucene
         }
         static void Main()
         {
-            Config config = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
-            Config nc ;//= new Config();
-            FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
+            //Config config = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
+            //Config nc ;//= new Config();
+            //FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
 
-            System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
-            xsr.Serialize(writer, config);
-            writer.Close();
+            //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
+            //xsr.Serialize(writer, config);
+            //writer.Close();
 
-            //FileStream reader = new FileStream(@"F:\config.xml", FileMode.Open);
+            ////FileStream reader = new FileStream(@"F:\config.xml", FileMode.Open);
 
-            nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"F:\config.xml",typeof(Config));
-            //reader.Close();
-
+            //nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"F:\config.xml",typeof(Config));
+            ////reader.Close();
+            testSearch();
             Console.ReadKey();
         }
         static void TestQuery()
@@ -304,7 +305,7 @@ namespace TestLucene
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
-            ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary);
+            ISUtils.Utils.IndexUtil.BoostIndex(IndexTypeEnum.Ordinary);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(span.TotalMilliseconds.ToString());
         }

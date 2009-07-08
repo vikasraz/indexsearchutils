@@ -1267,6 +1267,7 @@ namespace ISUtils.Utils
                     {
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
 #if DEBUG
@@ -1282,7 +1283,10 @@ namespace ISUtils.Utils
                             sfList.Clear();
                             foreach (Field field in fields)
                             {
-                                sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                if(fpDict.ContainsKey(field.Name()))
+                                    sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                else
+                                    sfList.Add(new SearchField(field,false));
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }
@@ -1294,6 +1298,7 @@ namespace ISUtils.Utils
                     {
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
 #if DEBUG
@@ -1309,7 +1314,10 @@ namespace ISUtils.Utils
                             sfList.Clear();
                             foreach (Field field in fields)
                             {
-                                sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                if (fpDict.ContainsKey(field.Name()))
+                                    sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                else
+                                    sfList.Add(new SearchField(field, false));
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }
@@ -1335,6 +1343,7 @@ namespace ISUtils.Utils
                     {
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
 #if DEBUG
@@ -1359,11 +1368,17 @@ namespace ISUtils.Utils
                                 result = highlighter.GetBestFragment(tokenStream, value);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
-                                    sfList.Add(new SearchField(key, fpDict[key].Caption, result, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, result, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    else
+                                        sfList.Add(new SearchField(key,key,result,field.GetBoost(),false));
                                 }
                                 else
                                 {
-                                    sfList.Add(new SearchField(key, fpDict[key].Caption, value, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    else
+                                        sfList.Add(new SearchField(key,key,value,field.GetBoost(),false));
                                 }
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
@@ -1376,6 +1391,7 @@ namespace ISUtils.Utils
                     {
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
 #if DEBUG
@@ -1400,11 +1416,17 @@ namespace ISUtils.Utils
                                 result = highlighter.GetBestFragment(tokenStream, value);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
-                                    sfList.Add(new SearchField(key, fpDict[key].Caption, result, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, result, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    else
+                                        sfList.Add(new SearchField(key, key, result, field.GetBoost(), false));
                                 }
                                 else
                                 {
-                                    sfList.Add(new SearchField(key, fpDict[key].Caption, value, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, field.GetBoost(), fpDict[key].TitleOrContent));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, field.GetBoost(), false));
                                 }
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));

@@ -147,7 +147,6 @@
     <Compile Include="WeightedTerm.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="Package.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Lucene.Net\Lucene.Net-2.3.2-VS2005.csproj">

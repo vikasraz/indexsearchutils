@@ -183,13 +183,13 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
-            title.Append(caption + "&nbsp;");
+            //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
                 if (sf.IsTitle)
-                    title.Append(sf.Value + "&nbsp;");
+                    title.Append(sf.Caption +":"+sf.Value + "&nbsp;");
                 else
-                    content.Append(sf.Value + "&nbsp;");
+                    content.Append(sf.Caption+":"+sf.Value + "&nbsp;");
             }
             szTitle = title.ToString();
             szContent = content.ToString();

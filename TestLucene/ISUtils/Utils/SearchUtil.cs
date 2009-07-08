@@ -1257,7 +1257,6 @@ namespace ISUtils.Utils
         public static List<SearchRecord> SearchEx(out Query query)
         {
             List<SearchRecord> recordList = new List<SearchRecord>();
-            List<SearchField> sfList = new List<SearchField>();
             query = GetQuery();
             try
             {
@@ -1280,13 +1279,13 @@ namespace ISUtils.Utils
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
-                            sfList.Clear();
+                            List<SearchField> sfList = new List<SearchField>();
                             foreach (Field field in fields)
                             {
                                 if(fpDict.ContainsKey(field.Name()))
                                     sfList.Add(new SearchField(field, fpDict[field.Name()]));
-                                else
-                                    sfList.Add(new SearchField(field,false));
+                                //else
+                                //    sfList.Add(new SearchField(field,false));
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }
@@ -1311,13 +1310,13 @@ namespace ISUtils.Utils
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
-                            sfList.Clear();
+                            List<SearchField> sfList = new List<SearchField>();
                             foreach (Field field in fields)
                             {
                                 if (fpDict.ContainsKey(field.Name()))
                                     sfList.Add(new SearchField(field, fpDict[field.Name()]));
-                                else
-                                    sfList.Add(new SearchField(field, false));
+                                //else
+                                //    sfList.Add(new SearchField(field, false));
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }
@@ -1332,8 +1331,7 @@ namespace ISUtils.Utils
         }
         public static List<SearchRecord> HighLightSearch(out Query query)
         {
-            List<SearchRecord> recordList = new List<SearchRecord>();
-            List<SearchField> sfList = new List<SearchField>();
+            List<SearchRecord> recordList = new List<SearchRecord>();            
             query = GetQuery();
             try
             {
@@ -1358,7 +1356,7 @@ namespace ISUtils.Utils
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
-                            sfList.Clear();
+                            List<SearchField> sfList = new List<SearchField>(); 
                             foreach (Field field in fields)
                             {
                                 string key = field.Name();
@@ -1370,15 +1368,15 @@ namespace ISUtils.Utils
                                 {
                                     if (fpDict.ContainsKey(key))
                                         sfList.Add(new SearchField(key, fpDict[key].Caption, result, field.GetBoost(), fpDict[key].TitleOrContent));
-                                    else
-                                        sfList.Add(new SearchField(key,key,result,field.GetBoost(),false));
+                                    //else
+                                    //    sfList.Add(new SearchField(key,key,result,field.GetBoost(),false));
                                 }
                                 else
                                 {
                                     if (fpDict.ContainsKey(key))
                                         sfList.Add(new SearchField(key, fpDict[key].Caption, value, field.GetBoost(), fpDict[key].TitleOrContent));
-                                    else
-                                        sfList.Add(new SearchField(key,key,value,field.GetBoost(),false));
+                                    //else
+                                    //    sfList.Add(new SearchField(key,key,value,field.GetBoost(),false));
                                 }
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
@@ -1406,7 +1404,7 @@ namespace ISUtils.Utils
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
-                            sfList.Clear();
+                            List<SearchField> sfList = new List<SearchField>(); 
                             foreach (Field field in fields)
                             {
                                 string key = field.Name();
@@ -1418,15 +1416,15 @@ namespace ISUtils.Utils
                                 {
                                     if (fpDict.ContainsKey(key))
                                         sfList.Add(new SearchField(key, fpDict[key].Caption, result, field.GetBoost(), fpDict[key].TitleOrContent));
-                                    else
-                                        sfList.Add(new SearchField(key, key, result, field.GetBoost(), false));
+                                    //else
+                                    //    sfList.Add(new SearchField(key, key, result, field.GetBoost(), false));
                                 }
                                 else
                                 {
                                     if (fpDict.ContainsKey(key))
                                         sfList.Add(new SearchField(key, fpDict[key].Caption, value, field.GetBoost(), fpDict[key].TitleOrContent));
-                                    else
-                                        sfList.Add(new SearchField(key, key, value, field.GetBoost(), false));
+                                    //else
+                                    //    sfList.Add(new SearchField(key, key, value, field.GetBoost(), false));
                                 }
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));

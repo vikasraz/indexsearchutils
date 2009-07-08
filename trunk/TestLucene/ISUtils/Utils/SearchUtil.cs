@@ -440,7 +440,7 @@ namespace ISUtils.Utils
                     queryRet.Add(query, BooleanClause.Occur.MUST);
                 }
             }
-            foreach (string words in exactPhraseArray)
+            foreach (string words in oneWordContainArray)
             {
                 List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
                 foreach(string word in wordList)
@@ -495,7 +495,7 @@ namespace ISUtils.Utils
                     queryRet.Add(query, BooleanClause.Occur.MUST);
                 }
             }
-            foreach (string words in exactPhraseArray)
+            foreach (string words in oneWordContainArray)
             {
                 List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
                 foreach(string word in wordList)

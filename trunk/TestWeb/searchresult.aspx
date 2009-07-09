@@ -62,9 +62,6 @@
     <div style="text-align: center">
                     结果页
         <table width="100%" height="100%">
-       <tr>
-      <%=searchInfo %> 
-       </tr> 
             <tr>
                 <td id="TD5" runat="server" style="width: 258px; height: 320px; text-align: left;">
                <%=searchResult %>

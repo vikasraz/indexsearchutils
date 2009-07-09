@@ -204,7 +204,7 @@ public partial class searchsetting : System.Web.UI.Page
         allArea = radioListArea.SelectedIndex ==0;
         area = GetCheckBoxListValue(checkListArea, false);
         allContent = radioListDetails.SelectedIndex ==0;
-        content = GetCheckBoxListValue(checkListDetails, true);
+        content = GetCheckBoxListValue(checkListDetails, false);
     }
     protected void SetGuiControlSettings(int pageSize, bool allArea, string area, bool allContent, string content)
     {
@@ -215,11 +215,11 @@ public partial class searchsetting : System.Web.UI.Page
         szAreaList.AddRange(area.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
         SetCheckBoxListValue(ref checkListArea, szAreaList);
         List<string> szContentList = new List<string>();
-        string[] szTokens = area.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        foreach (string token in szTokens)
-        {
-            szContentList.Add(GetAppSettingKey(token));
-        }
+        szContentList.AddRange(content.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+        //foreach (string token in szTokens)
+        //{
+        //    szContentList.Add(GetAppSettingKey(token));
+        //}
         SetCheckBoxListValue(ref checkListDetails, szContentList);
     }
     protected void btnOk_Click(object sender, EventArgs e)

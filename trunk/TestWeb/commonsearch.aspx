@@ -28,7 +28,7 @@
             <tr>
                 <td colspan="3" rowspan="5" style="width: 855px; height: 189px; text-align: left">
                     &nbsp;<input id="txtSearch" runat="server" onfocus="ontxtSearchFocus()" onkeypress="ontxtSearchKeyPress()" style="width: 747px" type="text" value="请输入搜索关键词" />
-                    <asp:ImageButton ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/App_GlobalResources/search.jpg" Width="18px" OnClick="imgBtnSearch_Click" /><br>
+                    <asp:ImageButton ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/App_GlobalResources/search.jpg" Width="18px" OnClick="imgBtnSearch_Click" AlternateText="搜索" /><br>
                     <div id="divSearch" style="width: 764px; height: 167px; text-align: left" atomicselection="true">
                     </div>
                 </td>

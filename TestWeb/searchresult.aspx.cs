@@ -37,11 +37,19 @@ public partial class searchresult : System.Web.UI.Page
             area = userCookie.Values["Area"];
             content = userCookie.Values["Content"];
         }
-        string szWordsAllContains=Request.QueryString["WordsAllContains"];
+        string szWordsAllContains="";
+        string szExactPhraseContain="";
+        string szOneOfWordsAtLeastContain="";
+        string szWordNotInclude="";
+        if (Request.QueryString["WordsAllContains"]!=null)
+            szWordsAllContains=Server.UrlDecode(Request.QueryString["WordsAllContains"]);
         searchInfo = szWordsAllContains;
-        string szExactPhraseContain=Request.QueryString["ExactPhraseContain"];
-        string szOneOfWordsAtLeastContain = Request.QueryString["OneOfWordsAtLeastContain"];
-        string szWordNotInclude = Request.QueryString["WordNotInclude"];
+        if (Request.QueryString["ExactPhraseContain"]!=null)
+            szExactPhraseContain=Server.UrlDecode(Request.QueryString["ExactPhraseContain"]);
+        if (Request.QueryString["OneOfWordsAtLeastContain"]!=null)
+            szOneOfWordsAtLeastContain= Server.UrlDecode(Request.QueryString["OneOfWordsAtLeastContain"]);
+        if (Request.QueryString["WordNotInclude"]!=null)
+            szWordNotInclude= Server.UrlDecode(Request.QueryString["WordNotInclude"]);
         try
         {
             client = new TcpClient(hostname, port);
@@ -58,13 +66,14 @@ public partial class searchresult : System.Web.UI.Page
             if (!string.IsNullOrEmpty(szWordNotInclude))
                info.WordNotInclude = szWordsAllContains;
             info.IndexNames = area;
+            sinfo.PageSize = pageSize;
+            sinfo.PageNum = 1;
             sinfo.Query = info;
             sinfo.HighLight = true;
             formater.Serialize(ns, sinfo);
             //searchInfo = sinfo.ToString();
             SearchResult sr = (SearchResult)formater.Deserialize(ns);
             StringBuilder buffer = new StringBuilder();
-            buffer.Append(area + "<br>");
             foreach (SearchRecord record in sr.Records)
             {
                 //Response.Write("----------------------------------------<br>");

@@ -53,7 +53,8 @@ public partial class profsearch : System.Web.UI.Page
     #endregion
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.UrlReferrer == null || Request.UrlReferrer.ToString().Contains(Request.Url.ToString()) == false)
+        if (!Page.IsPostBack)
+        //if (Request.UrlReferrer == null || Request.UrlReferrer.ToString().Contains(Request.Url.ToString()) == false)
         {
             GetUserSettings(out pageSize, out area,  out content);
             SetGuiControlSettings(pageSize, area, content);
@@ -80,9 +81,9 @@ public partial class profsearch : System.Web.UI.Page
                 userCookie.Values[key] = oldCookie.Values[key];
             }
         }
-        userCookie.Values["PageSize"] = pageSize.ToString();
-        userCookie.Values["Area"] = area;
-        userCookie.Values["Content"] = content;
+        userCookie.Values["PageSize"] = Encode(pageSize.ToString());
+        userCookie.Values["Area"] = Encode(area);
+        userCookie.Values["Content"] = Encode(content);
         userCookie.Expires = DateTime.Now.AddDays(7);
         Response.Cookies.Add(userCookie);
     }
@@ -94,9 +95,12 @@ public partial class profsearch : System.Web.UI.Page
         content = "";
         if (userCookie != null)
         {
-            pageSize = int.Parse(userCookie.Values["PageSize"]);
-            area = userCookie.Values["Area"];
-            content = userCookie.Values["Content"];
+            if (userCookie.Values["PageSize"] != null)
+                pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
+            if (userCookie.Values["Area"] != null)
+                area = Decode(userCookie.Values["Area"]);
+            if (userCookie.Values["Content"] != null)
+                content = Decode(userCookie.Values["Content"]);
         }
     }
     protected void OutputSettings()
@@ -206,10 +210,20 @@ public partial class profsearch : System.Web.UI.Page
         GetGuiControlSettings(out pageSize, out area, out content);
         SetUserSettings(pageSize,  area, content);
         StringBuilder url = new StringBuilder("~/searchresult.aspx?");
-        url.Append("WordsAllContains="+txtWordsAllContains.Text);
-        url.Append("&ExactPhraseContain="+txtExactPhraseContain.Text );
-        url.Append("&OneOfWordsAtLeastContain="+txtOneOfWordsAtLeastContain.Text);
-        url.Append("&WordNotInclude=" +txtWordNotInclude.Text);
+        url.Append("WordsAllContains="+Server.UrlEncode(txtWordsAllContains.Text));
+        url.Append("&ExactPhraseContain="+Server.UrlEncode(txtExactPhraseContain.Text ));
+        url.Append("&OneOfWordsAtLeastContain="+Server.UrlEncode(txtOneOfWordsAtLeastContain.Text));
+        url.Append("&WordNotInclude=" +Server.UrlEncode(txtWordNotInclude.Text));
         Response.Redirect(url.ToString());
     }
+    #region Endcode and Decode
+    public string Encode(string szSrc)
+    {
+        return Server.UrlEncode(szSrc);
+    }
+    public string Decode(string szSrc)
+    {
+        return Server.UrlDecode(szSrc);
+    }
+    #endregion
 }

@@ -152,9 +152,9 @@ namespace ISUtils.Common
 
                     case "Doc":
                         SearchRecord record = new SearchRecord();
-                        record.Name = reader.GetAttribute("Name");
-                        record.Caption = reader.GetAttribute("Caption");
-                        record.IndexName = reader.GetAttribute("Index");
+                        record.Name = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+                        record.Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
+                        record.IndexName = SupportClass.File.GetXmlAttribute(reader, "Index", typeof(string));
                         do
                         {
                             currentNodeName = reader.Name;
@@ -165,11 +165,11 @@ namespace ISUtils.Common
                             switch (currentNodeName)
                             {
                                 case "Field":
-                                    fieldName=reader.GetAttribute("Name");
-                                    fieldValue= reader.GetAttribute("Value");
-                                    fieldBoost = float.Parse(reader.GetAttribute("Boost"));
-                                    fieldCaption = reader.GetAttribute("Caption");
-                                    isTitle = bool.Parse(reader.GetAttribute("IsTitle"));
+                                    fieldName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+                                    fieldValue = SupportClass.File.GetXmlAttribute(reader, "Value", typeof(string));
+                                    fieldBoost = float.Parse(SupportClass.File.GetXmlAttribute(reader, "Boost", typeof(float)));
+                                    fieldCaption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
+                                    isTitle = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
                                     record.Add(new SearchField(fieldName,fieldCaption,fieldValue,fieldBoost,isTitle));
                                     reader.Read();
                                     break;
@@ -200,13 +200,16 @@ namespace ISUtils.Common
                 writer.WriteAttributeString("Index", record.IndexName);
                 foreach (SearchField field in record.Fields)
                 {
-                    writer.WriteStartElement("Field");
-                    writer.WriteAttributeString("Name",field.Name);
-                    writer.WriteAttributeString("Caption", field.Caption);
-                    writer.WriteAttributeString("Value", field.Value);
-                    writer.WriteAttributeString("Boost", field.Boost.ToString());
-                    writer.WriteAttributeString("IsTitle", field.IsTitle.ToString());
-                    writer.WriteEndElement();
+                    if (field.Visible)
+                    {
+                        writer.WriteStartElement("Field");
+                        writer.WriteAttributeString("Name", field.Name);
+                        writer.WriteAttributeString("Caption", field.Caption);
+                        writer.WriteAttributeString("Value", field.Value);
+                        writer.WriteAttributeString("Boost", field.Boost.ToString());
+                        writer.WriteAttributeString("IsTitle", field.IsTitle.ToString());
+                        writer.WriteEndElement();
+                    }
                 }
                 writer.WriteEndElement();
             }

@@ -706,6 +706,21 @@ namespace ISUtils.Searcher
             }
             return recordList;
         }
+        public List<SearchRecord> ExecuteFastSearch(QueryInfo info,  bool highlight)
+        {
+            List<SearchRecord> recordList;
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
+            Utils.SearchUtil.SetQueryInfo(info);
+            if (highlight)
+            {
+                recordList = Utils.SearchUtil.HighLightSearch();
+            }
+            else
+            {
+                recordList = Utils.SearchUtil.SearchEx();
+            }
+            return recordList;
+        }
         #endregion
     }
 }

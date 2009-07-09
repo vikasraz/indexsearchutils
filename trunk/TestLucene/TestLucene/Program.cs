@@ -61,7 +61,7 @@ namespace TestLucene
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
             info.IndexNames = "*";
-            info.SearchWords = "边报边用";
+            info.SearchWords = "东丽湖";
             //info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             //info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
             //info.RangeList.Add(new RangeCondition("","KGSJ","20000501","20090702"));
@@ -99,8 +99,15 @@ namespace TestLucene
             //TimeSpan span = DateTime.Now - start;
             //Console.WriteLine(string.Format("Spend {0} ", span.ToString()));
             ////ISUtils.SupportClass.Result.Output(result);
+            int i = 0;
             foreach (SearchRecord doc in results)
             {
+                i++;
+                System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(SearchRecord));
+                FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
+
+                xsr.Serialize(writer, doc);
+                writer.Close();
                 foreach (SearchField field in doc.Fields)
                 {
                     string key = field.Name;
@@ -193,18 +200,18 @@ namespace TestLucene
         }
         static void Main()
         {
-            //Config config = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
-            //Config nc ;//= new Config();
-            //FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
+            //Config nc = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
+            Config nc;//= new Config();
+            System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
+            ////FileStream reader = new FileStream(@"d:\Indexer\config.xml", FileMode.Open);
 
-            //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
-            //xsr.Serialize(writer, config);
-            //writer.Close();
-
-            ////FileStream reader = new FileStream(@"F:\config.xml", FileMode.Open);
-
-            //nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"F:\config.xml",typeof(Config));
+            nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"d:\Indexer\config.xml", typeof(Config));
             ////reader.Close();
+            FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
+
+            xsr.Serialize(writer, nc);
+            writer.Close();
+
             testSearch();
             Console.ReadKey();
         }

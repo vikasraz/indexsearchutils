@@ -15,6 +15,8 @@ using System.IO;
 using System.Text;
 using ISUtils.Common;
 using ISUtils.Searcher;
+using System.Xml;
+using System.Xml.Serialization;
 
 public partial class searchresult : System.Web.UI.Page
 {
@@ -74,19 +76,22 @@ public partial class searchresult : System.Web.UI.Page
             //searchInfo = sinfo.ToString();
             SearchResult sr = (SearchResult)formater.Deserialize(ns);
             StringBuilder buffer = new StringBuilder();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
             foreach (SearchRecord record in sr.Records)
             {
-                //Response.Write("----------------------------------------<br>");
-                //foreach (SearchField field in record.Fields)
-                //{
-                //    Response.Write(field.Name + ":\t" + field.Value + "<br>");
-                //}
+                StringBuilder builder = new StringBuilder();
+                StringWriter writer = new StringWriter(builder);
+                xmlSerializer.Serialize(writer, record);
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(builder.ToString());
+                writer.Close();
+                //Response.Write(doc.DocumentElement.OuterXml);
                 string title, detail;
                 record.GetWebInfo(out title, out detail);
                 //if (string.IsNullOrEmpty(record.Name))
                 //    buffer.Append("<a href=\"#\" onclick=\"searchFunc('" + info.SearchWords + "','IndexView_Monitoring_LI')\">" + title + "</a><br>");
                 //else
-                buffer.Append("<a href=\"#\" onclick=\"searchFunc('"+info.SearchWords+"','"+record.Name+"')\">"+title+"</a><br>");
+                buffer.Append("<a href=\"#\" onclick=\"TransferXmlDoc('" + Server.UrlEncode(doc.DocumentElement.OuterXml) + "')\">" + title + "</a><br>");
                 buffer.Append(detail+ "<br><br>");
                 //foreach (SearchField field in record.Fields)
                 //{
@@ -101,5 +106,15 @@ public partial class searchresult : System.Web.UI.Page
             Response.Write(se.StackTrace.ToString());
             return;
         }
+    }
+    protected string szXmlDoc = "";
+    public string XmlString
+    {
+        get { return szXmlDoc; }
+    }
+    protected void RedirectWithXml(string szXml)
+    {
+        Application["xmldoc"] =szXml;
+        Response.Redirect("~/display.aspx");
     }
 }

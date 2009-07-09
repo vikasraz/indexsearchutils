@@ -91,15 +91,15 @@ namespace ISUtils.Common
         /// <summary>
         /// 存储用户自定义文件路径
         /// </summary>
-        private string[] custompaths;
+        private List<string> custompaths=new List<string>();
         /**/
         /// <summary>
         /// 设定或返回用户自定义路径
         /// </summary>
-        public string[] CustomPaths
+        public List<string> CustomPaths
         {
             get { return custompaths; }
-            set { custompaths = (string[])value.Clone(); }
+            set { custompaths = value; }
         }
         /**/
         /// <summary>
@@ -109,7 +109,7 @@ namespace ISUtils.Common
         public override string ToString()
         {
             string ret = string.Format("Dictionary:Base({0}),Name({1}),Number({2}),Filter({3}),Custom(",basepath, namepath, numberpath, filterpath);
-            if (custompaths.Length > 0)
+            if (custompaths.Count > 0)
             {
                 foreach (string s in custompaths)
                 {
@@ -226,7 +226,7 @@ namespace ISUtils.Common
                     continue;
                 }
             }
-            dictSet.CustomPaths = pathList.ToArray();
+            dictSet.CustomPaths = pathList;
             return dictSet;
         }
         public static void WriteToFile(ref System.IO.StreamWriter sw, DictionarySet dictSet)

@@ -7,25 +7,45 @@ namespace ISUtils.Common
     [Serializable]
     public sealed class FilterCondition:TableField
     {
-        private string[] values;
-        public string[] Values
+        private List<string> values=new List<string>();
+        public List<string> Values
         {
             get { return values; }
             set { values = value; }
+        }
+        public FilterCondition(TableField tf, List<string> valueList)
+            : base(tf.Table, tf.Field)
+        {
+            if (valueList==null)
+                throw new ArgumentNullException("valueList", "Do not input any value for FilterCondition");
+            values=valueList;
         }
         public FilterCondition(TableField tf, params string[] valueList)
             :base(tf.Table,tf.Field)
         {
             if (valueList.Length<=0)
                 throw new ArgumentNullException("valueList","Do not input any value for FilterCondition");
-            values = valueList;
+            if (values == null)
+                values = new List<string>();
+            values.Clear();
+            values.AddRange(valueList);
+        }
+        public FilterCondition(string tablename, string fieldname, List<string> valuelist)
+            : base(tablename, fieldname)
+        {
+            if (valuelist==null)
+                throw new ArgumentNullException("valuelist", "Do not input any value for FilterCondition");
+            values = valuelist;
         }
         public FilterCondition(string tablename, string fieldname, params string[] valuelist)
             :base(tablename,fieldname)
         {
             if (valuelist.Length <= 0)
                 throw new ArgumentNullException("valuelist", "Do not input any value for FilterCondition");
-            values = valuelist;
+            if (values == null)
+                values = new List<string>();
+            values.Clear();
+            values.AddRange(valuelist);
         }
         public FilterCondition(string srcFC)
         {
@@ -39,7 +59,10 @@ namespace ISUtils.Common
             SupportClass.QueryParser.TableFieldOf(tf, out table, out field);
             string leave;
             leave = srcFC.Substring(posIn + 2);
-            values = SupportClass.String.Split(leave, " \t,，\"“”");
+            if (values == null)
+                values = new List<string>();
+            values.Clear();
+            values.AddRange(SupportClass.String.Split(leave, " \t,，\"“”"));
         }
         public override string ToString()
         {
@@ -49,7 +72,7 @@ namespace ISUtils.Common
             {
                 ret += s + ",";
             }
-            if (values.Length > 0)
+            if (values.Count > 0)
             {
                 ret = ret.Substring(0, ret.Length - 1);
             }

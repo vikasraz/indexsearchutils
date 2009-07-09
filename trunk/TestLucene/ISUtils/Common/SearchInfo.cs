@@ -97,12 +97,12 @@ namespace ISUtils.Common
                         this.highLight = bool.Parse(reader.ReadElementString());
                         break;
                     case "QueryInfo":
-                        this.queryInfo.IndexNames = reader.GetAttribute("IndexNames");
-                        this.queryInfo.QueryAts = reader.GetAttribute("QueryAts");
-                        this.queryInfo.WordsAllContains = reader.GetAttribute("WordsAllContains");
-                        this.queryInfo.ExactPhraseContain = reader.GetAttribute("ExactPhraseContain");
-                        this.queryInfo.OneOfWordsAtLeastContain = reader.GetAttribute("OneOfWordsAtLeastContain");
-                        this.queryInfo.WordNotInclude = reader.GetAttribute("WordNotInclude");
+                        this.queryInfo.IndexNames = SupportClass.File.GetXmlAttribute(reader,"IndexNames",typeof(string));
+                        this.queryInfo.QueryAts = SupportClass.File.GetXmlAttribute(reader, "QueryAts", typeof(string));
+                        this.queryInfo.WordsAllContains = SupportClass.File.GetXmlAttribute(reader, "WordsAllContains", typeof(string));
+                        this.queryInfo.ExactPhraseContain = SupportClass.File.GetXmlAttribute(reader, "ExactPhraseContain", typeof(string));
+                        this.queryInfo.OneOfWordsAtLeastContain = SupportClass.File.GetXmlAttribute(reader, "OneOfWordsAtLeastContain", typeof(string));
+                        this.queryInfo.WordNotInclude = SupportClass.File.GetXmlAttribute(reader, "WordNotInclude", typeof(string));
                         do
                         {
                             currentNodeName = reader.Name;
@@ -113,8 +113,8 @@ namespace ISUtils.Common
                             switch (currentNodeName)
                             {
                                 case "FilterCondition":
-                                    table = reader.GetAttribute("Table");
-                                    field = reader.GetAttribute("Field");
+                                    table = SupportClass.File.GetXmlAttribute(reader, "Table", typeof(string));
+                                    field = SupportClass.File.GetXmlAttribute(reader, "Field", typeof(string));
                                     itemList.Clear();
                                     do 
                                     {
@@ -138,8 +138,8 @@ namespace ISUtils.Common
                                     reader.Read();
                                     break;
                                 case "ExcludeCondition":
-                                    table = reader.GetAttribute("Table");
-                                    field = reader.GetAttribute("Field");
+                                    table = SupportClass.File.GetXmlAttribute(reader, "Table", typeof(string));
+                                    field = SupportClass.File.GetXmlAttribute(reader, "Field", typeof(string));
                                     itemList.Clear();
                                     do
                                     {
@@ -163,11 +163,11 @@ namespace ISUtils.Common
                                     reader.Read();
                                     break;
                                 case "RangeCondition":
-                                    table = reader.GetAttribute("Table");
-                                    field = reader.GetAttribute("Field");
-                                    from = reader.GetAttribute("From");
-                                    to = reader.GetAttribute("To");
-                                    interval = bool.Parse(reader.GetAttribute("Interval"));
+                                    table = SupportClass.File.GetXmlAttribute(reader, "Table", typeof(string));
+                                    field = SupportClass.File.GetXmlAttribute(reader, "Field", typeof(string));
+                                    from = SupportClass.File.GetXmlAttribute(reader, "From", typeof(string));
+                                    to = SupportClass.File.GetXmlAttribute(reader, "To", typeof(string));
+                                    interval = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "Interval", typeof(bool)));
                                     RangeCondition rc = new RangeCondition(table, field, from, to);
                                     rc.IntervalType = interval;
                                     this.queryInfo.RangeList.Add(rc);

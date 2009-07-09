@@ -129,17 +129,22 @@ namespace ISUtils.Common
         /// <summary>
         /// 存储索引字段名称
         /// </summary>
-        private FieldProperties[] fields;
+        private List<FieldProperties> fields=new List<FieldProperties>();
         /**/
         /// <summary>
         /// 设定或返回索引字段名称
         /// </summary>
-        public FieldProperties[] Fields
+        public List<FieldProperties> Fields
         {
-            get { return fields; }
+            get 
+            {
+                if (fields == null)
+                    fields = new List<FieldProperties>();
+                return fields; 
+            }
             set 
             { 
-                fields = (FieldProperties[])value.Clone();
+                fields = value;
                 if (fields != null)
                 { 
                     if (fieldDict ==null)
@@ -150,19 +155,19 @@ namespace ISUtils.Common
                     boostDict.Clear();
                     foreach (FieldProperties fb in fields)
                     {
-                        fieldDict.Add(fb.Field, fb);
-                        boostDict.Add(fb.Field, fb.Boost);
+                        fieldDict.Add(fb.Name, fb);
+                        boostDict.Add(fb.Name, fb.Boost);
                     }
                 }
             }
         }
         private Dictionary<string, FieldProperties> fieldDict = new Dictionary<string, FieldProperties>();
-        public string[] StringFields
+        public List<string> StringFields
         {
             get
             {
-                string[] szFields = new string[fieldDict.Count];
-                fieldDict.Keys.CopyTo(szFields, 0);
+                List<string> szFields = new List<string>();
+                szFields.AddRange(fieldDict.Keys);
                 return szFields;
             }
         }
@@ -263,7 +268,7 @@ namespace ISUtils.Common
             string ret = string.Format("Souce[{0}]:DBType({1}),Host({2}),DB({3}),User({4}),Pwd({5}),Query({6}),PrimayKey({7}),Fields(",
                                      sourcename, DbType.GetDbTypeStr(dbtype), hostname, database,
                                      username, password, query, primaryKey);
-            if (fields != null && fields.Length > 0)
+            if (fields != null && fields.Count > 0)
             {
                 foreach (FieldProperties fb in fields)
                     ret += fb.ToString() + ",";
@@ -459,7 +464,7 @@ namespace ISUtils.Common
 #endif
                         foreach (string token in split)
                             fpList.Add(new FieldProperties(token));
-                        src.Fields = fpList.ToArray();
+                        src.Fields = fpList;
                     }
                     else
                     {
@@ -472,7 +477,7 @@ namespace ISUtils.Common
 #endif
                         foreach (string token in split)
                             fpList.Add(new FieldProperties(token));
-                        src.Fields = fpList.ToArray();
+                        src.Fields = fpList;
                     }
                     continue;
                 }

@@ -20,7 +20,7 @@ namespace ISUtils.CSegment
         private static bool initDefs = false;
         public static void SetPaths(string basePath, string namePath, 
                                  string numberPath, string filterPath,
-                                 params string[] customPaths)
+                                 List<string> customPaths)
         {
             if (basePath == null)
                 throw new ArgumentNullException("basePath", "basePath must no be null!");
@@ -34,6 +34,33 @@ namespace ISUtils.CSegment
             System.Console.WriteLine("BasePath:" + basePath);
             System.Console.WriteLine("NamePath:" + namePath);
             System.Console.WriteLine("NumberPath:" +numberPath);
+            System.Console.WriteLine("FilterPath:" + filterPath);
+#endif
+            foreach (string path in customPaths)
+            {
+                _customPaths.Add(path);
+#if DEBUG
+                System.Console.WriteLine("CustomPath:" + path);
+#endif
+            }
+            initPath = true;
+        }
+        public static void SetPaths(string basePath, string namePath,
+                                 string numberPath, string filterPath,
+                                 params string[] customPaths)
+        {
+            if (basePath == null)
+                throw new ArgumentNullException("basePath", "basePath must no be null!");
+            if (Validator.IsValidFile(basePath) == false)
+                throw new ArgumentException("basePath must be exists!", "basePath");
+            _basePath = basePath;
+            _namePath = namePath;
+            _numberPath = numberPath;
+            _filterPath = filterPath;
+#if DEBUG
+            System.Console.WriteLine("BasePath:" + basePath);
+            System.Console.WriteLine("NamePath:" + namePath);
+            System.Console.WriteLine("NumberPath:" + numberPath);
             System.Console.WriteLine("FilterPath:" + filterPath);
 #endif
             foreach (string path in customPaths)

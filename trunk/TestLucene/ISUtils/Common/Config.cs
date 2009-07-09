@@ -192,10 +192,11 @@ namespace ISUtils.Common
                 foreach (FieldProperties fp in source.Fields)
                 {
                     writer.WriteStartElement("Field");
-                    writer.WriteAttributeString("Name", fp.Field);
+                    writer.WriteAttributeString("Name", fp.Name);
                     writer.WriteAttributeString("Caption", fp.Caption);
                     writer.WriteAttributeString("Boost", fp.Boost.ToString());
-                    writer.WriteAttributeString("IsTitle", fp.TitleOrContent.ToString());
+                    writer.WriteAttributeString("IsTitle", fp.IsTitle.ToString());
+                    writer.WriteAttributeString("Order", fp.Order.ToString());
                     writer.WriteEndElement();
                 }
                 writer.WriteEndElement();
@@ -259,7 +260,6 @@ namespace ISUtils.Common
         {
             string startElementName = reader.Name;
             string currentElementName, currentNodeName, currentItemName;
-            List<FieldProperties> fpList = new List<FieldProperties>();
             this.sourceList.Clear();
             this.indexList.Clear();
             do
@@ -275,7 +275,7 @@ namespace ISUtils.Common
                     case "Source":
                         #region Read Source
                         Source source = new Source();
-                        source.SourceName =reader.GetAttribute("Name");
+                        source.SourceName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
                         do
                         {
                             currentNodeName = reader.Name;
@@ -307,7 +307,7 @@ namespace ISUtils.Common
                                     source.PrimaryKey = reader.ReadElementString();
                                     break;
                                 case "Fields":
-                                    fpList.Clear();
+                                    List<FieldProperties> fpList = new List<FieldProperties>();
                                     do
                                     {
                                         currentItemName = reader.Name;
@@ -319,10 +319,11 @@ namespace ISUtils.Common
                                         {
                                             case "Field":
                                                 FieldProperties fp = new FieldProperties();
-                                                fp.Field = reader.GetAttribute("Name");
-                                                fp.Caption = reader.GetAttribute("Caption");
-                                                fp.Boost = float.Parse(reader.GetAttribute("Boost"));
-                                                fp.TitleOrContent =bool.Parse(reader.GetAttribute("IsTitle"));
+                                                fp.Name = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+                                                fp.Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
+                                                fp.Boost = float.Parse(SupportClass.File.GetXmlAttribute(reader, "Boost", typeof(float)));
+                                                fp.IsTitle = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
+                                                fp.Order = int.Parse(SupportClass.File.GetXmlAttribute(reader, "Order", typeof(int)));
                                                 fpList.Add(fp);
                                                 reader.Read();
                                                 break;
@@ -331,7 +332,7 @@ namespace ISUtils.Common
                                                 break;
                                         }
                                     } while (true);
-                                    source.Fields=fpList.ToArray();
+                                    source.Fields=fpList;
                                     reader.Read();
                                     break;
                                 default :
@@ -347,9 +348,9 @@ namespace ISUtils.Common
                     case "Index":
                         #region Read Index
                         IndexSet indexSet = new IndexSet();
-                        indexSet.IndexName = reader.GetAttribute("Name");
-                        indexSet.Caption = reader.GetAttribute("Caption");
-                        indexSet.Type = IndexType.GetIndexType(reader.GetAttribute("Type"));
+                        indexSet.IndexName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+                        indexSet.Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
+                        indexSet.Type = IndexType.GetIndexType(SupportClass.File.GetXmlAttribute(reader, "Type", typeof(string)));
                         do
                         {
                             currentNodeName = reader.Name;
@@ -416,7 +417,7 @@ namespace ISUtils.Common
                                                 break;
                                         }
                                     } while (true);
-                                    this.dictSet.CustomPaths = pathList.ToArray();
+                                    this.dictSet.CustomPaths = pathList;
                                     reader.Read();
                                     break;
                                 default:

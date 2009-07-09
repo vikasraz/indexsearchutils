@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using Lucene.Net.Documents;
 namespace ISUtils
@@ -274,6 +275,36 @@ namespace ISUtils
                 config.SourceList.AddRange(dict.Values);
                 config.IndexList.AddRange(dict.Keys);
                 return config;
+            }
+            public static string GetXmlAttribute(XmlReader reader, string attribute,Type type)
+            {
+                string value = "";
+                try
+                {
+                    value= reader.GetAttribute(attribute);
+                }
+                catch (Exception e)
+                {
+                    value = null;
+                }
+                if (value == null)
+                {
+                    if (type ==typeof(int))
+                        value = "0";
+                    else if (type ==typeof( float))
+                        value = "1.0f";
+                    else if (type ==typeof( double))
+                        value = "0.0";
+                    else if (type ==typeof( bool))
+                        value = "false";
+                    else if (type ==typeof( DateTime))
+                        value = DateTime.Now.ToString();
+                    else if (type ==typeof( IndexType))
+                        value = "Ordinary";
+                    else
+                        value = string.Empty;
+                }
+                return value;
             }
         }
         public class Time

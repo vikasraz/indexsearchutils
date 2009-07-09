@@ -18,14 +18,14 @@ namespace ISUtils.Common
             get { return indexnames; }
             set { indexnames = value; }
         }
-        private TableField[] resultFields;
-        public TableField[] ResultFields
+        private List<TableField> resultFields=new List<TableField>();
+        public List<TableField> ResultFields
         {
             get { return resultFields; }
             set { resultFields = value; }
         }
-        private string[] tables;
-        public string[] SearchTables
+        private List<string> tables=new List<string>();
+        public List<string> SearchTables
         {
             get { return tables; }
             set { tables = value; }
@@ -57,7 +57,7 @@ namespace ISUtils.Common
             {
                 tfList.Add(new TableField(result));
             }
-            resultFields = tfList.ToArray();
+            resultFields = tfList;
         }
         public void SetResultFileds(List<string> fieldList)
         {
@@ -66,15 +66,18 @@ namespace ISUtils.Common
             {
                 tfList.Add(new TableField(result));
             }
-            resultFields = tfList.ToArray();
+            resultFields = tfList;
         }
         public void SetSearchTables(params string[] tableArray)
         {
-            tables = tableArray;
+            if (tables == null)
+                tables = new List<string>();
+            tables.Clear();
+            tables.AddRange(tableArray);
         }
         public void SetSearchTables(List<string> tableList)
         {
-            tables = tableList.ToArray();
+            tables = tableList;
         }
         public void SetFilters(params FilterCondition[] filters)
         {
@@ -163,7 +166,7 @@ namespace ISUtils.Common
                 {
                     ret.Append(tf.ToString() + ",");
                 }
-                if (resultFields.Length > 0)
+                if (resultFields.Count > 0)
                     ret.Remove(ret.Length - 1, 1);
             }
             else
@@ -177,7 +180,7 @@ namespace ISUtils.Common
                 {
                     ret.Append(table + ",");
                 }
-                if (tables.Length > 0)
+                if (tables.Count > 0)
                     ret.Remove(ret.Length - 1, 1);
             }
             else

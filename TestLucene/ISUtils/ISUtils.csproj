@@ -62,6 +62,7 @@
     <Compile Include="Common\IndexSet.cs" />
     <Compile Include="Common\IndexerSet.cs" />
     <Compile Include="Common\IndexType.cs" />
+    <Compile Include="Common\FieldBase.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\RangeCondition.cs" />
     <Compile Include="Common\SearchRecord.cs" />

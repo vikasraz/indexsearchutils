@@ -265,7 +265,7 @@ namespace IndexEditor
                 source.SourceName = textBoxSourceName.Text;
                 source.DBType = ISUtils.Common.DbType.GetDbType(comboBoxSourceType.Text);
                 source.DataBase = textBoxDataBase.Text;
-                source.Fields = FieldProperties.ToArray(textBoxFields.Text);
+                source.Fields = FieldProperties.ToList(textBoxFields.Text);
                 source.HostName = textBoxHostName.Text;
                 source.Password = textBoxPassword.Text;
                 source.Query = textBoxQuery.Text;
@@ -448,7 +448,7 @@ namespace IndexEditor
                 textBoxFilterPath.Text =dictSet.FilterPath; 
                 textBoxNamePath.Text =dictSet.NamePath;
                 textBoxNumberPath.Text =dictSet.NumberPath;
-                listBoxCustomPaths.Items.AddRange(dictSet.CustomPaths);
+                listBoxCustomPaths.Items.AddRange(dictSet.CustomPaths.ToArray());
             }
             else
             {
@@ -461,7 +461,8 @@ namespace IndexEditor
                 string[] paths = new string[listBoxCustomPaths.Items.Count];
                 listBoxCustomPaths.Items.CopyTo(objs,0);
                 objs.CopyTo(paths, 0);
-                dictSet.CustomPaths=paths;
+                dictSet.CustomPaths.Clear();
+                dictSet.CustomPaths.AddRange(paths);
             }
         }
         private void EnableControls(bool enabled, params Control[] controls)

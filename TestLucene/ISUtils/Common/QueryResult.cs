@@ -25,10 +25,36 @@ namespace ISUtils.Common
         [Serializable]
         public sealed class SearchInfo
         {
-            public string IndexName;
-            public string[] Fields;
+            private string indexName="";
+            private List<string> searchFields = new List<string>();
+            public string IndexName
+            {
+                get { return indexName; }
+                set { indexName = value; }
+            }
+            public List<string> Fields
+            {
+                get 
+                {
+                    if (searchFields == null)
+                        searchFields = new List<string>();
+                    return searchFields; 
+                }
+                set { searchFields = value; }
+            }
             public SearchInfo()
             { 
+            }
+            public SearchInfo(string name, List<string> fields)
+            {
+                if (string.IsNullOrEmpty(name))
+                    throw new ArgumentNullException("name", "name error in SearchInfo.");
+                if (fields == null)
+                    throw new ArgumentNullException("fields", "fields error in SearchInfo.");
+                if (fields==null)
+                    throw new ArgumentNullException("fields", "fields error in SearchInfo.");
+                IndexName = name;
+                searchFields=fields;
             }
             public SearchInfo(string name, string[] fields)
             {
@@ -39,7 +65,10 @@ namespace ISUtils.Common
                 if (fields.Length <=0)
                     throw new ArgumentNullException("fields", "fields error in SearchInfo.");
                 IndexName = name;
-                Fields = (string[])fields.Clone(); 
+                if (searchFields == null)
+                    searchFields = new List<string>();
+                searchFields.Clear();
+                searchFields.AddRange(fields); 
             }            
         }
         public Dictionary<SearchInfo, List<ExDocument>> docs;

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Lucene.Net.Documents;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace ISUtils.Common
 {
     [Serializable]
-    public class SearchRecord
+    public class SearchRecord : IXmlSerializable
     {
         #region 属性
         private string name = "";
@@ -186,10 +189,13 @@ namespace ISUtils.Common
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
-                if (sf.IsTitle)
-                    title.Append(sf.Caption +":"+sf.Value + "&nbsp;");
-                else
-                    content.Append(sf.Caption+":"+sf.Value + "&nbsp;");
+                if (sf.Visible)
+                {
+                    if (sf.IsTitle)
+                        title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                    else
+                        content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                }
             }
             szTitle = title.ToString();
             szContent = content.ToString();
@@ -217,6 +223,67 @@ namespace ISUtils.Common
                 recordList.Add(new SearchRecord(doc));
             }
             return recordList;
+        }
+        #endregion
+        #region "IXmlSerializable"
+        public XmlSchema GetSchema()
+        {
+            throw new NotImplementedException();
+        }
+        public void ReadXml(XmlReader reader)
+        {
+            string currentElementName= reader.Name;
+            string currentNodeName;
+            string fieldName, fieldValue, fieldCaption;
+            float fieldBoost;
+            bool isTitle;
+            Name = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+            Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
+            IndexName = SupportClass.File.GetXmlAttribute(reader, "Index", typeof(string));
+            do
+            {
+                currentNodeName = reader.Name;
+                if (currentNodeName == currentElementName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                {
+                    break;
+                }
+                switch (currentNodeName)
+                {
+                    case "Field":
+                        fieldName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+                        fieldValue = SupportClass.File.GetXmlAttribute(reader, "Value", typeof(string));
+                        fieldBoost = float.Parse(SupportClass.File.GetXmlAttribute(reader, "Boost", typeof(float)));
+                        fieldCaption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
+                        isTitle = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
+                        Fields.Add(new SearchField(fieldName, fieldCaption, fieldValue, fieldBoost, isTitle));
+                        reader.Read();
+                        break;
+                    default:
+                        reader.Read();
+                        break;
+                }
+            } while (true);
+        }
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("Doc");
+            writer.WriteAttributeString("Name", Name);
+            writer.WriteAttributeString("Caption", Caption);
+            writer.WriteAttributeString("Index", IndexName);
+            foreach (SearchField field in Fields)
+            {
+                if (field.Visible)
+                {
+                    writer.WriteStartElement("Field");
+                    writer.WriteAttributeString("Name", field.Name);
+                    writer.WriteAttributeString("Caption", field.Caption);
+                    writer.WriteAttributeString("Value", field.Value);
+                    writer.WriteAttributeString("Boost", field.Boost.ToString());
+                    writer.WriteAttributeString("IsTitle", field.IsTitle.ToString());
+                    writer.WriteEndElement();
+                }
+            }
+            writer.WriteEndElement();
         }
         #endregion
     }

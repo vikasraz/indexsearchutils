@@ -7,25 +7,45 @@ namespace ISUtils.Common
     [Serializable]
     public sealed class ExcludeCondition:TableField
     {
-        private string[] values;
-        public string[] Values
+        private List<string> values=new List<string>();
+        public List<string> Values
         {
             get { return values; }
             set { values = value; }
+        }
+        public ExcludeCondition(TableField tf, List<string> valueList)
+            : base(tf.Table, tf.Field)
+        {
+            if (valueList==null)
+                throw new ArgumentNullException("valueList", "Do not input any value for ExcludeCondition");            
+            values=valueList;
         }
         public ExcludeCondition(TableField tf, params string[] valueList)
             :base(tf.Table,tf.Field)
         {
             if (valueList.Length<=0)
                 throw new ArgumentNullException("valueList","Do not input any value for ExcludeCondition");
-            values = valueList;
+            if (values == null)
+                values = new List<string>();
+            values.Clear();
+            values.AddRange(valueList);
+        }
+        public ExcludeCondition(string tablename, string fieldname, List<string> valuelist)
+            : base(tablename, fieldname)
+        {
+            if (valuelist==null)
+                throw new ArgumentNullException("valuelist", "Do not input any value for ExcludeCondition");
+            values = valuelist;
         }
         public ExcludeCondition(string tablename, string fieldname, params string[] valuelist)
             :base(tablename,fieldname)
         {
             if (valuelist.Length <= 0)
                 throw new ArgumentNullException("valuelist", "Do not input any value for ExcludeCondition");
-            values = valuelist;
+            if (values == null)
+                values = new List<string>();
+            values.Clear();
+            values.AddRange(valuelist);
         }
         public ExcludeCondition(string srcEC)
         {
@@ -39,7 +59,10 @@ namespace ISUtils.Common
             SupportClass.QueryParser.TableFieldOf(tf, out table,out field);
             string leave;
             leave = srcEC.Substring(posNot + 3);
-            values = SupportClass.String.Split(leave, " \t,，\"“”");
+            if (values == null)
+                values = new List<string>();
+            values.Clear();
+            values.AddRange(SupportClass.String.Split(leave, " \t,，\"“”"));
         }
         public override string ToString()
         {
@@ -49,7 +72,7 @@ namespace ISUtils.Common
             {
                 ret += s + ",";
             }
-            if (values.Length > 0)
+            if (values.Count > 0)
             {
                 ret = ret.Substring(0, ret.Length - 1);
             }

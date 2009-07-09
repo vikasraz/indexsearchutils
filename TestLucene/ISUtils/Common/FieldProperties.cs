@@ -5,34 +5,9 @@ using System.Text;
 namespace ISUtils.Common
 {
     [Serializable]
-    public sealed class FieldProperties
+    public sealed class FieldProperties:FieldBase
     {
         #region 属性
-        private string field = "";
-        private string caption = "";
-        private float boost = 1.0f;
-        private bool titleOrContent = false;//True for title ,false for content
-        public string Field
-        {
-            get { return field; }
-            set { field = value; }
-        }
-        public string Caption
-        {
-            get { return caption; }
-            set { caption = value; }
-        }
-        public float Boost
-        {
-            get { return boost; }
-            set { boost = value; }
-        }
-        //True for title ,false for content
-        public bool TitleOrContent
-        {
-            get { return titleOrContent; }
-            set { titleOrContent = value; }
-        }
         #endregion
         #region 构造函数
         public FieldProperties()
@@ -47,22 +22,12 @@ namespace ISUtils.Common
         {
         }
         public FieldProperties(string field, string caption, float boost, bool isTitle)
+            :base(field,caption,boost,isTitle,true,0)
         {
-            if (string.IsNullOrEmpty(field))
-                throw new ArgumentNullException("field", "field not valid for FieldBoost.");
-            this.field = field;
-            this.caption = caption;
-            this.boost = boost;
-            this.titleOrContent = isTitle;
         }
         public FieldProperties(string field,string caption, string szBoost, string szIsTitle)
+            :base(field,caption,szBoost,szIsTitle)
         {
-            if (string.IsNullOrEmpty(field))
-                throw new ArgumentNullException("field", "field not valid for FieldBoost.");
-            this.field = field;
-            this.caption = caption;
-            this.boost = float.Parse(szBoost);
-            this.titleOrContent = bool.Parse(szIsTitle);
         }
         public FieldProperties(string srcFB)
         {
@@ -76,7 +41,7 @@ namespace ISUtils.Common
             string[] strArray = srcFB.Split(new char[]{','});
             if (strArray.Length <1 || strArray.Length>4)
                 throw new ArgumentException("srcFB has a bad format.", "srcFB");
-            field = strArray[0];
+            name = strArray[0];
             if (strArray.Length > 1)
                 if (string.IsNullOrEmpty(strArray[1]))
                     caption = "";
@@ -89,15 +54,15 @@ namespace ISUtils.Common
                     boost = float.Parse(strArray[2]);
             if (strArray.Length > 3)
                 if (string.IsNullOrEmpty(strArray[3]))
-                    titleOrContent = false;
+                    isTitle = false;
                 else
-                    titleOrContent = bool.Parse(strArray[3]);
+                    isTitle = bool.Parse(strArray[3]);
         }
         #endregion
         #region 重写
         public override string ToString()
         {
-            return field+"("+caption+","+boost.ToString()+","+titleOrContent.ToString()+")";
+            return name+"("+caption+","+boost.ToString()+","+isTitle.ToString()+")";
         }
         #endregion
         #region 全局方法
@@ -128,6 +93,30 @@ namespace ISUtils.Common
                     fpList.Add(new FieldProperties(token));
             }
             return fpList.ToArray();
+        }
+        public static List<FieldProperties> ToList(params string[] szFbs)
+        {
+            List<FieldProperties> fbList = new List<FieldProperties>();
+            foreach (string szFb in szFbs)
+                fbList.Add(new FieldProperties(szFb));
+            return fbList;
+        }
+        public static List<FieldProperties> ToList(string szFbs)
+        {
+            List<FieldProperties> fpList = new List<FieldProperties>();
+            if (szFbs.IndexOf(')') > 0)
+            {
+                string[] split = SupportClass.String.Split(szFbs, ")");
+                foreach (string token in split)
+                    fpList.Add(new FieldProperties(token));
+            }
+            else
+            {
+                string[] split = SupportClass.String.Split(szFbs, ",");
+                foreach (string token in split)
+                    fpList.Add(new FieldProperties(token));
+            }
+            return fpList;
         }
         #endregion
     }

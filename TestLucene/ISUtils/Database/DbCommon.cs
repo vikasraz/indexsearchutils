@@ -183,7 +183,7 @@ namespace ISUtils.Database
                     find = false;
                     foreach(DataColumn column in dt.Columns)
                     {
-                        if(column.ColumnName.ToLower().CompareTo(fp.Field.ToLower())==0)
+                        if(column.ColumnName.ToLower().CompareTo(fp.Name.ToLower())==0)
                         {
                             find = true;
                             break;
@@ -407,6 +407,8 @@ namespace ISUtils.Database
             foreach (DataRow row in table.Rows)
             {
                 FieldProperties fp=new FieldProperties();
+                fp.Visible = true;
+                fp.Order = 0;
                 #region DataColumn
                 foreach (DataColumn column in table.Columns)
                 {
@@ -420,11 +422,11 @@ namespace ISUtils.Database
                         {
                             if (source != null && indexSet != null)
                             {
-                                source.Fields=fpList.ToArray();
+                                source.Fields=fpList;
                                 dict.Add(indexSet, source);
                             }
                             tableName = currentTableName;
-                            fpList.Clear();
+                            fpList = new List<FieldProperties>();
                             source = new Source();
                             indexSet = new IndexSet();
                             source.SourceName = row[column].ToString();
@@ -471,7 +473,7 @@ namespace ISUtils.Database
                     else if (column.ColumnName.Equals("Field"))
                     {
                         if (string.IsNullOrEmpty(row[column].ToString()) == false)
-                            fp.Field = row[column].ToString();
+                            fp.Name = row[column].ToString();
                     }
                     else if (column.ColumnName.Equals("Caption"))
                     {
@@ -484,21 +486,21 @@ namespace ISUtils.Database
                         {
                             if (row[column].Equals("标题"))
                             {
-                                fp.TitleOrContent=true;
+                                fp.IsTitle=true;
                             }
                             else if (row[column].Equals("内容"))
                             {
-                                fp.TitleOrContent =false;
+                                fp.IsTitle =false;
                             }
                             else 
                             {
                                 try
                                 {
-                                    fp.TitleOrContent =bool.Parse(row[column].ToString());
+                                    fp.IsTitle =bool.Parse(row[column].ToString());
                                 }
                                 catch(Exception e)
                                 {
-                                    fp.TitleOrContent =false;
+                                    fp.IsTitle =false;
                                 }
                             }
                         }

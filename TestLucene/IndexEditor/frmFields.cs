@@ -161,10 +161,10 @@ namespace IndexEditor
         private void btnConfim_Click(object sender, EventArgs e)
         {
             FieldProperties fp = new FieldProperties();
-            fp.Field = txtName.Text;
+            fp.Name = txtName.Text;
             fp.Caption = txtCaption.Text;
             fp.Boost = (float)numBoost.Value;
-            fp.TitleOrContent = radioTitle.Checked;
+            fp.IsTitle = radioTitle.Checked;
             if (txtName.Enabled ==false)
                fpList.RemoveAt(lbFields.SelectedIndex);
             fpList.Insert(lbFields.SelectedIndex, fp);
@@ -208,18 +208,18 @@ namespace IndexEditor
             if (update)
             {
                 FieldProperties fp = fpList[lbFields.SelectedIndex];
-                txtName.Text = fp.Field;
+                txtName.Text = fp.Name;
                 txtCaption.Text = fp.Caption;
                 numBoost.Value = (decimal) fp.Boost;
-                radioTitle.Checked = fp.TitleOrContent;
+                radioTitle.Checked = fp.IsTitle;
                 radioContent.Checked = !radioTitle.Checked;
             }
             else
             {
-                fpList[lbFields.SelectedIndex].Field = txtName.Text;
+                fpList[lbFields.SelectedIndex].Name = txtName.Text;
                 fpList[lbFields.SelectedIndex].Caption = txtCaption.Text;
                 fpList[lbFields.SelectedIndex].Boost = (float)numBoost.Value;
-                fpList[lbFields.SelectedIndex].TitleOrContent = radioTitle.Checked;
+                fpList[lbFields.SelectedIndex].IsTitle = radioTitle.Checked;
             }
         }
         #endregion

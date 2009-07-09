@@ -4,84 +4,81 @@ using Lucene.Net.Documents;
 namespace ISUtils.Common
 {
     [Serializable]
-    public class SearchField
+    public class SearchField:FieldBase
     {
         #region 属性
-        private string name = "";
-        private string caption = "";
         private string value = "";
-        private float boost = 1.0f;
-        private bool isTitle = false;
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-        public string Caption
-        {
-            get { return caption; }
-            set { caption = value; }
-        }
+        private string result = "";
         public string Value
         {
             get { return value; }
             set { this.value = value; }
         }
-        public float Boost
+        public string Result
         {
-            get { return boost; }
-            set { boost = value; }
-        }
-        public bool IsTitle
-        {
-            get { return isTitle; }
-            set { isTitle = value; }
+            get { return result; }
+            set { result = value; }
         }
         #endregion
         #region 构造函数
         public SearchField()
         { 
         }
-        public SearchField(string fieldname,string caption, string value, float boost, bool isTitle)
+        public SearchField(string fieldname, string caption, string value, string result, float boost, bool isTitle, bool visible, int order)
+            : base(fieldname, caption, boost, isTitle, visible, order)
         {
-            this.name = fieldname;
-            this.caption = caption;
             this.value = value;
-            this.boost = boost;
-            this.isTitle = isTitle;
+            this.result = result;
         }
-        public SearchField(string fieldname,string caption,string value)
-            : this(fieldname, caption, value, 1.0f, false)
+        public SearchField(string fieldname,string caption, string value,string result, float boost, bool isTitle)
+            :this(fieldname,caption,value,result,boost,isTitle,true,0)
+        {
+        }
+        public SearchField(string fieldname, string caption, string value,string result, float boost)
+            : this(fieldname, caption, value, result, boost, false, false, 0)
+        {
+        }
+        public SearchField(string fieldname, string caption, string value, float boost,bool isTitle)
+            : this(fieldname, caption, value, value, boost, isTitle, true, 0)
+        {
+        }
+        public SearchField(string fieldname, string caption, string value, string result)
+            : this(fieldname, caption, value, result, 1.0f, false, false, 0)
+        {
+
+        }
+        public SearchField(string fieldname, string value,string result)
+            : this(fieldname, fieldname, value, result, 1.0f, false, false, 0)
         {
 
         }
         public SearchField(string fieldname, string value)
-            : this(fieldname,fieldname, value, 1.0f, false)
+            : this(fieldname, fieldname, value, value, 1.0f, false, false, 0)
         {
  
         }
-        public SearchField(string fieldname,string caption, string value, float boost)
-            : this(fieldname, caption, value, boost, false)
+        public SearchField(string fieldname, string caption, string value, float boost)
+            : this(fieldname, caption, value, value, boost, false, false, 0)
         {
         }
         public SearchField(string fieldname, string value, float boost)
-            : this(fieldname,fieldname, value, boost, false)
+            : this(fieldname, fieldname, value, value, boost, false, false, 0)
         {
         }
         public SearchField(Field field)
-            : this(field.Name(),field.Name(), field.StringValue(), field.GetBoost(), false)
+            : this(field.Name(), field.Name(), field.StringValue(), field.StringValue(), field.GetBoost(), false, false, 0)
         { 
         }
         public SearchField(Field field, bool isTitle)
-            : this(field.Name(), field.Name(),field.StringValue(), field.GetBoost(), isTitle)
+            : this(field.Name(), field.Name(), field.StringValue(), field.StringValue(), field.GetBoost(), isTitle, true, 0)
         { 
         }
         public SearchField(Field field, string caption, bool isTitle)
-            : this(field.Name(), caption, field.StringValue(), field.GetBoost(), isTitle)
+            : this(field.Name(), caption, field.StringValue(), field.StringValue(), field.GetBoost(), isTitle, true, 0)
         { 
         }
         public SearchField(Field field, FieldProperties properties)
-            : this(field.Name(), properties.Caption, field.StringValue(), field.GetBoost(), properties.TitleOrContent)
+            : this(field.Name(), properties.Caption, field.StringValue(), field.StringValue(), properties.Boost, properties.IsTitle, true, properties.Order)
         { 
         }
         #endregion

@@ -11,7 +11,7 @@
     }
     function ontxtSearchKeyPress(){
         if (event.keyCode==13){
-            var url="searchresult.aspx?WordsAllContains="+document.getElementById("txtSearch").value;
+            var url="searchresult.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
             window.open(url,"搜索结果");
         }
     }   
@@ -28,7 +28,7 @@
             <tr>
                 <td colspan="3" rowspan="5" style="width: 855px; height: 189px; text-align: left">
                     &nbsp;<input id="txtSearch" runat="server" onfocus="ontxtSearchFocus()" onkeypress="ontxtSearchKeyPress()" style="width: 747px" type="text" value="请输入搜索关键词" />
-                    <asp:ImageButton ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/App_GlobalResources/search.jpg" Width="18px" OnClick="imgBtnSearch_Click" AlternateText="搜索" /><br>
+                    <asp:ImageButton ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/search.jpg" Width="18px" OnClick="imgBtnSearch_Click" AlternateText="搜索" /><br>
                     <div id="divSearch" style="width: 764px; height: 167px; text-align: left" atomicselection="true">
                     </div>
                 </td>

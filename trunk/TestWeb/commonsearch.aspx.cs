@@ -25,7 +25,7 @@ public partial class commonsearch : System.Web.UI.Page
     public string RedirectUrl()
     {
         StringBuilder url = new StringBuilder("searchresult.aspx?");
-        url.Append("WordsAllContains=" + txtSearch.Value);
+        url.Append("WordsAllContains=" + Server.UrlEncode(txtSearch.Value));
         return url.ToString();
     }
 }

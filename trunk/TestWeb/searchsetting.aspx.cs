@@ -76,8 +76,8 @@ public partial class searchsetting : System.Web.UI.Page
     #endregion
     protected void Page_Load(object sender, EventArgs e)
     {
-
-        if (Request.UrlReferrer==null || Request.UrlReferrer.ToString().Contains(Request.Url.ToString()) == false)
+        if(!Page.IsPostBack)
+        //if (Request.UrlReferrer==null || Request.UrlReferrer.ToString().Contains(Request.Url.ToString()) == false)
         {
             GetUserSettings(out pageSize, out allArea, out area, out allContent, out content);
             SetGuiControlSettings(pageSize, allArea, area, allContent, content);
@@ -109,11 +109,11 @@ public partial class searchsetting : System.Web.UI.Page
                 userCookie.Values[key] = oldCookie.Values[key];
             }
         }
-        userCookie.Values["PageSize"] = pageSize.ToString();
-        userCookie.Values["AllArea"]=allArea.ToString();
-        userCookie.Values["Area"]=area;
-        userCookie.Values["AllContent"]=allContent.ToString();
-        userCookie.Values["Content"]=content;
+        userCookie.Values["PageSize"] = Encode(pageSize.ToString());
+        userCookie.Values["AllArea"]=Encode(allArea.ToString());
+        userCookie.Values["Area"]=Encode(area);
+        userCookie.Values["AllContent"]=Encode(allContent.ToString());
+        userCookie.Values["Content"]=Encode(content);
         userCookie.Expires = DateTime.Now.AddDays(7);
         Response.Cookies.Add(userCookie);
     }
@@ -127,11 +127,16 @@ public partial class searchsetting : System.Web.UI.Page
         content = "";
         if (userCookie!=null)
         {
-            pageSize = int.Parse(userCookie.Values["PageSize"]);
-            allArea = bool.Parse(userCookie.Values["AllArea"]);
-            area = userCookie.Values["Area"];
-            allContent = bool.Parse(userCookie.Values["AllContent"]);
-            content = userCookie.Values["Content"];
+            if (userCookie.Values["PageSize"]!=null)
+                pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
+            if (userCookie.Values["AllArea"]!=null)
+                allArea = bool.Parse(Decode(userCookie.Values["AllArea"]));
+            if (userCookie.Values["Area"]!=null)
+                area = Decode(userCookie.Values["Area"]);
+            if (userCookie.Values["AllContent"]!=null)
+                allContent = bool.Parse(Decode(userCookie.Values["AllContent"]));
+            if (userCookie.Values["Content"]!=null)
+                content = Decode(userCookie.Values["Content"]);
         }
     }
     protected void OutputSettings()
@@ -238,4 +243,14 @@ public partial class searchsetting : System.Web.UI.Page
         GetUserSettings(out pageSize, out allArea, out area, out allContent, out content);
         SetGuiControlSettings(pageSize, allArea, area, allContent, content);
     }
+    #region Endcode and Decode
+    public string Encode(string szSrc)
+    {
+        return Server.UrlEncode(szSrc);
+    }
+    public string Decode(string szSrc)
+    {
+        return Server.UrlDecode(szSrc);
+    }
+    #endregion
 }

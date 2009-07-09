@@ -16,10 +16,58 @@ public partial class profsearch : System.Web.UI.Page
 {
     private int pageSize;
     private string area, content;
+    #region Property
+    public int PageSize
+    {
+        get
+        {
+            return ViewState["PageSize"] == null ? 10 : (int)ViewState["PageSize"];
+        }
+        set
+        {
+            ViewState.Add("PageSize", value);
+        }
+    }
+    public string Area
+    {
+        get
+        {
+            return ViewState["Area"] == null ? "" : (string)ViewState["Area"];
+        }
+        set
+        {
+            ViewState.Add("Area", value);
+        }
+    }
+    public string Content
+    {
+        get
+        {
+            return ViewState["Content"] == null ? "" : (string)ViewState["Content"];
+        }
+        set
+        {
+            ViewState.Add("Content", value);
+        }
+    }
+    #endregion
     protected void Page_Load(object sender, EventArgs e)
     {
-        GetUserSettings(out pageSize,  out area,  out content);
-        SetGuiControlSettings(pageSize, area,  content);
+        if (Request.UrlReferrer == null || Request.UrlReferrer.ToString().Contains(Request.Url.ToString()) == false)
+        {
+            GetUserSettings(out pageSize, out area,  out content);
+            SetGuiControlSettings(pageSize, area, content);
+            PageSize = pageSize;
+            Area = area;
+            Content = content;
+        }
+        else
+        {
+            GetGuiControlSettings(out pageSize,  out area, out content);
+            PageSize = pageSize;
+            Area = area;
+            Content = content;
+        }
     }
     protected void SetUserSettings(int pageSize,  string area,  string content)
     {
@@ -115,22 +163,22 @@ public partial class profsearch : System.Web.UI.Page
     }
     protected void GetGuiControlSettings(out int pageSize,  out string area,  out string content)
     {
-        pageSize = GetNumberInt(dropListPageSize.Text);
+        pageSize = int.Parse(dropListPageSize.SelectedValue);
         area = GetCheckBoxListValue(checkListArea, false);
-        content = GetCheckBoxListValue(checkListDetails, true);
+        content = GetCheckBoxListValue(checkListDetails, false);
     }
     protected void SetGuiControlSettings(int pageSize,  string area, string content)
     {
-        dropListPageSize.Text = pageSize.ToString() + "项结果";
+        dropListPageSize.SelectedValue = pageSize.ToString();
         List<string> szAreaList = new List<string>();
         szAreaList.AddRange(area.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
         SetCheckBoxListValue(ref checkListArea, szAreaList);
         List<string> szContentList = new List<string>();
-        string[] szTokens = area.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        foreach (string token in szTokens)
-        {
-            szContentList.Add(GetAppSettingKey(token));
-        }
+        szContentList.AddRange(content.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries));
+        //foreach (string token in szTokens)
+        //{
+        //    szContentList.Add(GetAppSettingKey(token));
+        //}
         SetCheckBoxListValue(ref checkListDetails, szContentList);
     }
     protected void btnAllSelArea_Click(object sender, EventArgs e)

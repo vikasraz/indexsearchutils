@@ -66,7 +66,7 @@
                         <asp:ListItem>土地利用</asp:ListItem>
                         <asp:ListItem>执法监察</asp:ListItem>
                         <asp:ListItem>整理开发复垦</asp:ListItem>
-                        <asp:ListItem>法律法规  </asp:ListItem>
+                        <asp:ListItem>法律法规</asp:ListItem>
                         <asp:ListItem>综合办公</asp:ListItem>
                     </asp:CheckBoxList></td>
             </tr>

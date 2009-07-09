@@ -33,11 +33,11 @@
                     <asp:TextBox ID="txtExactPhraseContain" runat="server"></asp:TextBox></td>
                 <td style="width: 740px; text-align: right">
                     <asp:DropDownList ID="dropListPageSize" runat="server" Width="129px">
-                        <asp:ListItem>10项结果</asp:ListItem>
-                        <asp:ListItem>20项结果</asp:ListItem>
-                        <asp:ListItem>30项结果</asp:ListItem>
-                        <asp:ListItem>50项结果</asp:ListItem>
-                        <asp:ListItem>100项结果</asp:ListItem>
+                        <asp:ListItem Value="10">10项结果</asp:ListItem>
+                        <asp:ListItem Value="20">20项结果</asp:ListItem>
+                        <asp:ListItem Value="30">30项结果</asp:ListItem>
+                        <asp:ListItem Value="50">50项结果</asp:ListItem>
+                        <asp:ListItem Value="100">100项结果</asp:ListItem>
                     </asp:DropDownList></td>
                 <td style="width: 357px; text-align: left">
                     <asp:Button ID="btnSearch" runat="server" Text="搜索" Width="59px" OnClick="btnSearch_Click" /></td>

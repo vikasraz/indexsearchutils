@@ -91,8 +91,10 @@ public partial class searchresult : System.Web.UI.Page
                 //if (string.IsNullOrEmpty(record.Name))
                 //    buffer.Append("<a href=\"#\" onclick=\"searchFunc('" + info.SearchWords + "','IndexView_Monitoring_LI')\">" + title + "</a><br>");
                 //else
+                lbXml.Items.Add(Server.UrlEncode(doc.DocumentElement.OuterXml));
                 buffer.Append("<a href=\"#\" onclick=\"TransferXmlDoc('" + Server.UrlEncode(doc.DocumentElement.OuterXml) + "')\">" + title + "</a><br>");
-                buffer.Append(detail+ "<br><br>");
+                buffer.Append("<a href=\"#\" onclick=\"selectxml('" + Server.UrlEncode(doc.DocumentElement.OuterXml) + "')\">" + title + "</a><br>");
+                buffer.Append(detail + "<br><br>");
                 //foreach (SearchField field in record.Fields)
                 //{
                 //    buffer.Append(field.Name + "\t" + field.Value + "<br>");

@@ -266,6 +266,7 @@ namespace ISUtils.Common
                         fieldCaption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
                         isTitle = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
                         Fields.Add(new SearchField(fieldName, fieldCaption, fieldValue, fieldBoost, isTitle));
+                        //Fields.Add(new SearchField(fieldName, fieldName, fieldValue, 1.0f, false));
                         reader.Read();
                         break;
                     default:

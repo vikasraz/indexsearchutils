@@ -10,20 +10,16 @@
     <script type="text/javascript">
     <!--
         function onSilverlightError(sender, args) {
-
             var appSource = "";
             if (sender != null && sender != 0) {
                 appSource = sender.getHost().Source;
             }
             var errorType = args.ErrorType;
             var iErrorCode = args.ErrorCode;
-
             var errMsg = "Silverlight 2 应用程序中未处理的错误 " + appSource + "\n";
-
             errMsg += "代码: " + iErrorCode + "    \n";
             errMsg += "类别: " + errorType + "       \n";
             errMsg += "消息: " + args.ErrorMessage + "     \n";
-
             if (errorType == "ParserError") {
                 errMsg += "文件: " + args.xamlFile + "     \n";
                 errMsg += "行号: " + args.lineNumber + "     \n";
@@ -36,7 +32,6 @@
                 }
                 errMsg += "方法名称: " + args.methodName + "     \n";
             }
-
             throw new Error(errMsg);
         }
         function mousePosition(ev) {
@@ -48,71 +43,21 @@
                 y: ev.clientY + document.body.scrollTop - document.body.clientTop
             };
         }
-//        function addLoadEvent(func)
-//        {
-//          var oldOnload=window.onload;
-//          if(typeof window.onload !='function')
-//          {
-//              window.onload=func;
-//          }
-//          else
-//          {
-//              window.onload=function()
-//              {
-//                  oldOnload();
-//                  func();
-//              }
-//          }
-//        }
-var time;
+        var time;
         function displayResult(result) {
             if (!result)
             {
-               result=displayResult.args[0];
+                result=displayResult.args[0];
             } 
             var a=decodeURIComponent(result);
             var xml=a.replace(/\+/g," ");
             document.getElementById("hiddenXml").value=xml;
-//            alert(xml);
-//            debugger;
-//           Application.Lock();
-//            // Application.Contents(i)="sdfdsffdsaf";
-//           Application(0)=xml;
-//           Application.Unlock();
-           dtBegin = new Date();
-           time = setTimeout(getControl,500);
-//             do{;}while((new Date())-dtBegin < 10000);  
-//           var control;
-//           do{
-//               try
-//               {
-//                   control=document.getElementById("SilverlightControl").content.map;
-//               }
-//               catch(err)
-//               {
-//                   continue;
-//               }
-//           }while(!control);
-//           debugger;
-//           try{
-//                // control.content.map.SetMap(xml);
-//            document.getElementById("SilverlightControl").content.map.SetMap(xml);
-//           }
-//           catch(err){
-//              alert(xml);
-//              txt="此页面存在一个错误。\n";
-//              txt+="错误信息: " + err.message+"\n";             
-//              txt+="错误描述: " + err.description + "\n";
-//              txt+="点击OK继续。\n";
-//              alert(txt);
-//           }
-  
+            time = setTimeout(getControl,500);
         }
        
       function getControl()
       {
            try{
-               // control.content.map.SetMap(xml);
                document.getElementById("SilverlightControl").content.map.SetMap(document.getElementById("hiddenXml").value);
                clearTimeout(time);
            }

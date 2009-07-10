@@ -16,12 +16,12 @@ public partial class commonsearch : System.Web.UI.Page
     {
         //txtSearch.Attributes["onkeydown"] = "if(event.keycode==13){document.all.imgBtnSearch.click();return false;}";
     }
-    //protected void imgBtnSearch_Click(object sender, ImageClickEventArgs e)
-    //{
-    //    StringBuilder url = new StringBuilder("~/searchresult.aspx?");
-    //    url.Append("WordsAllContains=" + txtSearch.Value);
-    //    Response.Redirect(url.ToString());
-    //}
+    protected void imgBtnSearch_Click(object sender, ImageClickEventArgs e)
+    {
+        //StringBuilder url = new StringBuilder("~/searchresult.aspx?");
+        //url.Append("WordsAllContains=" + txtSearch.Value);
+        //Response.Redirect(url.ToString());
+    }
     //public string RedirectUrl()
     //{
     //    StringBuilder url = new StringBuilder("searchresult.aspx?");

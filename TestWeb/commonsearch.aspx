@@ -40,7 +40,7 @@
             <tr>
                 <td colspan="1" rowspan="6" style="width: 855px; text-align: left">
                     &nbsp;<input id="txtSearch"  onfocus="ontxtSearchFocus()" onkeypress="ontxtSearchKeyPress()" style="width: 747px; height: 16px;" type="text" value="请输入搜索关键词" />
-                    <%--<asp:ImageButton ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/search.jpg" Width="18px" OnClick="imgBtnSearch_Click" AlternateText="搜索" /><br>--%>
+                    <asp:ImageButton ID="imgBtnSearch" runat="server" Height="18px" ImageUrl="~/search.jpg" Width="18px" OnClick="imgBtnSearch_Click" AlternateText="搜索" /><br>
                 </td>
                 <td colspan="1" rowspan="1" style="width: 26px; height: 20px; text-align: left">
                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/profsearch.aspx" Height="16px" Width="64px">高级搜索</asp:HyperLink></td>

@@ -49,8 +49,17 @@
         }
         
         function displayResult(result) {
-            //debugger;
-            document.getElementById("SilverlightControl").content.map.SetMap(result);
+            if (!result)
+            {
+               result=displayResult.args[0];
+            } 
+            alert(result);
+//            debugger;
+//            var a=decodeURIComponent(result);
+//            var xml=a.replace(/\+/g," ");
+//            debugger;
+////            alert(xml);
+//            document.getElementById("SilverlightControl").content.map.SetMap(xml);
         }
     </script>
 </head>

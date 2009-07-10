@@ -6,12 +6,17 @@
 <head runat="server">
     <title>搜索结果</title>
     <script type ="text/javascript">
-    function TransferXmlDoc(xmlDoc){
-        OpenWin.args=[];
-        OpenWin.args.push("Hello,I am here"); 
-        window.setTimeout(OpenWin,5000);  
+    function TransferString(str){
+        var childWin=window.open("display.aspx");
+//       do{;} while(!childWin.document.head);
+//       childWin.displayResult(str); 
+        childWin.attachEvent("onload", function(){childWin.displayResult(str)});
+//       childWin.attachEvent("onload", function(){      dtBegin = new Date();
+//         do{;}while((new Date())-dtBegin < 1000);childWin.displayResult(str)});
+        //childWin.displayResult(str); 
         //child.displayResult(xmlDoc);    
         //child.testJs();
+//       childWin.attachEvent("onload", function(){childWin.addLoadEvent(function(){childWin.displayResult(str)})});
     }
     function OpenWin(argument){
         if(!argument){
@@ -29,13 +34,12 @@
         <table width="100%" height="100%">
             <tr>
                 <td id="TD5" runat="server" style="text-align: left;">
-               <%=searchResult %>
+               
                 </td>
             </tr>
         </table>
     
     </div>
-        <asp:ListBox ID="lbXml" runat="server" Visible="False"></asp:ListBox>
     </form>
 </body>
 </html>

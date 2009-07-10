@@ -7,10 +7,19 @@
     <title>搜索结果</title>
     <script type ="text/javascript">
     function TransferXmlDoc(xmlDoc){
-        
-        Application["xmldoc"] =xmlDoc;
-       window.open("~/display.aspx"); 
+        OpenWin.args=[];
+        OpenWin.args.push("Hello,I am here"); 
+        window.setTimeout(OpenWin,5000);  
+        //child.displayResult(xmlDoc);    
+        //child.testJs();
     }
+    function OpenWin(argument){
+        if(!argument){
+           argument=OpenWin.args[0];            
+        }        
+        var childWin=window.open("display.aspx");
+        childWin.displayResult(argument); 
+    }    
     </script>
 </head>
 <body>

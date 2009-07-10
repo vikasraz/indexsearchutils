@@ -200,6 +200,16 @@ namespace ISUtils.Common
             szTitle = title.ToString();
             szContent = content.ToString();
         }
+        public string ToMinString()
+        {
+            StringBuilder buffer = new StringBuilder();
+            buffer.Append("{" + name + ":" + caption + "}");
+            foreach (SearchField field in fieldList)
+            {
+                buffer.Append("["+field.Name+":"+field.Value+"]");
+            }
+            return buffer.ToString();
+        }
         #endregion
         #region 全局方法
         public static implicit operator SearchRecord(Document doc)

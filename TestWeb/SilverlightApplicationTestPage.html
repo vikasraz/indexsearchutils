@@ -62,33 +62,12 @@
                 y: ev.clientY + document.body.scrollTop - document.body.clientTop
             };
         }
-        //var mousePos = { x: 0, y: 0 };
-//        var PosX = 0;
-//        var PosY = 0;
-//        function pageLoad() {
-//            //debugger;
-//            var element = document.getElementById("SilverlightControl").content;
-//            element.addEventListener("Click", Silverlight.createDelegate(this, click));
-//            element.addEventListener("MouseMove", Silverlight.createDelegate(this, mouseMove));
-//        }
-//        //document.onmousemove = mouseMove;
-//        function mouseMove(ev) {
-//            ev = ev || window.event;
-//            var mousePos = mousePosition(ev);
-//            document.getElementById("PosX").value = mousePos.x;
-//            document.getElementById("PosY").value = mousePos.y;
-//        }
-//        document.onmousemove = mouseMove;
-//        document.onclick = click;
-//        function click(ev) {
-//            ev = ev || window.event;
-//            var mousePos = mousePosition(ev);
-//            document.getElementById("PosX").value = mousePos.x;
-//            document.getElementById("PosY").value = mousePos.y;
-//            alert(mousePos.y);
-//        }
+        function myHello(msg) {
+            alert(msg);
+        }
         function testJs() {
-            document.getElementById("SilverlightControl").content.map.SetMap('东丽国土');
+            debugger;
+            document.getElementById("SilverlightControl").content.map.SetMap('<SearchRecord><Doc Name=\"IndexView_Monitoring_HCOV\" Caption=\"依法行政处罚\" Index=\"IndexView_Monitoring_HCOV\"><Field Name=\"AJCBR\" Caption=\"案件承办人\" Value=\"\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"AJLY\" Caption=\"案件来源\" Value=\"土地巡查\" Boost=\"1\" IsTitle=\"True\" /><Field Name=\"AY\" Caption=\"案由\" Value=\"违法建设\" Boost=\"1\" IsTitle=\"True\" /><Field Name=\"Bxwr_XM\" Caption=\"被询问人姓名\" Value=\"李四\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"CFJD\" Caption=\"处罚决定\" Value=\"\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"JLR\" Caption=\"记录人\" Value=\"东丽开发区\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"SLBMJY\" Caption=\"受理部门建议\" Value=\"同意处理。\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"SLRJY\" Caption=\"受理人建议\" Value=\"\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"SLRQ\" Caption=\"受理日期\" Value=\"2009-6-29 0:00:00\" Boost=\"1\" IsTitle=\"True\" /><Field Name=\"WFSSXZ\" Caption=\"违法事实及性质\" Value=\"未取道合法手续\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"Wfdw_DZ\" Caption=\"违法单位地址\" Value=\"东丽开发区\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"Wfdw_MC\" Caption=\"违法单位名称\" Value=\"天津市万瑞电器有限责任公司\" Boost=\"1\" IsTitle=\"True\" /><Field Name=\"Wfr_XM\" Caption=\"违法人姓名\" Value=\"东丽开发区\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"XCBMYJ\" Caption=\"协查部门意见\" Value=\"\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"XCQQ\" Caption=\"协查请求\" Value=\"ADSF\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"XWJL\" Caption=\"询问记录\" Value=\"\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"XWNR\" Caption=\"询问内容\" Value=\"\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"XWR\" Caption=\"询问人\" Value=\"张三\" Boost=\"1\" IsTitle=\"False\" /><Field Name=\"ZGLDPS\" Caption=\"主管领导批示\" Value=\"同意\" Boost=\"1\" IsTitle=\"False\" /></Doc></SearchRecord>');
         }
     </script>
 </head>
@@ -105,13 +84,14 @@
             <param name="background" value="white" />
             <param name="minRuntimeVersion" value="2.0.31005.0" />
             <param name="autoUpgrade" value="true" />
+            <param name="test" value="dskjd" />
             <a href="http://go.microsoft.com/fwlink/?LinkID=124807" style="text-decoration: none;">
                 <img src="http://go.microsoft.com/fwlink/?LinkId=108181" alt="获取 Microsoft Silverlight"
                     style="border-style: none" />
             </a>
         </object>
         <iframe style='visibility: hidden; height: 0; width: 0; border: 0px'></iframe>
- <input type="button" onclick="testJs()" value="ddd" />
+         <input type="button" onclick="testJs()" value="ddd" />
     </div>
 </body>
 </html>

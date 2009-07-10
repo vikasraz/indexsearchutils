@@ -8,6 +8,7 @@
     <script type="text/javascript" src="Silverlight.js"></script>
 
     <script type="text/javascript">
+    <!--
         function onSilverlightError(sender, args) {
 
             var appSource = "";
@@ -47,32 +48,105 @@
                 y: ev.clientY + document.body.scrollTop - document.body.clientTop
             };
         }
-        
+//        function addLoadEvent(func)
+//        {
+//          var oldOnload=window.onload;
+//          if(typeof window.onload !='function')
+//          {
+//              window.onload=func;
+//          }
+//          else
+//          {
+//              window.onload=function()
+//              {
+//                  oldOnload();
+//                  func();
+//              }
+//          }
+//        }
+var time;
         function displayResult(result) {
             if (!result)
             {
                result=displayResult.args[0];
             } 
-            alert(result);
+            var a=decodeURIComponent(result);
+            var xml=a.replace(/\+/g," ");
+            document.getElementById("hiddenXml").value=xml;
+//            alert(xml);
 //            debugger;
-//            var a=decodeURIComponent(result);
-//            var xml=a.replace(/\+/g," ");
-//            debugger;
-////            alert(xml);
+//           Application.Lock();
+//            // Application.Contents(i)="sdfdsffdsaf";
+//           Application(0)=xml;
+//           Application.Unlock();
+           dtBegin = new Date();
+           time = setTimeout(getControl,500);
+//             do{;}while((new Date())-dtBegin < 10000);  
+//           var control;
+//           do{
+//               try
+//               {
+//                   control=document.getElementById("SilverlightControl").content.map;
+//               }
+//               catch(err)
+//               {
+//                   continue;
+//               }
+//           }while(!control);
+//           debugger;
+//           try{
+//                // control.content.map.SetMap(xml);
 //            document.getElementById("SilverlightControl").content.map.SetMap(xml);
+//           }
+//           catch(err){
+//              alert(xml);
+//              txt="此页面存在一个错误。\n";
+//              txt+="错误信息: " + err.message+"\n";             
+//              txt+="错误描述: " + err.description + "\n";
+//              txt+="点击OK继续。\n";
+//              alert(txt);
+//           }
+  
         }
+       
+      function getControl()
+      {
+           try{
+               // control.content.map.SetMap(xml);
+               document.getElementById("SilverlightControl").content.map.SetMap(document.getElementById("hiddenXml").value);
+               clearTimeout(time);
+           }
+           catch(err){
+              alert(document.getElementById("hiddenXml").value);
+              txt="此页面存在一个错误。\n";
+              txt+="错误信息: " + err.message+"\n";             
+              txt+="错误描述: " + err.description + "\n";
+              txt+="点击OK继续。\n";
+              alert(txt);
+          }
+                      
+      }  
+       function SC_OnFocus(){
+           alert( document.getElementById("hiddenXml").value);
+           document.getElementById("SilverlightControl").content.map.SetMap(document.getElementById("hiddenXml").value);
+       } 
+       function form_onactivate(){
+           alert("form_onactivate") ;
+       }  
+        //--> 
     </script>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" onactivate="form_onactivate">
     <div>
+        <input id="hiddenXml" type="hidden" />
         <object id="SilverlightControl" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
-            width="100%" height="100%">
+            width="100%" height="100%" onload="SC_OnFocus">
             <param name="source" value="ClientBin/SilverlightApplication.xap" />
             <param name="onerror" value="onSilverlightError" />
             <param name="background" value="white" />
             <param name="minRuntimeVersion" value="2.0.31005.0" />
-            <param name="autoUpgrade" value="true" />
+            <param name="autoUpgrade" value="true" />            
             <a href="http://go.microsoft.com/fwlink/?LinkID=124807" style="text-decoration: none;">
                 <img src="http://go.microsoft.com/fwlink/?LinkId=108181" alt="获取 Microsoft Silverlight"
                     style="border-style: none" />

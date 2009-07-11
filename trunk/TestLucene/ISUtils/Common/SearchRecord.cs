@@ -182,7 +182,7 @@ namespace ISUtils.Common
             content.Append("<br>");
             return title.ToString() + content.ToString();
         }
-        public void GetWebInfo(out string szTitle, out string szContent)
+        public void GetWebInfo(out string szTitle, out string szContent,bool removeNullOrEmpty)
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
@@ -192,9 +192,29 @@ namespace ISUtils.Common
                 if (sf.Visible)
                 {
                     if (sf.IsTitle)
-                        title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                    {
+                        if (!removeNullOrEmpty)
+                        {
+                            title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                        else
+                        {
+                            if(!string.IsNullOrEmpty(sf.Result))
+                                title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                    }
                     else
-                        content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                    {
+                        if (!removeNullOrEmpty)
+                        {
+                            content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                        else
+                        {
+                            if(!string.IsNullOrEmpty(sf.Result))
+                                content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                    }
                 }
             }
             szTitle = title.ToString();

@@ -80,6 +80,7 @@ namespace Searchd
                     Dictionary<string, List<int>> statistics = (Dictionary<string, List<int>>)searchStatistics[searchInfo.Query];
                     WriteToLog("Total Hits:" + recordList.Count.ToString());
                     SearchResult result = new SearchResult();
+                    result.Statistics = Convert(statistics);
                     result.PageNum = searchInfo.PageNum;
                     result.TotalPages = TotalPages(TotalCount(statistics,searchInfo.Filter), searchInfo.PageSize);
                     result.Records.AddRange(GetPage(recordList, statistics,searchInfo.Filter, searchInfo.PageSize, searchInfo.PageNum));
@@ -101,6 +102,7 @@ namespace Searchd
                         searchStatistics.Add(searchInfo.Query, statistics);
                         WriteToLog("Total Hits:" + recordList.Count.ToString());
                         SearchResult result = new SearchResult();
+                        result.Statistics = Convert(statistics);
                         result.PageNum = 1;
                         result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
                         result.Records.AddRange(GetPage(recordList,statistics,searchInfo.Filter, searchInfo.PageSize, 1));
@@ -236,6 +238,15 @@ namespace Searchd
                 return totalNum / pageSize;
             else
                 return totalNum / pageSize + 1;
+        }
+        public static Dictionary<string, int> Convert(Dictionary<string, List<int>> statistics)
+        { 
+            Dictionary<string,int> result=new Dictionary<string,int>();
+            foreach (string key in statistics.Keys)
+            {
+                result.Add(key, statistics[key].Count);
+            }
+            return result;
         }
         public static int TotalCount(Dictionary<string,List<int>> statistics,string filter)
         {

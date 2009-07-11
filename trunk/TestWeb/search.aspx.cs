@@ -126,42 +126,42 @@ public partial class searchresult : System.Web.UI.Page
         {
             result.Append(" -" + word);
         }
-        //txtSearch.Text = result.ToString().Trim();
+        txtSearch.Text = result.ToString().Trim();
         //txtSearch.Value = result.ToString().Trim();
         txtWords.Value = result.ToString().Trim();
     }
-    //protected void txtSearch_TextChanged(object sender, EventArgs e)
-    //{
-    //    if (txtSearch.Text.EndsWith("\n") || txtSearch.Text.EndsWith("\r"))
-    //    {
-    //        RunSearch();
-    //    }
-    //}
-    //protected void RunSearch()
-    //{
-    //    if (string.IsNullOrEmpty(txtSearch.Text.Trim())) return;
-    //    string[] wordArray = txtSearch.Text.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-    //    StringBuilder allContains = new StringBuilder();
-    //    StringBuilder notIncludes = new StringBuilder();
-    //    foreach (string word in wordArray)
-    //    {
-    //        if (word.StartsWith("-"))
-    //        {
-    //            notIncludes.Append(word.Substring(1) + " ");
-    //        }
-    //        else
-    //        {
-    //            allContains.Append(word + " ");
-    //        }
-    //    }
-    //    StringBuilder url = new StringBuilder("~/search.aspx?");
-    //    url.Append("WordsAllContains=" + Server.UrlEncode(allContains.ToString().Trim()));
-    //    if (!string.IsNullOrEmpty(notIncludes.ToString().Trim()))
-    //       url.Append("&WordNotInclude=" + Server.UrlEncode(notIncludes.ToString().Trim()));
-    //    Response.Redirect(url.ToString());
-    //}
-    //protected void btnSearch_Click(object sender, EventArgs e)
-    //{
-    //    RunSearch();
-    //}
+    protected void txtSearch_TextChanged(object sender, EventArgs e)
+    {
+        //if (txtSearch.Text.EndsWith("\n") || txtSearch.Text.EndsWith("\r"))
+        {
+            RunSearch();
+        }
+    }
+    protected void RunSearch()
+    {
+        if (string.IsNullOrEmpty(txtSearch.Text.Trim())) return;
+        string[] wordArray = txtSearch.Text.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        StringBuilder allContains = new StringBuilder();
+        StringBuilder notIncludes = new StringBuilder();
+        foreach (string word in wordArray)
+        {
+            if (word.StartsWith("-"))
+            {
+                notIncludes.Append(word.Substring(1) + " ");
+            }
+            else
+            {
+                allContains.Append(word + " ");
+            }
+        }
+        StringBuilder url = new StringBuilder("~/search.aspx?");
+        url.Append("WordsAllContains=" + Server.UrlEncode(allContains.ToString().Trim()));
+        if (!string.IsNullOrEmpty(notIncludes.ToString().Trim()))
+            url.Append("&WordNotInclude=" + Server.UrlEncode(notIncludes.ToString().Trim()));
+        Response.Redirect(url.ToString());
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        RunSearch();
+    }
 }

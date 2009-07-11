@@ -54,11 +54,17 @@ namespace ISUtils.Common
             get { return highLight; }
             set { highLight = value; }
         }
+        private string filter = "";
+        public string Filter
+        {
+            get { return filter; }
+            set { filter = value; }
+        }
         #endregion
         #region "重写"
         public override string ToString()
         {
-            return queryInfo.ToString()+"\tPageSize="+pageSize.ToString()+"\tPageNum="+pageNum.ToString()+"\tHighLight="+highLight.ToString();
+            return queryInfo.ToString()+"\tPageSize="+pageSize.ToString()+"\tPageNum="+pageNum.ToString()+"\tHighLight="+highLight.ToString()+"\tFilter="+filter;
         }
         #endregion
         #region "IXmlSerializable"
@@ -95,6 +101,9 @@ namespace ISUtils.Common
                         break;
                     case "HighLight":
                         this.highLight = bool.Parse(reader.ReadElementString());
+                        break;
+                    case "Filter":
+                        this.filter = reader.ReadElementString();
                         break;
                     case "QueryInfo":
                         this.queryInfo.IndexNames = SupportClass.File.GetXmlAttribute(reader,"IndexNames",typeof(string));
@@ -192,6 +201,7 @@ namespace ISUtils.Common
             writer.WriteElementString("PageNum", pageNum.ToString());
             writer.WriteElementString("PageSize", pageSize.ToString());
             writer.WriteElementString("HighLight", highLight.ToString());
+            writer.WriteElementString("Filter", filter);
             writer.WriteStartElement("QueryInfo");
             writer.WriteAttributeString("IndexNames", queryInfo.IndexNames);
             writer.WriteAttributeString("QueryAts", queryInfo.QueryAts);

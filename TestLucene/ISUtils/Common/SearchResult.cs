@@ -12,6 +12,22 @@ namespace ISUtils.Common
     public class SearchResult : IXmlSerializable
     {
         #region "属性"
+        private Dictionary<string, int> statistics = new Dictionary<string, int>();
+        public Dictionary<string, int> Statistics
+        {
+            get 
+            {
+                if (statistics == null)
+                    statistics = new Dictionary<string, int>();
+                return statistics;
+            }
+            set 
+            {
+                statistics = value;
+                if (statistics == null)
+                    statistics = new Dictionary<string, int>();
+            }
+        }
         private int pageNum = 0;
         public int PageNum
         {

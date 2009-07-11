@@ -25,10 +25,10 @@ namespace Searchd
         private static TcpListener listener;
         private static Hashtable searchResults;
         private static Hashtable searchQueries;
+        private static Hashtable searchStatistics;
         private Thread MainThread;
         // Thread signal.
         public static ManualResetEvent tcpClientConnected =new ManualResetEvent(false);
-
         // Accept one client connection asynchronously.
         public static void DoBeginAcceptTcpClient(TcpListener listener)
         {
@@ -48,7 +48,6 @@ namespace Searchd
             // continuing.
             tcpClientConnected.WaitOne();
         }
-
         // Process the client connection.
         public static void DoAcceptTcpClientCallback(IAsyncResult ar)
         {
@@ -72,15 +71,18 @@ namespace Searchd
                     searchResults = new Hashtable(new QueryInfoComparer());
                 if (searchQueries == null)
                     searchQueries = new Hashtable(new QueryInfoComparer());
+                if (searchStatistics == null)
+                    searchStatistics = new Hashtable(new QueryInfoComparer());
                 if (searchResults.ContainsKey(searchInfo.Query))
                 {
                     WriteToLog("该搜索已经存在！");
                     List<SearchRecord> recordList = (List<SearchRecord>)searchResults[searchInfo.Query];
+                    Dictionary<string, List<int>> statistics = (Dictionary<string, List<int>>)searchStatistics[searchInfo.Query];
                     WriteToLog("Total Hits:" + recordList.Count.ToString());
                     SearchResult result = new SearchResult();
                     result.PageNum = searchInfo.PageNum;
-                    result.TotalPages = TotalPages(recordList.Count, searchInfo.PageSize);
-                    result.Records.AddRange(GetPage(recordList, searchInfo.PageSize, searchInfo.PageNum));
+                    result.TotalPages = TotalPages(TotalCount(statistics,searchInfo.Filter), searchInfo.PageSize);
+                    result.Records.AddRange(GetPage(recordList, statistics,searchInfo.Filter, searchInfo.PageSize, searchInfo.PageNum));
                     result.Query = (Query)searchQueries[searchInfo.Query];
                     WriteToLog(result.ToString());
                     SendResult(ns, result);
@@ -92,14 +94,16 @@ namespace Searchd
                     try
                     {
                         Query query;
-                        List<SearchRecord> recordList = searcher.ExecuteFastSearch(searchInfo.Query, out query,searchInfo.HighLight);
+                        Dictionary<string,List<int>> statistics;
+                        List<SearchRecord> recordList = searcher.ExecuteFastSearch(searchInfo.Query, out query,out statistics,searchInfo.HighLight);
                         searchResults.Add(searchInfo.Query, recordList);
                         searchQueries.Add(searchInfo.Query, query);
+                        searchStatistics.Add(searchInfo.Query, statistics);
                         WriteToLog("Total Hits:" + recordList.Count.ToString());
                         SearchResult result = new SearchResult();
                         result.PageNum = 1;
-                        result.TotalPages = TotalPages(recordList.Count, searchInfo.PageSize);
-                        result.Records.AddRange(GetPage(recordList, searchInfo.PageSize, 1));
+                        result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
+                        result.Records.AddRange(GetPage(recordList,statistics,searchInfo.Filter, searchInfo.PageSize, 1));
                         result.Query = query;
                         WriteToLog(result.ToString());
                         SendResult(ns, result);
@@ -125,14 +129,12 @@ namespace Searchd
             MainThread = new Thread(new ThreadStart(ThreadFunc));
             MainThread.Priority = ThreadPriority.Normal;
         }
-
         protected override void OnStart(string[] args)
         {
             // TODO: 在此处添加代码以启动服务。
             EventLog.WriteEntry("Searchd Start....");
             MainThread.Start();
         }
-
         protected override void OnStop()
         {
             // TODO: 在此处添加代码以执行停止服务所需的关闭操作。
@@ -235,7 +237,63 @@ namespace Searchd
             else
                 return totalNum / pageSize + 1;
         }
-        public static List<SearchRecord> GetPage(List<SearchRecord> recordList, int pageSize, int pageNum)
+        public static int TotalCount(Dictionary<string,List<int>> statistics,string filter)
+        {
+            int count = 0;
+            if (string.IsNullOrEmpty(filter))
+            {
+                foreach (string key in statistics.Keys)
+                {
+                    count+=statistics[key].Count;
+                }
+            }
+            else
+            {
+                string[] keys = filter.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                foreach (string key in keys)
+                {
+                    if (statistics.ContainsKey(key))
+                        count += statistics[key].Count;
+                }
+            }
+            return count;
+        }
+        public static List<int> GetPositions(Dictionary<string, List<int>> statistics, string filter)
+        {
+            List<int> posList = new List<int>();
+            if (string.IsNullOrEmpty(filter))
+            {
+                foreach (string key in statistics.Keys)
+                {
+                    posList.AddRange(statistics[key]);
+                }
+            }
+            else
+            {
+                string[] keys = filter.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                foreach (string key in keys)
+                {
+                    if (statistics.ContainsKey(key))
+                        posList.AddRange(statistics[key]);
+                }
+            }
+            return posList;
+        }
+        public static List<SearchRecord> GetPage(List<SearchRecord> recordList, List<int> posList, int pageSize, int pageNum)
+        {
+            List<SearchRecord> resultList = new List<SearchRecord>();
+            if (pageNum <= 0)
+                pageNum = 1;
+            for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < posList.Count; i++)
+                resultList.Add(recordList[posList[i]]);
+            return resultList;
+        }
+        public static List<SearchRecord> GetPage(List<SearchRecord> recordList, Dictionary<string, List<int>> statistics, string filter, int pageSize, int pageNum)
+        {
+            List<int> posList = GetPositions(statistics, filter);
+            return GetPage(recordList, posList, pageSize, pageNum);
+        }
+        public static List<SearchRecord> GetPage(List<SearchRecord> recordList,int pageSize, int pageNum)
         {
             List<SearchRecord> resultList = new List<SearchRecord>();
             if (pageNum <= 0)

@@ -721,6 +721,36 @@ namespace ISUtils.Searcher
             }
             return recordList;
         }
+        public List<SearchRecord> ExecuteFastSearch(QueryInfo info, out Query query, out Dictionary<string,List<int>> statistics, bool highlight)
+        {
+            List<SearchRecord> recordList;
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
+            Utils.SearchUtil.SetQueryInfo(info);
+            if (highlight)
+            {
+                recordList = Utils.SearchUtil.HighLightSearch(out query,out statistics);
+            }
+            else
+            {
+                recordList = Utils.SearchUtil.SearchEx(out query,out statistics);
+            }
+            return recordList;
+        }
+        public List<SearchRecord> ExecuteFastSearch(QueryInfo info, out Dictionary<string,List<int>> statistics, bool highlight)
+        {
+            List<SearchRecord> recordList;
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
+            Utils.SearchUtil.SetQueryInfo(info);
+            if (highlight)
+            {
+                recordList = Utils.SearchUtil.HighLightSearch(out statistics);
+            }
+            else
+            {
+                recordList = Utils.SearchUtil.SearchEx(out statistics);
+            }
+            return recordList;
+        }
         #endregion
     }
 }

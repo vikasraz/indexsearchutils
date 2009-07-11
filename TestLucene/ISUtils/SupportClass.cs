@@ -28,6 +28,10 @@ namespace ISUtils
                 Start = start;
                 End = end;
             }
+            public int Length
+            {
+                get { return End - Start + 1; }
+            }
         }
         public class String
         {

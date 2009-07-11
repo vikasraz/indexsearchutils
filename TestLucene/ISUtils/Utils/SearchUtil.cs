@@ -1412,6 +1412,171 @@ namespace ISUtils.Utils
             }
             return recordList;
         }
+        public static List<SearchRecord> SearchEx(out Query query,out Dictionary<string,List<int>> statistics)
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            query = GetQuery();
+            statistics = new Dictionary<string,List<int>>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList = new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                if (fpDict.ContainsKey(field.Name()))
+                                    sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                else
+                                    sfList.Add(new SearchField(field));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList = new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                if (fpDict.ContainsKey(field.Name()))
+                                    sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                else
+                                    sfList.Add(new SearchField(field));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
+        public static List<SearchRecord> SearchEx(out Dictionary<string,List<int>> statistics)
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            statistics = new Dictionary<string,List<int>>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        Query query = GetQuery(indexSet);
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList=new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                if (fpDict.ContainsKey(field.Name()))
+                                    sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                //else
+                                //    sfList.Add(new SearchField(field,false));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        Query query = GetQuery(indexSet);
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList=new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                if (fpDict.ContainsKey(field.Name()))
+                                    sfList.Add(new SearchField(field, fpDict[field.Name()]));
+                                //else
+                                //    sfList.Add(new SearchField(field, false));
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
         public static List<SearchRecord> HighLightSearch(out Query query)
         {
             List<SearchRecord> recordList = new List<SearchRecord>();            
@@ -1622,6 +1787,239 @@ namespace ISUtils.Utils
                             }
                             recordList.Add(new SearchRecord(indexSet, sfList));
                         }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
+        public static List<SearchRecord> HighLightSearch(out Query query, out Dictionary<string,List<int>> statistics)
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            query = GetQuery();
+            statistics = new Dictionary<string,List<int>>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                        highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList=new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                string key = field.Name();
+                                string value = field.StringValue();
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string result = "";
+                                result = highlighter.GetBestFragment(tokenStream, value);
+                                if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, result, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                                else
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, value, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                        highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList=new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                string key = field.Name();
+                                string value = field.StringValue();
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string result = "";
+                                result = highlighter.GetBestFragment(tokenStream, value);
+                                if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, result, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                                else
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, value, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
+        public static List<SearchRecord> HighLightSearch(out Dictionary<string,List<int>> statistics)
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            statistics = new Dictionary<string,List<int>>();
+            try
+            {
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        Query query = GetQuery(indexSet);
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                        highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList=new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                string key = field.Name();
+                                string value = field.StringValue();
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string result = "";
+                                result = highlighter.GetBestFragment(tokenStream, value);
+                                if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, result, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                                else
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, value, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        Query query = GetQuery(indexSet);
+                        Source source = indexDict[indexSet];
+                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
+                        IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
+                        ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                        System.Console.WriteLine(query.ToString());
+#endif
+                        Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                        highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                        List<int> posList=new List<int>();
+                        for (int i = 0; i < scoreDocs.Length; i++)
+                        {
+                            Document doc = searcher.Doc(scoreDocs[i].doc);
+                            Field[] fields = new Field[doc.GetFields().Count];
+                            doc.GetFields().CopyTo(fields, 0);
+                            List<SearchField> sfList = new List<SearchField>();
+                            foreach (Field field in fields)
+                            {
+                                string key = field.Name();
+                                string value = field.StringValue();
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string result = "";
+                                result = highlighter.GetBestFragment(tokenStream, value);
+                                if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, result, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                                else
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, value, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                            }
+                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            posList.Add(recordList.Count - 1);
+                        }
+                        statistics.Add(indexSet.Caption, posList);
                     }
                 }
             }

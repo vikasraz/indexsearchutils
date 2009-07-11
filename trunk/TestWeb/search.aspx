@@ -6,58 +6,12 @@
 <head runat="server">
     <title>搜索结果</title>
     <script type ="text/javascript">
+    <!--
     function TransferString(str){
         var childWin=window.open("display.aspx");
         childWin.attachEvent("onload", function(){childWin.displayResult(str)});
     }
-    function ontxtSearchKeyPress(){
-        if (event.keyCode==13){
-        debugger; 
-            var words=document.getElementById("txtSearch").value.split(" ");
-            var allContainArray=new Array();
-            var notIncludeArray=new Array();
-            for(word in words){
-               if(word.substr(0,1)=="-")
-                   notIncludeArray.push(word.substring(1));
-               else
-                   allContainArray.push(word); 
-            }
-            var allContains="";
-            var notIncludes="";
-            for(contain in allContainArray){
-               allContains+=contain+" ";
-            }
-            for(exclude in notIncludeArray){
-               notIncludes+=exclude+" ";
-            }
-            var url="search.aspx?WordsAllContains="+escape(allContains)+"&WordNotInclude="+escape(notIncludes);
-            this.location.href = url;
-            window.navigate(location) ;
-        }
-    }   
-    function onbtnSearchClick(){
-       debugger; 
-        var words=document.getElementById("txtSearch").value.split(" ");
-        var allContainArray=new Array();
-        var notIncludeArray=new Array();
-        for(word in words){
-           if(word.substr(0,1)=="-")
-               notIncludeArray.push(word.substring(1));
-           else
-               allContainArray.push(word); 
-        }
-        var allContains="";
-        var notIncludes="";
-        for(contain in allContainArray){
-           allContains+=contain+" ";
-        }
-        for(exclude in notIncludeArray){
-           notIncludes+=exclude+" ";
-        }
-        var url="search.aspx?WordsAllContains="+escape(allContains)+"&WordNotInclude="+escape(notIncludes);
-        this.location.href = url;
-        window.navigate(location) ;
-    }
+    //-->
     </script>
 </head>
 <body>

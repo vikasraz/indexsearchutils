@@ -24,6 +24,21 @@ public partial class searchresult : System.Web.UI.Page
     public string searchInfo = "";
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Page.IsPostBack) return;
+        string szWordsAllContains="";
+        string szExactPhraseContain="";
+        string szOneOfWordsAtLeastContain="";
+        string szWordNotInclude="";
+        if (Request.QueryString["WordsAllContains"]!=null)
+            szWordsAllContains=Server.UrlDecode(Request.QueryString["WordsAllContains"]);
+        searchInfo = szWordsAllContains;
+        if (Request.QueryString["ExactPhraseContain"]!=null)
+            szExactPhraseContain=Server.UrlDecode(Request.QueryString["ExactPhraseContain"]);
+        if (Request.QueryString["OneOfWordsAtLeastContain"]!=null)
+            szOneOfWordsAtLeastContain= Server.UrlDecode(Request.QueryString["OneOfWordsAtLeastContain"]);
+        if (Request.QueryString["WordNotInclude"]!=null)
+            szWordNotInclude= Server.UrlDecode(Request.QueryString["WordNotInclude"]);
+        SetSearchWords(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude);
         TcpClient client;
         NetworkStream ns;
         BinaryFormatter formater;
@@ -39,19 +54,6 @@ public partial class searchresult : System.Web.UI.Page
             area = userCookie.Values["Area"];
             content = userCookie.Values["Content"];
         }
-        string szWordsAllContains="";
-        string szExactPhraseContain="";
-        string szOneOfWordsAtLeastContain="";
-        string szWordNotInclude="";
-        if (Request.QueryString["WordsAllContains"]!=null)
-            szWordsAllContains=Server.UrlDecode(Request.QueryString["WordsAllContains"]);
-        searchInfo = szWordsAllContains;
-        if (Request.QueryString["ExactPhraseContain"]!=null)
-            szExactPhraseContain=Server.UrlDecode(Request.QueryString["ExactPhraseContain"]);
-        if (Request.QueryString["OneOfWordsAtLeastContain"]!=null)
-            szOneOfWordsAtLeastContain= Server.UrlDecode(Request.QueryString["OneOfWordsAtLeastContain"]);
-        if (Request.QueryString["WordNotInclude"]!=null)
-            szWordNotInclude= Server.UrlDecode(Request.QueryString["WordNotInclude"]);
         try
         {
             client = new TcpClient(hostname, port);
@@ -104,8 +106,8 @@ public partial class searchresult : System.Web.UI.Page
                 //buffer.Append("--------------------------------------------------<br>");
             }
             searchResult = buffer.ToString();
-            TD5.InnerHtml = searchResult;
-
+            tdResult.InnerHtml = searchResult;
+            
         }
         catch (Exception se)
         {
@@ -113,4 +115,53 @@ public partial class searchresult : System.Web.UI.Page
             return;
         }
     }
+    protected void SetSearchWords(string wordsAllContains,string exactPhraseContain,string oneOfWordsAtLeastContain,string wordNotInclude)
+    {
+        string[] wordArray = wordNotInclude.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        StringBuilder result = new StringBuilder();
+        result.Append(wordsAllContains + " ");
+        result.Append(exactPhraseContain + " ");
+        result.Append(oneOfWordsAtLeastContain + " ");
+        foreach (string word in wordArray)
+        {
+            result.Append(" -" + word);
+        }
+        //txtSearch.Text = result.ToString().Trim();
+        //txtSearch.Value = result.ToString().Trim();
+        txtWords.Value = result.ToString().Trim();
+    }
+    //protected void txtSearch_TextChanged(object sender, EventArgs e)
+    //{
+    //    if (txtSearch.Text.EndsWith("\n") || txtSearch.Text.EndsWith("\r"))
+    //    {
+    //        RunSearch();
+    //    }
+    //}
+    //protected void RunSearch()
+    //{
+    //    if (string.IsNullOrEmpty(txtSearch.Text.Trim())) return;
+    //    string[] wordArray = txtSearch.Text.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+    //    StringBuilder allContains = new StringBuilder();
+    //    StringBuilder notIncludes = new StringBuilder();
+    //    foreach (string word in wordArray)
+    //    {
+    //        if (word.StartsWith("-"))
+    //        {
+    //            notIncludes.Append(word.Substring(1) + " ");
+    //        }
+    //        else
+    //        {
+    //            allContains.Append(word + " ");
+    //        }
+    //    }
+    //    StringBuilder url = new StringBuilder("~/search.aspx?");
+    //    url.Append("WordsAllContains=" + Server.UrlEncode(allContains.ToString().Trim()));
+    //    if (!string.IsNullOrEmpty(notIncludes.ToString().Trim()))
+    //       url.Append("&WordNotInclude=" + Server.UrlEncode(notIncludes.ToString().Trim()));
+    //    Response.Redirect(url.ToString());
+    //}
+    //protected void btnSearch_Click(object sender, EventArgs e)
+    //{
+    //    RunSearch();
+    //}
 }

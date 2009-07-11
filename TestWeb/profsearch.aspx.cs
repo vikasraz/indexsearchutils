@@ -209,7 +209,7 @@ public partial class profsearch : System.Web.UI.Page
     {
         GetGuiControlSettings(out pageSize, out area, out content);
         SetUserSettings(pageSize,  area, content);
-        StringBuilder url = new StringBuilder("~/searchresult.aspx?");
+        StringBuilder url = new StringBuilder("~/search.aspx?");
         url.Append("WordsAllContains="+Server.UrlEncode(txtWordsAllContains.Text));
         url.Append("&ExactPhraseContain="+Server.UrlEncode(txtExactPhraseContain.Text ));
         url.Append("&OneOfWordsAtLeastContain="+Server.UrlEncode(txtOneOfWordsAtLeastContain.Text));

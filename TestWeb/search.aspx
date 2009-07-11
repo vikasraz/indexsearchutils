@@ -70,10 +70,10 @@
                 <td runat="server" colspan="2" style="width: 96%;height: 24px; text-align: left">
                     <div style="width: 100%;height: 24px; text-align: left"><p style="text-align: center">
                         国土资源综合搜索</p><p>
-                        <%--<asp:TextBox ID="txtSearch" Width="70%" runat="server" AutoPostBack="true" OnTextChanged="txtSearch_TextChanged" ></asp:TextBox>--%>
-                        <input id="txtSearch" style="width: 70%" language="javascript" onkeypress="ontxtSearchKeyPress()" type="text" />
-                        <%--<asp:Button ID="btnSearch" runat="server" Text="搜索" OnClick="btnSearch_Click" />--%>
-                        <input id="btnSearch" type="submit" language="javascript" onclick="return onbtnSearchClick()" value="搜索" />
+                        <asp:TextBox ID="txtSearch" Width="70%" runat="server" AutoPostBack="true" OnTextChanged="txtSearch_TextChanged" ></asp:TextBox>
+                        <%--<input id="txtSearch" style="width: 70%" language="javascript" onkeypress="ontxtSearchKeyPress()" type="text" />--%>
+                        <asp:Button ID="btnSearch" runat="server" Text="搜索" OnClick="btnSearch_Click" />
+                        <%--<input id="btnSearch" type="submit" language="javascript" onclick="return onbtnSearchClick()" value="搜索" />--%>
                         <a id="HyperLink1" href="profsearch.aspx" style="display:inline-block;width:70px;">高级搜索</a>
                         <a id="HyperLink2" href="searchsetting.aspx" style="display:inline-block;width:68px;">搜索设置</a>
                         <input id="txtWords" type="hidden" runat="server" style="width: 6px" /></p>

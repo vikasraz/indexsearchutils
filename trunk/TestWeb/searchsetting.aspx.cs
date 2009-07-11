@@ -232,11 +232,11 @@ public partial class searchsetting : System.Web.UI.Page
         GetGuiControlSettings(out pageSize,out allArea,out area,out allContent,out content);
         SetUserSettings(pageSize, allArea, area, allContent, content);
         //OutputSettings();
-        Response.Redirect("~/commonsearch.aspx");
-    }
+        Response.Redirect("~/search.aspx");
+   }
     protected void btnCancel_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/commonsearch.aspx");
+        Response.Redirect("~/search.aspx");
     }
     protected void btnReset_Click(object sender, EventArgs e)
     {

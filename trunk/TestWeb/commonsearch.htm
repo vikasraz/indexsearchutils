@@ -10,12 +10,12 @@
     }
     function ontxtSearchKeyPress(){
         if (event.keyCode==13){
-            var url="searchresult.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
+            var url="search.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
             this.location.href = url;
         }
     }   
     function imgBtnSearch_onclick() {
-        var url="searchresult.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
+        var url="search.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
         this.location.href = url;
     }
 
@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <td colspan="1" rowspan="6" style="width: 840px; text-align: left">
-                    &nbsp;<input id="txtSearch"  onfocus="ontxtSearchFocus()" onkeypress="ontxtSearchKeyPress()" style="width: 747px; height: 16px;" type="text" value="请输入搜索关键词" />
+                    &nbsp;<input id="txtSearch"  onfocus="ontxtSearchFocus()" onkeypress="ontxtSearchKeyPress()" style="width: 761px; height: 15px;" type="text" value="请输入搜索关键词" language="javascript"  />
                     <input type="image" name="imgBtnSearch" id="imgBtnSearch" src="search.jpg" alt="搜索" style="height:18px;width:18px;border-width:0px;" language="javascript" onclick="return imgBtnSearch_onclick()" /><br>
                 </td>
                 <td colspan="1" rowspan="1" style="width: 27px; height: 20px; text-align: left">

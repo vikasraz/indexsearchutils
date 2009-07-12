@@ -8,40 +8,9 @@
     <script type ="text/javascript">
     <!--
     function TransferString(str){
-        var childWin=window.open("display.aspx");
+        var style="fullscreen=1,alwaysRaised=1,depended=0,location=1,menubar=1,resizable=1,titlebar=1,toolbar=1,status=1";
+        var childWin=window.open("display.aspx",'',style);
         childWin.attachEvent("onload", function(){childWin.displayResult(str)});
-    }
-    function RedirectPage(pagenum){
-        var ft="<%=searchFilter %>";
-        RedirectURL(ft,pagenum); 
-    }
-    function RedirectFilter(filter){
-        RedirectURL(filter,1);
-    }
-    function RedirectURL(filter,page){
-        var words=document.getElementById("txtSearch").value.split(" ");
-        var allContainArray=new Array();
-        var notIncludeArray=new Array();
-        for(word in words){
-           if(word.substr(0,1)=="-")
-               notIncludeArray.push(word.substring(1));
-           else
-               allContainArray.push(word); 
-        }
-        var allContains="";
-        var notIncludes="";
-        for(contain in allContainArray){
-           allContains+=contain+" ";
-        }
-        for(exclude in notIncludeArray){
-           notIncludes+=exclude+" ";
-        }
-        alert(allContains);
-        alert(notIncludes);  
-        var url="search.aspx?Word="+escape(allContains)+"&Not="+escape(notIncludes)+"&Page="+page+"&Filter="+escape(filter);
-        alert(url);
-        this.location.href = url;
-        window.navigate(location) ;
     }
     //-->
     </script>
@@ -57,9 +26,7 @@
                     <div style="width: 100%;height: 24px; text-align: left"><p style="text-align: center">
                         国土资源综合搜索</p><p>
                         <asp:TextBox ID="txtSearch" Width="70%" runat="server" AutoPostBack="true" OnTextChanged="txtSearch_TextChanged" ></asp:TextBox>
-                        <%--<input id="txtSearch" style="width: 70%" language="javascript" onkeypress="ontxtSearchKeyPress()" type="text" />--%>
                         <asp:Button ID="btnSearch" runat="server" Text="搜索" OnClick="btnSearch_Click" />
-                        <%--<input id="btnSearch" type="submit" language="javascript" onclick="return onbtnSearchClick()" value="搜索" />--%>
                         <a id="HyperLink1" href="profsearch.aspx" style="display:inline-block;width:70px;">高级搜索</a>
                         <a id="HyperLink2" href="searchsetting.aspx" style="display:inline-block;width:68px;">搜索设置</a>
                         <input id="txtWords" type="hidden" runat="server" style="width: 6px" /></p>

@@ -48,10 +48,10 @@
             if (!result)
             {
                 result=displayResult.args[0];
-            } 
+            }
+            debugger; 
             var a=decodeURIComponent(result);
             var xml=a.replace(/\+/g," ");
-            alert(xml);
             document.getElementById("hiddenXml").value=xml;
             time = setTimeout(getControl,500);
         }

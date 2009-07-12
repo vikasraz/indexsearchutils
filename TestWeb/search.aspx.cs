@@ -2,6 +2,7 @@
 using System.Data;
 using System.Configuration;
 using System.Collections;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -21,6 +22,7 @@ using System.Xml.Serialization;
 public partial class searchresult : System.Web.UI.Page
 {
     public string searchFilter = "";
+    #region Event
     protected void Page_Load(object sender, EventArgs e)
     {
         if (Page.IsPostBack ) return;
@@ -88,28 +90,26 @@ public partial class searchresult : System.Web.UI.Page
             StringBuilder buffer = new StringBuilder();
             StringBuilder statis = new StringBuilder();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
+            #region Title and Content
             foreach (SearchRecord record in sr.Records)
-            {
-                StringBuilder builder = new StringBuilder();
-                StringWriter writer = new StringWriter(builder);
-                xmlSerializer.Serialize(writer, record);
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(builder.ToString());
-                writer.Close();
-                //Response.Write(doc.DocumentElement.OuterXml);
-                string title, detail;
+            {                
+                string title, detail,xmlRecord;
+                xmlRecord = GetXmlRecord(xmlSerializer,record);
                 record.GetWebInfo(out title, out detail,true);
                 if (!string.IsNullOrEmpty(title))
                 {
-                    buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(doc.DocumentElement.OuterXml) + "')\" >" + title + "</a><br>");
+                    buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + title + "</a>");
                 }
                 else
                 {
-                    buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(doc.DocumentElement.OuterXml) + "')\" >" + record.Caption + "</a><br>");
+                    buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + record.Caption + "</a>");
                 }
+                buffer.Append("&nbsp;<a href=\"" + GetRedirectUrl(record) + "\" target=\"_blank\"  >详细信息</a><br>");
                 buffer.Append(detail + "<br><br>");
             }
             tdResult.InnerHtml = buffer.ToString();
+            #endregion
+            #region Statistics
             statis.Append("<p style=\"text-align: center\">查询结果统计</p><p>");
             string url;
             foreach (string key in sr.Statistics.Keys)
@@ -123,33 +123,63 @@ public partial class searchresult : System.Web.UI.Page
             statis.Append("</p>");
             if(sr.Records.Count > 0)
                 tdStatis.InnerHtml = statis.ToString();
+            #endregion
+            #region Page
             StringBuilder pageBuilder = new StringBuilder();
             if (sr.PageNum > 1)
             {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum - 1);
                 pageBuilder.Append("<a href=\""+url+"\" >上一页</a>&nbsp;");
             }
-            if (sr.PageNum+9 > sr.TotalPages)
+            if (sr.TotalPages<=10)
             {
-                pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
-                for (int i = sr.PageNum + 1; i <= sr.TotalPages; i++)
+                for (int i = 1; i <= sr.TotalPages; i++)
                 {
-                    url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
-                    pageBuilder.Append("<a href=\""+url+"\" >" + i.ToString() + "</a>&nbsp;");
+                    if (i != sr.PageNum)
+                    {
+                        url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
+                        pageBuilder.Append("<a href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                    }
+                    else
+                    {
+                        pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
+                    }
                 }
             }
             else
             {
-                pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
-                for (int i = 1; i < 10; i++)
+                if (sr.PageNum + 9 > sr.TotalPages)
                 {
-                    url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + i);
-                    pageBuilder.Append("<a href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                    for (int i = sr.TotalPages - 9; i <= sr.TotalPages; i++)
+                    {
+                        if (i != sr.PageNum)
+                        {
+                            url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
+                            pageBuilder.Append("<a href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                        }
+                        else
+                        {
+                            pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
+                        }
+                    }
                 }
+                else
+                { 
+                    pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
+                    for (int i = 1; i < 10; i++)
+                    {
+                        url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + i);
+                        pageBuilder.Append("<a href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
+                    }
+                }
+            }
+            if (sr.PageNum < sr.TotalPages)
+            {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + 1);
-                pageBuilder.Append("<a href=\""+url+"\" >下一页</a>");
+                pageBuilder.Append("<a href=\"" + url + "\" >下一页</a>");
             }
             tdPageSet.InnerHtml = pageBuilder.ToString();
+            #endregion
         }
         catch (Exception se)
         {
@@ -157,6 +187,16 @@ public partial class searchresult : System.Web.UI.Page
             return;
         }
     }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        RunSearch();
+    }
+    protected void txtSearch_TextChanged(object sender, EventArgs e)
+    {
+        RunSearch();
+    }
+    #endregion
+    #region Function
     protected void SetSearchWords(string wordsAllContains,string exactPhraseContain,string oneOfWordsAtLeastContain,string wordNotInclude)
     {
         string[] wordArray = wordNotInclude.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -169,15 +209,7 @@ public partial class searchresult : System.Web.UI.Page
             result.Append(" -" + word);
         }
         txtSearch.Text = result.ToString().Trim();
-        //txtSearch.Value = result.ToString().Trim();
         txtWords.Value = result.ToString().Trim();
-    }
-    protected void txtSearch_TextChanged(object sender, EventArgs e)
-    {
-        //if (txtSearch.Text.EndsWith("\n") || txtSearch.Text.EndsWith("\r"))
-        {
-            RunSearch();
-        }
     }
     protected string GetUrl(string wordsAllContains,string exactPhraseContain,string oneOfWordsAtLeastContain,string wordNotInclude,string filter,int pagenum)
     {
@@ -213,10 +245,55 @@ public partial class searchresult : System.Web.UI.Page
             url.Append("&Not=" + Server.UrlEncode(notIncludes.ToString().Trim()));
         Response.Redirect(url.ToString());
     }
-    protected void btnSearch_Click(object sender, EventArgs e)
+    protected string GetXmlRecord(XmlSerializer xmlSerializer ,SearchRecord record)
     {
-        RunSearch();
+        StringBuilder builder = new StringBuilder();
+        StringWriter writer = new StringWriter(builder);
+        xmlSerializer.Serialize(writer, record);
+        XmlDocument doc = new XmlDocument();
+        doc.LoadXml(builder.ToString());
+        writer.Close();
+        return doc.DocumentElement.OuterXml;
     }
+    protected string GetRedirectUrl(SearchRecord record)
+    {
+        string value = ConfigurationManager.AppSettings[record.Caption];
+        StringBuilder url = new StringBuilder();
+        int start = value.IndexOf('{');
+        int end = value.IndexOf('}');
+        if (start <= 0 || end <=0)
+            return "#";
+        string href=value.Substring(start+1,end-start-1);
+        url.Append(href + "?");
+        string rest = value.Substring(end + 1);
+        string[] paramArray = rest.Split("[]".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        Dictionary<string, string> paramDict = new Dictionary<string, string>();
+        foreach (string param in paramArray)
+        {
+            string[] keyValue = param.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if(keyValue.Length!=2)
+                continue;
+            paramDict.Add(keyValue[1], keyValue[0]);
+        }
+        bool find=false;
+        foreach (SearchField field in record.Fields)
+        {
+            if (paramDict.ContainsKey(field.Name))
+            {
+                if (!find)
+                {
+                    url.Append(paramDict[field.Name] + "=" + field.Value);
+                    find = true;
+                }
+                else
+                {
+                    url.Append("&" + paramDict[field.Name] + "=" + field.Value);
+                }
+            }
+        }
+        return url.ToString();
+    }
+    #endregion
     #region String Function
     public static bool IsNullOrEmpty(params string[] array)
     {
@@ -235,8 +312,14 @@ public partial class searchresult : System.Web.UI.Page
         string[] keys = content.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         StringBuilder result = new StringBuilder();
         foreach (string key in keys)
-        {
+        {           
             string value = ConfigurationManager.AppSettings[key];
+            if (string.IsNullOrEmpty(value))
+                continue;
+            if (value.IndexOf('{') >= 0)
+            {
+                value = value.Substring(0, value.IndexOf('{'));
+            }
             if (string.IsNullOrEmpty(value) == false)
             {
                 result.Append(value + ",");

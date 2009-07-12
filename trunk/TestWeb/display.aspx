@@ -71,22 +71,15 @@
           }
                       
       }  
-       function SC_OnFocus(){
-           alert( document.getElementById("hiddenXml").value);
-           document.getElementById("SilverlightControl").content.map.SetMap(document.getElementById("hiddenXml").value);
-       } 
-       function form_onactivate(){
-           alert("form_onactivate") ;
-       }  
         //--> 
     </script>
 </head>
 <body>
-    <form id="form1" runat="server" onactivate="form_onactivate">
+    <form id="form1" runat="server" >
     <div>
         <input id="hiddenXml" type="hidden" />
         <object id="SilverlightControl" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
-            width="100%" height="100%" onload="SC_OnFocus">
+            width="100%" height="100%">
             <param name="source" value="ClientBin/SilverlightApplication.xap" />
             <param name="onerror" value="onSilverlightError" />
             <param name="background" value="white" />

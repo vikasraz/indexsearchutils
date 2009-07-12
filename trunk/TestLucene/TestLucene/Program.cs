@@ -60,7 +60,7 @@ namespace TestLucene
             string path = @"d:\Indexer\config.xml";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.IndexNames = "*";
+            info.IndexNames = "";
             info.SearchWords = "东丽湖";
             //info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             //info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
@@ -76,7 +76,9 @@ namespace TestLucene
             //Console.WriteLine(si.ToString());
             DateTime start = DateTime.Now;
             Query query;
-            List<SearchRecord> results = searcher.ExecuteFastSearch(info,out query,true);
+            Dictionary<string, List<int>> statis;
+            //List<SearchRecord> results = searcher.ExecuteFastSearch(info, out query, true);
+            List<SearchRecord> results = searcher.ExecuteFastSearch(info, out query, out statis, true);
             //Console.WriteLine(query.ToString());
             //SearchResult sr = new SearchResult();
             //sr.PageNum = 1;
@@ -116,6 +118,7 @@ namespace TestLucene
                 }
                 Console.WriteLine("--------------------------------");
             }
+            Console.WriteLine("count="+results.Count.ToString());
         }
         static void TeseCSegment()
         {

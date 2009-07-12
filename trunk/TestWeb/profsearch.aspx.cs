@@ -210,10 +210,10 @@ public partial class profsearch : System.Web.UI.Page
         GetGuiControlSettings(out pageSize, out area, out content);
         SetUserSettings(pageSize,  area, content);
         StringBuilder url = new StringBuilder("~/search.aspx?");
-        url.Append("WordsAllContains="+Server.UrlEncode(txtWordsAllContains.Text));
-        url.Append("&ExactPhraseContain="+Server.UrlEncode(txtExactPhraseContain.Text ));
-        url.Append("&OneOfWordsAtLeastContain="+Server.UrlEncode(txtOneOfWordsAtLeastContain.Text));
-        url.Append("&WordNotInclude=" +Server.UrlEncode(txtWordNotInclude.Text));
+        url.Append("Word="+Server.UrlEncode(txtWordsAllContains.Text));
+        url.Append("&Exact="+Server.UrlEncode(txtExactPhraseContain.Text ));
+        url.Append("&One="+Server.UrlEncode(txtOneOfWordsAtLeastContain.Text));
+        url.Append("&Not=" +Server.UrlEncode(txtWordNotInclude.Text));
         Response.Redirect(url.ToString());
     }
     #region Endcode and Decode

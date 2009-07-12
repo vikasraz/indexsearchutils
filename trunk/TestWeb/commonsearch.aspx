@@ -14,7 +14,7 @@
     function ontxtSearchKeyPress(){
         if (event.keyCode==13){
        debugger; 
-            var url="searchresult.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
+            var url="search.aspx?wd="+escape(document.getElementById("txtSearch").value);
             
 
            this.location.href = url;

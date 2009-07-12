@@ -155,8 +155,10 @@ namespace ISUtils.Common
                     boostDict.Clear();
                     foreach (FieldProperties fb in fields)
                     {
-                        fieldDict.Add(fb.Name, fb);
-                        boostDict.Add(fb.Name, fb.Boost);
+                        if(!fieldDict.ContainsKey(fb.Name))
+                            fieldDict.Add(fb.Name, fb);
+                        if(!boostDict.ContainsKey(fb.Name))
+                            boostDict.Add(fb.Name, fb.Boost);
                     }
                 }
             }

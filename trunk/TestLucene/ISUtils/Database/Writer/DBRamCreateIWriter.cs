@@ -139,6 +139,8 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
+                if (fieldDict.ContainsKey(column.ColumnName))
+                    continue;
                 fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
 #if DEBUG
@@ -178,6 +180,8 @@ namespace ISUtils.Database.Writer
                 Field field = new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (fieldsBoostDict.ContainsKey(column.ColumnName))
                     field.SetBoost(fieldsBoostDict[column.ColumnName]);
+                if (fieldDict.ContainsKey(column.ColumnName))
+                    continue;
                 fieldDict.Add(column.ColumnName, field);
             }
 #if DEBUG
@@ -217,6 +221,8 @@ namespace ISUtils.Database.Writer
                 Field field = new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (fieldsBoostDict.ContainsKey(column.ColumnName))
                     field.SetBoost(fieldsBoostDict[column.ColumnName]);
+                if (fieldDict.ContainsKey(column.ColumnName))
+                    continue;
                 fieldDict.Add(column.ColumnName, field);
             }
 #if DEBUG
@@ -251,6 +257,8 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
+                if (fieldDict.ContainsKey(column.ColumnName))
+                    continue;
                 fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
 #if DEBUG
@@ -282,6 +290,8 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
+                if (fieldDict.ContainsKey(column.ColumnName))
+                    continue;
                 fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
             WriteDataRowCollection(table.Rows,ref progressBar);
@@ -302,6 +312,8 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
+                if (fieldDict.ContainsKey(column.ColumnName))
+                    continue;
                 fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
             WriteDataRowCollection(table.Rows, ref progressBar);

@@ -1040,7 +1040,8 @@ namespace IndexEditor
             Dictionary<string, int> dict=new Dictionary<string,int>();
             foreach (Object o in listBoxCustomPaths.Items)
             {
-                dict.Add(o.ToString(), o.ToString().Length);
+                if(!dict.ContainsKey(o.ToString()))
+                    dict.Add(o.ToString(), o.ToString().Length);
             }
             string[] paths = GetFileOpenPaths(DictionaryFilter);
             if (paths != null)

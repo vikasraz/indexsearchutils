@@ -51,7 +51,8 @@ namespace ISUtils.Utils
                     {
                         if (source.SourceName == set.SourceName)
                         {
-                            indexDict.Add(set, source);
+                            if(indexDict.ContainsKey(set)==false)
+                                indexDict.Add(set, source);
                             break;
                         }
                     }
@@ -79,7 +80,8 @@ namespace ISUtils.Utils
                 {
                     if (source.SourceName == set.SourceName)
                     {
-                        indexDict.Add(set, source);
+                        if(indexDict.ContainsKey(set)==false)
+                            indexDict.Add(set, source);
                         break;
                     }
                 }

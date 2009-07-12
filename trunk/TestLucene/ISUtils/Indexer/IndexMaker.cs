@@ -57,9 +57,15 @@ namespace ISUtils.Indexer
                     if (source.SourceName.ToUpper().CompareTo(index.SourceName.ToUpper()) == 0)
                     {
                         if (index.Type == IndexTypeEnum.Ordinary)
-                            ordinaryDict.Add(index,source);
+                        {
+                            if(ordinaryDict.ContainsKey(index)==false)
+                                ordinaryDict.Add(index, source);
+                        }
                         else
-                            incremenDict.Add(index,source);
+                        {
+                            if(incremenDict.ContainsKey(index)==false)
+                                incremenDict.Add(index, source);
+                        }
                         break;
                     }
                 }

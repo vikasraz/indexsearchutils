@@ -1423,6 +1423,7 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1431,7 +1432,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        TopDocs topDocs = searcher.Search(theQuery.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         List<int> posList = new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
@@ -1457,15 +1458,16 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
 #if DEBUG
-                        System.Console.WriteLine(query.ToString());
+                        System.Console.WriteLine(theQuery.ToString());
 #endif
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        TopDocs topDocs = searcher.Search(theQuery.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         List<int> posList = new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
@@ -1807,6 +1809,7 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1815,11 +1818,11 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                        Highlighter highlighter = new Highlighter(new QueryScorer(theQuery));
                         highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        TopDocs topDocs = searcher.Search(theQuery.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-                        List<int> posList=new List<int>();
+                        List<int> posList = new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
@@ -1858,6 +1861,7 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1866,9 +1870,9 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                        Highlighter highlighter = new Highlighter(new QueryScorer(theQuery));
                         highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
-                        TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                        TopDocs topDocs = searcher.Search(theQuery.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         List<int> posList=new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)

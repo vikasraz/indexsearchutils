@@ -10,12 +10,12 @@
     }
     function ontxtSearchKeyPress(){
         if (event.keyCode==13){
-            var url="search.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
+            var url="search.aspx?Word="+escape(document.getElementById("txtSearch").value);
             this.location.href = url;
         }
     }   
     function imgBtnSearch_onclick() {
-        var url="search.aspx?WordsAllContains="+escape(document.getElementById("txtSearch").value);
+        var url="search.aspx?Word="+escape(document.getElementById("txtSearch").value);
         this.location.href = url;
     }
 

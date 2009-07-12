@@ -18,14 +18,14 @@ public partial class commonsearch : System.Web.UI.Page
     }
     protected void imgBtnSearch_Click(object sender, ImageClickEventArgs e)
     {
-        //StringBuilder url = new StringBuilder("~/searchresult.aspx?");
-        //url.Append("WordsAllContains=" + txtSearch.Value);
+        //StringBuilder url = new StringBuilder("~/search.aspx?");
+        //url.Append("wd=" + txtSearch.Value);
         //Response.Redirect(url.ToString());
     }
     //public string RedirectUrl()
     //{
-    //    StringBuilder url = new StringBuilder("searchresult.aspx?");
-    //    url.Append("WordsAllContains=" + Server.UrlEncode(txtSearch.Value));
+    //    StringBuilder url = new StringBuilder("search.aspx?");
+    //    url.Append("wd=" + Server.UrlEncode(txtSearch.Value));
     //    return url.ToString();
     //}
 }

@@ -220,7 +220,8 @@ namespace ISUtils.Database
                 {
                     if (source.SourceName == set.SourceName)
                     {
-                        indexDict.Add(set, source);
+                        if(!indexDict.ContainsKey(set))
+                            indexDict.Add(set, source);
                         break;
                     }
                 }
@@ -245,7 +246,8 @@ namespace ISUtils.Database
                 }
                 List<string> tbList = new List<string>();
                 tbList.AddRange(tfDict.Keys);
-                indexTableDict.Add(set,tbList);
+                if(indexTableDict.ContainsKey(set)==false)
+                    indexTableDict.Add(set,tbList);
             }
             foreach (string table in tbDict.Keys)
             {
@@ -257,7 +259,8 @@ namespace ISUtils.Database
                         inList.Add(set);
                     }
                 }
-                tableIndexDict.Add(table, inList);
+                if(tableIndexDict.ContainsKey(table)==false)
+                    tableIndexDict.Add(table, inList);
             }
         }
         public static void GetStructures(List<Source> sourceList, List<IndexSet> indexList, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
@@ -269,7 +272,8 @@ namespace ISUtils.Database
                 {
                     if (source.SourceName == set.SourceName)
                     {
-                        indexDict.Add(set, source);
+                        if(indexDict.ContainsKey(set)==false)
+                            indexDict.Add(set, source);
                         break;
                     }
                 }
@@ -294,7 +298,8 @@ namespace ISUtils.Database
                 }
                 List<string> tbList = new List<string>();
                 tbList.AddRange(tfDict.Keys);
-                indexTableDict.Add(set, tbList);
+                if(indexTableDict.ContainsKey(set)==false)
+                    indexTableDict.Add(set, tbList);
             }
             foreach (string table in tbDict.Keys)
             {
@@ -306,7 +311,8 @@ namespace ISUtils.Database
                         inList.Add(set);
                     }
                 }
-                tableIndexDict.Add(table, inList);
+                if(tableIndexDict.ContainsKey(table)==false)
+                    tableIndexDict.Add(table, inList);
             }
         }
         public static void GetStructures(Dictionary<IndexSet, Source> indexDict, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
@@ -331,7 +337,8 @@ namespace ISUtils.Database
                 }
                 List<string> tbList = new List<string>();
                 tbList.AddRange(tfDict.Keys);
-                indexTableDict.Add(set, tbList);
+                if(indexTableDict.ContainsKey(set)==false)
+                    indexTableDict.Add(set, tbList);
             }
             foreach (string table in tbDict.Keys)
             {
@@ -343,7 +350,8 @@ namespace ISUtils.Database
                         inList.Add(set);
                     }
                 }
-                tableIndexDict.Add(table, inList);
+                if(tableIndexDict.ContainsKey(table)==false)
+                    tableIndexDict.Add(table, inList);
             }
         }
         public static Dictionary<string, List<FieldInfo>> GetQueryTableFields(DBTypeEnum dbType, string connStr, string query)
@@ -423,7 +431,8 @@ namespace ISUtils.Database
                             if (source != null && indexSet != null)
                             {
                                 source.Fields=fpList;
-                                dict.Add(indexSet, source);
+                                if(dict.ContainsKey(indexSet)==false)
+                                    dict.Add(indexSet, source);
                             }
                             tableName = currentTableName;
                             fpList = new List<FieldProperties>();

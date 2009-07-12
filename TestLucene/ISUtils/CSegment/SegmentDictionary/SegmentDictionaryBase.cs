@@ -129,7 +129,8 @@ namespace ISUtils.CSegment.SegmentDictionary
                 //将分词加入分词列表
                 _baseSegmentList.Add(segment);
                 //将分词加入分词字典
-                _baseSegmentDict.Add(segment, length);
+                if(!_baseSegmentDict.ContainsKey(segment))
+                    _baseSegmentDict.Add(segment, length);
                 Dictionary<string, int> keyValueDict = new Dictionary<string, int>();
                 int maxLen = 0;
                 if (_segmentKeys.ContainsKey(oneChar))

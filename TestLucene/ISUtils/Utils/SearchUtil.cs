@@ -66,7 +66,8 @@ namespace ISUtils.Utils
                     {
                         if (source.SourceName == set.SourceName)
                         {
-                            indexDict.Add(set, source);
+                            if(indexDict.ContainsKey(set)==false)
+                                indexDict.Add(set, source);
                             break;
                         }
                     }
@@ -97,7 +98,8 @@ namespace ISUtils.Utils
                 {
                     if (source.SourceName == set.SourceName)
                     {
-                        indexDict.Add(set, source);
+                        if(indexDict.ContainsKey(set)==false)
+                            indexDict.Add(set, source);
 #if DEBUG
                         System.Console.WriteLine("SearchUtil.indexDict.Add:");
                         System.Console.WriteLine("\t"+set.ToString());
@@ -240,7 +242,8 @@ namespace ISUtils.Utils
                             fieldList.Add(field.Name);
                         }
                     }
-                    indexFieldsDict.Add(indexSet, fieldList);
+                    if(indexFieldsDict.ContainsKey(indexSet)==false)
+                        indexFieldsDict.Add(indexSet, fieldList);
                 }
             }
             else
@@ -252,7 +255,8 @@ namespace ISUtils.Utils
                     {
                         fieldList.Add(field.Name);
                     }
-                    indexFieldsDict.Add(indexSet, fieldList);
+                    if (indexFieldsDict.ContainsKey(indexSet) == false)
+                        indexFieldsDict.Add(indexSet, fieldList);
                 }
             }
         }
@@ -1451,7 +1455,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
                 else
@@ -1486,7 +1500,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
             }
@@ -1534,7 +1558,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
                 else
@@ -1569,7 +1603,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
             }
@@ -1854,7 +1898,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
                 else
@@ -1906,7 +1960,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
             }
@@ -1971,7 +2035,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
                 else
@@ -2023,7 +2097,17 @@ namespace ISUtils.Utils
                             recordList.Add(new SearchRecord(indexSet, sfList));
                             posList.Add(recordList.Count - 1);
                         }
-                        statistics.Add(indexSet.Caption, posList);
+                        try
+                        {
+                            statistics.Add(indexSet.Caption, posList);
+                        }
+                        catch (Exception e)
+                        {
+                            int i = 2;
+                            while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
+                                i++;
+                            statistics.Add(indexSet.Caption + i.ToString(), posList);
+                        }
                     }
                 }
             }

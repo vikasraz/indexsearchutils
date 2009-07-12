@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
-    <title>无标题页</title>
+    <title>结果聚类</title>
     <script type="text/javascript" src="Silverlight.js"></script>
 
     <script type="text/javascript">
@@ -51,6 +51,7 @@
             } 
             var a=decodeURIComponent(result);
             var xml=a.replace(/\+/g," ");
+            alert(xml);
             document.getElementById("hiddenXml").value=xml;
             time = setTimeout(getControl,500);
         }

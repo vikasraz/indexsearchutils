@@ -303,16 +303,13 @@ namespace ISUtils.Common
             writer.WriteAttributeString("Index", IndexName);
             foreach (SearchField field in Fields)
             {
-                if (field.Visible)
-                {
-                    writer.WriteStartElement("Field");
-                    writer.WriteAttributeString("Name", field.Name);
-                    writer.WriteAttributeString("Caption", field.Caption);
-                    writer.WriteAttributeString("Value", field.Value);
-                    writer.WriteAttributeString("Boost", field.Boost.ToString());
-                    writer.WriteAttributeString("IsTitle", field.IsTitle.ToString());
-                    writer.WriteEndElement();
-                }
+                writer.WriteStartElement("Field");
+                writer.WriteAttributeString("Name", field.Name);
+                writer.WriteAttributeString("Caption", field.Caption);
+                writer.WriteAttributeString("Value", field.Value);
+                writer.WriteAttributeString("Boost", field.Boost.ToString());
+                writer.WriteAttributeString("IsTitle", field.IsTitle.ToString());
+                writer.WriteEndElement();
             }
             writer.WriteEndElement();
         }

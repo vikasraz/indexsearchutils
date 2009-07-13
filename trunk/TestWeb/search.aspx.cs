@@ -100,11 +100,10 @@ public partial class searchresult : System.Web.UI.Page
             {
                 if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    buffer.Append("----------------------------------<br>");
-                    buffer.Append(record["文件名"].Result + "<br>");
+                    buffer.Append("<a href=\"" + GetFileUrl(record["路径"].Value) + "\" target=\"_blank\"  >" + record["文件名"].Result + "</a><br>");
                     if(!string.IsNullOrEmpty(record["内容"].Value))
                         buffer.Append(record["内容"].Result + "<br>");
-                    buffer.Append(record["路径"].Result + "<br>");
+                    buffer.Append("<br>");
                 }
                 else
                 {
@@ -310,6 +309,18 @@ public partial class searchresult : System.Web.UI.Page
             }
         }
         return url.ToString();
+    }
+    protected string GetFileUrl(string filepath)
+    {
+        string value = ConfigurationManager.AppSettings["文件"];
+        if (string.IsNullOrEmpty(value))
+            return "#";
+        string[] array = value.Split("{}".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        if (array.Length != 2)
+            return "#";
+        string suffix = filepath.Substring(array[1].Length).Replace('\\', '/');
+        string prefix = array[0];
+        return prefix + suffix;
     }
     #endregion
     #region String Function

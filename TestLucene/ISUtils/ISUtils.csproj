@@ -56,6 +56,8 @@
     <Compile Include="Common\DictionarySet.cs" />
     <Compile Include="Common\FieldProperties.cs" />
     <Compile Include="Common\FieldInfo.cs" />
+    <Compile Include="Common\FileContent.cs" />
+    <Compile Include="Common\FileIndexSet.cs" />
     <Compile Include="Common\FilterCondition.cs" />
     <Compile Include="Common\FormatedResult.cs" />
     <Compile Include="Common\FuzzyQuery.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="Database\Writer\DBRamCreateIWriter.cs" />
     <Compile Include="Database\Writer\DBRamIncremIWriter.cs" />
     <Compile Include="Database\Writer\RamIWriter.cs" />
+    <Compile Include="File\FileIndexer.cs" />
     <Compile Include="File\IFilter\ComHelper.cs" />
     <Compile Include="File\IFilter\FilterLoader.cs" />
     <Compile Include="File\IFilter\FilterReader.cs" />

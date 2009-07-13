@@ -8,7 +8,7 @@
     <script type ="text/javascript">
     <!--
     function TransferString(str){
-        var style="fullscreen=1,alwaysRaised=1,depended=0,location=1,menubar=1,resizable=1,titlebar=1,toolbar=1,status=1";
+        var style="channelmode=1,alwaysRaised=1,depended=0,location=1,menubar=1,resizable=1,titlebar=1,toolbar=1,status=1";
         var childWin=window.open("display.aspx",'',style);
         childWin.attachEvent("onload", function(){childWin.displayResult(str)});
     }

@@ -25,7 +25,7 @@ public partial class searchresult : System.Web.UI.Page
     #region Event
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack)
+        if (Page.IsPostBack)
         {
             return;
         }

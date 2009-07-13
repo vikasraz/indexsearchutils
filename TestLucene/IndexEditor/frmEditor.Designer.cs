@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditor));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("数据源", 0);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("索引设置", 1);
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("索引器", 2);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("搜索设置", 3);
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("词库设置", 4);
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("数据源", 0);
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("索引设置", 1);
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("索引器", 2);
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("搜索设置", 3);
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("词库设置", 4);
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.NicontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -62,10 +62,68 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.listView = new System.Windows.Forms.ListView();
+            this.panelIndexerSet = new System.Windows.Forms.Panel();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.listBoxFileDirs = new System.Windows.Forms.ListBox();
+            this.btnFileDirs = new System.Windows.Forms.Button();
+            this.btnFilePath = new System.Windows.Forms.Button();
+            this.textBoxFilePath = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnEditIndexer = new System.Windows.Forms.Button();
+            this.imageListButtons = new System.Windows.Forms.ImageList(this.components);
+            this.btnReCreateIncrIndex = new System.Windows.Forms.Button();
+            this.btnMainIndexReCreate = new System.Windows.Forms.Button();
+            this.btnIndexerStopService = new System.Windows.Forms.Button();
+            this.btnIndexerStartService = new System.Windows.Forms.Button();
+            this.btnIndexerService = new System.Windows.Forms.Button();
+            this.btnIndexerConfirm = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.numericUpDownMergeFactor = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMaxBufferedDocs = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMaxFieldLength = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownRamBufferSize = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownIncrTimeSpan = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMainCreateTimeSpan = new System.Windows.Forms.NumericUpDown();
+            this.dateTimePickerMainReCreate = new System.Windows.Forms.DateTimePicker();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.panelSearchd = new System.Windows.Forms.Panel();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnSearchdStopService = new System.Windows.Forms.Button();
+            this.btnSearchdStartService = new System.Windows.Forms.Button();
+            this.btnEditSearchd = new System.Windows.Forms.Button();
+            this.btnSearchdService = new System.Windows.Forms.Button();
+            this.btnSearchdConfirm = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.btnSetQueryPath = new System.Windows.Forms.Button();
+            this.textBoxQueryPath = new System.Windows.Forms.TextBox();
+            this.btnSetSearchdPath = new System.Windows.Forms.Button();
+            this.textBoxSearchdPath = new System.Windows.Forms.TextBox();
+            this.maskedTextBoxIpAddress = new System.Windows.Forms.MaskedTextBox();
+            this.numericUpDownMaxTransport = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMaxMatches = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownTimeOut = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.panelSource = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnSourceCancel = new System.Windows.Forms.Button();
-            this.imageListButtons = new System.Windows.Forms.ImageList(this.components);
             this.btnSourceConfim = new System.Windows.Forms.Button();
             this.btnDelSource = new System.Windows.Forms.Button();
             this.btnEditSource = new System.Windows.Forms.Button();
@@ -136,57 +194,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.comboBoxIndex = new System.Windows.Forms.ComboBox();
-            this.panelIndexerSet = new System.Windows.Forms.Panel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnEditIndexer = new System.Windows.Forms.Button();
-            this.btnReCreateIncrIndex = new System.Windows.Forms.Button();
-            this.btnMainIndexReCreate = new System.Windows.Forms.Button();
-            this.btnIndexerStopService = new System.Windows.Forms.Button();
-            this.btnIndexerStartService = new System.Windows.Forms.Button();
-            this.btnIndexerService = new System.Windows.Forms.Button();
-            this.btnIndexerConfirm = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.numericUpDownMergeFactor = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxBufferedDocs = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxFieldLength = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownRamBufferSize = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownIncrTimeSpan = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMainCreateTimeSpan = new System.Windows.Forms.NumericUpDown();
-            this.dateTimePickerMainReCreate = new System.Windows.Forms.DateTimePicker();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.panelSearchd = new System.Windows.Forms.Panel();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.btnSearchdStopService = new System.Windows.Forms.Button();
-            this.btnSearchdStartService = new System.Windows.Forms.Button();
-            this.btnEditSearchd = new System.Windows.Forms.Button();
-            this.btnSearchdService = new System.Windows.Forms.Button();
-            this.btnSearchdConfirm = new System.Windows.Forms.Button();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.btnSetQueryPath = new System.Windows.Forms.Button();
-            this.textBoxQueryPath = new System.Windows.Forms.TextBox();
-            this.btnSetSearchdPath = new System.Windows.Forms.Button();
-            this.textBoxSearchdPath = new System.Windows.Forms.TextBox();
-            this.maskedTextBoxIpAddress = new System.Windows.Forms.MaskedTextBox();
-            this.numericUpDownMaxTransport = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxMatches = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownTimeOut = new System.Windows.Forms.NumericUpDown();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.NicontextMenu.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -195,16 +202,8 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            this.panelSource.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.panelDictionary.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.panelIndexSet.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.panelIndexerSet.SuspendLayout();
+            this.groupBox11.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMergeFactor)).BeginInit();
@@ -220,6 +219,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxMatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeOut)).BeginInit();
+            this.panelSource.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panelDictionary.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            this.panelIndexSet.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList
@@ -283,7 +291,7 @@
             this.toolStripMenuItemFile});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(832, 24);
+            this.menuStrip.Size = new System.Drawing.Size(830, 24);
             this.menuStrip.TabIndex = 8;
             this.menuStrip.Text = "菜单栏";
             // 
@@ -352,7 +360,7 @@
             this.toolStripButtonExit});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(832, 25);
+            this.toolStrip.Size = new System.Drawing.Size(830, 25);
             this.toolStrip.TabIndex = 9;
             this.toolStrip.Text = "工具栏";
             // 
@@ -402,9 +410,9 @@
             this.toolStripStatusLabelIndexer,
             this.toolStripProgressBar});
             this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip.Location = new System.Drawing.Point(0, 547);
+            this.statusStrip.Location = new System.Drawing.Point(0, 625);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(832, 22);
+            this.statusStrip.Size = new System.Drawing.Size(830, 22);
             this.statusStrip.TabIndex = 12;
             this.statusStrip.Text = "状态栏";
             // 
@@ -454,7 +462,7 @@
             this.splitContainer.Panel2.Controls.Add(this.panelSource);
             this.splitContainer.Panel2.Controls.Add(this.panelDictionary);
             this.splitContainer.Panel2.Controls.Add(this.panelIndexSet);
-            this.splitContainer.Size = new System.Drawing.Size(832, 498);
+            this.splitContainer.Size = new System.Drawing.Size(830, 576);
             this.splitContainer.SplitterDistance = 167;
             this.splitContainer.TabIndex = 13;
             // 
@@ -464,851 +472,106 @@
             this.listView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView.GridLines = true;
             this.listView.ImeMode = System.Windows.Forms.ImeMode.Off;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listViewItem3.StateImageIndex = 0;
+            listViewItem6.StateImageIndex = 0;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.StateImageIndex = 0;
             this.listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4,
-            listViewItem5});
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10});
             this.listView.LargeImageList = this.imageList;
             this.listView.Location = new System.Drawing.Point(0, 0);
             this.listView.Margin = new System.Windows.Forms.Padding(10);
             this.listView.MultiSelect = false;
             this.listView.Name = "listView";
             this.listView.ShowItemToolTips = true;
-            this.listView.Size = new System.Drawing.Size(167, 498);
+            this.listView.Size = new System.Drawing.Size(167, 576);
             this.listView.TabIndex = 0;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
             // 
-            // panelSource
-            // 
-            this.panelSource.Controls.Add(this.groupBox2);
-            this.panelSource.Controls.Add(this.groupBox1);
-            this.panelSource.Controls.Add(this.label1);
-            this.panelSource.Controls.Add(this.comboBoxSource);
-            this.panelSource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSource.Location = new System.Drawing.Point(0, 0);
-            this.panelSource.Name = "panelSource";
-            this.panelSource.Size = new System.Drawing.Size(661, 498);
-            this.panelSource.TabIndex = 0;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.btnSourceCancel);
-            this.groupBox2.Controls.Add(this.btnSourceConfim);
-            this.groupBox2.Controls.Add(this.btnDelSource);
-            this.groupBox2.Controls.Add(this.btnEditSource);
-            this.groupBox2.Controls.Add(this.btnAddSource);
-            this.groupBox2.Controls.Add(this.btnTestFields);
-            this.groupBox2.Controls.Add(this.btnTestQuery);
-            this.groupBox2.Controls.Add(this.btnTestDBLink);
-            this.groupBox2.Location = new System.Drawing.Point(473, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(178, 482);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            // 
-            // btnSourceCancel
-            // 
-            this.btnSourceCancel.Enabled = false;
-            this.btnSourceCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSourceCancel.ImageIndex = 7;
-            this.btnSourceCancel.ImageList = this.imageListButtons;
-            this.btnSourceCancel.Location = new System.Drawing.Point(0, 422);
-            this.btnSourceCancel.Name = "btnSourceCancel";
-            this.btnSourceCancel.Size = new System.Drawing.Size(178, 59);
-            this.btnSourceCancel.TabIndex = 3;
-            this.btnSourceCancel.Text = "取消操作";
-            this.btnSourceCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSourceCancel.UseVisualStyleBackColor = true;
-            this.btnSourceCancel.Click += new System.EventHandler(this.btnSourceCancel_Click);
-            // 
-            // imageListButtons
-            // 
-            this.imageListButtons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListButtons.ImageStream")));
-            this.imageListButtons.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListButtons.Images.SetKeyName(0, "testdblink.jpg");
-            this.imageListButtons.Images.SetKeyName(1, "testquery.jpg");
-            this.imageListButtons.Images.SetKeyName(2, "testsourcefields.jpg");
-            this.imageListButtons.Images.SetKeyName(3, "newsource.jpg");
-            this.imageListButtons.Images.SetKeyName(4, "editsource.jpg");
-            this.imageListButtons.Images.SetKeyName(5, "sourcedelete.jpg");
-            this.imageListButtons.Images.SetKeyName(6, "sourceconfirm.jpg");
-            this.imageListButtons.Images.SetKeyName(7, "sourcecancel.jpg");
-            this.imageListButtons.Images.SetKeyName(8, "indexcreate.jpg");
-            this.imageListButtons.Images.SetKeyName(9, "indexservice.jpg");
-            this.imageListButtons.Images.SetKeyName(10, "startservice.png");
-            this.imageListButtons.Images.SetKeyName(11, "stopservice.png");
-            // 
-            // btnSourceConfim
-            // 
-            this.btnSourceConfim.Enabled = false;
-            this.btnSourceConfim.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSourceConfim.ImageIndex = 6;
-            this.btnSourceConfim.ImageList = this.imageListButtons;
-            this.btnSourceConfim.Location = new System.Drawing.Point(0, 363);
-            this.btnSourceConfim.Name = "btnSourceConfim";
-            this.btnSourceConfim.Size = new System.Drawing.Size(178, 59);
-            this.btnSourceConfim.TabIndex = 3;
-            this.btnSourceConfim.Text = "确定操作";
-            this.btnSourceConfim.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnSourceConfim.UseVisualStyleBackColor = true;
-            this.btnSourceConfim.Click += new System.EventHandler(this.btnSourceConfim_Click);
-            // 
-            // btnDelSource
-            // 
-            this.btnDelSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDelSource.ImageIndex = 5;
-            this.btnDelSource.ImageList = this.imageListButtons;
-            this.btnDelSource.Location = new System.Drawing.Point(0, 304);
-            this.btnDelSource.Name = "btnDelSource";
-            this.btnDelSource.Size = new System.Drawing.Size(178, 59);
-            this.btnDelSource.TabIndex = 3;
-            this.btnDelSource.Text = "删除数据源";
-            this.btnDelSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnDelSource.UseVisualStyleBackColor = true;
-            this.btnDelSource.Click += new System.EventHandler(this.btnDelSource_Click);
-            // 
-            // btnEditSource
-            // 
-            this.btnEditSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEditSource.ImageIndex = 4;
-            this.btnEditSource.ImageList = this.imageListButtons;
-            this.btnEditSource.Location = new System.Drawing.Point(0, 245);
-            this.btnEditSource.Name = "btnEditSource";
-            this.btnEditSource.Size = new System.Drawing.Size(178, 59);
-            this.btnEditSource.TabIndex = 3;
-            this.btnEditSource.Text = "修改数据源";
-            this.btnEditSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEditSource.UseVisualStyleBackColor = true;
-            this.btnEditSource.Click += new System.EventHandler(this.btnEditSource_Click);
-            // 
-            // btnAddSource
-            // 
-            this.btnAddSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddSource.ImageIndex = 3;
-            this.btnAddSource.ImageList = this.imageListButtons;
-            this.btnAddSource.Location = new System.Drawing.Point(0, 186);
-            this.btnAddSource.Name = "btnAddSource";
-            this.btnAddSource.Size = new System.Drawing.Size(178, 59);
-            this.btnAddSource.TabIndex = 3;
-            this.btnAddSource.Text = "添加数据源";
-            this.btnAddSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnAddSource.UseVisualStyleBackColor = true;
-            this.btnAddSource.Click += new System.EventHandler(this.btnAddSource_Click);
-            // 
-            // btnTestFields
-            // 
-            this.btnTestFields.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTestFields.ImageIndex = 2;
-            this.btnTestFields.ImageList = this.imageListButtons;
-            this.btnTestFields.Location = new System.Drawing.Point(0, 127);
-            this.btnTestFields.Name = "btnTestFields";
-            this.btnTestFields.Size = new System.Drawing.Size(178, 59);
-            this.btnTestFields.TabIndex = 3;
-            this.btnTestFields.Text = "测试查询字段";
-            this.btnTestFields.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestFields.UseVisualStyleBackColor = true;
-            this.btnTestFields.Click += new System.EventHandler(this.btnTestFields_Click);
-            // 
-            // btnTestQuery
-            // 
-            this.btnTestQuery.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTestQuery.ImageIndex = 1;
-            this.btnTestQuery.ImageList = this.imageListButtons;
-            this.btnTestQuery.Location = new System.Drawing.Point(0, 68);
-            this.btnTestQuery.Name = "btnTestQuery";
-            this.btnTestQuery.Size = new System.Drawing.Size(178, 59);
-            this.btnTestQuery.TabIndex = 3;
-            this.btnTestQuery.Text = "测试查询语句";
-            this.btnTestQuery.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestQuery.UseVisualStyleBackColor = true;
-            this.btnTestQuery.Click += new System.EventHandler(this.btnTestQuery_Click);
-            // 
-            // btnTestDBLink
-            // 
-            this.btnTestDBLink.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTestDBLink.ImageIndex = 0;
-            this.btnTestDBLink.ImageList = this.imageListButtons;
-            this.btnTestDBLink.Location = new System.Drawing.Point(0, 9);
-            this.btnTestDBLink.Name = "btnTestDBLink";
-            this.btnTestDBLink.Size = new System.Drawing.Size(178, 59);
-            this.btnTestDBLink.TabIndex = 2;
-            this.btnTestDBLink.Text = "测试数据库连接";
-            this.btnTestDBLink.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnTestDBLink.UseVisualStyleBackColor = true;
-            this.btnTestDBLink.Click += new System.EventHandler(this.btnTestDBLink_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.textBoxQuery);
-            this.groupBox1.Controls.Add(this.comboBoxSourceType);
-            this.groupBox1.Controls.Add(this.textBoxPassword);
-            this.groupBox1.Controls.Add(this.textBoxUserName);
-            this.groupBox1.Controls.Add(this.textBoxDataBase);
-            this.groupBox1.Controls.Add(this.textBoxFields);
-            this.groupBox1.Controls.Add(this.textBoxHostName);
-            this.groupBox1.Controls.Add(this.textBoxSourceName);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(19, 51);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(437, 437);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "数据源信息：";
-            // 
-            // textBoxQuery
-            // 
-            this.textBoxQuery.Location = new System.Drawing.Point(89, 189);
-            this.textBoxQuery.Multiline = true;
-            this.textBoxQuery.Name = "textBoxQuery";
-            this.textBoxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxQuery.Size = new System.Drawing.Size(342, 211);
-            this.textBoxQuery.TabIndex = 11;
-            // 
-            // comboBoxSourceType
-            // 
-            this.comboBoxSourceType.FormattingEnabled = true;
-            this.comboBoxSourceType.Items.AddRange(new object[] {
-            "SqlServer",
-            "Oracle",
-            "OleDB",
-            "ODBC"});
-            this.comboBoxSourceType.Location = new System.Drawing.Point(89, 54);
-            this.comboBoxSourceType.Name = "comboBoxSourceType";
-            this.comboBoxSourceType.Size = new System.Drawing.Size(257, 20);
-            this.comboBoxSourceType.TabIndex = 9;
-            // 
-            // textBoxPassword
-            // 
-            this.textBoxPassword.Location = new System.Drawing.Point(89, 161);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.PasswordChar = '*';
-            this.textBoxPassword.Size = new System.Drawing.Size(257, 21);
-            this.textBoxPassword.TabIndex = 8;
-            // 
-            // textBoxUserName
-            // 
-            this.textBoxUserName.Location = new System.Drawing.Point(89, 134);
-            this.textBoxUserName.Name = "textBoxUserName";
-            this.textBoxUserName.Size = new System.Drawing.Size(257, 21);
-            this.textBoxUserName.TabIndex = 8;
-            // 
-            // textBoxDataBase
-            // 
-            this.textBoxDataBase.Location = new System.Drawing.Point(89, 107);
-            this.textBoxDataBase.Name = "textBoxDataBase";
-            this.textBoxDataBase.Size = new System.Drawing.Size(257, 21);
-            this.textBoxDataBase.TabIndex = 8;
-            // 
-            // textBoxFields
-            // 
-            this.textBoxFields.Location = new System.Drawing.Point(89, 406);
-            this.textBoxFields.Name = "textBoxFields";
-            this.textBoxFields.Size = new System.Drawing.Size(342, 21);
-            this.textBoxFields.TabIndex = 8;
-            this.textBoxFields.Click += new System.EventHandler(this.textBoxFields_Click);
-            // 
-            // textBoxHostName
-            // 
-            this.textBoxHostName.Location = new System.Drawing.Point(89, 80);
-            this.textBoxHostName.Name = "textBoxHostName";
-            this.textBoxHostName.Size = new System.Drawing.Size(257, 21);
-            this.textBoxHostName.TabIndex = 8;
-            // 
-            // textBoxSourceName
-            // 
-            this.textBoxSourceName.Location = new System.Drawing.Point(89, 26);
-            this.textBoxSourceName.Name = "textBoxSourceName";
-            this.textBoxSourceName.Size = new System.Drawing.Size(257, 21);
-            this.textBoxSourceName.TabIndex = 8;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 409);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 12);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "搜索字段：";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 192);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(53, 12);
-            this.label8.TabIndex = 6;
-            this.label8.Tag = " ";
-            this.label8.Text = "查  询：";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 167);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 12);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "密  码：";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 138);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 12);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "用 户 名 ：";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 111);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 12);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "数据库名称：";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(6, 87);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(65, 12);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "主机名称：";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 58);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 12);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "数据库类型：";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 30);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 12);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "数据源名称：";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(53, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "数据源：";
-            // 
-            // comboBoxSource
-            // 
-            this.comboBoxSource.FormattingEnabled = true;
-            this.comboBoxSource.Location = new System.Drawing.Point(108, 25);
-            this.comboBoxSource.Name = "comboBoxSource";
-            this.comboBoxSource.Size = new System.Drawing.Size(257, 20);
-            this.comboBoxSource.TabIndex = 2;
-            this.comboBoxSource.SelectedIndexChanged += new System.EventHandler(this.comboBoxSouce_SelectedIndexChanged);
-            // 
-            // panelDictionary
-            // 
-            this.panelDictionary.Controls.Add(this.groupBox9);
-            this.panelDictionary.Controls.Add(this.groupBox10);
-            this.panelDictionary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDictionary.Location = new System.Drawing.Point(0, 0);
-            this.panelDictionary.Name = "panelDictionary";
-            this.panelDictionary.Size = new System.Drawing.Size(661, 498);
-            this.panelDictionary.TabIndex = 11;
-            this.panelDictionary.Visible = false;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.btnChangeDictSet);
-            this.groupBox9.Controls.Add(this.btnDictStopService);
-            this.groupBox9.Controls.Add(this.btnDictStartService);
-            this.groupBox9.Controls.Add(this.btnDictService);
-            this.groupBox9.Controls.Add(this.btnDictConfirm);
-            this.groupBox9.Location = new System.Drawing.Point(19, 16);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(448, 102);
-            this.groupBox9.TabIndex = 12;
-            this.groupBox9.TabStop = false;
-            // 
-            // btnChangeDictSet
-            // 
-            this.btnChangeDictSet.ImageIndex = 4;
-            this.btnChangeDictSet.ImageList = this.imageListButtons;
-            this.btnChangeDictSet.Location = new System.Drawing.Point(2, 9);
-            this.btnChangeDictSet.Name = "btnChangeDictSet";
-            this.btnChangeDictSet.Size = new System.Drawing.Size(89, 90);
-            this.btnChangeDictSet.TabIndex = 3;
-            this.btnChangeDictSet.Text = "修改设置";
-            this.btnChangeDictSet.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnChangeDictSet.UseVisualStyleBackColor = true;
-            this.btnChangeDictSet.Click += new System.EventHandler(this.btnChangeDictSet_Click);
-            // 
-            // btnDictStopService
-            // 
-            this.btnDictStopService.ImageIndex = 11;
-            this.btnDictStopService.ImageList = this.imageListButtons;
-            this.btnDictStopService.Location = new System.Drawing.Point(358, 9);
-            this.btnDictStopService.Name = "btnDictStopService";
-            this.btnDictStopService.Size = new System.Drawing.Size(89, 90);
-            this.btnDictStopService.TabIndex = 3;
-            this.btnDictStopService.Text = "停止服务";
-            this.btnDictStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictStopService.UseVisualStyleBackColor = true;
-            this.btnDictStopService.Click += new System.EventHandler(this.btnDictStopService_Click);
-            // 
-            // btnDictStartService
-            // 
-            this.btnDictStartService.ImageIndex = 10;
-            this.btnDictStartService.ImageList = this.imageListButtons;
-            this.btnDictStartService.Location = new System.Drawing.Point(269, 9);
-            this.btnDictStartService.Name = "btnDictStartService";
-            this.btnDictStartService.Size = new System.Drawing.Size(89, 90);
-            this.btnDictStartService.TabIndex = 3;
-            this.btnDictStartService.Text = "开始服务";
-            this.btnDictStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictStartService.UseVisualStyleBackColor = true;
-            this.btnDictStartService.Click += new System.EventHandler(this.btnDictStartService_Click);
-            // 
-            // btnDictService
-            // 
-            this.btnDictService.ImageIndex = 9;
-            this.btnDictService.ImageList = this.imageListButtons;
-            this.btnDictService.Location = new System.Drawing.Point(180, 9);
-            this.btnDictService.Name = "btnDictService";
-            this.btnDictService.Size = new System.Drawing.Size(89, 90);
-            this.btnDictService.TabIndex = 3;
-            this.btnDictService.Text = "设置系统服务";
-            this.btnDictService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictService.UseVisualStyleBackColor = true;
-            this.btnDictService.Click += new System.EventHandler(this.btnDictService_Click);
-            // 
-            // btnDictConfirm
-            // 
-            this.btnDictConfirm.Enabled = false;
-            this.btnDictConfirm.ImageIndex = 6;
-            this.btnDictConfirm.ImageList = this.imageListButtons;
-            this.btnDictConfirm.Location = new System.Drawing.Point(91, 9);
-            this.btnDictConfirm.Name = "btnDictConfirm";
-            this.btnDictConfirm.Size = new System.Drawing.Size(89, 90);
-            this.btnDictConfirm.TabIndex = 3;
-            this.btnDictConfirm.Text = "确定操作";
-            this.btnDictConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDictConfirm.UseVisualStyleBackColor = true;
-            this.btnDictConfirm.Click += new System.EventHandler(this.btnDictConfirm_Click);
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Controls.Add(this.btnSetCustomPaths);
-            this.groupBox10.Controls.Add(this.btnSetFilterPath);
-            this.groupBox10.Controls.Add(this.btnSetNumberPath);
-            this.groupBox10.Controls.Add(this.btnSetNamePath);
-            this.groupBox10.Controls.Add(this.btnSetBasePath);
-            this.groupBox10.Controls.Add(this.textBoxFilterPath);
-            this.groupBox10.Controls.Add(this.textBoxNumberPath);
-            this.groupBox10.Controls.Add(this.textBoxNamePath);
-            this.groupBox10.Controls.Add(this.textBoxBasePath);
-            this.groupBox10.Controls.Add(this.listBoxCustomPaths);
-            this.groupBox10.Controls.Add(this.label37);
-            this.groupBox10.Controls.Add(this.label38);
-            this.groupBox10.Controls.Add(this.label40);
-            this.groupBox10.Controls.Add(this.label43);
-            this.groupBox10.Controls.Add(this.label44);
-            this.groupBox10.Location = new System.Drawing.Point(21, 140);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(620, 297);
-            this.groupBox10.TabIndex = 11;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "词库设置：";
-            // 
-            // btnSetCustomPaths
-            // 
-            this.btnSetCustomPaths.Location = new System.Drawing.Point(558, 111);
-            this.btnSetCustomPaths.Name = "btnSetCustomPaths";
-            this.btnSetCustomPaths.Size = new System.Drawing.Size(33, 23);
-            this.btnSetCustomPaths.TabIndex = 4;
-            this.btnSetCustomPaths.Text = "...";
-            this.btnSetCustomPaths.UseVisualStyleBackColor = true;
-            this.btnSetCustomPaths.Click += new System.EventHandler(this.btnSetCustomPaths_Click);
-            // 
-            // btnSetFilterPath
-            // 
-            this.btnSetFilterPath.Location = new System.Drawing.Point(558, 260);
-            this.btnSetFilterPath.Name = "btnSetFilterPath";
-            this.btnSetFilterPath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetFilterPath.TabIndex = 4;
-            this.btnSetFilterPath.Text = "...";
-            this.btnSetFilterPath.UseVisualStyleBackColor = true;
-            this.btnSetFilterPath.Click += new System.EventHandler(this.btnSetFilterPath_Click);
-            // 
-            // btnSetNumberPath
-            // 
-            this.btnSetNumberPath.Location = new System.Drawing.Point(558, 80);
-            this.btnSetNumberPath.Name = "btnSetNumberPath";
-            this.btnSetNumberPath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetNumberPath.TabIndex = 4;
-            this.btnSetNumberPath.Text = "...";
-            this.btnSetNumberPath.UseVisualStyleBackColor = true;
-            this.btnSetNumberPath.Click += new System.EventHandler(this.btnSetNumberPath_Click);
-            // 
-            // btnSetNamePath
-            // 
-            this.btnSetNamePath.Location = new System.Drawing.Point(558, 52);
-            this.btnSetNamePath.Name = "btnSetNamePath";
-            this.btnSetNamePath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetNamePath.TabIndex = 4;
-            this.btnSetNamePath.Text = "...";
-            this.btnSetNamePath.UseVisualStyleBackColor = true;
-            this.btnSetNamePath.Click += new System.EventHandler(this.btnSetNamePath_Click);
-            // 
-            // btnSetBasePath
-            // 
-            this.btnSetBasePath.Location = new System.Drawing.Point(558, 24);
-            this.btnSetBasePath.Name = "btnSetBasePath";
-            this.btnSetBasePath.Size = new System.Drawing.Size(33, 23);
-            this.btnSetBasePath.TabIndex = 4;
-            this.btnSetBasePath.Text = "...";
-            this.btnSetBasePath.UseVisualStyleBackColor = true;
-            this.btnSetBasePath.Click += new System.EventHandler(this.btnSetBasePath_Click);
-            // 
-            // textBoxFilterPath
-            // 
-            this.textBoxFilterPath.Location = new System.Drawing.Point(143, 261);
-            this.textBoxFilterPath.Name = "textBoxFilterPath";
-            this.textBoxFilterPath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxFilterPath.TabIndex = 3;
-            // 
-            // textBoxNumberPath
-            // 
-            this.textBoxNumberPath.Location = new System.Drawing.Point(143, 81);
-            this.textBoxNumberPath.Name = "textBoxNumberPath";
-            this.textBoxNumberPath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxNumberPath.TabIndex = 3;
-            // 
-            // textBoxNamePath
-            // 
-            this.textBoxNamePath.Location = new System.Drawing.Point(143, 53);
-            this.textBoxNamePath.Name = "textBoxNamePath";
-            this.textBoxNamePath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxNamePath.TabIndex = 3;
-            // 
-            // textBoxBasePath
-            // 
-            this.textBoxBasePath.Location = new System.Drawing.Point(143, 25);
-            this.textBoxBasePath.Name = "textBoxBasePath";
-            this.textBoxBasePath.Size = new System.Drawing.Size(414, 21);
-            this.textBoxBasePath.TabIndex = 3;
-            // 
-            // listBoxCustomPaths
-            // 
-            this.listBoxCustomPaths.FormattingEnabled = true;
-            this.listBoxCustomPaths.ItemHeight = 12;
-            this.listBoxCustomPaths.Location = new System.Drawing.Point(143, 113);
-            this.listBoxCustomPaths.Name = "listBoxCustomPaths";
-            this.listBoxCustomPaths.Size = new System.Drawing.Size(414, 136);
-            this.listBoxCustomPaths.TabIndex = 2;
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(24, 265);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(89, 12);
-            this.label37.TabIndex = 1;
-            this.label37.Text = "过滤词库路径：";
-            // 
-            // label38
-            // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(22, 113);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(101, 12);
-            this.label38.TabIndex = 1;
-            this.label38.Text = "自定义词库路径：";
-            // 
-            // label40
-            // 
-            this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(24, 85);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(89, 12);
-            this.label40.TabIndex = 1;
-            this.label40.Text = "数值词库路径：";
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(22, 57);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(89, 12);
-            this.label43.TabIndex = 1;
-            this.label43.Text = "姓氏词库路径：";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(24, 29);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(77, 12);
-            this.label44.TabIndex = 0;
-            this.label44.Text = "主词库路径：";
-            // 
-            // panelIndexSet
-            // 
-            this.panelIndexSet.Controls.Add(this.groupBox3);
-            this.panelIndexSet.Controls.Add(this.groupBox4);
-            this.panelIndexSet.Controls.Add(this.label18);
-            this.panelIndexSet.Controls.Add(this.comboBoxIndex);
-            this.panelIndexSet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelIndexSet.Location = new System.Drawing.Point(0, 0);
-            this.panelIndexSet.Name = "panelIndexSet";
-            this.panelIndexSet.Size = new System.Drawing.Size(661, 498);
-            this.panelIndexSet.TabIndex = 5;
-            this.panelIndexSet.Visible = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.btnDelIndex);
-            this.groupBox3.Controls.Add(this.btnEditIndex);
-            this.groupBox3.Controls.Add(this.btnAddIndex);
-            this.groupBox3.Controls.Add(this.btnIndexCancel);
-            this.groupBox3.Controls.Add(this.btnIndexConfirm);
-            this.groupBox3.Location = new System.Drawing.Point(13, 23);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(533, 112);
-            this.groupBox3.TabIndex = 9;
-            this.groupBox3.TabStop = false;
-            // 
-            // btnDelIndex
-            // 
-            this.btnDelIndex.ImageIndex = 5;
-            this.btnDelIndex.ImageList = this.imageListButtons;
-            this.btnDelIndex.Location = new System.Drawing.Point(215, 9);
-            this.btnDelIndex.Name = "btnDelIndex";
-            this.btnDelIndex.Size = new System.Drawing.Size(103, 99);
-            this.btnDelIndex.TabIndex = 3;
-            this.btnDelIndex.Text = "删除索引";
-            this.btnDelIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnDelIndex.UseVisualStyleBackColor = true;
-            this.btnDelIndex.Click += new System.EventHandler(this.btnDelIndex_Click);
-            // 
-            // btnEditIndex
-            // 
-            this.btnEditIndex.ImageIndex = 4;
-            this.btnEditIndex.ImageList = this.imageListButtons;
-            this.btnEditIndex.Location = new System.Drawing.Point(108, 9);
-            this.btnEditIndex.Name = "btnEditIndex";
-            this.btnEditIndex.Size = new System.Drawing.Size(103, 99);
-            this.btnEditIndex.TabIndex = 3;
-            this.btnEditIndex.Text = "修改索引";
-            this.btnEditIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnEditIndex.UseVisualStyleBackColor = true;
-            this.btnEditIndex.Click += new System.EventHandler(this.btnEditIndex_Click);
-            // 
-            // btnAddIndex
-            // 
-            this.btnAddIndex.ImageIndex = 3;
-            this.btnAddIndex.ImageList = this.imageListButtons;
-            this.btnAddIndex.Location = new System.Drawing.Point(1, 9);
-            this.btnAddIndex.Name = "btnAddIndex";
-            this.btnAddIndex.Size = new System.Drawing.Size(103, 99);
-            this.btnAddIndex.TabIndex = 3;
-            this.btnAddIndex.Text = "添加索引";
-            this.btnAddIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnAddIndex.UseVisualStyleBackColor = true;
-            this.btnAddIndex.Click += new System.EventHandler(this.btnAddIndex_Click);
-            // 
-            // btnIndexCancel
-            // 
-            this.btnIndexCancel.Enabled = false;
-            this.btnIndexCancel.ImageIndex = 7;
-            this.btnIndexCancel.ImageList = this.imageListButtons;
-            this.btnIndexCancel.Location = new System.Drawing.Point(429, 9);
-            this.btnIndexCancel.Name = "btnIndexCancel";
-            this.btnIndexCancel.Size = new System.Drawing.Size(103, 99);
-            this.btnIndexCancel.TabIndex = 3;
-            this.btnIndexCancel.Text = "取消操作";
-            this.btnIndexCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnIndexCancel.UseVisualStyleBackColor = true;
-            this.btnIndexCancel.Click += new System.EventHandler(this.btnIndexCancel_Click);
-            // 
-            // btnIndexConfirm
-            // 
-            this.btnIndexConfirm.Enabled = false;
-            this.btnIndexConfirm.ImageIndex = 6;
-            this.btnIndexConfirm.ImageList = this.imageListButtons;
-            this.btnIndexConfirm.Location = new System.Drawing.Point(324, 9);
-            this.btnIndexConfirm.Name = "btnIndexConfirm";
-            this.btnIndexConfirm.Size = new System.Drawing.Size(103, 99);
-            this.btnIndexConfirm.TabIndex = 3;
-            this.btnIndexConfirm.Text = "确定操作";
-            this.btnIndexConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnIndexConfirm.UseVisualStyleBackColor = true;
-            this.btnIndexConfirm.Click += new System.EventHandler(this.btnIndexConfirm_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.textBoxIndexCaption);
-            this.groupBox4.Controls.Add(this.label29);
-            this.groupBox4.Controls.Add(this.btnSetIndexPath);
-            this.groupBox4.Controls.Add(this.comboBoxSouceSel);
-            this.groupBox4.Controls.Add(this.comboBoxIndexType);
-            this.groupBox4.Controls.Add(this.textBoxIndexPath);
-            this.groupBox4.Controls.Add(this.textBoxIndexName);
-            this.groupBox4.Controls.Add(this.label13);
-            this.groupBox4.Controls.Add(this.label15);
-            this.groupBox4.Controls.Add(this.label16);
-            this.groupBox4.Controls.Add(this.label17);
-            this.groupBox4.Location = new System.Drawing.Point(13, 212);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(638, 228);
-            this.groupBox4.TabIndex = 8;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "数据源信息：";
-            // 
-            // textBoxIndexCaption
-            // 
-            this.textBoxIndexCaption.Location = new System.Drawing.Point(89, 66);
-            this.textBoxIndexCaption.Name = "textBoxIndexCaption";
-            this.textBoxIndexCaption.Size = new System.Drawing.Size(335, 21);
-            this.textBoxIndexCaption.TabIndex = 12;
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 70);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(65, 12);
-            this.label29.TabIndex = 11;
-            this.label29.Text = "索引说明：";
-            // 
-            // btnSetIndexPath
-            // 
-            this.btnSetIndexPath.Location = new System.Drawing.Point(582, 184);
-            this.btnSetIndexPath.Name = "btnSetIndexPath";
-            this.btnSetIndexPath.Size = new System.Drawing.Size(34, 23);
-            this.btnSetIndexPath.TabIndex = 10;
-            this.btnSetIndexPath.Text = "...";
-            this.btnSetIndexPath.UseVisualStyleBackColor = true;
-            this.btnSetIndexPath.Click += new System.EventHandler(this.btnSetIndexPath_Click);
-            // 
-            // comboBoxSouceSel
-            // 
-            this.comboBoxSouceSel.FormattingEnabled = true;
-            this.comboBoxSouceSel.Location = new System.Drawing.Point(89, 145);
-            this.comboBoxSouceSel.Name = "comboBoxSouceSel";
-            this.comboBoxSouceSel.Size = new System.Drawing.Size(335, 20);
-            this.comboBoxSouceSel.TabIndex = 9;
-            // 
-            // comboBoxIndexType
-            // 
-            this.comboBoxIndexType.FormattingEnabled = true;
-            this.comboBoxIndexType.Items.AddRange(new object[] {
-            "Increment",
-            "Ordinary"});
-            this.comboBoxIndexType.Location = new System.Drawing.Point(89, 106);
-            this.comboBoxIndexType.Name = "comboBoxIndexType";
-            this.comboBoxIndexType.Size = new System.Drawing.Size(335, 20);
-            this.comboBoxIndexType.TabIndex = 9;
-            // 
-            // textBoxIndexPath
-            // 
-            this.textBoxIndexPath.Location = new System.Drawing.Point(89, 184);
-            this.textBoxIndexPath.Name = "textBoxIndexPath";
-            this.textBoxIndexPath.Size = new System.Drawing.Size(487, 21);
-            this.textBoxIndexPath.TabIndex = 8;
-            // 
-            // textBoxIndexName
-            // 
-            this.textBoxIndexName.Location = new System.Drawing.Point(89, 26);
-            this.textBoxIndexName.Name = "textBoxIndexName";
-            this.textBoxIndexName.Size = new System.Drawing.Size(335, 21);
-            this.textBoxIndexName.TabIndex = 8;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 189);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(65, 12);
-            this.label13.TabIndex = 4;
-            this.label13.Text = "索引位置：";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.BackColor = System.Drawing.SystemColors.Control;
-            this.label15.Location = new System.Drawing.Point(6, 149);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(77, 12);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "索引数据源：";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(6, 110);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(65, 12);
-            this.label16.TabIndex = 1;
-            this.label16.Text = "索引类型：";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 30);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(65, 12);
-            this.label17.TabIndex = 0;
-            this.label17.Text = "索引名称：";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(93, 171);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(65, 12);
-            this.label18.TabIndex = 7;
-            this.label18.Text = "索引列表：";
-            // 
-            // comboBoxIndex
-            // 
-            this.comboBoxIndex.FormattingEnabled = true;
-            this.comboBoxIndex.Location = new System.Drawing.Point(164, 168);
-            this.comboBoxIndex.Name = "comboBoxIndex";
-            this.comboBoxIndex.Size = new System.Drawing.Size(257, 20);
-            this.comboBoxIndex.TabIndex = 6;
-            this.comboBoxIndex.SelectedIndexChanged += new System.EventHandler(this.comboBoxIndex_SelectedIndexChanged);
-            // 
             // panelIndexerSet
             // 
+            this.panelIndexerSet.Controls.Add(this.groupBox11);
             this.panelIndexerSet.Controls.Add(this.groupBox6);
             this.panelIndexerSet.Controls.Add(this.groupBox5);
             this.panelIndexerSet.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelIndexerSet.Location = new System.Drawing.Point(0, 0);
             this.panelIndexerSet.Name = "panelIndexerSet";
-            this.panelIndexerSet.Size = new System.Drawing.Size(661, 498);
+            this.panelIndexerSet.Size = new System.Drawing.Size(659, 576);
             this.panelIndexerSet.TabIndex = 3;
             this.panelIndexerSet.Visible = false;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.listBoxFileDirs);
+            this.groupBox11.Controls.Add(this.btnFileDirs);
+            this.groupBox11.Controls.Add(this.btnFilePath);
+            this.groupBox11.Controls.Add(this.textBoxFilePath);
+            this.groupBox11.Controls.Add(this.label32);
+            this.groupBox11.Controls.Add(this.label31);
+            this.groupBox11.Location = new System.Drawing.Point(14, 428);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(620, 122);
+            this.groupBox11.TabIndex = 11;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "文件索引设置";
+            // 
+            // listBoxFileDirs
+            // 
+            this.listBoxFileDirs.FormattingEnabled = true;
+            this.listBoxFileDirs.ItemHeight = 12;
+            this.listBoxFileDirs.Location = new System.Drawing.Point(106, 57);
+            this.listBoxFileDirs.Name = "listBoxFileDirs";
+            this.listBoxFileDirs.Size = new System.Drawing.Size(456, 52);
+            this.listBoxFileDirs.TabIndex = 11;
+            // 
+            // btnFileDirs
+            // 
+            this.btnFileDirs.Location = new System.Drawing.Point(563, 57);
+            this.btnFileDirs.Name = "btnFileDirs";
+            this.btnFileDirs.Size = new System.Drawing.Size(35, 23);
+            this.btnFileDirs.TabIndex = 10;
+            this.btnFileDirs.Text = "...";
+            this.btnFileDirs.UseVisualStyleBackColor = true;
+            this.btnFileDirs.Click += new System.EventHandler(this.btnFileDirs_Click);
+            // 
+            // btnFilePath
+            // 
+            this.btnFilePath.Location = new System.Drawing.Point(563, 25);
+            this.btnFilePath.Name = "btnFilePath";
+            this.btnFilePath.Size = new System.Drawing.Size(35, 23);
+            this.btnFilePath.TabIndex = 10;
+            this.btnFilePath.Text = "...";
+            this.btnFilePath.UseVisualStyleBackColor = true;
+            this.btnFilePath.Click += new System.EventHandler(this.btnFilePath_Click);
+            // 
+            // textBoxFilePath
+            // 
+            this.textBoxFilePath.Location = new System.Drawing.Point(106, 27);
+            this.textBoxFilePath.Name = "textBoxFilePath";
+            this.textBoxFilePath.Size = new System.Drawing.Size(456, 21);
+            this.textBoxFilePath.TabIndex = 9;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(31, 57);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(65, 12);
+            this.label32.TabIndex = 8;
+            this.label32.Text = "存储路径：";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(30, 31);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(65, 12);
+            this.label31.TabIndex = 8;
+            this.label31.Text = "存储路径：";
             // 
             // groupBox6
             // 
@@ -1319,7 +582,7 @@
             this.groupBox6.Controls.Add(this.btnIndexerStartService);
             this.groupBox6.Controls.Add(this.btnIndexerService);
             this.groupBox6.Controls.Add(this.btnIndexerConfirm);
-            this.groupBox6.Location = new System.Drawing.Point(13, 19);
+            this.groupBox6.Location = new System.Drawing.Point(13, 6);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(622, 102);
             this.groupBox6.TabIndex = 10;
@@ -1337,6 +600,23 @@
             this.btnEditIndexer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnEditIndexer.UseVisualStyleBackColor = true;
             this.btnEditIndexer.Click += new System.EventHandler(this.btnEditIndexer_Click);
+            // 
+            // imageListButtons
+            // 
+            this.imageListButtons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListButtons.ImageStream")));
+            this.imageListButtons.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListButtons.Images.SetKeyName(0, "testdblink.jpg");
+            this.imageListButtons.Images.SetKeyName(1, "testquery.jpg");
+            this.imageListButtons.Images.SetKeyName(2, "testsourcefields.jpg");
+            this.imageListButtons.Images.SetKeyName(3, "newsource.jpg");
+            this.imageListButtons.Images.SetKeyName(4, "editsource.jpg");
+            this.imageListButtons.Images.SetKeyName(5, "sourcedelete.jpg");
+            this.imageListButtons.Images.SetKeyName(6, "sourceconfirm.jpg");
+            this.imageListButtons.Images.SetKeyName(7, "sourcecancel.jpg");
+            this.imageListButtons.Images.SetKeyName(8, "indexcreate.jpg");
+            this.imageListButtons.Images.SetKeyName(9, "indexservice.jpg");
+            this.imageListButtons.Images.SetKeyName(10, "startservice.png");
+            this.imageListButtons.Images.SetKeyName(11, "stopservice.png");
             // 
             // btnReCreateIncrIndex
             // 
@@ -1436,7 +716,7 @@
             this.groupBox5.Controls.Add(this.label12);
             this.groupBox5.Controls.Add(this.label11);
             this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Location = new System.Drawing.Point(15, 143);
+            this.groupBox5.Location = new System.Drawing.Point(14, 120);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(620, 297);
             this.groupBox5.TabIndex = 0;
@@ -1603,7 +883,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(68, 263);
+            this.label22.Location = new System.Drawing.Point(30, 263);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(89, 12);
             this.label22.TabIndex = 1;
@@ -1612,7 +892,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(68, 224);
+            this.label21.Location = new System.Drawing.Point(30, 224);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(113, 12);
             this.label21.TabIndex = 1;
@@ -1621,7 +901,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(68, 185);
+            this.label20.Location = new System.Drawing.Point(30, 185);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(113, 12);
             this.label20.TabIndex = 1;
@@ -1630,7 +910,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(68, 146);
+            this.label19.Location = new System.Drawing.Point(30, 146);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(113, 12);
             this.label19.TabIndex = 1;
@@ -1648,7 +928,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(68, 107);
+            this.label14.Location = new System.Drawing.Point(30, 107);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(113, 12);
             this.label14.TabIndex = 1;
@@ -1675,7 +955,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(68, 68);
+            this.label11.Location = new System.Drawing.Point(30, 68);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(101, 12);
             this.label11.TabIndex = 1;
@@ -1684,7 +964,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(68, 29);
+            this.label10.Location = new System.Drawing.Point(30, 29);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(101, 12);
             this.label10.TabIndex = 0;
@@ -1697,7 +977,7 @@
             this.panelSearchd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelSearchd.Location = new System.Drawing.Point(0, 0);
             this.panelSearchd.Name = "panelSearchd";
-            this.panelSearchd.Size = new System.Drawing.Size(661, 498);
+            this.panelSearchd.Size = new System.Drawing.Size(659, 576);
             this.panelSearchd.TabIndex = 2;
             this.panelSearchd.Visible = false;
             // 
@@ -1798,7 +1078,7 @@
             this.groupBox8.Controls.Add(this.label30);
             this.groupBox8.Controls.Add(this.label33);
             this.groupBox8.Controls.Add(this.label34);
-            this.groupBox8.Location = new System.Drawing.Point(27, 151);
+            this.groupBox8.Location = new System.Drawing.Point(29, 192);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(519, 297);
             this.groupBox8.TabIndex = 11;
@@ -2013,6 +1293,804 @@
             this.label34.TabIndex = 0;
             this.label34.Text = "IP地址：";
             // 
+            // panelSource
+            // 
+            this.panelSource.Controls.Add(this.groupBox2);
+            this.panelSource.Controls.Add(this.groupBox1);
+            this.panelSource.Controls.Add(this.label1);
+            this.panelSource.Controls.Add(this.comboBoxSource);
+            this.panelSource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelSource.Location = new System.Drawing.Point(0, 0);
+            this.panelSource.Name = "panelSource";
+            this.panelSource.Size = new System.Drawing.Size(659, 576);
+            this.panelSource.TabIndex = 0;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnSourceCancel);
+            this.groupBox2.Controls.Add(this.btnSourceConfim);
+            this.groupBox2.Controls.Add(this.btnDelSource);
+            this.groupBox2.Controls.Add(this.btnEditSource);
+            this.groupBox2.Controls.Add(this.btnAddSource);
+            this.groupBox2.Controls.Add(this.btnTestFields);
+            this.groupBox2.Controls.Add(this.btnTestQuery);
+            this.groupBox2.Controls.Add(this.btnTestDBLink);
+            this.groupBox2.Location = new System.Drawing.Point(469, 34);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(178, 482);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            // 
+            // btnSourceCancel
+            // 
+            this.btnSourceCancel.Enabled = false;
+            this.btnSourceCancel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSourceCancel.ImageIndex = 7;
+            this.btnSourceCancel.ImageList = this.imageListButtons;
+            this.btnSourceCancel.Location = new System.Drawing.Point(0, 422);
+            this.btnSourceCancel.Name = "btnSourceCancel";
+            this.btnSourceCancel.Size = new System.Drawing.Size(178, 59);
+            this.btnSourceCancel.TabIndex = 3;
+            this.btnSourceCancel.Text = "取消操作";
+            this.btnSourceCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSourceCancel.UseVisualStyleBackColor = true;
+            this.btnSourceCancel.Click += new System.EventHandler(this.btnSourceCancel_Click);
+            // 
+            // btnSourceConfim
+            // 
+            this.btnSourceConfim.Enabled = false;
+            this.btnSourceConfim.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSourceConfim.ImageIndex = 6;
+            this.btnSourceConfim.ImageList = this.imageListButtons;
+            this.btnSourceConfim.Location = new System.Drawing.Point(0, 363);
+            this.btnSourceConfim.Name = "btnSourceConfim";
+            this.btnSourceConfim.Size = new System.Drawing.Size(178, 59);
+            this.btnSourceConfim.TabIndex = 3;
+            this.btnSourceConfim.Text = "确定操作";
+            this.btnSourceConfim.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSourceConfim.UseVisualStyleBackColor = true;
+            this.btnSourceConfim.Click += new System.EventHandler(this.btnSourceConfim_Click);
+            // 
+            // btnDelSource
+            // 
+            this.btnDelSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDelSource.ImageIndex = 5;
+            this.btnDelSource.ImageList = this.imageListButtons;
+            this.btnDelSource.Location = new System.Drawing.Point(0, 304);
+            this.btnDelSource.Name = "btnDelSource";
+            this.btnDelSource.Size = new System.Drawing.Size(178, 59);
+            this.btnDelSource.TabIndex = 3;
+            this.btnDelSource.Text = "删除数据源";
+            this.btnDelSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelSource.UseVisualStyleBackColor = true;
+            this.btnDelSource.Click += new System.EventHandler(this.btnDelSource_Click);
+            // 
+            // btnEditSource
+            // 
+            this.btnEditSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEditSource.ImageIndex = 4;
+            this.btnEditSource.ImageList = this.imageListButtons;
+            this.btnEditSource.Location = new System.Drawing.Point(0, 245);
+            this.btnEditSource.Name = "btnEditSource";
+            this.btnEditSource.Size = new System.Drawing.Size(178, 59);
+            this.btnEditSource.TabIndex = 3;
+            this.btnEditSource.Text = "修改数据源";
+            this.btnEditSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEditSource.UseVisualStyleBackColor = true;
+            this.btnEditSource.Click += new System.EventHandler(this.btnEditSource_Click);
+            // 
+            // btnAddSource
+            // 
+            this.btnAddSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddSource.ImageIndex = 3;
+            this.btnAddSource.ImageList = this.imageListButtons;
+            this.btnAddSource.Location = new System.Drawing.Point(0, 186);
+            this.btnAddSource.Name = "btnAddSource";
+            this.btnAddSource.Size = new System.Drawing.Size(178, 59);
+            this.btnAddSource.TabIndex = 3;
+            this.btnAddSource.Text = "添加数据源";
+            this.btnAddSource.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddSource.UseVisualStyleBackColor = true;
+            this.btnAddSource.Click += new System.EventHandler(this.btnAddSource_Click);
+            // 
+            // btnTestFields
+            // 
+            this.btnTestFields.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTestFields.ImageIndex = 2;
+            this.btnTestFields.ImageList = this.imageListButtons;
+            this.btnTestFields.Location = new System.Drawing.Point(0, 127);
+            this.btnTestFields.Name = "btnTestFields";
+            this.btnTestFields.Size = new System.Drawing.Size(178, 59);
+            this.btnTestFields.TabIndex = 3;
+            this.btnTestFields.Text = "测试查询字段";
+            this.btnTestFields.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTestFields.UseVisualStyleBackColor = true;
+            this.btnTestFields.Click += new System.EventHandler(this.btnTestFields_Click);
+            // 
+            // btnTestQuery
+            // 
+            this.btnTestQuery.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTestQuery.ImageIndex = 1;
+            this.btnTestQuery.ImageList = this.imageListButtons;
+            this.btnTestQuery.Location = new System.Drawing.Point(0, 68);
+            this.btnTestQuery.Name = "btnTestQuery";
+            this.btnTestQuery.Size = new System.Drawing.Size(178, 59);
+            this.btnTestQuery.TabIndex = 3;
+            this.btnTestQuery.Text = "测试查询语句";
+            this.btnTestQuery.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTestQuery.UseVisualStyleBackColor = true;
+            this.btnTestQuery.Click += new System.EventHandler(this.btnTestQuery_Click);
+            // 
+            // btnTestDBLink
+            // 
+            this.btnTestDBLink.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTestDBLink.ImageIndex = 0;
+            this.btnTestDBLink.ImageList = this.imageListButtons;
+            this.btnTestDBLink.Location = new System.Drawing.Point(0, 9);
+            this.btnTestDBLink.Name = "btnTestDBLink";
+            this.btnTestDBLink.Size = new System.Drawing.Size(178, 59);
+            this.btnTestDBLink.TabIndex = 2;
+            this.btnTestDBLink.Text = "测试数据库连接";
+            this.btnTestDBLink.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnTestDBLink.UseVisualStyleBackColor = true;
+            this.btnTestDBLink.Click += new System.EventHandler(this.btnTestDBLink_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBoxQuery);
+            this.groupBox1.Controls.Add(this.comboBoxSourceType);
+            this.groupBox1.Controls.Add(this.textBoxPassword);
+            this.groupBox1.Controls.Add(this.textBoxUserName);
+            this.groupBox1.Controls.Add(this.textBoxDataBase);
+            this.groupBox1.Controls.Add(this.textBoxFields);
+            this.groupBox1.Controls.Add(this.textBoxHostName);
+            this.groupBox1.Controls.Add(this.textBoxSourceName);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Location = new System.Drawing.Point(21, 107);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(437, 437);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "数据源信息：";
+            // 
+            // textBoxQuery
+            // 
+            this.textBoxQuery.Location = new System.Drawing.Point(89, 189);
+            this.textBoxQuery.Multiline = true;
+            this.textBoxQuery.Name = "textBoxQuery";
+            this.textBoxQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.textBoxQuery.Size = new System.Drawing.Size(342, 211);
+            this.textBoxQuery.TabIndex = 11;
+            // 
+            // comboBoxSourceType
+            // 
+            this.comboBoxSourceType.FormattingEnabled = true;
+            this.comboBoxSourceType.Items.AddRange(new object[] {
+            "SqlServer",
+            "Oracle",
+            "OleDB",
+            "ODBC"});
+            this.comboBoxSourceType.Location = new System.Drawing.Point(89, 54);
+            this.comboBoxSourceType.Name = "comboBoxSourceType";
+            this.comboBoxSourceType.Size = new System.Drawing.Size(257, 20);
+            this.comboBoxSourceType.TabIndex = 9;
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword.Location = new System.Drawing.Point(89, 161);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.PasswordChar = '*';
+            this.textBoxPassword.Size = new System.Drawing.Size(257, 21);
+            this.textBoxPassword.TabIndex = 8;
+            // 
+            // textBoxUserName
+            // 
+            this.textBoxUserName.Location = new System.Drawing.Point(89, 134);
+            this.textBoxUserName.Name = "textBoxUserName";
+            this.textBoxUserName.Size = new System.Drawing.Size(257, 21);
+            this.textBoxUserName.TabIndex = 8;
+            // 
+            // textBoxDataBase
+            // 
+            this.textBoxDataBase.Location = new System.Drawing.Point(89, 107);
+            this.textBoxDataBase.Name = "textBoxDataBase";
+            this.textBoxDataBase.Size = new System.Drawing.Size(257, 21);
+            this.textBoxDataBase.TabIndex = 8;
+            // 
+            // textBoxFields
+            // 
+            this.textBoxFields.Location = new System.Drawing.Point(89, 406);
+            this.textBoxFields.Name = "textBoxFields";
+            this.textBoxFields.Size = new System.Drawing.Size(342, 21);
+            this.textBoxFields.TabIndex = 8;
+            this.textBoxFields.Click += new System.EventHandler(this.textBoxFields_Click);
+            // 
+            // textBoxHostName
+            // 
+            this.textBoxHostName.Location = new System.Drawing.Point(89, 80);
+            this.textBoxHostName.Name = "textBoxHostName";
+            this.textBoxHostName.Size = new System.Drawing.Size(257, 21);
+            this.textBoxHostName.TabIndex = 8;
+            // 
+            // textBoxSourceName
+            // 
+            this.textBoxSourceName.Location = new System.Drawing.Point(89, 26);
+            this.textBoxSourceName.Name = "textBoxSourceName";
+            this.textBoxSourceName.Size = new System.Drawing.Size(257, 21);
+            this.textBoxSourceName.TabIndex = 8;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 409);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(65, 12);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "搜索字段：";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 192);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 12);
+            this.label8.TabIndex = 6;
+            this.label8.Tag = " ";
+            this.label8.Text = "查  询：";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 167);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 12);
+            this.label7.TabIndex = 5;
+            this.label7.Text = "密  码：";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 138);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(71, 12);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "用 户 名 ：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 111);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 12);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "数据库名称：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.SystemColors.Control;
+            this.label4.Location = new System.Drawing.Point(6, 87);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(65, 12);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "主机名称：";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 58);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "数据库类型：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 30);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(77, 12);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "数据源名称：";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(43, 44);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "数据源：";
+            // 
+            // comboBoxSource
+            // 
+            this.comboBoxSource.FormattingEnabled = true;
+            this.comboBoxSource.Location = new System.Drawing.Point(108, 41);
+            this.comboBoxSource.Name = "comboBoxSource";
+            this.comboBoxSource.Size = new System.Drawing.Size(257, 20);
+            this.comboBoxSource.TabIndex = 2;
+            this.comboBoxSource.SelectedIndexChanged += new System.EventHandler(this.comboBoxSouce_SelectedIndexChanged);
+            // 
+            // panelDictionary
+            // 
+            this.panelDictionary.Controls.Add(this.groupBox9);
+            this.panelDictionary.Controls.Add(this.groupBox10);
+            this.panelDictionary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelDictionary.Location = new System.Drawing.Point(0, 0);
+            this.panelDictionary.Name = "panelDictionary";
+            this.panelDictionary.Size = new System.Drawing.Size(659, 576);
+            this.panelDictionary.TabIndex = 11;
+            this.panelDictionary.Visible = false;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.btnChangeDictSet);
+            this.groupBox9.Controls.Add(this.btnDictStopService);
+            this.groupBox9.Controls.Add(this.btnDictStartService);
+            this.groupBox9.Controls.Add(this.btnDictService);
+            this.groupBox9.Controls.Add(this.btnDictConfirm);
+            this.groupBox9.Location = new System.Drawing.Point(19, 16);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(448, 102);
+            this.groupBox9.TabIndex = 12;
+            this.groupBox9.TabStop = false;
+            // 
+            // btnChangeDictSet
+            // 
+            this.btnChangeDictSet.ImageIndex = 4;
+            this.btnChangeDictSet.ImageList = this.imageListButtons;
+            this.btnChangeDictSet.Location = new System.Drawing.Point(2, 9);
+            this.btnChangeDictSet.Name = "btnChangeDictSet";
+            this.btnChangeDictSet.Size = new System.Drawing.Size(89, 90);
+            this.btnChangeDictSet.TabIndex = 3;
+            this.btnChangeDictSet.Text = "修改设置";
+            this.btnChangeDictSet.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnChangeDictSet.UseVisualStyleBackColor = true;
+            this.btnChangeDictSet.Click += new System.EventHandler(this.btnChangeDictSet_Click);
+            // 
+            // btnDictStopService
+            // 
+            this.btnDictStopService.ImageIndex = 11;
+            this.btnDictStopService.ImageList = this.imageListButtons;
+            this.btnDictStopService.Location = new System.Drawing.Point(358, 9);
+            this.btnDictStopService.Name = "btnDictStopService";
+            this.btnDictStopService.Size = new System.Drawing.Size(89, 90);
+            this.btnDictStopService.TabIndex = 3;
+            this.btnDictStopService.Text = "停止服务";
+            this.btnDictStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictStopService.UseVisualStyleBackColor = true;
+            this.btnDictStopService.Click += new System.EventHandler(this.btnDictStopService_Click);
+            // 
+            // btnDictStartService
+            // 
+            this.btnDictStartService.ImageIndex = 10;
+            this.btnDictStartService.ImageList = this.imageListButtons;
+            this.btnDictStartService.Location = new System.Drawing.Point(269, 9);
+            this.btnDictStartService.Name = "btnDictStartService";
+            this.btnDictStartService.Size = new System.Drawing.Size(89, 90);
+            this.btnDictStartService.TabIndex = 3;
+            this.btnDictStartService.Text = "开始服务";
+            this.btnDictStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictStartService.UseVisualStyleBackColor = true;
+            this.btnDictStartService.Click += new System.EventHandler(this.btnDictStartService_Click);
+            // 
+            // btnDictService
+            // 
+            this.btnDictService.ImageIndex = 9;
+            this.btnDictService.ImageList = this.imageListButtons;
+            this.btnDictService.Location = new System.Drawing.Point(180, 9);
+            this.btnDictService.Name = "btnDictService";
+            this.btnDictService.Size = new System.Drawing.Size(89, 90);
+            this.btnDictService.TabIndex = 3;
+            this.btnDictService.Text = "设置系统服务";
+            this.btnDictService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictService.UseVisualStyleBackColor = true;
+            this.btnDictService.Click += new System.EventHandler(this.btnDictService_Click);
+            // 
+            // btnDictConfirm
+            // 
+            this.btnDictConfirm.Enabled = false;
+            this.btnDictConfirm.ImageIndex = 6;
+            this.btnDictConfirm.ImageList = this.imageListButtons;
+            this.btnDictConfirm.Location = new System.Drawing.Point(91, 9);
+            this.btnDictConfirm.Name = "btnDictConfirm";
+            this.btnDictConfirm.Size = new System.Drawing.Size(89, 90);
+            this.btnDictConfirm.TabIndex = 3;
+            this.btnDictConfirm.Text = "确定操作";
+            this.btnDictConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDictConfirm.UseVisualStyleBackColor = true;
+            this.btnDictConfirm.Click += new System.EventHandler(this.btnDictConfirm_Click);
+            // 
+            // groupBox10
+            // 
+            this.groupBox10.Controls.Add(this.btnSetCustomPaths);
+            this.groupBox10.Controls.Add(this.btnSetFilterPath);
+            this.groupBox10.Controls.Add(this.btnSetNumberPath);
+            this.groupBox10.Controls.Add(this.btnSetNamePath);
+            this.groupBox10.Controls.Add(this.btnSetBasePath);
+            this.groupBox10.Controls.Add(this.textBoxFilterPath);
+            this.groupBox10.Controls.Add(this.textBoxNumberPath);
+            this.groupBox10.Controls.Add(this.textBoxNamePath);
+            this.groupBox10.Controls.Add(this.textBoxBasePath);
+            this.groupBox10.Controls.Add(this.listBoxCustomPaths);
+            this.groupBox10.Controls.Add(this.label37);
+            this.groupBox10.Controls.Add(this.label38);
+            this.groupBox10.Controls.Add(this.label40);
+            this.groupBox10.Controls.Add(this.label43);
+            this.groupBox10.Controls.Add(this.label44);
+            this.groupBox10.Location = new System.Drawing.Point(21, 140);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(620, 404);
+            this.groupBox10.TabIndex = 11;
+            this.groupBox10.TabStop = false;
+            this.groupBox10.Text = "词库设置：";
+            // 
+            // btnSetCustomPaths
+            // 
+            this.btnSetCustomPaths.Location = new System.Drawing.Point(558, 111);
+            this.btnSetCustomPaths.Name = "btnSetCustomPaths";
+            this.btnSetCustomPaths.Size = new System.Drawing.Size(33, 23);
+            this.btnSetCustomPaths.TabIndex = 4;
+            this.btnSetCustomPaths.Text = "...";
+            this.btnSetCustomPaths.UseVisualStyleBackColor = true;
+            this.btnSetCustomPaths.Click += new System.EventHandler(this.btnSetCustomPaths_Click);
+            // 
+            // btnSetFilterPath
+            // 
+            this.btnSetFilterPath.Location = new System.Drawing.Point(558, 365);
+            this.btnSetFilterPath.Name = "btnSetFilterPath";
+            this.btnSetFilterPath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetFilterPath.TabIndex = 4;
+            this.btnSetFilterPath.Text = "...";
+            this.btnSetFilterPath.UseVisualStyleBackColor = true;
+            this.btnSetFilterPath.Click += new System.EventHandler(this.btnSetFilterPath_Click);
+            // 
+            // btnSetNumberPath
+            // 
+            this.btnSetNumberPath.Location = new System.Drawing.Point(558, 80);
+            this.btnSetNumberPath.Name = "btnSetNumberPath";
+            this.btnSetNumberPath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetNumberPath.TabIndex = 4;
+            this.btnSetNumberPath.Text = "...";
+            this.btnSetNumberPath.UseVisualStyleBackColor = true;
+            this.btnSetNumberPath.Click += new System.EventHandler(this.btnSetNumberPath_Click);
+            // 
+            // btnSetNamePath
+            // 
+            this.btnSetNamePath.Location = new System.Drawing.Point(558, 52);
+            this.btnSetNamePath.Name = "btnSetNamePath";
+            this.btnSetNamePath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetNamePath.TabIndex = 4;
+            this.btnSetNamePath.Text = "...";
+            this.btnSetNamePath.UseVisualStyleBackColor = true;
+            this.btnSetNamePath.Click += new System.EventHandler(this.btnSetNamePath_Click);
+            // 
+            // btnSetBasePath
+            // 
+            this.btnSetBasePath.Location = new System.Drawing.Point(558, 24);
+            this.btnSetBasePath.Name = "btnSetBasePath";
+            this.btnSetBasePath.Size = new System.Drawing.Size(33, 23);
+            this.btnSetBasePath.TabIndex = 4;
+            this.btnSetBasePath.Text = "...";
+            this.btnSetBasePath.UseVisualStyleBackColor = true;
+            this.btnSetBasePath.Click += new System.EventHandler(this.btnSetBasePath_Click);
+            // 
+            // textBoxFilterPath
+            // 
+            this.textBoxFilterPath.Location = new System.Drawing.Point(143, 366);
+            this.textBoxFilterPath.Name = "textBoxFilterPath";
+            this.textBoxFilterPath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxFilterPath.TabIndex = 3;
+            // 
+            // textBoxNumberPath
+            // 
+            this.textBoxNumberPath.Location = new System.Drawing.Point(143, 81);
+            this.textBoxNumberPath.Name = "textBoxNumberPath";
+            this.textBoxNumberPath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxNumberPath.TabIndex = 3;
+            // 
+            // textBoxNamePath
+            // 
+            this.textBoxNamePath.Location = new System.Drawing.Point(143, 53);
+            this.textBoxNamePath.Name = "textBoxNamePath";
+            this.textBoxNamePath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxNamePath.TabIndex = 3;
+            // 
+            // textBoxBasePath
+            // 
+            this.textBoxBasePath.Location = new System.Drawing.Point(143, 25);
+            this.textBoxBasePath.Name = "textBoxBasePath";
+            this.textBoxBasePath.Size = new System.Drawing.Size(414, 21);
+            this.textBoxBasePath.TabIndex = 3;
+            // 
+            // listBoxCustomPaths
+            // 
+            this.listBoxCustomPaths.FormattingEnabled = true;
+            this.listBoxCustomPaths.ItemHeight = 12;
+            this.listBoxCustomPaths.Location = new System.Drawing.Point(143, 113);
+            this.listBoxCustomPaths.Name = "listBoxCustomPaths";
+            this.listBoxCustomPaths.Size = new System.Drawing.Size(414, 244);
+            this.listBoxCustomPaths.TabIndex = 2;
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(24, 370);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(89, 12);
+            this.label37.TabIndex = 1;
+            this.label37.Text = "过滤词库路径：";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(22, 113);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(101, 12);
+            this.label38.TabIndex = 1;
+            this.label38.Text = "自定义词库路径：";
+            // 
+            // label40
+            // 
+            this.label40.AutoSize = true;
+            this.label40.Location = new System.Drawing.Point(24, 85);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(89, 12);
+            this.label40.TabIndex = 1;
+            this.label40.Text = "数值词库路径：";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(22, 57);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(89, 12);
+            this.label43.TabIndex = 1;
+            this.label43.Text = "姓氏词库路径：";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(24, 29);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(77, 12);
+            this.label44.TabIndex = 0;
+            this.label44.Text = "主词库路径：";
+            // 
+            // panelIndexSet
+            // 
+            this.panelIndexSet.Controls.Add(this.groupBox3);
+            this.panelIndexSet.Controls.Add(this.groupBox4);
+            this.panelIndexSet.Controls.Add(this.label18);
+            this.panelIndexSet.Controls.Add(this.comboBoxIndex);
+            this.panelIndexSet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelIndexSet.Location = new System.Drawing.Point(0, 0);
+            this.panelIndexSet.Name = "panelIndexSet";
+            this.panelIndexSet.Size = new System.Drawing.Size(659, 576);
+            this.panelIndexSet.TabIndex = 5;
+            this.panelIndexSet.Visible = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnDelIndex);
+            this.groupBox3.Controls.Add(this.btnEditIndex);
+            this.groupBox3.Controls.Add(this.btnAddIndex);
+            this.groupBox3.Controls.Add(this.btnIndexCancel);
+            this.groupBox3.Controls.Add(this.btnIndexConfirm);
+            this.groupBox3.Location = new System.Drawing.Point(13, 23);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(533, 112);
+            this.groupBox3.TabIndex = 9;
+            this.groupBox3.TabStop = false;
+            // 
+            // btnDelIndex
+            // 
+            this.btnDelIndex.ImageIndex = 5;
+            this.btnDelIndex.ImageList = this.imageListButtons;
+            this.btnDelIndex.Location = new System.Drawing.Point(215, 9);
+            this.btnDelIndex.Name = "btnDelIndex";
+            this.btnDelIndex.Size = new System.Drawing.Size(103, 99);
+            this.btnDelIndex.TabIndex = 3;
+            this.btnDelIndex.Text = "删除索引";
+            this.btnDelIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnDelIndex.UseVisualStyleBackColor = true;
+            this.btnDelIndex.Click += new System.EventHandler(this.btnDelIndex_Click);
+            // 
+            // btnEditIndex
+            // 
+            this.btnEditIndex.ImageIndex = 4;
+            this.btnEditIndex.ImageList = this.imageListButtons;
+            this.btnEditIndex.Location = new System.Drawing.Point(108, 9);
+            this.btnEditIndex.Name = "btnEditIndex";
+            this.btnEditIndex.Size = new System.Drawing.Size(103, 99);
+            this.btnEditIndex.TabIndex = 3;
+            this.btnEditIndex.Text = "修改索引";
+            this.btnEditIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEditIndex.UseVisualStyleBackColor = true;
+            this.btnEditIndex.Click += new System.EventHandler(this.btnEditIndex_Click);
+            // 
+            // btnAddIndex
+            // 
+            this.btnAddIndex.ImageIndex = 3;
+            this.btnAddIndex.ImageList = this.imageListButtons;
+            this.btnAddIndex.Location = new System.Drawing.Point(1, 9);
+            this.btnAddIndex.Name = "btnAddIndex";
+            this.btnAddIndex.Size = new System.Drawing.Size(103, 99);
+            this.btnAddIndex.TabIndex = 3;
+            this.btnAddIndex.Text = "添加索引";
+            this.btnAddIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnAddIndex.UseVisualStyleBackColor = true;
+            this.btnAddIndex.Click += new System.EventHandler(this.btnAddIndex_Click);
+            // 
+            // btnIndexCancel
+            // 
+            this.btnIndexCancel.Enabled = false;
+            this.btnIndexCancel.ImageIndex = 7;
+            this.btnIndexCancel.ImageList = this.imageListButtons;
+            this.btnIndexCancel.Location = new System.Drawing.Point(429, 9);
+            this.btnIndexCancel.Name = "btnIndexCancel";
+            this.btnIndexCancel.Size = new System.Drawing.Size(103, 99);
+            this.btnIndexCancel.TabIndex = 3;
+            this.btnIndexCancel.Text = "取消操作";
+            this.btnIndexCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnIndexCancel.UseVisualStyleBackColor = true;
+            this.btnIndexCancel.Click += new System.EventHandler(this.btnIndexCancel_Click);
+            // 
+            // btnIndexConfirm
+            // 
+            this.btnIndexConfirm.Enabled = false;
+            this.btnIndexConfirm.ImageIndex = 6;
+            this.btnIndexConfirm.ImageList = this.imageListButtons;
+            this.btnIndexConfirm.Location = new System.Drawing.Point(324, 9);
+            this.btnIndexConfirm.Name = "btnIndexConfirm";
+            this.btnIndexConfirm.Size = new System.Drawing.Size(103, 99);
+            this.btnIndexConfirm.TabIndex = 3;
+            this.btnIndexConfirm.Text = "确定操作";
+            this.btnIndexConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnIndexConfirm.UseVisualStyleBackColor = true;
+            this.btnIndexConfirm.Click += new System.EventHandler(this.btnIndexConfirm_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.textBoxIndexCaption);
+            this.groupBox4.Controls.Add(this.label29);
+            this.groupBox4.Controls.Add(this.btnSetIndexPath);
+            this.groupBox4.Controls.Add(this.comboBoxSouceSel);
+            this.groupBox4.Controls.Add(this.comboBoxIndexType);
+            this.groupBox4.Controls.Add(this.textBoxIndexPath);
+            this.groupBox4.Controls.Add(this.textBoxIndexName);
+            this.groupBox4.Controls.Add(this.label13);
+            this.groupBox4.Controls.Add(this.label15);
+            this.groupBox4.Controls.Add(this.label16);
+            this.groupBox4.Controls.Add(this.label17);
+            this.groupBox4.Location = new System.Drawing.Point(13, 212);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(638, 285);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "数据源信息：";
+            // 
+            // textBoxIndexCaption
+            // 
+            this.textBoxIndexCaption.Location = new System.Drawing.Point(89, 80);
+            this.textBoxIndexCaption.Name = "textBoxIndexCaption";
+            this.textBoxIndexCaption.Size = new System.Drawing.Size(335, 21);
+            this.textBoxIndexCaption.TabIndex = 12;
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(6, 84);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(65, 12);
+            this.label29.TabIndex = 11;
+            this.label29.Text = "索引说明：";
+            // 
+            // btnSetIndexPath
+            // 
+            this.btnSetIndexPath.Location = new System.Drawing.Point(582, 239);
+            this.btnSetIndexPath.Name = "btnSetIndexPath";
+            this.btnSetIndexPath.Size = new System.Drawing.Size(34, 23);
+            this.btnSetIndexPath.TabIndex = 10;
+            this.btnSetIndexPath.Text = "...";
+            this.btnSetIndexPath.UseVisualStyleBackColor = true;
+            this.btnSetIndexPath.Click += new System.EventHandler(this.btnSetIndexPath_Click);
+            // 
+            // comboBoxSouceSel
+            // 
+            this.comboBoxSouceSel.FormattingEnabled = true;
+            this.comboBoxSouceSel.Location = new System.Drawing.Point(89, 187);
+            this.comboBoxSouceSel.Name = "comboBoxSouceSel";
+            this.comboBoxSouceSel.Size = new System.Drawing.Size(335, 20);
+            this.comboBoxSouceSel.TabIndex = 9;
+            // 
+            // comboBoxIndexType
+            // 
+            this.comboBoxIndexType.FormattingEnabled = true;
+            this.comboBoxIndexType.Items.AddRange(new object[] {
+            "Increment",
+            "Ordinary"});
+            this.comboBoxIndexType.Location = new System.Drawing.Point(89, 134);
+            this.comboBoxIndexType.Name = "comboBoxIndexType";
+            this.comboBoxIndexType.Size = new System.Drawing.Size(335, 20);
+            this.comboBoxIndexType.TabIndex = 9;
+            // 
+            // textBoxIndexPath
+            // 
+            this.textBoxIndexPath.Location = new System.Drawing.Point(89, 240);
+            this.textBoxIndexPath.Name = "textBoxIndexPath";
+            this.textBoxIndexPath.Size = new System.Drawing.Size(487, 21);
+            this.textBoxIndexPath.TabIndex = 8;
+            // 
+            // textBoxIndexName
+            // 
+            this.textBoxIndexName.Location = new System.Drawing.Point(89, 26);
+            this.textBoxIndexName.Name = "textBoxIndexName";
+            this.textBoxIndexName.Size = new System.Drawing.Size(335, 21);
+            this.textBoxIndexName.TabIndex = 8;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 244);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(65, 12);
+            this.label13.TabIndex = 4;
+            this.label13.Text = "索引位置：";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.BackColor = System.Drawing.SystemColors.Control;
+            this.label15.Location = new System.Drawing.Point(6, 191);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(77, 12);
+            this.label15.TabIndex = 2;
+            this.label15.Text = "索引数据源：";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 138);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(65, 12);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "索引类型：";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 30);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(65, 12);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "索引名称：";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(93, 171);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(65, 12);
+            this.label18.TabIndex = 7;
+            this.label18.Text = "索引列表：";
+            // 
+            // comboBoxIndex
+            // 
+            this.comboBoxIndex.FormattingEnabled = true;
+            this.comboBoxIndex.Location = new System.Drawing.Point(164, 168);
+            this.comboBoxIndex.Name = "comboBoxIndex";
+            this.comboBoxIndex.Size = new System.Drawing.Size(257, 20);
+            this.comboBoxIndex.TabIndex = 6;
+            this.comboBoxIndex.SelectedIndexChanged += new System.EventHandler(this.comboBoxIndex_SelectedIndexChanged);
+            // 
             // timer
             // 
             this.timer.Enabled = true;
@@ -2023,7 +2101,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(832, 569);
+            this.ClientSize = new System.Drawing.Size(830, 647);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.toolStrip);
@@ -2043,21 +2121,9 @@
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             this.splitContainer.ResumeLayout(false);
-            this.panelSource.ResumeLayout(false);
-            this.panelSource.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.panelDictionary.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            this.panelIndexSet.ResumeLayout(false);
-            this.panelIndexSet.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.panelIndexerSet.ResumeLayout(false);
+            this.groupBox11.ResumeLayout(false);
+            this.groupBox11.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -2075,6 +2141,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxMatches)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeOut)).EndInit();
+            this.panelSource.ResumeLayout(false);
+            this.panelSource.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.panelDictionary.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            this.panelIndexSet.ResumeLayout(false);
+            this.panelIndexSet.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2264,5 +2344,12 @@
         #endregion
         private System.Windows.Forms.TextBox textBoxIndexCaption;
         private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.GroupBox groupBox11;
+        private System.Windows.Forms.Button btnFilePath;
+        private System.Windows.Forms.TextBox textBoxFilePath;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.ListBox listBoxFileDirs;
+        private System.Windows.Forms.Button btnFileDirs;
+        private System.Windows.Forms.Label label32;
     }
 }

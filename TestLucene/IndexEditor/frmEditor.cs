@@ -1389,6 +1389,16 @@ namespace IndexEditor
             }
             this.Cursor = Cursors.Default;
         }
+        private void btnFilePath_Click(object sender, EventArgs e)
+        {
+            string path = GetFolderPath();
+            if (!string.IsNullOrEmpty(path))
+                textBoxFilePath.Text = path;
+        }
+        private void btnFileDirs_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
         #region GUI Control Function
         private void InitComboBoxSource(List<Source> sourceList)

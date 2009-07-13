@@ -16,6 +16,7 @@ namespace ISUtils.Utils
         #region "私有全局变量"
         private static Dictionary<IndexSet, Source> indexDict = new Dictionary<IndexSet, Source>();
         private static Dictionary<IndexSet, List<string>> indexFieldsDict = new Dictionary<IndexSet, List<string>>();
+        private static FileIndexSet fileSet = new FileIndexSet();
         private static SearchSet searchSet = new  SearchSet();
         private static DictionarySet dictSet = new DictionarySet();
         private static Analyzer analyzer = new StandardAnalyzer();
@@ -46,6 +47,7 @@ namespace ISUtils.Utils
                     indexList = config.IndexList;
                     searchSet = config.SearchSet;
                     dictSet = config.DictionarySet;
+                    fileSet = config.FileIndexSet;
                 }
                 else
                 {
@@ -111,6 +113,36 @@ namespace ISUtils.Utils
             }
             initSettings = true;
         }
+        public static void SetSearchSettings(List<Source> sourceList, List<IndexSet> indexList,FileIndexSet fileIndexSet, DictionarySet dictSet, SearchSet searchSet)
+        {
+            if (initSettings) return;
+            SearchUtil.searchSet = searchSet;
+            SearchUtil.dictSet = dictSet;
+            SearchUtil.fileSet = fileIndexSet;
+            ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
+            ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
+            searchIndexList.AddRange(indexList);
+            if (indexDict == null)
+                indexDict = new Dictionary<IndexSet, Source>();
+            foreach (IndexSet set in indexList)
+            {
+                foreach (Source source in sourceList)
+                {
+                    if (source.SourceName == set.SourceName)
+                    {
+                        if (indexDict.ContainsKey(set) == false)
+                            indexDict.Add(set, source);
+#if DEBUG
+                        System.Console.WriteLine("SearchUtil.indexDict.Add:");
+                        System.Console.WriteLine("\t" + set.ToString());
+                        System.Console.WriteLine("\t" + source.ToString());
+#endif
+                        break;
+                    }
+                }
+            }
+            initSettings = true;
+        }
         public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, SearchSet searchSet)
         {
             if (initSettings) return;
@@ -121,6 +153,21 @@ namespace ISUtils.Utils
             searchIndexList.AddRange(indexDict.Keys);
             SearchUtil.dictSet = dictSet;
             SearchUtil.searchSet = searchSet;
+            ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
+            ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
+            initSettings = true;
+        }
+        public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, FileIndexSet fileIndexSet, DictionarySet dictSet, SearchSet searchSet)
+        {
+            if (initSettings) return;
+            if (dict != null)
+                indexDict = dict;
+            else
+                indexDict = new Dictionary<IndexSet, Source>();
+            searchIndexList.AddRange(indexDict.Keys);
+            SearchUtil.dictSet = dictSet;
+            SearchUtil.searchSet = searchSet;
+            SearchUtil.fileSet = fileIndexSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
             ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
             initSettings = true;
@@ -412,6 +459,53 @@ namespace ISUtils.Utils
         }
         #endregion
         #region "私有公共方法"
+        private static Query GetFileQuery()
+        {
+            string[] fields = new string[] { "Name","Content"};
+            string[] wordAllContainArray = SupportClass.String.Split(wordsAllContains);
+            string[] exactPhraseArray = SupportClass.String.Split(exactPhraseContain);
+            string[] oneWordContainArray = SupportClass.String.Split(oneOfWordsAtLeastContain);
+            string[] wordNoIncludeArray = SupportClass.String.Split(wordNotInclude);
+            MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
+            BooleanQuery queryRet = new BooleanQuery();
+            foreach (string words in wordAllContainArray)
+            {
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach (string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST);
+                }
+            }
+            foreach (string words in exactPhraseArray)
+            {
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach (string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST);
+                }
+            }
+            foreach (string words in oneWordContainArray)
+            {
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach (string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.SHOULD);
+                }
+            }
+            foreach (string words in wordNoIncludeArray)
+            {
+                List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
+                foreach (string word in wordList)
+                {
+                    Query query = parser.Parse(word);
+                    queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
+                }
+            }
+            return queryRet;
+        }
         private static Query GetFuzzyQuery(IndexSet indexSet)
         {
             string[] fields;
@@ -2109,6 +2203,101 @@ namespace ISUtils.Utils
                             statistics.Add(indexSet.Caption + i.ToString(), posList);
                         }
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
+        public static List<SearchRecord> SearchFile()
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            try
+            {
+                Query query = GetFileQuery();
+                IndexSearcher presearcher = new IndexSearcher(fileSet.Path);
+                ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    string name = doc.Get("Name");
+                    string path = doc.Get("Path");
+                    string content = doc.Get("Content");
+                    SearchField nf = new SearchField("文件名", "文件名", name, name, 1.0f, true, true, 0);
+                    SearchField pf = new SearchField("路径", "路径", path, path, 1.0f, false, true, 0);
+                    SearchField cf = new SearchField("内容", "内容", content, content, 1.0f, false, true, 0);
+                    recordList.Add(new SearchRecord("文件","文件","文件",nf,pf,cf));
+                }
+            }
+            catch (Exception e)
+            {
+                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
+        public static List<SearchRecord> HighLightSearchFile()
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            try
+            {
+                Query query = GetFileQuery();
+                IndexSearcher presearcher = new IndexSearcher(fileSet.Path);
+                ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
+#if DEBUG
+                System.Console.WriteLine(query.ToString());
+#endif
+                Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    Document doc = searcher.Doc(scoreDocs[i].doc);
+                    string name = doc.Get("Name");
+                    string path = doc.Get("Path");
+                    string content = doc.Get("Content");
+                    TokenStream nts = analyzer.TokenStream("Name", new System.IO.StringReader(name));
+                    TokenStream pts = analyzer.TokenStream("Path", new System.IO.StringReader(path));
+                    TokenStream cts = analyzer.TokenStream("Content", new System.IO.StringReader(content));
+                    string nr = "",pr="",cr="";
+                    nr = highlighter.GetBestFragment(nts, name);
+                    pr = highlighter.GetBestFragment(pts, path);
+                    cr = highlighter.GetBestFragment(cts, content);
+                    SearchField nf;
+                    SearchField pf;
+                    SearchField cf;
+                    if (nr != null && string.IsNullOrEmpty(nr.Trim()) == false)
+                    {
+                        nf = new SearchField("文件名", "文件名", name, nr, 1.0f, true, true, 0);
+                    }
+                    else
+                    {
+                        nf = new SearchField("文件名", "文件名", name, name, 1.0f, true, true, 0);
+                    }
+                    if (pr != null && string.IsNullOrEmpty(pr.Trim()) == false)
+                    {
+                        pf = new SearchField("路径", "路径", path, pr, 1.0f, false, true, 0);
+                    }
+                    else
+                    {
+                        pf = new SearchField("路径", "路径", path, path, 1.0f, false, true, 0);
+                    }
+                    if (cr != null && string.IsNullOrEmpty(cr.Trim()) == false)
+                    {
+                        cf = new SearchField("内容", "内容", content, cr, 1.0f, false, true, 0);
+                    }
+                    else
+                    {
+                        cf = new SearchField("内容", "内容", content, content, 1.0f, false, true, 0);
+                    }
+                    recordList.Add(new SearchRecord("文件", "文件", "文件", nf, pf, cf));
                 }
             }
             catch (Exception e)

@@ -10,6 +10,8 @@ namespace ISUtils
     using ISUtils.Common;
     public class SupportClass
     {
+        public const string TextFileTypes = ".txt|.ini|.sql|.log|.dat|.bat|.cmd" ;
+        public const string ImageFileTypes = ".jpg|.jpeg|.png|.bmp|.dib|.gif|.jpe|.jfif|.tif|.tiff";
         public static bool WriteLogAccess = false;
         public static string LogPath=@"D:\TEMP.LOG";
         public const int RAM_FLUSH_NUM = 100000;
@@ -160,6 +162,17 @@ namespace ISUtils
             public static bool IsFileExists(string filename)
             {
                 return System.IO.File.Exists(filename);
+            }
+            public static string ReadTextFile(string filename)
+            {
+                if (filename == null)
+                    throw new ArgumentNullException("filename", "filename must no be null!");
+                if (IsFileExists(filename) == false)
+                    throw new ArgumentException("filename must be exists!", "filename");
+                StreamReader sr = System.IO.File.OpenText(filename);
+                string result=sr.ReadToEnd();
+                sr.Close();
+                return result;
             }
             /**/
             /// <summary>
@@ -325,6 +338,113 @@ namespace ISUtils
                 {
                     return false;
                 }
+            }
+            public static List<string> GetDirFiles(string dirPath, string searchPatterns)
+            {
+                List<string> fileList = null;
+                GetDirFiles(dirPath, searchPatterns, ref fileList);
+                return fileList;
+            }
+            public static void GetDirFiles(string dirPath, string searchPatterns, ref List<string> fileList)
+            {
+                if (fileList == null)
+                    fileList = new List<string>();
+                if (string.IsNullOrEmpty(dirPath))
+                    return;
+                if (!Directory.Exists(dirPath))
+                    return;
+                DirectoryInfo dir = new DirectoryInfo(dirPath);
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                if (string.IsNullOrEmpty(searchPatterns))
+                {
+                    FileInfo[] files = dir.GetFiles();
+                    foreach (FileInfo file in files)
+                    {
+                        fileList.Add(file.FullName);
+                    }
+                }
+                else
+                {
+                    string[] searchPattenArray = searchPatterns.Split(" ,;|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string searchPattern in searchPattenArray)
+                    {
+                        FileInfo[] files = dir.GetFiles(searchPattern);
+                        foreach (FileInfo file in files)
+                        {
+                            fileList.Add(file.FullName);
+                        }
+                    }
+                }
+                foreach (DirectoryInfo dirInfo in dirs)
+                {
+                    GetDirFiles(dirInfo.FullName, searchPatterns, ref fileList);
+                }
+            }
+            public static void GetDirFiles(string dirPath, string searchPatterns, ref List<string> fileList, ref List<string> dirList)
+            {
+                if (fileList == null)
+                    fileList = new List<string>();
+                if (dirList == null)
+                    dirList = new List<string>();
+                if (string.IsNullOrEmpty(dirPath))
+                    return;
+                if (!Directory.Exists(dirPath))
+                    return;
+                DirectoryInfo dir = new DirectoryInfo(dirPath);
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                dirList.Add(dirPath);
+                if (string.IsNullOrEmpty(searchPatterns))
+                {
+                    FileInfo[] files = dir.GetFiles();
+                    foreach (FileInfo file in files)
+                    {
+                        fileList.Add(file.FullName);
+                    }
+                }
+                else
+                {
+                    string[] searchPattenArray = searchPatterns.Split(" ,;|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string searchPattern in searchPattenArray)
+                    {
+                        FileInfo[] files = dir.GetFiles(searchPattern);
+                        foreach (FileInfo file in files)
+                        {
+                            fileList.Add(file.FullName);
+                        }
+                    }
+                }
+                foreach (DirectoryInfo dirInfo in dirs)
+                {
+                    GetDirFiles(dirInfo.FullName, searchPatterns, ref fileList, ref dirList);
+                }
+            }
+            public static bool IsTextFile(string filepath)
+            {
+                if (filepath == null)
+                    return false;
+                if (IsFileExists(filepath) == false)
+                    return false;
+                string[] textTypes = String.Split(TextFileTypes, "|");
+                foreach (string text in textTypes)
+                {
+                    if (filepath.EndsWith(text, true, null))
+                        return true;
+                }
+                return false;
+            }
+            public static bool IsImageFile(string filepath)
+            {
+                if (filepath == null)
+                    return false;
+                if (IsFileExists(filepath) == false)
+                    return false;
+                string[] imageTypes = String.Split(ImageFileTypes, "|");
+                foreach (string text in imageTypes)
+                {
+                    if (filepath.EndsWith(text, true, null))
+                        return true;
+                }
+                return false;
             }
         }
         public class Time

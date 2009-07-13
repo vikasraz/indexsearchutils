@@ -128,6 +128,12 @@ namespace ISUtils.Common
             get { return dictSet; }
             set { dictSet = value; }
         }
+        private FileIndexSet fileSet = new FileIndexSet();
+        public FileIndexSet FileIndexSet
+        {
+            get { return fileSet; }
+            set { fileSet = value; }
+        }
         #endregion
         #region Constructor
         /**/
@@ -157,6 +163,7 @@ namespace ISUtils.Common
                 this.indexList = config.indexList;
                 this.searchd = config.searchd;
                 this.sourceList = config.sourceList;
+                this.fileSet = config.fileSet;
             }
             else
             {
@@ -214,6 +221,20 @@ namespace ISUtils.Common
                 writer.WriteElementString("Path", indexSet.Path);
                 writer.WriteEndElement();
             }
+            #endregion
+            #region File Index
+            writer.WriteStartElement("FileIndex");
+            writer.WriteElementString("Path", fileSet.Path);
+            writer.WriteStartElement("Directories");
+            if (fileSet.BaseDirs != null)
+            {
+                foreach (string dir in fileSet.BaseDirs)
+                {
+                    writer.WriteElementString("Directory", dir);
+                }
+            }
+            writer.WriteEndElement();
+            writer.WriteEndElement();
             #endregion
             #region Dictionary
             writer.WriteStartElement("Dictionary");
@@ -344,7 +365,6 @@ namespace ISUtils.Common
                         #endregion
                         reader.Read();
                         break;
-
                     case "Index":
                         #region Read Index
                         IndexSet indexSet = new IndexSet();
@@ -372,6 +392,50 @@ namespace ISUtils.Common
                             }
                         } while (true);
                         this.indexList.Add(indexSet);
+                        #endregion
+                        reader.Read();
+                        break;
+                    case "FileIndex":
+                        #region Read FileIndex
+                        do
+                        {
+                            currentNodeName = reader.Name;
+                            if (currentNodeName == currentElementName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                            {
+                                break;
+                            }
+                            switch (currentNodeName)
+                            {
+                                case "Path":
+                                    this.fileSet.Path = reader.ReadElementString();
+                                    break;
+                                case "Directories":
+                                    List<string> dirList = new List<string>();
+                                    do
+                                    {
+                                        currentItemName = reader.Name;
+                                        if (currentItemName == currentNodeName && (reader.MoveToContent() == XmlNodeType.EndElement || reader.IsEmptyElement))
+                                        {
+                                            break;
+                                        }
+                                        switch (currentItemName)
+                                        {
+                                            case "Directory":
+                                                dirList.Add(reader.ReadElementString());
+                                                break;
+                                            default:
+                                                reader.Read();
+                                                break;
+                                        }
+                                    } while (true);
+                                    this.fileSet.BaseDirs =dirList;
+                                    reader.Read();
+                                    break;
+                                default:
+                                    reader.Read();
+                                    break;
+                            }
+                        } while (true);
                         #endregion
                         reader.Read();
                         break;

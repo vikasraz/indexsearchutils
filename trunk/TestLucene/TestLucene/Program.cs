@@ -203,21 +203,31 @@ namespace TestLucene
         }
         static void Main()
         {
-            bool success = ISUtils.SupportClass.File.ConvertXlsConfigToXmlConfig(@"f:\index content.xls", @"f:\new config.xml");
-            //Config nc = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
-            Config nc;//= new Config();
-            System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
-            ////FileStream reader = new FileStream(@"d:\Indexer\config.xml", FileMode.Open);
+            //bool success = ISUtils.SupportClass.File.ConvertXlsConfigToXmlConfig(@"f:\index content.xls", @"f:\new config.xml");
+            ////Config nc = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
+            //Config nc;//= new Config();
+            //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
+            ////////FileStream reader = new FileStream(@"d:\Indexer\config.xml", FileMode.Open);
 
-            nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"d:\Indexer\config.xml", typeof(Config));
-            ////reader.Close();
-            FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
+            //nc = (Config)ISUtils.SupportClass.File.GetObjectFromXmlFile(@"d:\Indexer\config.xml", typeof(Config));
+            //////reader.Close();
+            //FileStream writer = new FileStream(@"F:\test.xml", FileMode.Create);
 
-            xsr.Serialize(writer, nc);
-            writer.Close();
-
+            //xsr.Serialize(writer, nc);
+            //writer.Close();
+            //TestFileIndex();
             testSearch();
             Console.ReadKey();
+        }
+        static void TestFileIndex()
+        {
+            string path = @"d:\Indexer\config.xml";
+            ISUtils.Utils.IndexUtil.SetIndexSettings(path, true);
+            Console.WriteLine("Begin indexing....." + DateTime.Now.ToShortTimeString());
+            DateTime start = DateTime.Now;
+            ISUtils.Utils.IndexUtil.IndexFile(true);
+            TimeSpan span = DateTime.Now - start;
+            Console.WriteLine(span.TotalMilliseconds.ToString());
         }
         static void TestQuery()
         {

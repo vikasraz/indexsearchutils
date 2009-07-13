@@ -22,6 +22,7 @@ namespace ISUtils.Searcher
         #region 私有变量
         private List<Source> sourceList;
         private List<IndexSet> indexList;
+        private FileIndexSet fileSet;
         private DictionarySet dictSet;
         private SearchSet searchd;
         #endregion
@@ -41,6 +42,7 @@ namespace ISUtils.Searcher
                 sourceList = parser.GetSourceList();
                 indexList = parser.GetIndexList();
                 dictSet = parser.GetDictionarySet();
+                fileSet = parser.FileIndexSet;
             }
             catch (Exception ex)
             {
@@ -724,15 +726,27 @@ namespace ISUtils.Searcher
         public List<SearchRecord> ExecuteFastSearch(QueryInfo info, out Query query, out Dictionary<string,List<int>> statistics, bool highlight)
         {
             List<SearchRecord> recordList;
-            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, dictSet, searchd);
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList,fileSet, dictSet, searchd);
             Utils.SearchUtil.SetQueryInfo(info);
             if (highlight)
             {
                 recordList = Utils.SearchUtil.HighLightSearch(out query,out statistics);
+                int count = recordList.Count;
+                recordList.AddRange(Utils.SearchUtil.HighLightSearchFile());
+                List<int> fileList=new List<int>();
+                for(int i=count; i<recordList.Count;i++)
+                    fileList.Add(i);
+                statistics.Add("文件", fileList);
             }
             else
             {
                 recordList = Utils.SearchUtil.SearchEx(out query,out statistics);
+                int count = recordList.Count;
+                recordList.AddRange(Utils.SearchUtil.SearchFile());
+                List<int> fileList = new List<int>();
+                for (int i = count; i < recordList.Count; i++)
+                    fileList.Add(i);
+                statistics.Add("文件", fileList);
             }
             return recordList;
         }

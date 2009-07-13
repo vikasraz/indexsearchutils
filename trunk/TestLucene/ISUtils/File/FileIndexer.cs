@@ -37,6 +37,9 @@ namespace ISUtils.File
         }
         internal static void IndexFile(IndexWriter writer, string filepath)
         {
+#if DEBUG
+            System.Console.WriteLine(SupportClass.Time.GetDateTime()+"\t"+filepath);
+#endif
             FileContent fc = GetFileContent(filepath);
             Document doc = new Document();
             doc.Add(new Field("Name", fc.Name, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));

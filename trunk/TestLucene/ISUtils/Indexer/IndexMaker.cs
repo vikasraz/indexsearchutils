@@ -19,6 +19,7 @@ namespace ISUtils.Indexer
         #region Var
         private List<Source> sourceList;
         private List<IndexSet> indexList;
+        private FileIndexSet fileSet;
         private IndexerSet indexer;
         private DictionarySet dictSet;
         private Dictionary<IndexSet,Source> ordinaryDict;
@@ -34,6 +35,7 @@ namespace ISUtils.Indexer
                 indexList = parser.GetIndexList();
                 indexer = parser.GetIndexer();
                 dictSet = parser.GetDictionarySet();
+                fileSet = parser.FileIndexSet;
             }
             catch (Exception ex)
             {
@@ -103,7 +105,10 @@ namespace ISUtils.Indexer
             }
             try
             {
-                Execute(ordinaryDict, dictSet, indexer, type == IndexTypeEnum.Ordinary, ref msg);
+                if (type == IndexTypeEnum.Ordinary)
+                    Execute(ordinaryDict, dictSet, indexer, true, ref msg);
+                else
+                    Execute(incremenDict, dictSet, indexer, false, ref msg);
                 msg.Result = "ExecuteIndexer Success.";
                 msg.Success = true;
                 return msg;
@@ -131,7 +136,10 @@ namespace ISUtils.Indexer
             }
             try
             {
-                BoostExecute(ordinaryDict, dictSet, indexer, type == IndexTypeEnum.Ordinary, ref msg);
+                if (type == IndexTypeEnum.Ordinary)
+                    BoostExecute(ordinaryDict, dictSet, indexer, true, ref msg);
+                else
+                    BoostExecute(incremenDict, dictSet, indexer,false, ref msg);
                 msg.Result = "ExecuteIndexer Success.";
                 msg.Success = true;
                 return msg;
@@ -203,6 +211,14 @@ namespace ISUtils.Indexer
                 msg.ExceptionOccur = true;
                 throw e;
             }
+        }
+        public bool IndexFile(bool create)
+        {
+            if(create)
+                Utils.IndexUtil.SetIndexSettings(ordinaryDict,fileSet, dictSet, indexer);
+            else
+                Utils.IndexUtil.SetIndexSettings(incremenDict, fileSet, dictSet, indexer);
+            return ISUtils.Utils.IndexUtil.IndexFile(true);
         }
         #endregion
     }

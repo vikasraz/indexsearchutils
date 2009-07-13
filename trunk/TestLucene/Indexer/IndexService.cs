@@ -89,6 +89,14 @@ namespace Indexer
                         WriteToLog("Exception for execute ordinary index.Reason:" + exp.Message);
                         EventLog.WriteEntry("Exception for execute ordinary index.Reason:" + exp.Message);
                     }
+                    try
+                    {
+                        maker.IndexFile(true);
+                    }
+                    catch(Exception fe)
+                    {
+                        WriteToLog("Index File Failed.Reason:"+fe.StackTrace.ToString());
+                    }
                 }
                 if (maker.CanIndex(span, IndexTypeEnum.Increment))
                 {

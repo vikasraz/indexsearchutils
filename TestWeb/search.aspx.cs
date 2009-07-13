@@ -97,20 +97,31 @@ public partial class searchresult : System.Web.UI.Page
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
             #region Title and Content
             foreach (SearchRecord record in sr.Records)
-            {                
-                string title, detail,xmlRecord;
-                xmlRecord = GetXmlRecord(xmlSerializer,record);
-                record.GetWebInfo(out title, out detail,true);
-                if (!string.IsNullOrEmpty(title))
+            {
+                if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + title + "</a>");
+                    buffer.Append("----------------------------------<br>");
+                    buffer.Append(record["文件名"].Result + "<br>");
+                    if(!string.IsNullOrEmpty(record["内容"].Value))
+                        buffer.Append(record["内容"].Result + "<br>");
+                    buffer.Append(record["路径"].Result + "<br>");
                 }
                 else
                 {
-                    buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + record.Caption + "</a>");
+                    string title, detail, xmlRecord;
+                    xmlRecord = GetXmlRecord(xmlSerializer, record);
+                    record.GetWebInfo(out title, out detail, true);
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + title + "</a>");
+                    }
+                    else
+                    {
+                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + record.Caption + "</a>");
+                    }
+                    buffer.Append("&nbsp;<a href=\"" + GetRedirectUrl(record) + "\" target=\"_blank\"  >详细信息</a><br>");
+                    buffer.Append(detail + "<br><br>");
                 }
-                buffer.Append("&nbsp;<a href=\"" + GetRedirectUrl(record) + "\" target=\"_blank\"  >详细信息</a><br>");
-                buffer.Append(detail + "<br><br>");
             }
             tdResult.InnerHtml = buffer.ToString();
             #endregion
@@ -264,6 +275,8 @@ public partial class searchresult : System.Web.UI.Page
     {
         string value = ConfigurationManager.AppSettings[record.Caption];
         StringBuilder url = new StringBuilder();
+        if (string.IsNullOrEmpty(value))
+            return string.Empty;
         int start = value.IndexOf('{');
         int end = value.IndexOf('}');
         if (start <= 0 || end <=0)

@@ -49,7 +49,6 @@
             {
                 result=displayResult.args[0];
             }
-            debugger; 
             var a=decodeURIComponent(result);
             var xml=a.replace(/\+/g," ");
             document.getElementById("hiddenXml").value=xml;
@@ -75,7 +74,7 @@
         //--> 
     </script>
 </head>
-<body>
+<body style="margin:0px">
     <form id="form1" runat="server" >
     <div>
         <input id="hiddenXml" type="hidden" />

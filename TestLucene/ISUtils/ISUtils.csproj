@@ -106,6 +106,10 @@
     <Compile Include="Database\Writer\DBRamCreateIWriter.cs" />
     <Compile Include="Database\Writer\DBRamIncremIWriter.cs" />
     <Compile Include="Database\Writer\RamIWriter.cs" />
+    <Compile Include="File\IFilter\ComHelper.cs" />
+    <Compile Include="File\IFilter\FilterLoader.cs" />
+    <Compile Include="File\IFilter\FilterReader.cs" />
+    <Compile Include="File\IFilter\IFilter.cs" />
     <Compile Include="Indexer\IndexMaker.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Connection.cs" />

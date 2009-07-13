@@ -310,6 +310,22 @@ namespace ISUtils
                 }
                 return value;
             }
+            public static bool ConvertXlsConfigToXmlConfig(string xlsFile, string xmlFile)
+            {
+                try
+                {
+                    Config nc = GetConfigFromExcelFile(xlsFile);
+                    XmlSerializer xsr = new XmlSerializer(typeof(Config));
+                    FileStream writer = new FileStream(xmlFile, FileMode.Create);
+                    xsr.Serialize(writer, nc);
+                    writer.Close();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+            }
         }
         public class Time
         {

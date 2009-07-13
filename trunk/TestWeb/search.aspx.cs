@@ -22,45 +22,11 @@ using System.Xml.Serialization;
 public partial class searchresult : System.Web.UI.Page
 {
     public string searchFilter = "";
-    public string SearchValue
-    {
-        get
-        {
-            return ViewState["SearchValue"] == null ? "" : (string)ViewState["SearchValue"];
-        }
-        set
-        {
-            ViewState.Add("SearchValue", value);
-        }
-    }
-    public string Filter
-    {
-        get
-        {
-            return ViewState["Filter"] == null ? "" : (string)ViewState["Filter"];
-        }
-        set
-        {
-            ViewState.Add("Filter", value);
-        }
-    }
-    public int PageNum
-    {
-        get
-        {
-            return ViewState["PageNum"] == null ? 1 : (int)ViewState["PageNum"];
-        }
-        set
-        {
-            ViewState.Add("PageNum", value);
-        }
-    }
     #region Event
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Page.IsPostBack)
+        if (!Page.IsPostBack)
         {
-            SearchValue = txtSearch.Text;
             return;
         }
         string szWordsAllContains="";
@@ -77,16 +43,7 @@ public partial class searchresult : System.Web.UI.Page
             szWordNotInclude = Decode(Request.QueryString["Not"]);
         if (IsNullOrEmpty(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude))
         {
-            if (string.IsNullOrEmpty(SearchValue))
-            {
-                return;
-            }
-            else
-            {
-                txtSearch.Text = SearchValue;
-                RunSearch();
-                return;
-            }
+            return;
         }
         int pageNum = 1;
         if (Request.QueryString["Page"] != null)
@@ -96,9 +53,6 @@ public partial class searchresult : System.Web.UI.Page
             filter = Decode(Request.QueryString["Filter"]);
         searchFilter = filter;
         SetSearchWords(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude);
-        PageNum = pageNum;
-        Filter = filter;
-        SearchValue = txtSearch.Text;
         TcpClient client;
         NetworkStream ns;
         BinaryFormatter formater;
@@ -240,12 +194,10 @@ public partial class searchresult : System.Web.UI.Page
     }
     protected void btnSearch_Click(object sender, EventArgs e)
     {
-        SearchValue = txtSearch.Text;
         RunSearch();
     }
     protected void txtSearch_TextChanged(object sender, EventArgs e)
     {
-        SearchValue = txtSearch.Text;
         RunSearch();
     }
     #endregion

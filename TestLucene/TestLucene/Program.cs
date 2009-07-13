@@ -203,6 +203,7 @@ namespace TestLucene
         }
         static void Main()
         {
+            bool success = ISUtils.SupportClass.File.ConvertXlsConfigToXmlConfig(@"f:\index content.xls", @"f:\new config.xml");
             //Config nc = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
             Config nc;//= new Config();
             System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));

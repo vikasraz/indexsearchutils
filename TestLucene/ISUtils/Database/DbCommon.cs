@@ -538,6 +538,12 @@ namespace ISUtils.Database
                 System.Console.WriteLine();
 #endif
             }
+            if (source != null && indexSet != null)
+            {
+                source.Fields = fpList;
+                if (dict.ContainsKey(indexSet) == false)
+                    dict.Add(indexSet, source);
+            }
             return dict;
         }
     }

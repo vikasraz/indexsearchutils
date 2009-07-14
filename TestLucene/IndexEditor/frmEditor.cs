@@ -1294,13 +1294,14 @@ namespace IndexEditor
             this.Cursor = Cursors.WaitCursor;
             toolStripProgressBar.Visible = true;
             toolStripProgressBar.Minimum = 0;
-            toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;
+            toolStripProgressBar.Maximum = 1000;
             Application.DoEvents();
             try
             {
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml",true);
                 toolStripStatusLabelStatus.Text = "正在构建主索引！";
                 ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                ISUtils.Utils.IndexUtil.IndexFile(true);
                 //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
                 toolStripStatusLabelStatus.Text = "构建主索引完毕！";
                 ShowInformation("主索引构建完成");

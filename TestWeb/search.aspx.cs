@@ -111,14 +111,14 @@ public partial class searchresult : System.Web.UI.Page
                     xmlRecord = GetXmlRecord(xmlSerializer, record);
                     record.GetWebInfo(out title, out detail, true);
                     if (!string.IsNullOrEmpty(title))
-                    {                        
-                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + title.Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
+                    {
+                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
                     }
                     else
                     {
-                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + record.Caption.Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
+                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + record.Caption.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
                     }
-                    buffer.Append("<span style=\"font-size:9pt\">" + detail.Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span>");
+                    buffer.Append("<span style=\"font-size:9pt\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span>");
                     buffer.Append("&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\" href=\"#\" style=\"font-size:9pt;\"><span style=\"font-size:9pt;\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">详细</span></a><br><br>");
                 }
             }
@@ -132,7 +132,10 @@ public partial class searchresult : System.Web.UI.Page
                 if(sr.Statistics[key]>0)
                 {
                     url=GetUrl(szWordsAllContains,szExactPhraseContain,szOneOfWordsAtLeastContain,szWordNotInclude,key,1);
-                    statis.Append("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"" + url + "\" >" + key + "</a>&nbsp;&nbsp;(" + sr.Statistics[key].ToString() + ")</td></tr>");
+                    string displayKey = key;
+                    if (key.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
+                        displayKey = "电子文档";
+                    statis.Append("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"" + url + "\" >" + displayKey + "</a>&nbsp;&nbsp;(" + sr.Statistics[key].ToString() + ")</td></tr>");
                 }
             }
             statis.Append("</table>");
@@ -312,7 +315,7 @@ public partial class searchresult : System.Web.UI.Page
     }
     protected string GetFileUrl(string filepath)
     {
-        string value = ConfigurationManager.AppSettings["文件"];
+        string value = ConfigurationManager.AppSettings["电子文档"];
         if (string.IsNullOrEmpty(value))
             return "#";
         string[] array = value.Split("{}".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);

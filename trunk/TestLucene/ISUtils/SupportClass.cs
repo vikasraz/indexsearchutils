@@ -238,7 +238,7 @@ namespace ISUtils
                     throw e;
                 }
             }
-            public static void WriteConfigFile(string path, List<Source> sourceList, List<IndexSet> indexList, DictionarySet dictSet, IndexerSet indexerSet, SearchSet searchSet)
+            public static void WriteConfigFile(string path, List<Source> sourceList, List<IndexSet> indexList,FileIndexSet fileSet, DictionarySet dictSet, IndexerSet indexerSet, SearchSet searchSet)
             {
                 try
                 {
@@ -254,12 +254,14 @@ namespace ISUtils
                     if (indexList!=null)
                     foreach (IndexSet i in indexList)
                         IndexSet.WriteToFile(ref sw, i);
+                    if (fileSet != null)
+                        FileIndexSet.WriteToFile(ref sw, fileSet);
                     if (dictSet !=null)
-                    DictionarySet.WriteToFile(ref sw, dictSet);
+                        DictionarySet.WriteToFile(ref sw, dictSet);
                     if(indexerSet !=null)
-                    IndexerSet.WriteToFile(ref sw, indexerSet);
+                        IndexerSet.WriteToFile(ref sw, indexerSet);
                     if(searchSet !=null)
-                    SearchSet.WriteToFile(ref sw, searchSet);
+                        SearchSet.WriteToFile(ref sw, searchSet);
                     sw.Flush();
                     sw.Close();
                     fs.Close();
@@ -520,6 +522,21 @@ namespace ISUtils
                         }
                     }
                 }
+            }
+            public static string GetResult(string szSrc, string color, bool removeHightLight)
+            {
+                szSrc = szSrc.Replace("</B><B>", "");
+                if (removeHightLight)
+                {
+                    szSrc=szSrc.Replace("<B>", "<font color=\"" + color + "\">");
+                    szSrc=szSrc.Replace("</B>", "</font>");
+                }
+                else
+                {
+                    szSrc=szSrc.Replace("<B>", "<font color=\"" + color + "\"><B>");
+                    szSrc=szSrc.Replace("</B>", "</B></font>");
+                }
+                return szSrc;
             }
         }
         public class Numerical

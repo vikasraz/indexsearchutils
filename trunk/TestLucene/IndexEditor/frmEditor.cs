@@ -21,6 +21,7 @@ namespace IndexEditor
         private SearchSet searchSet;
         private List<IndexSet> indexList;
         private List<Source> sourceList;
+        private FileIndexSet fileSet;
         private IndexSet indexSet=new IndexSet();
         private Source source=new Source();
         private PanelShowType panelShow=PanelShowType.Source;
@@ -182,6 +183,7 @@ namespace IndexEditor
                 indexList = parser.GetIndexList();
                 dictSet = parser.GetDictionarySet();
                 indexerSet = parser.GetIndexer();
+                fileSet = parser.FileIndexSet;
                 return true;
             }
             catch (Exception ex)
@@ -338,7 +340,11 @@ namespace IndexEditor
                                                 numericUpDownRamBufferSize,
                                                 numericUpDownMaxFieldLength,
                                                 numericUpDownMaxBufferedDocs,
-                                                numericUpDownMergeFactor};
+                                                numericUpDownMergeFactor,
+                                                textBoxFilePath,
+                                                btnFilePath,
+                                                btnFileDirs,
+                                                listBoxFileDirs};
             foreach (Control control in controls)
             {
                 control.Enabled = enabled;
@@ -360,6 +366,10 @@ namespace IndexEditor
                 numericUpDownMaxFieldLength.Value=indexerSet.MaxFieldLength;
                 numericUpDownMaxBufferedDocs.Value =indexerSet.MaxBufferedDocs;
                 numericUpDownMergeFactor.Value =indexerSet.MergeFactor;
+                if (fileSet == null) return;
+                textBoxFilePath.Text = fileSet.Path;
+                listBoxFileDirs.Items.Clear();
+                listBoxFileDirs.Items.AddRange(fileSet.BaseDirs.ToArray());
             }
             else
             {
@@ -371,6 +381,14 @@ namespace IndexEditor
                 indexerSet.MaxFieldLength = (int)numericUpDownMaxFieldLength.Value;
                 indexerSet.MergeFactor = (int)numericUpDownMergeFactor.Value;
                 indexerSet.RamBufferSize=(double)numericUpDownRamBufferSize.Value;
+                if (fileSet == null) fileSet = new FileIndexSet();
+                fileSet.Path = textBoxFilePath.Text;
+                object[] objs = new object[listBoxFileDirs.Items.Count];
+                string[] paths = new string[listBoxFileDirs.Items.Count];
+                listBoxFileDirs.Items.CopyTo(objs, 0);
+                objs.CopyTo(paths, 0);
+                fileSet.BaseDirs.Clear();
+                fileSet.AddDirectory(paths);
             }
         }
         private void EnablePanelSearchControls(bool enabled)
@@ -448,6 +466,7 @@ namespace IndexEditor
                 textBoxFilterPath.Text =dictSet.FilterPath; 
                 textBoxNamePath.Text =dictSet.NamePath;
                 textBoxNumberPath.Text =dictSet.NumberPath;
+                listBoxCustomPaths.Items.Clear();
                 listBoxCustomPaths.Items.AddRange(dictSet.CustomPaths.ToArray());
             }
             else
@@ -1397,7 +1416,20 @@ namespace IndexEditor
         }
         private void btnFileDirs_Click(object sender, EventArgs e)
         {
-
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+            foreach (Object o in listBoxFileDirs.Items)
+            {
+                if (!dict.ContainsKey(o.ToString()))
+                    dict.Add(o.ToString(), o.ToString().Length);
+            }
+            string path = GetFolderPath();
+            if (path != null)
+            {
+                if (!dict.ContainsKey(path))
+                {
+                    listBoxFileDirs.Items.Add(path);
+                }
+            }
         }
         #endregion
         #region GUI Control Function
@@ -1524,12 +1556,12 @@ namespace IndexEditor
                 config.DictionarySet = dictSet;
                 config.IndexerSet = indexerSet;
                 config.SearchSet = searchSet;
+                config.FileIndexSet = fileSet;
                 ISUtils.SupportClass.File.WriteObjectToXmlFile(AppPath + @"\config.xml",config,typeof(Config));
                 makeChange = false;
                 ShowInformation("保存成功！");
             }
         }
-
         private void toolStripMenuItemSaveAs_Click(object sender, EventArgs e)
         {
             if (init )
@@ -1537,7 +1569,7 @@ namespace IndexEditor
                 string path=GetFileSavePath(OutputFilter);
                 if (!string.IsNullOrEmpty(path))
                 {
-                    ISUtils.SupportClass.File.WriteConfigFile(path, sourceList, indexList, dictSet, indexerSet, searchSet);
+                    ISUtils.SupportClass.File.WriteConfigFile(path, sourceList, indexList,fileSet, dictSet, indexerSet, searchSet);
                     ShowInformation("保存成功！");
                 }
             }

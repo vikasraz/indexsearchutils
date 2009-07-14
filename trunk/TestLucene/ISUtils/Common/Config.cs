@@ -56,6 +56,11 @@ namespace ISUtils.Common
         /// Config文件中Dictionary项目的标志
         /// </summary>
         public const string DictionaryFlag = "DICTIONARY";
+        /**/
+        /// <summary>
+        /// Config文件中FileIndexSet项目的标志
+        /// </summary>
+        public const string FileIndexSetFlag = "FILEINDEX";
         #endregion
         #region Property
         /**/

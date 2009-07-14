@@ -100,9 +100,9 @@ public partial class searchresult : System.Web.UI.Page
             {
                 if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    buffer.Append("<a href=\"" + GetFileUrl(record["路径"].Value) + "\" target=\"_blank\"  >" + record["文件名"].Result + "</a><br>");
+                    buffer.Append("<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "</a><br>");
                     if(!string.IsNullOrEmpty(record["内容"].Value))
-                        buffer.Append(record["内容"].Result + "<br>");
+                        buffer.Append("<span style=\"font-size:9pt\">" + GetColorString(record["内容"].Result) + "</span><br>");
                     buffer.Append("<br>");
                 }
                 else
@@ -111,31 +111,31 @@ public partial class searchresult : System.Web.UI.Page
                     xmlRecord = GetXmlRecord(xmlSerializer, record);
                     record.GetWebInfo(out title, out detail, true);
                     if (!string.IsNullOrEmpty(title))
-                    {
-                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + title + "</a>");
+                    {                        
+                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + title.Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
                     }
                     else
                     {
-                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" >" + record.Caption + "</a>");
+                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + record.Caption.Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
                     }
-                    buffer.Append("&nbsp;<a href=\"" + GetRedirectUrl(record) + "\" target=\"_blank\"  >详细信息</a><br>");
-                    buffer.Append(detail + "<br><br>");
+                    buffer.Append("<span style=\"font-size:9pt\">" + detail.Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span>");
+                    buffer.Append("&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\" href=\"#\" style=\"font-size:9pt;\"><span style=\"font-size:9pt;\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">详细</span></a><br><br>");
                 }
             }
             tdResult.InnerHtml = buffer.ToString();
             #endregion
             #region Statistics
-            statis.Append("<p style=\"text-align: center\">查询结果统计</p><p>");
+            statis.Append("<table class=\"TableStyle\" width=\"100%\"><tr height=\"35px\"><td class=\"TableText\" colspan=\"2\" style=\"font-size:9pt; font-weight:bold\">分类统计信息</td></tr>");
             string url;
             foreach (string key in sr.Statistics.Keys)
             {
                 if(sr.Statistics[key]>0)
                 {
                     url=GetUrl(szWordsAllContains,szExactPhraseContain,szOneOfWordsAtLeastContain,szWordNotInclude,key,1);
-                    statis.Append("<a href=\""+url+"\" >" + key + "</a>(" + sr.Statistics[key].ToString() + ")<br>");
+                    statis.Append("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"" + url + "\" >" + key + "</a>&nbsp;&nbsp;(" + sr.Statistics[key].ToString() + ")</td></tr>");
                 }
             }
-            statis.Append("</p>");
+            statis.Append("</table>");
             if(sr.Records.Count > 0)
                 tdStatis.InnerHtml = statis.ToString();
             #endregion
@@ -144,7 +144,7 @@ public partial class searchresult : System.Web.UI.Page
             if (sr.PageNum > 1)
             {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum - 1);
-                pageBuilder.Append("<a href=\""+url+"\" >上一页</a>&nbsp;");
+                pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >上一页</a>&nbsp;");
             }
             if (sr.TotalPages<=10)
             {
@@ -153,7 +153,7 @@ public partial class searchresult : System.Web.UI.Page
                     if (i != sr.PageNum)
                     {
                         url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
-                        pageBuilder.Append("<a href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                        pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                     }
                     else
                     {
@@ -170,7 +170,7 @@ public partial class searchresult : System.Web.UI.Page
                         if (i != sr.PageNum)
                         {
                             url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
-                            pageBuilder.Append("<a href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                            pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                         }
                         else
                         {
@@ -184,14 +184,14 @@ public partial class searchresult : System.Web.UI.Page
                     for (int i = 1; i < 10; i++)
                     {
                         url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + i);
-                        pageBuilder.Append("<a href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
+                        pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
                     }
                 }
             }
             if (sr.PageNum < sr.TotalPages)
             {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + 1);
-                pageBuilder.Append("<a href=\"" + url + "\" >下一页</a>");
+                pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >下一页</a>");
             }
             tdPageSet.InnerHtml = pageBuilder.ToString();
             #endregion
@@ -333,6 +333,13 @@ public partial class searchresult : System.Web.UI.Page
                 return false;
         }
         return result;
+    }
+    public static string GetColorString(string szSrc)
+    {
+        szSrc = szSrc.Replace("</B><B>", "");
+        szSrc = szSrc.Replace("<B>", "<font color=\"#C60A00\">");
+        szSrc = szSrc.Replace("</B>", "</font>");
+        return szSrc;
     }
     #endregion
     #region IndexNames

@@ -216,12 +216,23 @@ namespace TestLucene
             //xsr.Serialize(writer, nc);
             //writer.Close();
             //TestFileIndex();
-            testSearch();
+            //testSearch();
+            TestIndexMaker();
             Console.ReadKey();
+        }
+        static void TestIndexMaker()
+        {
+            string path = @"d:\Indexer\config.xml";
+            IndexMaker maker = new IndexMaker(path);
+            Console.WriteLine("Begin indexing....." + DateTime.Now.ToShortTimeString());
+            DateTime start = DateTime.Now;
+            maker.IndexFile(true);
+            TimeSpan span = DateTime.Now - start;
+            Console.WriteLine(span.TotalMilliseconds.ToString());
         }
         static void TestFileIndex()
         {
-            string path = @"d:\Indexer\config.xml";
+            string path = @"d:\Indexer\config.xml";            
             ISUtils.Utils.IndexUtil.SetIndexSettings(path, true);
             Console.WriteLine("Begin indexing....." + DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;

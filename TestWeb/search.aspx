@@ -6,6 +6,7 @@
 <head id="Head1" runat="server">
     <title>资源搜索</title>
     
+    <meta http-equiv="x-ua-compatible" content="ie=7" />
     <link href="<%= ConfigurationManager.AppSettings["CSS_QueryPage"] %>" rel="stylesheet" type="text/css" />
     <link href="<%= ConfigurationManager.AppSettings["CSS_ResourceStyle"] %>" rel="stylesheet" type="text/css" />
     
@@ -28,6 +29,22 @@
             window.open(url,"newwindow","height="+window.screen.height+", width="+window.screen.width+", top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=no, status=no"); 
         }
     </script>
+    <style type="text/css">
+        .LargeTitle
+        {
+            font-size:13pt;
+            font-family:宋体;            
+        }
+        .SmallTitle
+        {
+            font-size:10pt;
+            font-family:宋体;            
+        }    
+        .MouseDown
+        {
+            color:Red;
+        }
+    </style>
 </head>
 <body onload="Init();" bgcolor="white">
     <form id="form1" runat="server">
@@ -47,7 +64,7 @@
                         <td width="80px" style="text-align:right">
                         </td>
                         <td style="width: 600px">
-                            <asp:TextBox ID="txtSearch" Width="98%" runat="server" AutoPostBack="true"  OnTextChanged="txtSearch_TextChanged" ></asp:TextBox>
+                            <asp:TextBox ID="txtSearch" Width="98%" runat="server" AutoPostBack="true"  OnTextChanged="txtSearch_TextChanged" >东丽</asp:TextBox>
                         </td>                       
                         <td width="60px" style="text-align:right">
                             <a id="HyperLink1" href="profsearch.aspx" style="display:inline-block;width:50px;font-size:9pt">高级搜索</a>
@@ -65,13 +82,17 @@
                  
                 
                 <br />
-                <hr />
+                <table class="TableStyle" border="1" cellpadding="0" cellspacing="0" width="100%" style="border-bottom:none; border-left:none; border-right:none">
+                    <tr>
+                        <td id="Number" runat="server" style="text-align:right; background-color:#F3F9FF; height:30px; border:none; font-family:宋体; font-size:13pt; color:#014F8A"></td>
+                    </tr>
+                </table>
                 <br />
                 
                 
                 <table border="0" cellpadding ="5" cellspacing ="5" width="100%">
                     <tr>
-                       <td width="70%" id="tdResult" runat="server" style="text-align:left; vertical-align:top"></td> 
+                       <td width="70%" id="tdResult" runat="server" style="text-align:left; vertical-align:top; line-height:25px"></td> 
                        <td width="8%"></td> 
                        <td width="22%" id="tdStatis" runat="server" style="text-align:left; vertical-align:top"></td> 
                     </tr>

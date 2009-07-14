@@ -70,6 +70,7 @@ public partial class searchresult : System.Web.UI.Page
             area = Decode(userCookie.Values["Area"]);
             content = Decode(userCookie.Values["Content"]);
             allCon = bool.Parse(Decode(userCookie.Values["AllContent"]));
+            allArea = bool.Parse(Decode(userCookie.Values["AllArea"]));
         }
         try
         {
@@ -99,14 +100,18 @@ public partial class searchresult : System.Web.UI.Page
             StringBuilder buffer = new StringBuilder();
             StringBuilder statis = new StringBuilder();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
+            Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(),filter, pageSize, sr.PageNum);
             #region Title and Content
             foreach (SearchRecord record in sr.Records)
             {
                 if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    buffer.Append("<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "</a><br>");
+                    string type, fvalue;
+                    GetFileTypeValue(record["路径"].Value, out type, out fvalue);
+                    buffer.Append(type+"<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "</a><br>");
+                    buffer.Append(fvalue + "<br>");
                     if(!string.IsNullOrEmpty(record["内容"].Value))
-                        buffer.Append("<span style=\"font-size:9pt\">" + GetColorString(record["内容"].Result) + "</span><br>");
+                        buffer.Append("<span class=\"LargeTitle\">" + GetColorString(record["内容"].Result) + "</span><br>");
                     buffer.Append("<br>");
                 }
                 else
@@ -114,16 +119,15 @@ public partial class searchresult : System.Web.UI.Page
                     string title, detail, xmlRecord;
                     xmlRecord = GetXmlRecord(xmlSerializer, record);
                     record.GetWebInfo(out title, out detail, true,false);
-                    if (!string.IsNullOrEmpty(title))
-                    {
-                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
-                    }
+                    detail = detail + "......";
+                    //标题，点击调用序列化
+                    if(!string.IsNullOrEmpty(title))
+                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br />");
                     else
-                    {
-                        buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + record.Caption.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
-                    }
-                    buffer.Append("<span style=\"font-size:9pt\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span>");
-                    buffer.Append("&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\" href=\"#\" style=\"font-size:9pt;\"><span style=\"font-size:9pt;\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">详细</span></a><br><br>");
+                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "</span></a><br />");
+                    buffer.Append("<span class=\"SmallTitle\" style=\"line-height:20px\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span><br />");
+                    buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
+                    buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"\" class=\"SmallTitle\" >查看图形</a><br /><br />");
                 }
             }
             tdResult.InnerHtml = buffer.ToString();
@@ -151,7 +155,7 @@ public partial class searchresult : System.Web.UI.Page
             if (sr.PageNum > 1)
             {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum - 1);
-                pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >上一页</a>&nbsp;");
+                pageBuilder.Append("<a class=\"SmallTitle\" href=\"" + url + "\" >上一页</a>&nbsp;");
             }
             if (sr.TotalPages<=10)
             {
@@ -160,7 +164,7 @@ public partial class searchresult : System.Web.UI.Page
                     if (i != sr.PageNum)
                     {
                         url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
-                        pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                        pageBuilder.Append("<a class=\"SmallTitle\" href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                     }
                     else
                     {
@@ -177,7 +181,7 @@ public partial class searchresult : System.Web.UI.Page
                         if (i != sr.PageNum)
                         {
                             url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
-                            pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
+                            pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                         }
                         else
                         {
@@ -191,14 +195,14 @@ public partial class searchresult : System.Web.UI.Page
                     for (int i = 1; i < 10; i++)
                     {
                         url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + i);
-                        pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
+                        pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
                     }
                 }
             }
             if (sr.PageNum < sr.TotalPages)
             {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + 1);
-                pageBuilder.Append("<a style=\"font-size:9pt\" href=\"" + url + "\" >下一页</a>");
+                pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >下一页</a>");
             }
             tdPageSet.InnerHtml = pageBuilder.ToString();
             #endregion
@@ -219,6 +223,50 @@ public partial class searchresult : System.Web.UI.Page
     }
     #endregion
     #region Function
+    protected void GetFileTypeValue(string file, out string type, out string value)
+    {
+        if (file.EndsWith(".")) 
+            file = file.Substring(0, file.Length - 1);
+        string suffix = file.Substring(file.LastIndexOf(".") + 1).ToUpper();
+        type = "【" + suffix + "】";
+        value = ConfigurationManager.AppSettings[suffix];
+        if (string.IsNullOrEmpty(value))
+            value = "文件格式：未知";
+        else
+            value = "文件格式：" + value;
+    }
+    protected string GetStatisticString(Dictionary<string, int> statis, string searchWords,string filter, int pageSize, int pageNum)
+    {
+        int total = 0;
+        StringBuilder result = new StringBuilder();
+        if (string.IsNullOrEmpty(filter) || statis.ContainsKey(filter) == false)
+        {
+            foreach (string key in statis.Keys)
+            {
+                total += statis[key];
+            }
+        }
+        else
+        {
+            if (filter.Equals("文件"))
+                result.Append("在“电子文档”中");
+            else
+                result.Append("在“" + filter + "”中");
+            total = statis[filter];
+        }
+        result.Append("搜索“" + searchWords + "”获得大约");
+        result.Append(total);
+        result.Append("条查询结果，以下是第 ");
+        if (pageNum == 0) pageNum = 1;
+        result.Append((pageNum - 1) * pageSize + 1);
+        result.Append("-");
+        if (pageNum * pageSize > total)
+            result.Append(total);
+        else
+            result.Append(pageSize * pageNum);
+        result.Append(" 条。");
+        return result.ToString();
+    }
     protected void SetSearchWords(string wordsAllContains,string exactPhraseContain,string oneOfWordsAtLeastContain,string wordNotInclude)
     {
         string[] wordArray = wordNotInclude.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);

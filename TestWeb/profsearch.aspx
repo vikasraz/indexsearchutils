@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head id="Head1" runat="server">
     <title>高级搜索</title>
-    
+    <meta http-equiv="x-ua-compatible" content="ie=7" />
     <link href="<%= ConfigurationManager.AppSettings["CSS_QueryPage"] %>" rel="stylesheet" type="text/css" />
     
 </head>
@@ -43,9 +43,14 @@
             </tr>
             <tr>
                 <td class="TableValue" height="30px" colspan="2" style="text-align:left">
-                    <asp:CheckBoxList ID="checkListArea" runat="server" RepeatDirection="Horizontal"><asp:ListItem Selected="True">华民镇</asp:ListItem>
-                        <asp:ListItem Selected="True">新立街</asp:ListItem>
-                        <asp:ListItem Selected="True">么六桥</asp:ListItem>
+                    <asp:CheckBoxList ID="checkListArea" runat="server" RepeatColumns="5" RepeatDirection="Horizontal" Height="1px" Width ="540px">
+                        <asp:ListItem>万新街</asp:ListItem>
+                        <asp:ListItem>幺六桥</asp:ListItem>
+                        <asp:ListItem>军粮城镇</asp:ListItem>
+                        <asp:ListItem>新立街</asp:ListItem>
+                        <asp:ListItem>无瑕街</asp:ListItem>
+                        <asp:ListItem>华明镇</asp:ListItem>
+                        <asp:ListItem>金钟街道</asp:ListItem>
                     </asp:CheckBoxList>
                 </td>
             </tr>
@@ -58,7 +63,7 @@
             </tr>
             <tr>
                 <td class="TableValue" height="30px" colspan="2" style="text-align:left">
-                    <asp:CheckBoxList ID="checkListDetails" runat="server" RepeatColumns="3" RepeatDirection="Horizontal">
+                    <asp:CheckBoxList ID="checkListDetails" runat="server" RepeatColumns="3" RepeatDirection="Horizontal" Width ="540px">
                         <asp:ListItem>依法行政处罚</asp:ListItem>
                         <asp:ListItem>土地巡查</asp:ListItem>
                         <asp:ListItem>信访办理</asp:ListItem>

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ISUtils.Async
 {
+    public delegate void WriteDbProgressChangedEventHandler(object sender, WriteDbProgressChangedEventArgs e);
     public class WriteDbProgressChangedEventArgs
     {
         private int rowNum = 0;

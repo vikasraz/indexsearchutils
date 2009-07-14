@@ -8,6 +8,7 @@ using ISUtils.Common;
 using ISUtils.Analysis.Chinese;
 using ISUtils.Database;
 using ISUtils.Database.Indexer;
+using ISUtils.Async;
 
 namespace ISUtils.Database.Writer
 {

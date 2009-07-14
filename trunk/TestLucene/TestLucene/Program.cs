@@ -60,8 +60,8 @@ namespace TestLucene
             string path = @"d:\Indexer\config.xml";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.IndexNames = "";
-            info.SearchWords = "东丽湖";
+            //info.IndexNames = "IndexView_Monitoring_HCOV";
+            info.SearchWords = "东丽";
             //info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             //info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
             //info.RangeList.Add(new RangeCondition("","KGSJ","20000501","20090702"));
@@ -203,7 +203,7 @@ namespace TestLucene
         }
         static void Main()
         {
-            //bool success = ISUtils.SupportClass.File.ConvertXlsConfigToXmlConfig(@"f:\index content.xls", @"f:\new config.xml");
+            bool success = ISUtils.SupportClass.File.ConvertXlsConfigToXmlConfig(@"f:\index content(1).xls", @"f:\new config.xml");
             ////Config nc = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
             //Config nc;//= new Config();
             //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
@@ -216,8 +216,8 @@ namespace TestLucene
             //xsr.Serialize(writer, nc);
             //writer.Close();
             //TestFileIndex();
-            //testSearch();
-            TestIndexMaker();
+            testSearch();
+            //TestIndexMaker();
             Console.ReadKey();
         }
         static void TestIndexMaker()

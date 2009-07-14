@@ -182,6 +182,60 @@ namespace ISUtils.Common
             content.Append("<br>");
             return title.ToString() + content.ToString();
         }
+        public void GetWebInfo(out string szTitle, out string szContent, bool removeNullOrEmpty,bool showTitleCaption)
+        {
+            StringBuilder title = new StringBuilder();
+            StringBuilder content = new StringBuilder();
+            //title.Append(caption + "&nbsp;");
+            foreach (SearchField sf in fieldList)
+            {
+                if (sf.Visible)
+                {
+                    if (sf.IsTitle)
+                    {
+                        if (!removeNullOrEmpty)
+                        {
+                            if (showTitleCaption)
+                            {
+                                title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                            }
+                            else
+                            {
+                                title.Append(sf.Result + "&nbsp;");
+                            }
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(sf.Result))
+                            {
+                                if (showTitleCaption)
+                                {
+                                    title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                                }
+                                else
+                                {
+                                    title.Append(sf.Result + "&nbsp;");
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!removeNullOrEmpty)
+                        {
+                            content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(sf.Result))
+                                content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                    }
+                }
+            }
+            szTitle = title.ToString();
+            szContent = content.ToString();
+        }
         public void GetWebInfo(out string szTitle, out string szContent, bool removeNullOrEmpty)
         {
             StringBuilder title = new StringBuilder();

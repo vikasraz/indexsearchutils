@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ISUtils.Async
 {
+    public delegate void IndexProgressChangedEventHandler(object sender, IndexProgressChangedEventArgs e);
     public class IndexProgressChangedEventArgs
     {
         private int total = 0;

@@ -1301,7 +1301,7 @@ namespace IndexEditor
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml",true);
                 toolStripStatusLabelStatus.Text = "正在构建主索引！";
                 ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
-                ISUtils.Utils.IndexUtil.IndexFile(true);
+                ISUtils.Utils.IndexUtil.IndexFile(true, OnIndexCompleted, OnProgressChanged);
                 //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
                 toolStripStatusLabelStatus.Text = "构建主索引完毕！";
                 ShowInformation("主索引构建完成");
@@ -1321,6 +1321,8 @@ namespace IndexEditor
         private void OnProgressChanged(object sender, IndexProgressChangedEventArgs e)
         {
             toolStripProgressBar.Value = toolStripProgressBar.Value+1;
+            if (toolStripProgressBar.Value == toolStripProgressBar.Maximum)
+                toolStripProgressBar.Value = toolStripProgressBar.Minimum;
             Application.DoEvents();
         }
         private void btnReCreateIncrIndex_Click(object sender, EventArgs e)

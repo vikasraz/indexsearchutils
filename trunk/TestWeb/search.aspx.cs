@@ -62,11 +62,14 @@ public partial class searchresult : System.Web.UI.Page
         int pageSize = 10;
         string area = "";
         string content = "";
+        bool allCon = true;
+        bool allArea = true;
         if (userCookie != null)
         {
             pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
             area = Decode(userCookie.Values["Area"]);
             content = Decode(userCookie.Values["Content"]);
+            allCon = bool.Parse(Decode(userCookie.Values["AllContent"]));
         }
         try
         {
@@ -83,7 +86,8 @@ public partial class searchresult : System.Web.UI.Page
                info.OneOfWordsAtLeastContain = szOneOfWordsAtLeastContain;
             if (!string.IsNullOrEmpty(szWordNotInclude))
                info.WordNotInclude = szWordsAllContains;
-            info.IndexNames = GetIndexNames(content);
+            if(!allCon)
+                info.IndexNames = GetIndexNames(content);
             sinfo.PageSize = pageSize;
             sinfo.PageNum = pageNum;
             sinfo.Query = info;
@@ -109,7 +113,7 @@ public partial class searchresult : System.Web.UI.Page
                 {
                     string title, detail, xmlRecord;
                     xmlRecord = GetXmlRecord(xmlSerializer, record);
-                    record.GetWebInfo(out title, out detail, true);
+                    record.GetWebInfo(out title, out detail, true,false);
                     if (!string.IsNullOrEmpty(title))
                     {
                         buffer.Append("<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" style=\"font-size:14pt;\" ><span style=\"font-size:14pt\" class=\"HrefMouseOut\" onmouseover=\"this.className='HrefMouseDown'\" onmouseout=\"this.className='HrefMouseOut'\">" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br>");
@@ -340,7 +344,7 @@ public partial class searchresult : System.Web.UI.Page
     public static string GetColorString(string szSrc)
     {
         szSrc = szSrc.Replace("</B><B>", "");
-        szSrc = szSrc.Replace("<B>", "<font color=\"#C60A00\">");
+        szSrc = szSrc.Replace("<B>", "<font color=\"Red\">");
         szSrc = szSrc.Replace("</B>", "</font>");
         return szSrc;
     }

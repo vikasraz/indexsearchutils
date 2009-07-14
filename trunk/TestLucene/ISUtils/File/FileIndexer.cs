@@ -8,6 +8,7 @@ using Lucene.Net.Store;
 using Lucene.Net.Documents;
 using ISUtils.Common;
 using ISUtils.File.IFilter;
+using ISUtils.Async;
 
 namespace ISUtils.File
 {
@@ -55,6 +56,22 @@ namespace ISUtils.File
                 try
                 {
                     IndexFile(writer, file);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        internal static void IndexDir(IndexWriter writer, string dir, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            List<string> fileList = SupportClass.File.GetDirFiles(dir, string.Empty);
+            foreach (string file in fileList)
+            {
+                try
+                {
+                    IndexFile(writer, file);
+                    OnProgressChanged("FileIndexer", new IndexProgressChangedEventArgs(1000, 1));
                 }
                 catch (Exception e)
                 {

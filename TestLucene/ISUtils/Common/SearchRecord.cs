@@ -182,7 +182,7 @@ namespace ISUtils.Common
             content.Append("<br>");
             return title.ToString() + content.ToString();
         }
-        public void GetWebInfo(out string szTitle, out string szContent,bool removeNullOrEmpty)
+        public void GetWebInfo(out string szTitle, out string szContent, bool removeNullOrEmpty)
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
@@ -199,7 +199,7 @@ namespace ISUtils.Common
                         }
                         else
                         {
-                            if(!string.IsNullOrEmpty(sf.Result))
+                            if (!string.IsNullOrEmpty(sf.Result))
                                 title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
                         }
                     }
@@ -211,8 +211,46 @@ namespace ISUtils.Common
                         }
                         else
                         {
-                            if(!string.IsNullOrEmpty(sf.Result))
+                            if (!string.IsNullOrEmpty(sf.Result))
                                 content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                        }
+                    }
+                }
+            }
+            szTitle = title.ToString();
+            szContent = content.ToString();
+        }
+        public void GetWebInfo(out string szTitle, out string szContent, bool removeNullOrEmpty, string color, bool removeHighLigt)
+        {
+            StringBuilder title = new StringBuilder();
+            StringBuilder content = new StringBuilder();
+            //title.Append(caption + "&nbsp;");
+            foreach (SearchField sf in fieldList)
+            {
+                if (sf.Visible)
+                {
+                    if (sf.IsTitle)
+                    {
+                        if (!removeNullOrEmpty)
+                        {
+                            title.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result,color,removeHighLigt) + "&nbsp;");
+                        }
+                        else
+                        {
+                            if(!string.IsNullOrEmpty(sf.Result))
+                                title.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
+                        }
+                    }
+                    else
+                    {
+                        if (!removeNullOrEmpty)
+                        {
+                            content.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
+                        }
+                        else
+                        {
+                            if(!string.IsNullOrEmpty(sf.Result))
+                                content.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
                         }
                     }
                 }

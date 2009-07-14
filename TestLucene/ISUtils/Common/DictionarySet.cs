@@ -6,6 +6,7 @@ namespace ISUtils.Common
 {
     public class DictionarySet
     {
+        #region Public Const Flag
         /**/
         /// <summary>
         /// 基本文件路径的标志
@@ -31,6 +32,8 @@ namespace ISUtils.Common
         /// 过滤器文件路径的标志
         /// </summary>
         public const string FilterPathFlag = "FILTERPATH";
+        #endregion
+        #region Property
         /**/
         /// <summary>
         /// 存储基本路径
@@ -101,6 +104,8 @@ namespace ISUtils.Common
             get { return custompaths; }
             set { custompaths = value; }
         }
+        #endregion
+        #region Override
         /**/
         /// <summary>
         /// 获取Dictionary内容
@@ -120,7 +125,9 @@ namespace ISUtils.Common
             ret += ")";
             return base.ToString() + "\t" + ret;
         }
-                /**/
+        #endregion
+        #region Static Public Function
+        /**/
         /// <summary>
         /// 获取字符串列表中的索引列表
         /// </summary>
@@ -253,5 +260,6 @@ namespace ISUtils.Common
             sw.WriteLine("\t" + DictionarySet.FilterPathFlag.ToLower() + "=" + dictSet.FilterPath);
             sw.WriteLine(Config.Suffix);
         }
+        #endregion
     }
 }

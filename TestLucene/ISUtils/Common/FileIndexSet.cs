@@ -6,6 +6,18 @@ namespace ISUtils.Common
 {
     public class FileIndexSet
     {
+        #region Public Const Flag
+        /**/
+        /// <summary>
+        /// 基本文件路径的标志
+        /// </summary>
+        public const string PathFlag = "PATH";
+        /**/
+        /// <summary>
+        /// 要索引目录的标志
+        /// </summary>
+        public const string DirectoryFlag = "DIRECTORY";
+        #endregion
         #region Property
         private string path = "";
         public string Path
@@ -68,6 +80,25 @@ namespace ISUtils.Common
             if (baseDirs == null)
                 baseDirs = new List<string>();
             baseDirs.AddRange(dirs);
+        }
+        #endregion
+        #region Static Function
+        public static void WriteToFile(ref System.IO.StreamWriter sw, FileIndexSet fileSet)
+        {
+            sw.WriteLine("#############################################");
+            sw.WriteLine("#FileIndex");
+            sw.WriteLine("#############################################");
+            sw.WriteLine(Config.FileIndexSetFlag.ToLower());
+            sw.WriteLine(Config.Prefix);
+            sw.WriteLine("\t#文件索引存储路径");
+            sw.WriteLine("\t" + FileIndexSet.PathFlag.ToLower() + "=" + fileSet.path);
+            foreach (string dir in fileSet.baseDirs)
+            {
+                sw.WriteLine();
+                sw.WriteLine("\t#索引目录");
+                sw.WriteLine("\t" + FileIndexSet.DirectoryFlag.ToLower() + "=" + dir);
+            }
+            sw.WriteLine(Config.Suffix);
         }
         #endregion
     }

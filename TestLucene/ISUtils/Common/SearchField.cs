@@ -88,5 +88,11 @@ namespace ISUtils.Common
             return new SearchField(field);
         }
         #endregion
+        #region GetType
+        public new Type GetType()
+        {
+            return typeof(SearchField);
+        }
+        #endregion
     }
 }

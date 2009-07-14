@@ -67,6 +67,7 @@
     <Compile Include="Common\FieldBase.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\RangeCondition.cs" />
+    <Compile Include="Common\Reverser.cs" />
     <Compile Include="Common\SearchRecord.cs" />
     <Compile Include="Common\SearchField.cs" />
     <Compile Include="Common\SearchInfo.cs" />

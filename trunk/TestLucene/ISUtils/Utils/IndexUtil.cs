@@ -382,6 +382,32 @@ namespace ISUtils.Utils
                 throw e;
             }
         }
+        public static bool IndexFile(bool create, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            try
+            {
+                IndexWriter writer = new IndexWriter(fileSet.Path, analyzer, create);
+                writer.SetMaxFieldLength(indexerSet.MaxFieldLength);
+                writer.SetRAMBufferSizeMB(indexerSet.RamBufferSize);
+                writer.SetMergeFactor(indexerSet.MergeFactor);
+                writer.SetMaxBufferedDocs(indexerSet.MaxBufferedDocs);
+                int i=0;
+                foreach (string dir in fileSet.BaseDirs)
+                {
+                    i++;
+                    FileIndexer.IndexDir(writer, dir);
+                    OnProgressChanged("IndexUtil", new IndexProgressChangedEventArgs(fileSet.BaseDirs.Count, i));
+                }
+                writer.Optimize();
+                writer.Close();
+                OnIndexCompleted("IndexUtil", new IndexCompletedEventArgs("File"));
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
         #endregion
         #endregion
     }

@@ -102,16 +102,17 @@ public partial class searchresult : System.Web.UI.Page
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
             Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(),filter, pageSize, sr.PageNum);
             #region Title and Content
+            DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();            
             foreach (SearchRecord record in sr.Records)
             {
                 if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
                 {
                     string type, fvalue;
                     GetFileTypeValue(record["路径"].Value, out type, out fvalue);
-                    buffer.Append(type+"<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "</a><br>");
-                    buffer.Append(fvalue + "<br>");
+                    buffer.Append("<span class=\"LargeTitle\" >" + type + "<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "</a></span><br>");
+                    buffer.Append("<span class=\"SmallTitle\" >" + fvalue + "</span><br>");
                     if(!string.IsNullOrEmpty(record["内容"].Value))
-                        buffer.Append("<span class=\"LargeTitle\">" + GetColorString(record["内容"].Result) + "</span><br>");
+                        buffer.Append("<span class=\"SmallTitle\" >" + GetColorString(record["内容"].Result) + "</span><br>");
                     buffer.Append("<br>");
                 }
                 else
@@ -127,7 +128,18 @@ public partial class searchresult : System.Web.UI.Page
                         buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "</span></a><br />");
                     buffer.Append("<span class=\"SmallTitle\" style=\"line-height:20px\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span><br />");
                     buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
-                    buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+
+                    //查看图形                     
+                    
+                    bool IsImg= gmh.GetProjectGraphicsLabel (record.Caption,record["ItemID"].Value);
+                    if (IsImg)
+                    {
+                        buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                    }
+                    else
+                    {
+                        buffer.Append("<br /><br />");
+                    }
                 }
             }
             tdResult.InnerHtml = buffer.ToString();

@@ -186,6 +186,9 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
+            //Reverser<SearchField> reverser = new Reverser<SearchField>("ISUtils.Common.SearchField", "Order", ReverserInfo.Direction.ASC);
+            //fieldList.Sort(reverser);
+            fieldList.Sort(delegate(SearchField sfa, SearchField sfb) { return sfa.Order > sfb.Order; });
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
@@ -197,7 +200,7 @@ namespace ISUtils.Common
                         {
                             if (showTitleCaption)
                             {
-                                title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                                title.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                             }
                             else
                             {
@@ -210,7 +213,7 @@ namespace ISUtils.Common
                             {
                                 if (showTitleCaption)
                                 {
-                                    title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                                    title.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                                 }
                                 else
                                 {
@@ -223,12 +226,12 @@ namespace ISUtils.Common
                     {
                         if (!removeNullOrEmpty)
                         {
-                            content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                            content.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                         }
                         else
                         {
                             if (!string.IsNullOrEmpty(sf.Result))
-                                content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                                content.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                         }
                     }
                 }
@@ -240,6 +243,8 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
+            Reverser<SearchField> reverser = new Reverser<SearchField>("ISUtils.Common.SearchField", "Order", ReverserInfo.Direction.ASC);
+            fieldList.Sort(reverser);
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
@@ -249,24 +254,24 @@ namespace ISUtils.Common
                     {
                         if (!removeNullOrEmpty)
                         {
-                            title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                            title.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                         }
                         else
                         {
                             if (!string.IsNullOrEmpty(sf.Result))
-                                title.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                                title.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                         }
                     }
                     else
                     {
                         if (!removeNullOrEmpty)
                         {
-                            content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                            content.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                         }
                         else
                         {
                             if (!string.IsNullOrEmpty(sf.Result))
-                                content.Append(sf.Caption + ":" + sf.Result + "&nbsp;");
+                                content.Append(sf.Caption + "：" + sf.Result + "&nbsp;");
                         }
                     }
                 }
@@ -278,6 +283,8 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
+            Reverser<SearchField> reverser = new Reverser<SearchField>("ISUtils.Common.SearchField", "Order", ReverserInfo.Direction.ASC);
+            fieldList.Sort(reverser);
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
@@ -287,24 +294,24 @@ namespace ISUtils.Common
                     {
                         if (!removeNullOrEmpty)
                         {
-                            title.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result,color,removeHighLigt) + "&nbsp;");
+                            title.Append(sf.Caption + "：" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
                         }
                         else
                         {
                             if(!string.IsNullOrEmpty(sf.Result))
-                                title.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
+                                title.Append(sf.Caption + "：" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
                         }
                     }
                     else
                     {
                         if (!removeNullOrEmpty)
                         {
-                            content.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
+                            content.Append(sf.Caption + "：" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
                         }
                         else
                         {
                             if(!string.IsNullOrEmpty(sf.Result))
-                                content.Append(sf.Caption + ":" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
+                                content.Append(sf.Caption + "：" + SupportClass.Result.GetResult(sf.Result, color, removeHighLigt) + "&nbsp;");
                         }
                     }
                 }

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ISUtils.Async
 {
+    public delegate void WriteRowCompletedEventHandler(object sender, WriteRowCompletedEventArgs e);
     public sealed class WriteRowCompletedEventArgs
     {
         private int rowNum = 0;

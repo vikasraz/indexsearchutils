@@ -395,7 +395,7 @@ namespace ISUtils.Utils
                 foreach (string dir in fileSet.BaseDirs)
                 {
                     i++;
-                    FileIndexer.IndexDir(writer, dir);
+                    FileIndexer.IndexDir(writer, dir,OnProgressChanged);
                     OnProgressChanged("IndexUtil", new IndexProgressChangedEventArgs(fileSet.BaseDirs.Count, i));
                 }
                 writer.Optimize();

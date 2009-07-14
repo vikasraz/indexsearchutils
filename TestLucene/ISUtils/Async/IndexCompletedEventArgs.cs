@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ISUtils.Async
 {
+    public delegate void IndexCompletedEventHandler(object sender, IndexCompletedEventArgs e);
     public class IndexCompletedEventArgs
     {
         private string indexName = "";

@@ -731,22 +731,28 @@ namespace ISUtils.Searcher
             if (highlight)
             {
                 recordList = Utils.SearchUtil.HighLightSearch(out query,out statistics);
-                int count = recordList.Count;
-                recordList.AddRange(Utils.SearchUtil.HighLightSearchFile());
-                List<int> fileList=new List<int>();
-                for(int i=count; i<recordList.Count;i++)
-                    fileList.Add(i);
-                statistics.Add("文件", fileList);
+                if (string.IsNullOrEmpty(info.IndexNames))
+                {
+                    int count = recordList.Count;
+                    recordList.AddRange(Utils.SearchUtil.HighLightSearchFile());
+                    List<int> fileList = new List<int>();
+                    for (int i = count; i < recordList.Count; i++)
+                        fileList.Add(i);
+                    statistics.Add("文件", fileList);
+                }
             }
             else
             {
                 recordList = Utils.SearchUtil.SearchEx(out query,out statistics);
-                int count = recordList.Count;
-                recordList.AddRange(Utils.SearchUtil.SearchFile());
-                List<int> fileList = new List<int>();
-                for (int i = count; i < recordList.Count; i++)
-                    fileList.Add(i);
-                statistics.Add("文件", fileList);
+                if (string.IsNullOrEmpty(info.IndexNames))
+                {
+                    int count = recordList.Count;
+                    recordList.AddRange(Utils.SearchUtil.SearchFile());
+                    List<int> fileList = new List<int>();
+                    for (int i = count; i < recordList.Count; i++)
+                        fileList.Add(i);
+                    statistics.Add("文件", fileList);
+                }
             }
             return recordList;
         }

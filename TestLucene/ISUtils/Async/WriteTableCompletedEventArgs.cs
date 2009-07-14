@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ISUtils.Async
 {
+    public delegate void WriteTableCompletedEventHandler(object sender, WriteTableCompletedEventArgs e);
     public sealed class WriteTableCompletedEventArgs
     {
         private string  tableName="";

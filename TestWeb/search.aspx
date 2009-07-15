@@ -64,7 +64,7 @@
                         <td width="80px" style="text-align:right">
                         </td>
                         <td style="width: 600px">
-                            <asp:TextBox ID="txtSearch" Width="98%" runat="server" AutoPostBack="true"  OnTextChanged="txtSearch_TextChanged" >东丽</asp:TextBox>
+                            <asp:TextBox ID="txtSearch" Width="98%" runat="server" AutoPostBack="true"  OnTextChanged="txtSearch_TextChanged" ></asp:TextBox>
                         </td>                       
                         <td width="60px" style="text-align:right">
                             <a id="HyperLink1" href="profsearch.aspx" style="display:inline-block;width:50px;font-size:9pt">高级搜索</a>

@@ -66,11 +66,17 @@ public partial class searchresult : System.Web.UI.Page
         bool allArea = true;
         if (userCookie != null)
         {
-            pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
-            area = Decode(userCookie.Values["Area"]);
-            content = Decode(userCookie.Values["Content"]);
-            allCon = bool.Parse(Decode(userCookie.Values["AllContent"]));
-            allArea = bool.Parse(Decode(userCookie.Values["AllArea"]));
+            try
+            {
+                pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
+                area = Decode(userCookie.Values["Area"]);
+                content = Decode(userCookie.Values["Content"]);
+                allCon = bool.Parse(Decode(userCookie.Values["AllContent"]));
+                allArea = bool.Parse(Decode(userCookie.Values["AllArea"]));
+            }
+            catch (Exception ce)
+            {
+            }
         }
         try
         {
@@ -130,8 +136,8 @@ public partial class searchresult : System.Web.UI.Page
                     buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
 
                     //查看图形                     
-                    
-                    bool IsImg= gmh.GetProjectGraphicsLabel (record.Caption,record["ItemID"].Value);
+
+                    bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, GetPGLValue(record));
                     if (IsImg)
                     {
                         buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"\" class=\"SmallTitle\" >查看图形</a><br /><br />");
@@ -235,6 +241,23 @@ public partial class searchresult : System.Web.UI.Page
     }
     #endregion
     #region Function
+    protected string GetPGLValue(SearchRecord record)
+    {
+        string value = ConfigurationManager.AppSettings[record.Caption];
+        if (string.IsNullOrEmpty(value))
+            return string.Empty;
+        int start = value.IndexOf('[');
+        int end = value.IndexOf(']');
+        if (start <= 0 || end <= 0)
+            return string.Empty;
+        string item = value.Substring(start + 1, end - start - 1);
+        item = item.Substring(item.IndexOf(":")+1);
+        SearchField sf = record[item];
+        if (sf == null)
+            return string.Empty;
+        else
+            return sf.Value;
+    }
     protected void GetFileTypeValue(string file, out string type, out string value)
     {
         if (file.EndsWith(".")) 
@@ -271,11 +294,14 @@ public partial class searchresult : System.Web.UI.Page
         result.Append("条查询结果，以下是第 ");
         if (pageNum == 0) pageNum = 1;
         result.Append((pageNum - 1) * pageSize + 1);
-        result.Append("-");
-        if (pageNum * pageSize > total)
-            result.Append(total);
-        else
-            result.Append(pageSize * pageNum);
+        if ((pageNum - 1) * pageSize + 1 != total)
+        {
+            result.Append("-");
+            if (pageNum * pageSize > total)
+                result.Append(total);
+            else
+                result.Append(pageSize * pageNum);
+        }
         result.Append(" 条。");
         return result.ToString();
     }
@@ -342,7 +368,7 @@ public partial class searchresult : System.Web.UI.Page
         string value = ConfigurationManager.AppSettings[record.Caption];
         StringBuilder url = new StringBuilder();
         if (string.IsNullOrEmpty(value))
-            return string.Empty;
+            return "#";
         int start = value.IndexOf('{');
         int end = value.IndexOf('}');
         if (start <= 0 || end <=0)

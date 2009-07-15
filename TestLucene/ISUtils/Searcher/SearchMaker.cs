@@ -730,29 +730,36 @@ namespace ISUtils.Searcher
             Utils.SearchUtil.SetQueryInfo(info);
             if (highlight)
             {
-                recordList = Utils.SearchUtil.HighLightSearch(out query,out statistics);
+                recordList = Utils.SearchUtil.HighLightSearch(out query);
                 if (string.IsNullOrEmpty(info.IndexNames))
                 {
-                    int count = recordList.Count;
                     recordList.AddRange(Utils.SearchUtil.HighLightSearchFile());
-                    List<int> fileList = new List<int>();
-                    for (int i = count; i < recordList.Count; i++)
-                        fileList.Add(i);
-                    statistics.Add("文件", fileList);
                 }
             }
             else
             {
-                recordList = Utils.SearchUtil.SearchEx(out query,out statistics);
+                recordList = Utils.SearchUtil.SearchEx(out query);
                 if (string.IsNullOrEmpty(info.IndexNames))
                 {
-                    int count = recordList.Count;
                     recordList.AddRange(Utils.SearchUtil.SearchFile());
-                    List<int> fileList = new List<int>();
-                    for (int i = count; i < recordList.Count; i++)
-                        fileList.Add(i);
-                    statistics.Add("文件", fileList);
                 }
+            }
+            Reverser<SearchRecord> reverser=new Reverser<SearchRecord>("ISUtils.Common.SearchRecord","Score",ReverserInfo.Direction.DESC);
+            recordList.Sort(reverser);
+            statistics = new Dictionary<string, List<int>>();
+            for (int i=0; i<recordList.Count; i++)
+            {
+                if (statistics.ContainsKey(recordList[i].Caption))
+                {
+                    statistics[recordList[i].Caption].Add(i);
+                }
+                else
+                {
+                    List<int> posList=new List<int>();
+                    posList.Add(i);
+                    statistics.Add(recordList[i].Caption, posList);
+                }
+
             }
             return recordList;
         }

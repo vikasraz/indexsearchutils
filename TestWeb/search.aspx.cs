@@ -115,7 +115,7 @@ public partial class searchresult : System.Web.UI.Page
                 {
                     string type, fvalue;
                     GetFileTypeValue(record["路径"].Value, out type, out fvalue);
-                    buffer.Append("<span class=\"LargeTitle\" >" + type + "<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "</a></span><br>");
+                    buffer.Append("<span class=\"LargeTitle\" >" + type + "<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "&nbsp;得分：" + record.Score.ToString() + "</a></span><br>");
                     buffer.Append("<span class=\"SmallTitle\" >" + fvalue + "</span><br>");
                     if(!string.IsNullOrEmpty(record["内容"].Value))
                         buffer.Append("<span class=\"SmallTitle\" >" + GetColorString(record["内容"].Result) + "</span><br>");
@@ -129,21 +129,25 @@ public partial class searchresult : System.Web.UI.Page
                     detail = detail + "......";
                     //标题，点击调用序列化
                     if(!string.IsNullOrEmpty(title))
-                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span></a><br />");
+                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "：" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
                     else
-                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "</span></a><br />");
+                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
                     buffer.Append("<span class=\"SmallTitle\" style=\"line-height:20px\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span><br />");
                     buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
 
                     //查看图形                     
 
                     string ID = GetPGLValue(record);
-                    if (string.IsNullOrEmpty(ID))
+                    if (!string.IsNullOrEmpty(ID))
                     {
                         bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
                         if (IsImg)
                         {
                             buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                        }
+                        else
+                        {
+                            buffer.Append("<br /><br />");
                         }
                     }
                     else
@@ -168,6 +172,8 @@ public partial class searchresult : System.Web.UI.Page
                     statis.Append("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"" + url + "\" >" + displayKey + "</a>&nbsp;&nbsp;(" + sr.Statistics[key].ToString() + ")</td></tr>");
                 }
             }
+            url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, "", 1);
+            statis.Append(GetStatisticDisplay(sr.Statistics,url));
             statis.Append("</table>");
             if(sr.Records.Count > 0)
                 tdStatis.InnerHtml = statis.ToString();
@@ -274,7 +280,21 @@ public partial class searchresult : System.Web.UI.Page
         else
             value = "文件格式：" + value;
     }
-    protected string GetStatisticString(Dictionary<string, int> statis, string searchWords,string filter, int pageSize, int pageNum)
+    protected string GetStatisticDisplay(Dictionary<string, int> statis,string url)
+    {
+        int total = 0;
+        StringBuilder result = new StringBuilder("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"");
+        foreach (string key in statis.Keys)
+        {
+            total += statis[key];
+        }
+        result.Append(url);
+        result.Append("\" >全部分类</a>&nbsp;&nbsp;(");
+        result.Append(total);
+        result.Append(")</td></tr>");
+        return result.ToString();
+    }
+    protected string GetStatisticString(Dictionary<string, int> statis, string searchWords, string filter, int pageSize, int pageNum)
     {
         int total = 0;
         StringBuilder result = new StringBuilder();
@@ -330,8 +350,11 @@ public partial class searchresult : System.Web.UI.Page
         url.Append("&Exact="+Encode(exactPhraseContain));
         url.Append("&One="+Encode(oneOfWordsAtLeastContain));
         url.Append("&Not=" +Encode(wordNotInclude));
-        url.Append("&Page="+pagenum.ToString());
-        url.Append("&Filter="+Encode(filter));
+        if (!string.IsNullOrEmpty(filter))
+        {
+            url.Append("&Page=" + pagenum.ToString());
+            url.Append("&Filter=" + Encode(filter));
+        }
         return url.ToString();
     }
     protected void RunSearch()

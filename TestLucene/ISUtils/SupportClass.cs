@@ -158,7 +158,7 @@ namespace ISUtils
                 return src.Substring(src.Length - len, len);
             }
         }
-        public class File
+        public class FileUtil
         {
             public static bool IsFileExists(string filename)
             {
@@ -448,6 +448,30 @@ namespace ISUtils
                         return true;
                 }
                 return false;
+            }
+            public static void DeleteFolder(string folder)
+            {
+                try
+                {
+                    foreach (string dir in Directory.GetFileSystemEntries(folder))
+                    {
+                        if (System.IO.File.Exists(dir))
+                        {
+                            FileInfo info = new FileInfo(dir);
+                            if (info.Attributes.ToString().IndexOf("ReadOnly") != -1)
+                                info.Attributes = FileAttributes.Normal;
+                            System.IO.File.Delete(dir);
+                        }
+                        else
+                        {
+                            DeleteFolder(dir);
+                        }
+                    }
+                    Directory.Delete(folder);
+                }
+                catch (Exception e)
+                {                    
+                }
             }
         }
         public class Time

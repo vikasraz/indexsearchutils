@@ -266,50 +266,6 @@ namespace ISUtils.Database.Writer
         }
         /**/
         /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public override void WriteDataTable(DataTable table, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            if (writer == null)
-            {
-                throw new Exception("The IndexWriter does not created.");
-            }
-            if (document == null)
-                document = new Document();
-            DataColumnCollection columns = table.Columns;
-            foreach (DataColumn column in columns)
-            {
-                if (fieldDict.ContainsKey(column.ColumnName))
-                    continue;
-                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-            }
-            WriteDataRowCollection(table.Rows,ref progressBar);
-        }
-        /**/
-        /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public override void WriteDataTable(DataTable table, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            if (writer == null)
-            {
-                throw new Exception("The IndexWriter does not created.");
-            }
-            if (document == null)
-                document = new Document();
-            DataColumnCollection columns = table.Columns;
-            foreach (DataColumn column in columns)
-            {
-                if (fieldDict.ContainsKey(column.ColumnName))
-                    continue;
-                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-            }
-            WriteDataRowCollection(table.Rows, ref progressBar);
-        }
-        /**/
-        /// <summary>
         /// 对数据库一行进行索引
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
@@ -372,65 +328,6 @@ namespace ISUtils.Database.Writer
             foreach (DataRow row in collection)
             {
                 WriteDataRow(row);
-            }
-            writer.Optimize();
-            writer.Close();
-        }
-        /**/
-        /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public override void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            //if (writer == null)
-            //{
-            //    throw new Exception("The IndexWriter does not created.");
-            //}
-            int i = 0;
-            progressBar.Minimum  = 0;
-            progressBar.Maximum = collection.Count;
-            progressBar.Value  = 0;
-            foreach (DataRow row in collection)
-            {
-                WriteDataRow(row);
-                i++;
-                if (i % SupportClass.MAX_ROWS_WRITE == 0)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    progressBar.Value = i;
-                }
-                //    writer.Flush();
-            }
-            writer.Optimize();
-            writer.Close();
-        }
-        /**/
-        /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public override void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            //if (writer == null)
-            //{
-            //    throw new Exception("The IndexWriter does not created.");
-            //}
-            int i = 0;
-            progressBar.Minimum = 0;
-            progressBar.Maximum = collection.Count;
-            progressBar.Value = 0;
-            foreach (DataRow row in collection)
-            {
-                WriteDataRow(row);
-                i++;
-                if (i % SupportClass.MAX_ROWS_WRITE == 0)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    progressBar.Value = i;
-                }
-                //if (i % SupportClass.MAX_ROWS_WRITE == 0 && i / SupportClass.MAX_ROWS_WRITE >= 1)
-                //    writer.Flush();
             }
             writer.Optimize();
             writer.Close();

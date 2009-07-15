@@ -1515,7 +1515,7 @@ namespace IndexEditor
         {
             if (!init)
             {
-                if (!ISUtils.SupportClass.File.IsFileExists(AppPath +@"\config.xml"))
+                if (!ISUtils.SupportClass.FileUtil.IsFileExists(AppPath +@"\config.xml"))
                 {
                     ShowInformation("文件"+AppPath + @"\config.xml不存在!");
                 }
@@ -1560,7 +1560,7 @@ namespace IndexEditor
                 config.IndexerSet = indexerSet;
                 config.SearchSet = searchSet;
                 config.FileIndexSet = fileSet;
-                ISUtils.SupportClass.File.WriteObjectToXmlFile(AppPath + @"\config.xml",config,typeof(Config));
+                ISUtils.SupportClass.FileUtil.WriteObjectToXmlFile(AppPath + @"\config.xml", config, typeof(Config));
                 makeChange = false;
                 ShowInformation("保存成功！");
             }
@@ -1572,7 +1572,7 @@ namespace IndexEditor
                 string path=GetFileSavePath(OutputFilter);
                 if (!string.IsNullOrEmpty(path))
                 {
-                    ISUtils.SupportClass.File.WriteConfigFile(path, sourceList, indexList,fileSet, dictSet, indexerSet, searchSet);
+                    ISUtils.SupportClass.FileUtil.WriteConfigFile(path, sourceList, indexList, fileSet, dictSet, indexerSet, searchSet);
                     ShowInformation("保存成功！");
                 }
             }

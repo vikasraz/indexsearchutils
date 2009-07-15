@@ -139,24 +139,6 @@ namespace ISUtils.Database.Writer
         }
         /**/
         /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public override void WriteDataTable(DataTable table, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            WriteDataRowCollection(table.Rows, ref progressBar);
-        }
-        /**/
-        /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public override void WriteDataTable(DataTable table, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            WriteDataRowCollection(table.Rows, ref progressBar);
-        }
-        /**/
-        /// <summary>
         /// 对数据库一行进行索引
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
@@ -197,52 +179,6 @@ namespace ISUtils.Database.Writer
             foreach (DataRow row in collection)
             {
                 WriteDataRow(row);
-            }
-            writer.Close();
-        }
-        /**/
-        /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public override void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            progressBar.Minimum  = 0;
-            progressBar.Maximum = collection.Count;
-            progressBar.Value = 0;
-            int i = 0;
-            foreach (DataRow row in collection)
-            {
-                WriteDataRow(row);
-                i++;
-                if (i % SupportClass.MAX_ROWS_WRITE == 0)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    progressBar.Value = i;
-                }
-            }
-            writer.Close();
-        }
-        /**/
-        /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public override void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            progressBar.Minimum = 0;
-            progressBar.Maximum = collection.Count;
-            progressBar.Value = 0;
-            int i = 0;
-            foreach (DataRow row in collection)
-            {
-                WriteDataRow(row);
-                i++;
-                if (i % SupportClass.MAX_ROWS_WRITE == 0)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    progressBar.Value = i;
-                }
             }
             writer.Close();
         }

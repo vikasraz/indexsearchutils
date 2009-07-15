@@ -64,25 +64,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg ;
             }
             SupportClass.LogPath = path;
@@ -95,28 +95,28 @@ namespace ISUtils.Searcher
             List<QueryResult.SearchInfo> qrsiList;
             List<Hits> hitsList = Utils.SearchUtil.FuzzySearch(out qrsiList);
             QueryResult result = new QueryResult();
-            SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "Before QueryResutl Add Result.");
             result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
-            SupportClass.File.WriteToLog(path, "After QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After QueryResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize Result");
                 formater.Serialize(ns, result);
-                SupportClass.File.WriteToLog(path, "Finish Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize Result");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -126,25 +126,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.LogPath = path;
@@ -157,12 +157,12 @@ namespace ISUtils.Searcher
             //List<QueryResult.SearchInfo> qrsiList;
             Query query;
             Hits hits = Utils.SearchUtil.Search(out query);
-            SupportClass.File.WriteToLog(path, "Hits " + hits.Length().ToString());
+            SupportClass.FileUtil.WriteToLog(path, "Hits " + hits.Length().ToString());
             Highlighter highlighter = new Highlighter(new QueryScorer(query));
             highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
             Analyzer analyzer = new StandardAnalyzer();
             FormatedResult fResult = new FormatedResult();
-            SupportClass.File.WriteToLog(path, "Before FormatedResutl Add Element.");
+            SupportClass.FileUtil.WriteToLog(path, "Before FormatedResutl Add Element.");
             for (int i=0; i< hits.Length() && i <searchd.MaxMatches; i++)
             {
                 //Response.Write(ed.doc.ToString() + "<br>");
@@ -197,26 +197,26 @@ namespace ISUtils.Searcher
                 }
                 fResult.AddFormatedDoc(fd);
             }
-            SupportClass.File.WriteToLog(path, "After FormatedResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After FormatedResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize fResult");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize fResult");
                 formater.Serialize(ns, fResult);
-                SupportClass.File.WriteToLog(path, "Finish Serialize fResult");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize fResult");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -226,25 +226,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.LogPath = path;
@@ -256,30 +256,30 @@ namespace ISUtils.Searcher
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             //List<QueryResult.SearchInfo> qrsiList;
             Hits hits = Utils.SearchUtil.Search();
-            SupportClass.File.WriteToLog(path, "Hits "+hits.Length().ToString());
+            SupportClass.FileUtil.WriteToLog(path, "Hits "+hits.Length().ToString());
             QueryResult result = new QueryResult();
-            SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "Before QueryResutl Add Result.");
             result.AddResult(hits, searchd.MaxMatches);
-            SupportClass.File.WriteToLog(path, "After QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After QueryResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize Result");
                 formater.Serialize(ns, result);
-                SupportClass.File.WriteToLog(path, "Finish Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize Result");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -289,25 +289,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.LogPath = path;
@@ -319,29 +319,29 @@ namespace ISUtils.Searcher
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             List<QueryResult.SearchInfo> qrsiList;
             List<SearchRecord> docList = Utils.SearchUtil.FuzzyFastSearch(out qrsiList);
-            SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "Before QueryResutl Add Result.");
             SearchResult result = new SearchResult(docList);
             //result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
-            SupportClass.File.WriteToLog(path, "After QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After QueryResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize Result");
                 formater.Serialize(ns, result);
-                SupportClass.File.WriteToLog(path, "Finish Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize Result");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -351,26 +351,26 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Finish to Deserialize NetworkStream");
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Finish to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.WriteLogAccess = true;
@@ -386,7 +386,7 @@ namespace ISUtils.Searcher
             List<SearchRecord> docList = Utils.SearchUtil.FastSearch(out query);
             if (query != null)
             {
-                SupportClass.File.WriteToLog(path, query.ToString());
+                SupportClass.FileUtil.WriteToLog(path, query.ToString());
             }
             else
             {
@@ -395,12 +395,12 @@ namespace ISUtils.Searcher
                 ns.Close();
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "Hits " + docList.Count.ToString());
+            SupportClass.FileUtil.WriteToLog(path, "Hits " + docList.Count.ToString());
             Highlighter highlighter = new Highlighter(new QueryScorer(query));
             highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
             Analyzer analyzer = new StandardAnalyzer();
             FormatedResult fResult = new FormatedResult();
-            SupportClass.File.WriteToLog(path, "Before FormatedResutl Add Element.");
+            SupportClass.FileUtil.WriteToLog(path, "Before FormatedResutl Add Element.");
             for (int i = 0; i < docList.Count && i < searchd.MaxMatches; i++)
             {
                 //Response.Write(ed.doc.ToString() + "<br>");
@@ -430,27 +430,27 @@ namespace ISUtils.Searcher
                 }
                 fResult.AddFormatedDoc(fd);
             }
-            SupportClass.File.WriteToLog(path, "After FormatedResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After FormatedResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize fResult");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize fResult");
                 formater.Serialize(ns, fResult);
-                SupportClass.File.WriteToLog(path, "Finish Serialize fResult");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize fResult");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 SupportClass.WriteLogAccess = false;
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             SupportClass.WriteLogAccess = false;
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
@@ -461,25 +461,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.LogPath = path;
@@ -491,29 +491,29 @@ namespace ISUtils.Searcher
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             //List<QueryResult.SearchInfo> qrsiList;
             List<SearchRecord> docList= Utils.SearchUtil.FastSearch();
-            SupportClass.File.WriteToLog(path, "Hits " + docList.Count.ToString());
-            SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "Hits " + docList.Count.ToString());
+            SupportClass.FileUtil.WriteToLog(path, "Before QueryResutl Add Result.");
             SearchResult result = new SearchResult(docList);
-            SupportClass.File.WriteToLog(path, "After QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After QueryResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize Result");
                 formater.Serialize(ns, result);
-                SupportClass.File.WriteToLog(path, "Finish Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize Result");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -523,25 +523,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.LogPath = path;
@@ -553,29 +553,29 @@ namespace ISUtils.Searcher
             //Utils.SearchUtil.UseDefaultChineseAnalyzer(true);
             List<QueryResult.SearchInfo> qrsiList;
             List<SearchRecord> docList = Utils.SearchUtil.FuzzyFastFieldSearch(out qrsiList);
-            SupportClass.File.WriteToLog(path, "Before QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "Before QueryResutl Add Result.");
             SearchResult result = new SearchResult(docList);
             //result.AddResult(qrsiList, hitsList, searchd.MaxMatches);
-            SupportClass.File.WriteToLog(path, "After QueryResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After QueryResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize Result");
                 formater.Serialize(ns, result);
-                SupportClass.File.WriteToLog(path, "Finish Serialize Result");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize Result");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();
@@ -585,25 +585,25 @@ namespace ISUtils.Searcher
         {
             Message msg = new Message();
             QueryInfo info = null;
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch");
             BinaryFormatter formater = new BinaryFormatter();
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Deserialize NetworkStream");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Deserialize NetworkStream");
                 info = (QueryInfo)formater.Deserialize(ns);
-                SupportClass.File.WriteToLog(path, "Query Info:" + info.ToString());
+                SupportClass.FileUtil.WriteToLog(path, "Query Info:" + info.ToString());
 
             }
             catch (SerializationException se)
             {
-                SupportClass.File.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to deserialize. Reason: " + se.Message);
 #if DEBUG
                 Console.WriteLine("Failed to deserialize. Reason: " + se.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + se.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
             SupportClass.LogPath = path;
@@ -616,12 +616,12 @@ namespace ISUtils.Searcher
             //List<QueryResult.SearchInfo> qrsiList;
             Query query;
             List<SearchRecord> docList = Utils.SearchUtil.FuzzyFastFieldSearch(out query);
-            SupportClass.File.WriteToLog(path, "Hits " + docList.Count.ToString());
+            SupportClass.FileUtil.WriteToLog(path, "Hits " + docList.Count.ToString());
             Highlighter highlighter = new Highlighter(new QueryScorer(query));
             highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
             Analyzer analyzer = new StandardAnalyzer();
             FormatedResult fResult = new FormatedResult();
-            SupportClass.File.WriteToLog(path, "Before FormatedResutl Add Element.");
+            SupportClass.FileUtil.WriteToLog(path, "Before FormatedResutl Add Element.");
             for (int i = 0; i < docList.Count && i < searchd.MaxMatches; i++)
             {
                 FormatedResult.FormatedDoc fd = new FormatedResult.FormatedDoc();
@@ -650,26 +650,26 @@ namespace ISUtils.Searcher
                 }
                 fResult.AddFormatedDoc(fd);
             }
-            SupportClass.File.WriteToLog(path, "After FormatedResutl Add Result.");
+            SupportClass.FileUtil.WriteToLog(path, "After FormatedResutl Add Result.");
             try
             {
-                SupportClass.File.WriteToLog(path, "Try to Serialize fResult");
+                SupportClass.FileUtil.WriteToLog(path, "Try to Serialize fResult");
                 formater.Serialize(ns, fResult);
-                SupportClass.File.WriteToLog(path, "Finish Serialize fResult");
+                SupportClass.FileUtil.WriteToLog(path, "Finish Serialize fResult");
             }
             catch (SerializationException e)
             {
-                SupportClass.File.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
+                SupportClass.FileUtil.WriteToLog(path, "Failed to serialize. Reason: " + e.Message);
 #if DEBUG
                 Console.WriteLine("Failed to serialize. Reason: " + e.Message);
 #endif
                 msg.Success = false;
                 msg.ExceptionOccur = true;
                 msg.Result = "Exception :" + e.Message;
-                SupportClass.File.WriteToLog(path, msg.ToString());
+                SupportClass.FileUtil.WriteToLog(path, msg.ToString());
                 return msg;
             }
-            SupportClass.File.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
+            SupportClass.FileUtil.WriteToLog(path, "In SearchMaker.ExecuteSearch Success");
             msg.Success = true;
             msg.Result = "ExecuteSearch Success.";
             ns.Close();

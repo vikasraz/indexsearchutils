@@ -7,9 +7,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Store;
 using Lucene.Net.Documents;
 using ISUtils.Async;
-#if DEBUG
-using System.IO;
-#endif
+
 namespace ISUtils.Database.Writer
 {
     /**/
@@ -18,6 +16,12 @@ namespace ISUtils.Database.Writer
     /// </summary>
     public class DBIncremIWriter : DbWriterBase, DataBaseWriter
     {
+        #region Private Vars
+        /**/
+        /// <summary>
+        /// 路径
+        /// </summary>
+        private string path = "";
         /**/
         /// <summary>
         /// 索引文档
@@ -33,6 +37,10 @@ namespace ISUtils.Database.Writer
         /// 索引写入器
         /// </summary>
         private IndexWriter writer;
+        #endregion
+        #region Property
+        #endregion
+        #region Constructor
         /**/
         /// <summary>
         /// 构造函数
@@ -45,6 +53,7 @@ namespace ISUtils.Database.Writer
             Lucene.Net.Store.Directory dict;
             document=new Document();
             fieldDict=new Dictionary<string,Field>();
+            path = directory;
             try
             {
                 dict = FSDirectory.GetDirectory(directory, false);
@@ -87,8 +96,10 @@ namespace ISUtils.Database.Writer
         {
             if (writer !=null)
                writer.Close();
-        }
-        /**/
+       }
+        #endregion
+        #region Override
+       /**/
         /// <summary>
         /// 设定基本属性值
         /// </summary>
@@ -153,6 +164,7 @@ namespace ISUtils.Database.Writer
 #if DEBUG
             DateTime start = DateTime.Now;
 #endif
+            DeleteIndex(table);
             WriteDataRowCollectionWithNoEvent(table.Rows);
 #if DEBUG
             TimeSpan span=DateTime.Now -start;
@@ -193,6 +205,7 @@ namespace ISUtils.Database.Writer
 #if DEBUG
             DateTime start = DateTime.Now;
 #endif
+            DeleteIndex(table);
             WriteDataRowCollectionWithNoEvent(table.Rows);
 #if DEBUG
             TimeSpan span = DateTime.Now - start;
@@ -223,6 +236,10 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = table.Columns;
             foreach (DataColumn column in columns)
             {
+                if (column.Unique)
+                {
+                    primaryKey = column.ColumnName;
+                }
                 Field field = new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 if (fieldsBoostDict.ContainsKey(column.ColumnName))
                     field.SetBoost(fieldsBoostDict[column.ColumnName]);
@@ -233,6 +250,7 @@ namespace ISUtils.Database.Writer
 #if DEBUG
             DateTime start = DateTime.Now;
 #endif
+            DeleteIndex(table);
             WriteDataRowCollection(table.Rows);
 #if DEBUG
             TimeSpan span = DateTime.Now - start;
@@ -268,6 +286,7 @@ namespace ISUtils.Database.Writer
 #if DEBUG
             DateTime start = DateTime.Now;
 #endif
+            DeleteIndex(table);
             WriteDataRowCollection(table.Rows);
 #if DEBUG
             TimeSpan span = DateTime.Now - start;
@@ -276,50 +295,6 @@ namespace ISUtils.Database.Writer
             WriteTableCompletedEventArgs args = new WriteTableCompletedEventArgs(table.TableName);
             base.OnWriteTableCompletedEvent(this, args);
             this.isBusy = false;
-        }
-        /**/
-        /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public override void WriteDataTable(DataTable table,ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            if (writer == null)
-            {
-                throw new Exception("The IndexWriter does not created.");
-            }
-            if (document == null)
-                document = new Document();
-            DataColumnCollection columns = table.Columns;
-            foreach (DataColumn column in columns)
-            {
-                if (fieldDict.ContainsKey(column.ColumnName))
-                    continue;
-                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-            }
-            WriteDataRowCollection(table.Rows,ref progressBar);
-        }
-        /**/
-        /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public override void WriteDataTable(DataTable table, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            if (writer == null)
-            {
-                throw new Exception("The IndexWriter does not created.");
-            }
-            if (document == null)
-                document = new Document();
-            DataColumnCollection columns = table.Columns;
-            foreach (DataColumn column in columns)
-            {
-                if (fieldDict.ContainsKey(column.ColumnName))
-                    continue;
-                fieldDict.Add(column.ColumnName, new Field(column.ColumnName, "value", Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-            }
-            WriteDataRowCollection(table.Rows,ref progressBar);
         }
         /**/
         /// <summary>
@@ -396,56 +371,6 @@ namespace ISUtils.Database.Writer
         }
         /**/
         /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public override void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            int i = 0;
-            progressBar.Maximum = collection.Count;
-            progressBar.Minimum = 0;
-            progressBar.Value = 0;
-            foreach (DataRow row in collection)
-            {
-                WriteDataRow(row);
-                i++;
-                if (i % SupportClass.MAX_ROWS_WRITE == 0)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    progressBar.Value = i;
-                }
-            }
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
-        }
-        /**/
-        /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public override void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            int i = 0;
-            progressBar.Maximum = collection.Count;
-            progressBar.Minimum = 0;
-            progressBar.Value = 0;
-            foreach (DataRow row in collection)
-            {
-                WriteDataRow(row);
-                i++;
-                if (i % SupportClass.MAX_ROWS_WRITE == 0)
-                {
-                    System.Windows.Forms.Application.DoEvents();
-                    progressBar.Value = i;
-                }
-            }
-            writer.Flush();
-            writer.Optimize();
-            writer.Close();
-        }
-        /**/
-        /// <summary>
         /// 合并索引
         /// </summary>
         /// <param name="directoryPaths">索引存储路径列表</param>
@@ -465,5 +390,22 @@ namespace ISUtils.Database.Writer
             writer.Optimize();
             writer.Close();
         }
+        #endregion
+        #region Internal Function
+        internal void DeleteIndex(DataTable table)
+        {
+            if (!string.IsNullOrEmpty(PrimaryKey))
+            {
+                Directory dir = FSDirectory.GetDirectory(path, false);
+                IndexReader reader = IndexReader.Open(dir);
+                foreach (DataRow row in table.Rows)
+                {
+                    Term term = new Term(PrimaryKey, row[PrimaryKey].ToString());
+                    reader.DeleteDocuments(term);
+                }
+                reader.Close();
+            }
+        }
+        #endregion
     }
 }

@@ -91,6 +91,7 @@ namespace ISUtils.Database.Indexer
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
             DbWriterBase writer = new DBIncremIWriter(analyzer, _directory,int.MaxValue,512,1000,1000);
+            writer.PrimaryKey = PrimaryKey;
             writer.WriteDataTable(dt);
             linker.Close();
         }
@@ -125,6 +126,7 @@ namespace ISUtils.Database.Indexer
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
             DbWriterBase writer = new DBIncremIWriter(analyzer, _directory,maxFieldLength,ramBufferSize,mergeFactor,maxBufferedDocs);
+            writer.PrimaryKey = PrimaryKey;
             writer.WriteDataTable(dt);
             linker.Close();
         }
@@ -159,7 +161,8 @@ namespace ISUtils.Database.Indexer
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
             DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
-            writer.WriteDataTable(dt,fieldBoostDict);
+            writer.PrimaryKey = PrimaryKey;
+            writer.WriteDataTable(dt, fieldBoostDict);
             linker.Close();
         }
         /**/
@@ -193,6 +196,7 @@ namespace ISUtils.Database.Indexer
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
             DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            writer.PrimaryKey = PrimaryKey;
             writer.OnProgressChanged += new WriteDbProgressChangedEventHandler(Writer_OnProgressChanged);
             writer.WriteDataTableWithEvent(dt,fieldBoostDict);
             linker.Close();
@@ -230,85 +234,17 @@ namespace ISUtils.Database.Indexer
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
             DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            writer.PrimaryKey = PrimaryKey;
             writer.OnProgressChanged += new WriteDbProgressChangedEventHandler(Writer_OnProgressChanged);
             writer.WriteDataTableWithEvent(dt);
             linker.Close();
             IndexCompletedEventArgs args = new IndexCompletedEventArgs("IncremIndex");
             OnIndexCompletedEvent(this, args);
         }
-
         void Writer_OnProgressChanged(object sender, ISUtils.Async.WriteDbProgressChangedEventArgs e)
         {
             IndexProgressChangedEventArgs args = new IndexProgressChangedEventArgs(e.RowNum,e.CurrentRow);
             OnProgressChangedEvent(this, args);
-        }
-        /**/
-        /// <summary>
-        /// 将数据库查询结果写入索引
-        /// </summary>
-        /// <param name="strSQL">数据库查询语句</param>
-        /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
-        /// <param name="maxBufferedDocs">文档内存最大存储数</param>
-        public override void WriteResults(string strSQL, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            DBLinker linker;
-
-            switch (dbType)
-            {
-                case DBTypeEnum.SQL_Server:
-                    linker = new SqlServerLinker(_connectString);
-                    break;
-                case DBTypeEnum.OLE_DB:
-                    linker = new OleDbLinker(_connectString);
-                    break;
-                case DBTypeEnum.ODBC:
-                    linker = new OdbcLinker(_connectString);
-                    break;
-                case DBTypeEnum.Oracle:
-                    linker = new OracleLinker(_connectString);
-                    break;
-                default:
-                    linker = new SqlServerLinker(_connectString);
-                    break;
-            }
-            DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
-            writer.WriteDataTable(dt,ref progressBar);
-            linker.Close();
-        }
-        /**/
-        /// <summary>
-        /// 将数据库查询结果写入索引
-        /// </summary>
-        /// <param name="strSQL">数据库查询语句</param>
-        /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
-        /// <param name="maxBufferedDocs">文档内存最大存储数</param>
-        public override void WriteResults(string strSQL, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            DBLinker linker;
-
-            switch (dbType)
-            {
-                case DBTypeEnum.SQL_Server:
-                    linker = new SqlServerLinker(_connectString);
-                    break;
-                case DBTypeEnum.OLE_DB:
-                    linker = new OleDbLinker(_connectString);
-                    break;
-                case DBTypeEnum.ODBC:
-                    linker = new OdbcLinker(_connectString);
-                    break;
-                case DBTypeEnum.Oracle:
-                    linker = new OracleLinker(_connectString);
-                    break;
-                default:
-                    linker = new SqlServerLinker(_connectString);
-                    break;
-            }
-            DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
-            writer.WriteDataTable(dt,ref progressBar);
-            linker.Close();
         }
         #endregion
     }

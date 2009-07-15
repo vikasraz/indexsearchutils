@@ -205,7 +205,7 @@ namespace ISUtils.Database
         }
         public static void GetStructures(string configFilePath, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
         {
-            List<string> srcList = SupportClass.File.GetFileText(configFilePath);
+            List<string> srcList = SupportClass.FileUtil.GetFileText(configFilePath);
             List<Source> sourceList = Source.GetSourceList(srcList);
             List<IndexSet> indexList = IndexSet.GetIndexList(srcList);
             Dictionary<IndexSet, Source>  indexDict = new Dictionary<IndexSet, Source>();
@@ -398,7 +398,7 @@ namespace ISUtils.Database
         }
         public static Dictionary<IndexSet,Source> GetExcelSettings(string path)
         {
-            if (SupportClass.File.IsFileExists(path) == false)
+            if (SupportClass.FileUtil.IsFileExists(path) == false)
                 throw new ArgumentException("path is not valid.", "path");
             DataTable table = ExcelLinker.GetDataTableFromFile(path);
             Dictionary<IndexSet, Source> dict = new Dictionary<IndexSet, Source>();
@@ -531,6 +531,33 @@ namespace ISUtils.Database
                             catch (Exception e)
                             {
                                 fp.Boost = 1.0f;
+                            }
+                        }
+                    }
+                    else if (column.ColumnName.Equals("Order"))
+                    {
+                        if (string.IsNullOrEmpty(row[column].ToString()) == false)
+                        {
+                            try
+                            {
+                                fp.Order = int.Parse(row[column].ToString());
+                            }
+                            catch (Exception e)
+                            {
+                                fp.Order = 0;
+                            }
+                        }
+                    }
+                    else if (column.ColumnName.Equals("PK"))
+                    {
+                        if (string.IsNullOrEmpty(row[column].ToString()) == false)
+                        {
+                            try
+                            {
+                                source.PrimaryKey=row[column].ToString();
+                            }
+                            catch (Exception e)
+                            {
                             }
                         }
                     }

@@ -81,9 +81,9 @@ namespace ISUtils.Utils
         {
             if (configFilePath == null)
                 throw new ArgumentNullException("configFilePath", "configFilePath must no be null!");
-            if (SupportClass.File.IsFileExists(configFilePath) == false)
+            if (SupportClass.FileUtil.IsFileExists(configFilePath) == false)
                 throw new ArgumentException("configFilePath must be exists!", "configFilePath");
-            List<string> src = SupportClass.File.GetFileText(configFilePath);
+            List<string> src = SupportClass.FileUtil.GetFileText(configFilePath);
             sourceList = Source.GetSourceList(src);
             indexList = IndexSet.GetIndexList(src);
             indexer = IndexerSet.GetIndexer(src);

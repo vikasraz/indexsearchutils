@@ -27,6 +27,7 @@ namespace ISUtils.Database.Writer
                 if (create)
                 {
                     DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbcIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbcIndexer.WriteResults(source.Query,indexer.MaxFieldLength,indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs);
                     return DateTime.Now - start;
@@ -34,6 +35,7 @@ namespace ISUtils.Database.Writer
                 else
                 {
                     DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbiIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs);                 
                     return DateTime.Now - start;
@@ -58,6 +60,7 @@ namespace ISUtils.Database.Writer
                 if (create)
                 {
                     DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbcIndexer.PrimaryKey = source.PrimaryKey;
                     dbcIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbcIndexer.OnProgressChanged += OnProgressChanged;
                     start = DateTime.Now;
@@ -67,6 +70,7 @@ namespace ISUtils.Database.Writer
                 else
                 {
                     DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbiIndexer.PrimaryKey = source.PrimaryKey;
                     dbiIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbiIndexer.OnProgressChanged += OnProgressChanged;
                     start = DateTime.Now;
@@ -93,6 +97,7 @@ namespace ISUtils.Database.Writer
                 if (create)
                 {
                     DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbcIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbcIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,source.FieldBoostDict);
                     return DateTime.Now - start;
@@ -100,6 +105,7 @@ namespace ISUtils.Database.Writer
                 else
                 {
                     DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbiIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,source.FieldBoostDict);
                     return DateTime.Now - start;
@@ -124,6 +130,7 @@ namespace ISUtils.Database.Writer
                 if (create)
                 {
                     DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbcIndexer.PrimaryKey = source.PrimaryKey;
                     dbcIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbcIndexer.OnProgressChanged += OnProgressChanged;
                     start = DateTime.Now;
@@ -133,70 +140,11 @@ namespace ISUtils.Database.Writer
                 else
                 {
                     DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    dbiIndexer.PrimaryKey = source.PrimaryKey;
                     dbiIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbiIndexer.OnProgressChanged += OnProgressChanged;
                     start = DateTime.Now;
                     dbiIndexer.WriteResultsWithEvent(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,source.FieldBoostDict);
-                    return DateTime.Now - start;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        #endregion
-        #region With Windows Contrl
-        public static TimeSpan WriteIndex(Analyzer analyzer, IndexerSet indexer, IndexSet index, Source source, bool create, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            try
-            {
-                //ChineseSegAnalysis csa = new ChineseSegAnalysis(index.BasePath, index.NamePath, index.NumberPath, index.CustomPaths);
-                //csa.FilterFilePath = index.FilterPath;
-                //Analyzer analyzer = csa.GetAnalyzer();
-                string connect = source.GetConnString();
-                DateTime start;
-                if (create)
-                {
-                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
-                    start = DateTime.Now;
-                    dbcIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,ref progressBar);
-                    return DateTime.Now - start;
-                }
-                else
-                {
-                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
-                    start = DateTime.Now;
-                    dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,ref progressBar);
-                    return DateTime.Now - start;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
-        public static TimeSpan WriteIndex(Analyzer analyzer, IndexerSet indexer, IndexSet index, Source source, bool create, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            try
-            {
-                //ChineseSegAnalysis csa = new ChineseSegAnalysis(index.BasePath, index.NamePath, index.NumberPath, index.CustomPaths);
-                //csa.FilterFilePath = index.FilterPath;
-                //Analyzer analyzer = csa.GetAnalyzer();
-                string connect = source.GetConnString();
-                DateTime start;
-                if (create)
-                {
-                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
-                    start = DateTime.Now;
-                    dbcIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs, ref progressBar);
-                    return DateTime.Now - start;
-                }
-                else
-                {
-                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
-                    start = DateTime.Now;
-                    dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs, ref progressBar);
                     return DateTime.Now - start;
                 }
             }

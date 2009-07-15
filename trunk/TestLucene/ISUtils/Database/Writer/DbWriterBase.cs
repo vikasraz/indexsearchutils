@@ -7,9 +7,12 @@ namespace ISUtils.Database.Writer
 {
     public abstract class DbWriterBase : DataBaseWriter
     {
+        #region Event
         public event WriteTableCompletedEventHandler OnWriteTableCompleted;
         public event WriteRowCompletedEventHandler OnWriteRowCompleted;
         public event WriteDbProgressChangedEventHandler OnProgressChanged;
+        #endregion
+        #region Property
         protected int RowNum = 0;
         protected int Percent = 1;
         protected bool isBusy = false;
@@ -17,6 +20,14 @@ namespace ISUtils.Database.Writer
         {
             get { return isBusy; }
         }
+        protected string primaryKey = "";
+        public string PrimaryKey
+        {
+            get { return primaryKey; }
+            set { primaryKey = value; }
+        }
+        #endregion
+        #region Event CallBack
         protected virtual void OnWriteTableCompletedEvent(object sender, WriteTableCompletedEventArgs e)
         {
             if (OnWriteTableCompleted != null)
@@ -32,6 +43,8 @@ namespace ISUtils.Database.Writer
             if (OnProgressChanged != null)
                 OnProgressChanged(sender, e);
         }
+        #endregion
+        #region Abstract Function
         /**/
         /// <summary>
         /// 设定基本属性值
@@ -73,18 +86,6 @@ namespace ISUtils.Database.Writer
         public abstract void WriteDataTableWithEvent(DataTable table, Dictionary<string, float> fieldsBoostDict);
         /**/
         /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public abstract void WriteDataTable(DataTable table,ref System.Windows.Forms.ProgressBar progressBar);
-        /**/
-        /// <summary>
-        /// 对数据库表进行索引
-        /// </summary>
-        /// <param name="table">数据库表名</param>
-        public abstract void WriteDataTable(DataTable table, ref System.Windows.Forms.ToolStripProgressBar progressBar);
-        /**/
-        /// <summary>
         /// 对数据库一行进行索引
         /// </summary>
         /// <param name="row">数据库中的一行数据</param>
@@ -104,21 +105,10 @@ namespace ISUtils.Database.Writer
         public abstract void WriteDataRowCollectionWithNoEvent(DataRowCollection collection);
         /**/
         /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public abstract void WriteDataRowCollection(DataRowCollection collection,ref System.Windows.Forms.ToolStripProgressBar progressBar);
-        /**/
-        /// <summary>
-        /// 对数据库行进行索引
-        /// </summary>
-        /// <param name="collection">数据库中行数据</param>
-        public abstract void WriteDataRowCollection(DataRowCollection collection, ref System.Windows.Forms.ProgressBar progressBar);
-        /**/
-        /// <summary>
         /// 合并索引
         /// </summary>
         /// <param name="directoryPaths">索引存储路径列表</param>
         public abstract void MergeIndexes(params string[] directoryPaths);
+        #endregion
     }
 }

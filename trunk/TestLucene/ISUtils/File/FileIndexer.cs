@@ -29,9 +29,9 @@ namespace ISUtils.File
             }
             catch (Exception e)
             {
-                if (SupportClass.File.IsTextFile(filepath))
+                if (SupportClass.FileUtil.IsTextFile(filepath))
                 {
-                    fc.Content = SupportClass.File.ReadTextFile(filepath);
+                    fc.Content = SupportClass.FileUtil.ReadTextFile(filepath);
                 }
             }
             return fc;
@@ -50,7 +50,7 @@ namespace ISUtils.File
         }
         internal static void IndexDir(IndexWriter writer, string dir)
         {
-            List<string> fileList = SupportClass.File.GetDirFiles(dir, string.Empty);
+            List<string> fileList = SupportClass.FileUtil.GetDirFiles(dir, string.Empty);
             foreach (string file in fileList)
             {
                 try
@@ -65,7 +65,7 @@ namespace ISUtils.File
         }
         internal static void IndexDir(IndexWriter writer, string dir, IndexProgressChangedEventHandler OnProgressChanged)
         {
-            List<string> fileList = SupportClass.File.GetDirFiles(dir, string.Empty);
+            List<string> fileList = SupportClass.FileUtil.GetDirFiles(dir, string.Empty);
             foreach (string file in fileList)
             {
                 try

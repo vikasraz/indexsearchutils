@@ -34,7 +34,7 @@ namespace ISUtils.Utils
                 List<IndexSet> indexList;
                 if (isXmlFile)
                 {
-                    Config config = (Config)SupportClass.File.GetObjectFromXmlFile(configFileName, typeof(Config));
+                    Config config = (Config)SupportClass.FileUtil.GetObjectFromXmlFile(configFileName, typeof(Config));
                     sourceList = config.SourceList;
                     indexList = config.IndexList;
                     indexerSet = config.IndexerSet;
@@ -43,7 +43,7 @@ namespace ISUtils.Utils
                 }
                 else
                 {
-                    List<string> srcList = SupportClass.File.GetFileText(configFileName);
+                    List<string> srcList = SupportClass.FileUtil.GetFileText(configFileName);
                     sourceList = Source.GetSourceList(srcList);
                     indexList = IndexSet.GetIndexList(srcList);
                     indexerSet = IndexerSet.GetIndexer(srcList);
@@ -198,42 +198,6 @@ namespace ISUtils.Utils
                 }
             }
         }
-        public static void Index(IndexTypeEnum type,ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            if (!initSettings)
-                throw new ApplicationException("Index Settings not init!");
-            if (indexDict.Count > 0)
-            {
-                foreach (IndexSet indexSet in indexDict.Keys)
-                {
-                    if (indexSet.Type == type)
-                    {
-                        System.Windows.Forms.Application.DoEvents();
-                        IWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary,ref progressBar);
-                        System.Windows.Forms.Application.DoEvents();
-                    }
-                }
-                System.Windows.Forms.Application.DoEvents();
-            }
-        }
-        public static void Index(IndexTypeEnum type, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            if (!initSettings)
-                throw new ApplicationException("Index Settings not init!");
-            if (indexDict.Count > 0)
-            {
-                foreach (IndexSet indexSet in indexDict.Keys)
-                {
-                    if (indexSet.Type == type)
-                    {
-                        System.Windows.Forms.Application.DoEvents();
-                        IWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, ref progressBar);
-                        System.Windows.Forms.Application.DoEvents();
-                    }
-                }
-                System.Windows.Forms.Application.DoEvents();
-            }
-        }
         #endregion
         #region No Ram,Boost
         public static void BoostIndex(IndexTypeEnum type)
@@ -245,6 +209,10 @@ namespace ISUtils.Utils
                 DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
+                    if (indexSet.Type == IndexTypeEnum.Ordinary)
+                    {
+                        SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                    }
                     if (indexSet.Type == type)
                     {
                         IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
@@ -268,6 +236,10 @@ namespace ISUtils.Utils
                 DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
+                    if (indexSet.Type == IndexTypeEnum.Ordinary)
+                    {
+                        SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                    }
                     if (indexSet.Type == type)
                     {
                         IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
@@ -291,6 +263,10 @@ namespace ISUtils.Utils
                 DataBaseLibrary.SearchUpdateManage dblSum=new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
+                    if (create)
+                    {
+                        SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                    }
                     IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
                     if (!create)
                     {
@@ -346,48 +322,16 @@ namespace ISUtils.Utils
                 }
             }
         }
-        public static void IndexEx(IndexTypeEnum type, ref System.Windows.Forms.ToolStripProgressBar progressBar)
-        {
-            if (!initSettings)
-                throw new ApplicationException("Index Settings not init!");
-            if (indexDict.Count > 0)
-            {
-                foreach (IndexSet indexSet in indexDict.Keys)
-                {
-                    if (indexSet.Type == type)
-                    {
-                        System.Windows.Forms.Application.DoEvents();
-                        RamIWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, ref progressBar);
-                        System.Windows.Forms.Application.DoEvents();
-                    }
-                }
-                System.Windows.Forms.Application.DoEvents();
-            }
-        }
-        public static void IndexEx(IndexTypeEnum type, ref System.Windows.Forms.ProgressBar progressBar)
-        {
-            if (!initSettings)
-                throw new ApplicationException("Index Settings not init!");
-            if (indexDict.Count > 0)
-            {
-                foreach (IndexSet indexSet in indexDict.Keys)
-                {
-                    if (indexSet.Type == type)
-                    {
-                        System.Windows.Forms.Application.DoEvents();
-                        RamIWriter.WriteIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, ref progressBar);
-                        System.Windows.Forms.Application.DoEvents();
-                    }
-                }
-                System.Windows.Forms.Application.DoEvents();
-            }
-        }
         #endregion
         #region File Index
         public static bool IndexFile(bool create)
         {
             try
             {
+                if (create)
+                {
+                    SupportClass.FileUtil.DeleteFolder(fileSet.Path);
+                }
                 IndexWriter writer = new IndexWriter(fileSet.Path, analyzer, create);
                 writer.SetMaxFieldLength(indexerSet.MaxFieldLength);
                 writer.SetRAMBufferSizeMB(indexerSet.RamBufferSize);
@@ -410,6 +354,10 @@ namespace ISUtils.Utils
         {
             try
             {
+                if (create)
+                {
+                    SupportClass.FileUtil.DeleteFolder(fileSet.Path);
+                }
                 IndexWriter writer = new IndexWriter(fileSet.Path, analyzer, create);
                 writer.SetMaxFieldLength(indexerSet.MaxFieldLength);
                 writer.SetRAMBufferSizeMB(indexerSet.RamBufferSize);

@@ -167,12 +167,12 @@ namespace ISUtils.Common
         {
             if (configFilePath == null)
                 throw new ArgumentNullException("configFilePath", "configFilePath must no be null!");
-            if (SupportClass.File.IsFileExists(configFilePath) == false)
+            if (SupportClass.FileUtil.IsFileExists(configFilePath) == false)
                 throw new ArgumentException("configFilePath must be exists!", "configFilePath");
             if (isXmlFile)
             {
                 Config config ;
-                config = (Config)SupportClass.File.GetObjectFromXmlFile(configFilePath,typeof(Config));
+                config = (Config)SupportClass.FileUtil.GetObjectFromXmlFile(configFilePath,typeof(Config));
                 this.dictSet = config.dictSet;
                 this.indexer = config.indexer;
                 this.indexList = config.indexList;
@@ -182,7 +182,7 @@ namespace ISUtils.Common
             }
             else
             {
-                List<string> src = SupportClass.File.GetFileText(configFilePath);
+                List<string> src = SupportClass.FileUtil.GetFileText(configFilePath);
                 sourceList = Source.GetSourceList(src);
                 indexList = IndexSet.GetIndexList(src);
                 indexer = IndexerSet.GetIndexer(src);
@@ -312,7 +312,7 @@ namespace ISUtils.Common
                     case "Source":
                         #region Read Source
                         Source source = new Source();
-                        source.SourceName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
+                        source.SourceName = SupportClass.FileUtil.GetXmlAttribute(reader, "Name", typeof(string));
                         do
                         {
                             currentNodeName = reader.Name;
@@ -356,11 +356,11 @@ namespace ISUtils.Common
                                         {
                                             case "Field":
                                                 FieldProperties fp = new FieldProperties();
-                                                fp.Name = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
-                                                fp.Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
-                                                fp.Boost = float.Parse(SupportClass.File.GetXmlAttribute(reader, "Boost", typeof(float)));
-                                                fp.IsTitle = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
-                                                fp.Order = int.Parse(SupportClass.File.GetXmlAttribute(reader, "Order", typeof(int)));
+                                                fp.Name = SupportClass.FileUtil.GetXmlAttribute(reader, "Name", typeof(string));
+                                                fp.Caption = SupportClass.FileUtil.GetXmlAttribute(reader, "Caption", typeof(string));
+                                                fp.Boost = float.Parse(SupportClass.FileUtil.GetXmlAttribute(reader, "Boost", typeof(float)));
+                                                fp.IsTitle = bool.Parse(SupportClass.FileUtil.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
+                                                fp.Order = int.Parse(SupportClass.FileUtil.GetXmlAttribute(reader, "Order", typeof(int)));
                                                 fpList.Add(fp);
                                                 reader.Read();
                                                 break;
@@ -384,9 +384,9 @@ namespace ISUtils.Common
                     case "Index":
                         #region Read Index
                         IndexSet indexSet = new IndexSet();
-                        indexSet.IndexName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
-                        indexSet.Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
-                        indexSet.Type = IndexType.GetIndexType(SupportClass.File.GetXmlAttribute(reader, "Type", typeof(string)));
+                        indexSet.IndexName = SupportClass.FileUtil.GetXmlAttribute(reader, "Name", typeof(string));
+                        indexSet.Caption = SupportClass.FileUtil.GetXmlAttribute(reader, "Caption", typeof(string));
+                        indexSet.Type = IndexType.GetIndexType(SupportClass.FileUtil.GetXmlAttribute(reader, "Type", typeof(string)));
                         do
                         {
                             currentNodeName = reader.Name;

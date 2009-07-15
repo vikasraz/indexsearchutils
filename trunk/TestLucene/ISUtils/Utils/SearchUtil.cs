@@ -42,7 +42,7 @@ namespace ISUtils.Utils
                 List<IndexSet> indexList;
                 if (isXmlFile)
                 {
-                    Config config = (Config)SupportClass.File.GetObjectFromXmlFile(configFileName, typeof(Config));
+                    Config config = (Config)SupportClass.FileUtil.GetObjectFromXmlFile(configFileName, typeof(Config));
                     sourceList = config.SourceList;
                     indexList = config.IndexList;
                     searchSet = config.SearchSet;
@@ -51,7 +51,7 @@ namespace ISUtils.Utils
                 }
                 else
                 {
-                    List<string> srcList = SupportClass.File.GetFileText(configFileName);
+                    List<string> srcList = SupportClass.FileUtil.GetFileText(configFileName);
                     sourceList = Source.GetSourceList(srcList);
                     indexList = IndexSet.GetIndexList(srcList);
                     searchSet = SearchSet.GetSearchSet(srcList);
@@ -618,52 +618,52 @@ namespace ISUtils.Utils
             BooleanQuery queryRet = new BooleanQuery();
             foreach (FilterCondition fc in filterList)
             {
-                //SupportClass.File.WriteLog("fc :" + fc.ToString());
+                //SupportClass.FileUtil.WriteLog("fc :" + fc.ToString());
                 QueryParser parser = new QueryParser(fc.GetString(), analyzer);
                 foreach (string value in fc.Values)
                 {
-                    //SupportClass.File.WriteLog("fc loop,value of fc.values:" + value);
+                    //SupportClass.FileUtil.WriteLog("fc loop,value of fc.values:" + value);
                     string[] wordArray = SupportClass.String.Split(value);
                     foreach (string words in wordArray)
                     {
-                        //SupportClass.File.WriteLog("word loop,word of value split:" + words);
+                        //SupportClass.FileUtil.WriteLog("word loop,word of value split:" + words);
                         List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
                         foreach (string word in wordList)
                         {
                             Query query = parser.Parse(word);
                             queryRet.Add(query, BooleanClause.Occur.MUST);
-                            //SupportClass.File.WriteLog(queryRet.ToString());
+                            //SupportClass.FileUtil.WriteLog(queryRet.ToString());
                         }
                     }
                 }
             }
             foreach (ExcludeCondition ec in excludeList)
             {
-                //SupportClass.File.WriteLog("ec :" + ec.ToString());
+                //SupportClass.FileUtil.WriteLog("ec :" + ec.ToString());
                 QueryParser parser = new QueryParser(ec.GetString(), analyzer);
                 foreach (string value in ec.Values)
                 {
-                    //SupportClass.File.WriteLog("ec loop,value of ec.values:" + value);
+                    //SupportClass.FileUtil.WriteLog("ec loop,value of ec.values:" + value);
                     string[] wordArray = SupportClass.String.Split(value);
                     foreach (string words in wordArray)
                     {
-                        //SupportClass.File.WriteLog("word loop,word of value split:" + words);
+                        //SupportClass.FileUtil.WriteLog("word loop,word of value split:" + words);
                         List<string> wordList = ISUtils.CSegment.Segment.SegmentStringEx(words);
                         foreach (string word in wordList)
                         {
                             Query query = parser.Parse(word);
                             queryRet.Add(query, BooleanClause.Occur.MUST_NOT);
-                            //SupportClass.File.WriteLog(queryRet.ToString());
+                            //SupportClass.FileUtil.WriteLog(queryRet.ToString());
                         }
                     }
                 }
             }
             foreach (RangeCondition rc in rangeList)
             {
-                SupportClass.File.WriteLog("rc:" + rc.ToString());
+                SupportClass.FileUtil.WriteLog("rc:" + rc.ToString());
                 RangeQuery query = new RangeQuery(new Term(rc.GetString(), rc.RangeFrom), new Term(rc.GetString(), rc.RangeTo), rc.IntervalType);
                 queryRet.Add(query, BooleanClause.Occur.MUST);
-                SupportClass.File.WriteLog(queryRet.ToString());
+                SupportClass.FileUtil.WriteLog(queryRet.ToString());
             }
             return queryRet;
         }
@@ -734,7 +734,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hitsList;
         }
@@ -756,7 +756,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         Hits hits = searcher.Search(query);
                         hitsList.Add(hits);
                         siList.Add(si);
@@ -774,7 +774,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         Hits hits = searcher.Search(query);
                         hitsList.Add(hits);
                         siList.Add(si);
@@ -783,7 +783,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hitsList;
         }
@@ -817,12 +817,12 @@ namespace ISUtils.Utils
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                 hits = searcher.Search(query);
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hits;
         }
@@ -857,12 +857,12 @@ namespace ISUtils.Utils
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                 hits = searcher.Search(query);
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hits;
         }
@@ -898,7 +898,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field,indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet,sfList,score));
+                            recordList.Add(new SearchRecord(indexSet,sfList,indexDict[indexSet].PrimaryKey,score));
                         }
                     }
                 }
@@ -928,14 +928,14 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -958,7 +958,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         for (int i = 0; i < scoreDocs.Length; i++)
@@ -974,7 +974,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                         siList.Add(si);
                     }
@@ -991,7 +991,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         for (int i = 0; i < scoreDocs.Length; i++)
@@ -1007,7 +1007,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                         siList.Add(si);
                     }
@@ -1015,7 +1015,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -1049,7 +1049,7 @@ namespace ISUtils.Utils
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                 TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                 ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                 for (int i = 0; i < scoreDocs.Length; i++)
@@ -1063,7 +1063,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return docList;
         }
@@ -1098,7 +1098,7 @@ namespace ISUtils.Utils
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                 TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                 ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                 for (int i = 0; i < scoreDocs.Length; i++)
@@ -1112,7 +1112,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return docList;
         }
@@ -1172,7 +1172,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return docList;
         }
@@ -1194,7 +1194,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
@@ -1221,7 +1221,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
@@ -1239,7 +1239,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return docList;
         }
@@ -1260,7 +1260,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
@@ -1285,7 +1285,7 @@ namespace ISUtils.Utils
 #if DEBUG
                         System.Console.WriteLine(query.ToString());
 #endif
-                        SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                        SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                         TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
@@ -1302,7 +1302,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             mquery = GetQuery();
             return docList;
@@ -1327,12 +1327,12 @@ namespace ISUtils.Utils
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                 hits = searcher.Search(query);
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hits;
         }
@@ -1355,12 +1355,12 @@ namespace ISUtils.Utils
 #if DEBUG
                 System.Console.WriteLine(query.ToString());
 #endif
-                SupportClass.File.WriteToLog(SupportClass.LogPath, query.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, query.ToString());
                 hits = searcher.Search(query);
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return hits;
         }
@@ -1395,7 +1395,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return docList;
         }
@@ -1431,7 +1431,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return docList;
         }
@@ -1491,7 +1491,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
@@ -1527,14 +1527,14 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -1576,7 +1576,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field,false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
@@ -1613,14 +1613,14 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field, false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -1665,7 +1665,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1715,7 +1715,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1734,7 +1734,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -1778,7 +1778,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field,false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1828,7 +1828,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field, false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1847,7 +1847,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -1906,7 +1906,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
@@ -1959,14 +1959,14 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -2025,7 +2025,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
@@ -2079,14 +2079,14 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -2148,7 +2148,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2215,7 +2215,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2234,7 +2234,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -2295,7 +2295,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2362,7 +2362,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList,score));
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2381,7 +2381,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -2415,7 +2415,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }
@@ -2482,7 +2482,7 @@ namespace ISUtils.Utils
             }
             catch (Exception e)
             {
-                SupportClass.File.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+                SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
             }
             return recordList;
         }

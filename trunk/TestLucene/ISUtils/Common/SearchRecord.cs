@@ -16,6 +16,7 @@ namespace ISUtils.Common
         private string caption = "";
         private string index = "";
         private float score = 0.0f;
+        private string primaryKey = "";
         private List<SearchField> fieldList = new List<SearchField>();
         public string Name
         {
@@ -36,6 +37,11 @@ namespace ISUtils.Common
         {
             get { return score; }
             set { score = value; }
+        }
+        public string PrimaryKey
+        {
+            get { return primaryKey; }
+            set { primaryKey = value; }
         }
         public List<SearchField> Fields
         {
@@ -175,9 +181,10 @@ namespace ISUtils.Common
             : this(set.IndexName, set.Caption, set.IndexName, fields)
         { 
         }
-        public SearchRecord(IndexSet set, List<SearchField> fields,float score)
+        public SearchRecord(IndexSet set, List<SearchField> fields,string pk,float score)
             : this(set.IndexName, set.Caption, set.IndexName,score, fields)
         {
+            this.primaryKey = pk;
         }
         #endregion
         #region Override
@@ -404,9 +411,9 @@ namespace ISUtils.Common
             string fieldName, fieldValue, fieldCaption;
             float fieldBoost;
             bool isTitle;
-            Name = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
-            Caption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
-            IndexName = SupportClass.File.GetXmlAttribute(reader, "Index", typeof(string));
+            Name = SupportClass.FileUtil.GetXmlAttribute(reader, "Name", typeof(string));
+            Caption = SupportClass.FileUtil.GetXmlAttribute(reader, "Caption", typeof(string));
+            IndexName = SupportClass.FileUtil.GetXmlAttribute(reader, "Index", typeof(string));
             do
             {
                 currentNodeName = reader.Name;
@@ -417,11 +424,11 @@ namespace ISUtils.Common
                 switch (currentNodeName)
                 {
                     case "Field":
-                        fieldName = SupportClass.File.GetXmlAttribute(reader, "Name", typeof(string));
-                        fieldValue = SupportClass.File.GetXmlAttribute(reader, "Value", typeof(string));
-                        fieldBoost = float.Parse(SupportClass.File.GetXmlAttribute(reader, "Boost", typeof(float)));
-                        fieldCaption = SupportClass.File.GetXmlAttribute(reader, "Caption", typeof(string));
-                        isTitle = bool.Parse(SupportClass.File.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
+                        fieldName = SupportClass.FileUtil.GetXmlAttribute(reader, "Name", typeof(string));
+                        fieldValue = SupportClass.FileUtil.GetXmlAttribute(reader, "Value", typeof(string));
+                        fieldBoost = float.Parse(SupportClass.FileUtil.GetXmlAttribute(reader, "Boost", typeof(float)));
+                        fieldCaption = SupportClass.FileUtil.GetXmlAttribute(reader, "Caption", typeof(string));
+                        isTitle = bool.Parse(SupportClass.FileUtil.GetXmlAttribute(reader, "IsTitle", typeof(bool)));
                         Fields.Add(new SearchField(fieldName, fieldCaption, fieldValue, fieldBoost, isTitle));
                         //Fields.Add(new SearchField(fieldName, fieldName, fieldValue, 1.0f, false));
                         reader.Read();
@@ -440,6 +447,8 @@ namespace ISUtils.Common
             writer.WriteAttributeString("Index", IndexName);
             foreach (SearchField field in Fields)
             {
+                if (!field.Name.Equals(PrimaryKey) && !field.Visible)
+                    continue;
                 writer.WriteStartElement("Field");
                 writer.WriteAttributeString("Name", field.Name);
                 writer.WriteAttributeString("Caption", field.Caption);

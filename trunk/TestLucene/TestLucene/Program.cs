@@ -203,7 +203,7 @@ namespace TestLucene
         }
         static void Main()
         {
-            bool success = ISUtils.SupportClass.File.ConvertXlsConfigToXmlConfig(@"f:\index content(1).xls", @"f:\new config.xml");
+            bool success = ISUtils.SupportClass.FileUtil.ConvertXlsConfigToXmlConfig(@"f:\index content(1).xls", @"f:\new config.xml");
             ////Config nc = ISUtils.SupportClass.File.GetConfigFromExcelFile(@"f:\index content.xls");
             //Config nc;//= new Config();
             //System.Xml.Serialization.XmlSerializer xsr = new XmlSerializer(typeof(Config));
@@ -216,7 +216,7 @@ namespace TestLucene
             //xsr.Serialize(writer, nc);
             //writer.Close();
             //TestFileIndex();
-            testSearch();
+            //testSearch();
             //TestIndexMaker();
             Console.ReadKey();
         }

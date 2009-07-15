@@ -293,12 +293,19 @@ namespace Searchd
         }
         public static List<SearchRecord> GetPage(List<SearchRecord> recordList, List<int> posList, int pageSize, int pageNum)
         {
-            List<SearchRecord> resultList = new List<SearchRecord>();
-            if (pageNum <= 0)
-                pageNum = 1;
-            for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < posList.Count; i++)
-                resultList.Add(recordList[posList[i]]);
-            return resultList;
+            if (pageSize > 0)
+            {
+                List<SearchRecord> resultList = new List<SearchRecord>();
+                if (pageNum <= 0)
+                    pageNum = 1;
+                for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < posList.Count; i++)
+                    resultList.Add(recordList[posList[i]]);
+                return resultList;
+            }
+            else
+            {
+                return recordList;
+            }
         }
         public static List<SearchRecord> GetPage(List<SearchRecord> recordList, Dictionary<string, List<int>> statistics, string filter, int pageSize, int pageNum)
         {
@@ -307,12 +314,19 @@ namespace Searchd
         }
         public static List<SearchRecord> GetPage(List<SearchRecord> recordList,int pageSize, int pageNum)
         {
-            List<SearchRecord> resultList = new List<SearchRecord>();
-            if (pageNum <= 0)
-                pageNum = 1;
-            for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < recordList.Count; i++)
-                resultList.Add(recordList[i]);
-            return resultList;
+            if (pageSize > 0)
+            {
+                List<SearchRecord> resultList = new List<SearchRecord>();
+                if (pageNum <= 0)
+                    pageNum = 1;
+                for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < recordList.Count; i++)
+                    resultList.Add(recordList[i]);
+                return resultList;
+            }
+            else
+            {
+                return recordList;
+            }
         }
 
     }

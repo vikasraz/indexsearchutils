@@ -350,9 +350,9 @@ public partial class searchresult : System.Web.UI.Page
         url.Append("&Exact="+Encode(exactPhraseContain));
         url.Append("&One="+Encode(oneOfWordsAtLeastContain));
         url.Append("&Not=" +Encode(wordNotInclude));
+        url.Append("&Page=" + pagenum.ToString());
         if (!string.IsNullOrEmpty(filter))
         {
-            url.Append("&Page=" + pagenum.ToString());
             url.Append("&Filter=" + Encode(filter));
         }
         return url.ToString();

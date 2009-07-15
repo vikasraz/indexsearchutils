@@ -186,9 +186,8 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
-            //Reverser<SearchField> reverser = new Reverser<SearchField>("ISUtils.Common.SearchField", "Order", ReverserInfo.Direction.ASC);
-            //fieldList.Sort(reverser);
-            fieldList.Sort(delegate(SearchField sfa, SearchField sfb) { return sfa.Order - sfb.Order; });
+            SearchField.Direction = ReverserInfo.Direction.DESC;
+            fieldList.Sort();
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
@@ -243,8 +242,8 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
-            Reverser<SearchField> reverser = new Reverser<SearchField>("ISUtils.Common.SearchField", "Order", ReverserInfo.Direction.ASC);
-            fieldList.Sort(reverser);
+            SearchField.Direction = ReverserInfo.Direction.DESC;
+            fieldList.Sort();
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {
@@ -283,8 +282,8 @@ namespace ISUtils.Common
         {
             StringBuilder title = new StringBuilder();
             StringBuilder content = new StringBuilder();
-            Reverser<SearchField> reverser = new Reverser<SearchField>("ISUtils.Common.SearchField", "Order", ReverserInfo.Direction.ASC);
-            fieldList.Sort(reverser);
+            SearchField.Direction = ReverserInfo.Direction.DESC;
+            fieldList.Sort();
             //title.Append(caption + "&nbsp;");
             foreach (SearchField sf in fieldList)
             {

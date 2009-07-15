@@ -242,11 +242,16 @@ namespace ISUtils.Utils
                 throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
+                DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     if (indexSet.Type == type)
                     {
                         IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
+                    }
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                    {
+                        dblSum.Clear(indexSet.IndexName);
                     }
                 }
             }
@@ -257,11 +262,16 @@ namespace ISUtils.Utils
                 throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
+                DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     if (indexSet.Type == type)
                     {
                         IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                    }
+                    if (indexSet.Type==IndexTypeEnum.Increment)
+                    {
+                        dblSum.Clear(indexSet.IndexName);
                     }
                 }
             }
@@ -272,9 +282,14 @@ namespace ISUtils.Utils
                 throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
+                DataBaseLibrary.SearchUpdateManage dblSum=new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
+                    if (!create)
+                    {
+                        dblSum.Clear(indexSet.IndexName);
+                    }
                 }
             }
         }

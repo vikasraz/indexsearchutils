@@ -4,7 +4,7 @@ using Lucene.Net.Documents;
 namespace ISUtils.Common
 {
     [Serializable]
-    public class SearchField:FieldBase
+    public class SearchField:FieldBase,IComparable
     {
         #region 属性
         private string value = "";
@@ -88,10 +88,26 @@ namespace ISUtils.Common
             return new SearchField(field);
         }
         #endregion
-        #region GetType
-        public new Type GetType()
+        #region IComparable
+        private static ReverserInfo.Direction direct=ReverserInfo.Direction.ASC;
+        public static ReverserInfo.Direction Direction
         {
-            return typeof(SearchField);
+            get { return direct; }
+            set { direct = value; }
+        }
+        public int CompareTo(object obj)
+        {
+            if(!(obj is SearchField))
+                throw new InvalidCastException("This object is not of type SearchField");
+            SearchField sf = (SearchField)obj;
+            if (Direction == ReverserInfo.Direction.ASC)
+            {
+                return this.order - sf.order;
+            }
+            else
+            {
+                return sf.order - this.order;
+            }
         }
         #endregion
     }

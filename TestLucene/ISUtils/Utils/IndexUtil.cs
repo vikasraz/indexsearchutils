@@ -251,7 +251,10 @@ namespace ISUtils.Utils
                     }
                     if (indexSet.Type == IndexTypeEnum.Increment)
                     {
-                        dblSum.Clear(indexSet.IndexName);
+                        string view = indexSet.IndexName;
+                        if (view.StartsWith(Config.IndexPrefix))
+                            view = view.Substring(Config.IndexPrefix.Length);
+                        dblSum.Clear(view);
                     }
                 }
             }
@@ -271,7 +274,10 @@ namespace ISUtils.Utils
                     }
                     if (indexSet.Type==IndexTypeEnum.Increment)
                     {
-                        dblSum.Clear(indexSet.IndexName);
+                        string view = indexSet.IndexName;
+                        if (view.StartsWith(Config.IndexPrefix))
+                            view = view.Substring(Config.IndexPrefix.Length);
+                        dblSum.Clear(view);
                     }
                 }
             }
@@ -288,7 +294,10 @@ namespace ISUtils.Utils
                     IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
                     if (!create)
                     {
-                        dblSum.Clear(indexSet.IndexName);
+                        string view = indexSet.IndexName;
+                        if (view.StartsWith(Config.IndexPrefix))
+                            view = view.Substring(Config.IndexPrefix.Length);
+                        dblSum.Clear(view);
                     }
                 }
             }

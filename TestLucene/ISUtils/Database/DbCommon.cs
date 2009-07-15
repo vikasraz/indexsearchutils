@@ -426,8 +426,18 @@ namespace ISUtils.Database
                             if (source != null && indexSet != null)
                             {
                                 source.Fields=fpList;
-                                if(dict.ContainsKey(indexSet)==false)
+                                if (dict.ContainsKey(indexSet) == false)
+                                {
                                     dict.Add(indexSet, source);
+                                    IndexSet newIndexSet =new IndexSet(indexSet);
+                                    Source newSource = new Source(source);
+                                    newIndexSet.IndexName = Config.IndexPrefix + newIndexSet.IndexName;
+                                    newIndexSet.SourceName = Config.SourcePrefix + newIndexSet.SourceName;
+                                    newIndexSet.Type = IndexTypeEnum.Increment;
+                                    newSource.SourceName = Config.SourcePrefix + newSource.SourceName;
+                                    newSource.Query = newSource.Query + " where SearchLabel=1";
+                                    dict.Add(newIndexSet, newSource);
+                                }
                             }
                             tableName = currentTableName;
                             fpList = new List<FieldProperties>();
@@ -437,6 +447,7 @@ namespace ISUtils.Database
                             source.Query = "select * from " + row[column].ToString();
                             indexSet.IndexName = row[column].ToString();
                             indexSet.SourceName = row[column].ToString();
+                            indexSet.Path = @"D:\IndexData\" + indexSet.IndexName;
                             change =true;
                         }
                         else
@@ -537,7 +548,17 @@ namespace ISUtils.Database
             {
                 source.Fields = fpList;
                 if (dict.ContainsKey(indexSet) == false)
+                {
                     dict.Add(indexSet, source);
+                    IndexSet newIndexSet = new IndexSet(indexSet);
+                    Source newSource = new Source(source);
+                    newIndexSet.IndexName = Config.IndexPrefix + newIndexSet.IndexName;
+                    newIndexSet.SourceName = Config.SourcePrefix + newIndexSet.SourceName;
+                    newIndexSet.Type = IndexTypeEnum.Increment;
+                    newSource.SourceName = Config.SourcePrefix + newSource.SourceName;
+                    newSource.Query = newSource.Query + " where SearchLabel=1";
+                    dict.Add(newIndexSet, newSource);
+                }
             }
             return dict;
         }

@@ -13,6 +13,16 @@ namespace ISUtils.Common
         #region Const Values
         /**/
         /// <summary>
+        /// Config文件中Config项目的结束标志
+        /// </summary>
+        public const string SourcePrefix = "SRC_";
+        /**/
+        /// <summary>
+        /// Config文件中Config项目的结束标志
+        /// </summary>
+        public const string IndexPrefix = "IDX_";
+        /**/
+        /// <summary>
         /// Config文件中Config项目的开始标志
         /// </summary>
         public const string Prefix = "{";

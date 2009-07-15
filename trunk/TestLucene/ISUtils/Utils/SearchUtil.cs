@@ -705,6 +705,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -718,6 +720,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -744,6 +748,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
                         Query query = GetFuzzyQuery(indexSet, out si);
@@ -760,6 +766,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
                         Query query = GetFuzzyQuery(indexSet, out si);
@@ -789,6 +797,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -796,6 +806,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -825,6 +837,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -832,6 +846,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -860,6 +876,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -885,6 +903,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -924,6 +944,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
                         Query query = GetFuzzyQuery(indexSet, out si);
@@ -952,6 +974,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
                         Query query = GetFuzzyQuery(indexSet, out si);
@@ -993,6 +1017,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -1000,6 +1026,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -1035,6 +1063,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -1042,6 +1072,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         readerList.Add(IndexReader.Open(indexSet.Path));
                     }
                 }
@@ -1075,6 +1107,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -1094,6 +1128,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -1126,6 +1162,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
                         Query query = GetFuzzyQuery(indexSet, out si);
@@ -1148,6 +1186,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         QueryResult.SearchInfo si;
                         Query query = GetFuzzyQuery(indexSet, out si);
@@ -1183,6 +1223,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -1203,6 +1245,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         Query query = GetFuzzyQuery(indexSet);
 #if DEBUG
@@ -1237,6 +1281,8 @@ namespace ISUtils.Utils
                 List<IndexReader> readerList = new List<IndexReader>();
                 foreach (IndexSet indexSet in searchIndexList)
                 {
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                        continue;
                     readerList.Add(IndexReader.Open(indexSet.Path));
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
@@ -1263,6 +1309,8 @@ namespace ISUtils.Utils
                 List<IndexReader> readerList = new List<IndexReader>();
                 foreach (IndexSet indexSet in searchIndexList)
                 {
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                        continue;
                     readerList.Add(IndexReader.Open(indexSet.Path));
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
@@ -1288,6 +1336,8 @@ namespace ISUtils.Utils
                 List<IndexReader> readerList = new List<IndexReader>();
                 foreach (IndexSet indexSet in searchIndexList)
                 {
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                        continue;
                     readerList.Add(IndexReader.Open(indexSet.Path));
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
@@ -1319,6 +1369,8 @@ namespace ISUtils.Utils
                 List<IndexReader> readerList = new List<IndexReader>();
                 foreach (IndexSet indexSet in searchIndexList)
                 {
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                        continue;
                     readerList.Add(IndexReader.Open(indexSet.Path));
                 }
                 MultiReader multiReader = new MultiReader(readerList.ToArray());
@@ -1369,6 +1421,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1400,6 +1454,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1443,6 +1499,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1475,6 +1533,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1521,6 +1581,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1566,6 +1628,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1624,6 +1688,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1669,6 +1735,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1727,6 +1795,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1775,6 +1845,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
@@ -1835,6 +1907,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1884,6 +1958,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -1947,6 +2023,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -2009,6 +2087,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -2084,6 +2164,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in searchIndexList)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;
@@ -2146,6 +2228,8 @@ namespace ISUtils.Utils
                 {
                     foreach (IndexSet indexSet in indexFieldsDict.Keys)
                     {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
                         Dictionary<string, FieldProperties> fpDict = source.FieldDict;

@@ -238,5 +238,18 @@ namespace ISUtils.Common
             sw.WriteLine(Config.Suffix);
         }
         #endregion
+        #region Constructor
+        public IndexSet()
+        { 
+        }
+        public IndexSet(IndexSet set)
+        {
+            this.Caption = set.Caption;
+            this.IndexName = set.IndexName;
+            this.Path = set.Path;
+            this.SourceName = set.SourceName;
+            this.Type = set.Type;
+        }
+        #endregion
     }
 }

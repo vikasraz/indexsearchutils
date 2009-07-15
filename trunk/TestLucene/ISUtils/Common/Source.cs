@@ -538,5 +538,22 @@ namespace ISUtils.Common
             sw.WriteLine(Config.Suffix);
         }
         #endregion
+        #region Constructor
+        public Source()
+        { 
+        }
+        public Source(Source src)
+        {
+            this.DataBase = src.DataBase;
+            this.DBType = src.DBType;
+            this.Fields = src.Fields;
+            this.HostName = src.HostName;
+            this.Password = src.Password;
+            this.PrimaryKey = src.PrimaryKey;
+            this.Query = src.Query;
+            this.SourceName = src.SourceName;
+            this.UserName = src.UserName;
+        }
+        #endregion
     }
 }

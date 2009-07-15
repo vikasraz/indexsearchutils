@@ -37,7 +37,8 @@ namespace ISUtils.Common
         public Target target=Target.CUSTOMER;
         #endregion
     }
-   /**//// <summary>
+   /**/
+    /// <summary>
     /// 继承IComparer<T>接口，实现同一自定义类型　对象比较
     /// </summary>
     /// <typeparam name="T">T为泛用类型</typeparam>
@@ -45,7 +46,7 @@ namespace ISUtils.Common
     {
         #region Private Vars
         private Type type = null;
-        private ReverserInfo info = null;
+        private ReverserInfo info = new ReverserInfo();
         #endregion
         /**/
         /// <summary>
@@ -57,7 +58,7 @@ namespace ISUtils.Common
         public Reverser(Type type, string name, ReverserInfo.Direction direction)
         {
             this.type = type;
-            this.info.Name = null;
+            this.info.Name = name;
             if (direction != ReverserInfo.Direction.ASC)
                 this.info.direction = direction;
         }

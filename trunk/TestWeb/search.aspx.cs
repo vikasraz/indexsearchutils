@@ -137,10 +137,14 @@ public partial class searchresult : System.Web.UI.Page
 
                     //查看图形                     
 
-                    bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, GetPGLValue(record));
-                    if (IsImg)
+                    string ID = GetPGLValue(record);
+                    if (string.IsNullOrEmpty(ID))
                     {
-                        buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                        bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
+                        if (IsImg)
+                        {
+                            buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                        }
                     }
                     else
                     {

@@ -60,8 +60,8 @@ namespace TestLucene
             string path = @"d:\Indexer\config.xml";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            //info.IndexNames = "IndexView_Monitoring_HCOV";
-            info.SearchWords = "东丽";
+            info.IndexNames = "IndexView_Monitoring_HCOV";
+            info.SearchWords = "东丽区2004年第十三批农用地转用";
             //info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             //info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
             //info.RangeList.Add(new RangeCondition("","KGSJ","20000501","20090702"));

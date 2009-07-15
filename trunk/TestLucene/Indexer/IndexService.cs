@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -52,7 +53,7 @@ namespace Indexer
             if (maker == null)
             {
                 string[] imagePathArgs = Environment.GetCommandLineArgs();
-                string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.conf";
+                string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.xml";
                 if (imagePathArgs.Length >= 2)
                 {
                     configfile = imagePathArgs[1];
@@ -73,6 +74,14 @@ namespace Indexer
             if (!busy)
             {
                 busy = true;
+                try
+                {
+                    StopSystemService("Searchd");
+                }
+                catch (Exception ssse)
+                {
+                    WriteToLog("Exception for StopSystemService Searchd.Reason:" + ssse.Message);
+                }
                 if (maker.CanIndex(span, IndexTypeEnum.Ordinary))
                 {
                     try
@@ -114,6 +123,14 @@ namespace Indexer
                         WriteToLog("Exception for execute increment index.Reason:" + exp.Message);
                         EventLog.WriteEntry("Exception for execute increment index.Reason:" + exp.Message);
                     }
+                }
+                try
+                {
+                    StartSystemService("Searchd");
+                }
+                catch (Exception ste)
+                {
+                    WriteToLog("Exception for StartSystemService Searchd.Reason:" + ste.Message);
                 }
                 busy = false;
             }
@@ -171,5 +188,165 @@ namespace Indexer
             WriteToLog("Indexer Stop...");
             base.OnShutdown();
         }
+        #region Service Function
+        private bool SystemServiceExists(string service)
+        {
+            System.ServiceProcess.ServiceController[] services;
+            services = System.ServiceProcess.ServiceController.GetServices();
+            foreach (System.ServiceProcess.ServiceController sc in services)
+            {
+                if (sc.ServiceName.ToUpper().CompareTo(service.ToUpper()) == 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private string GetSystemServiceStatus(string service)
+        {
+            try
+            {
+                //foreach (System.ServiceProcess.ServiceController sc in System.ServiceProcess.ServiceController.GetServices())
+                //{
+                //    if (sc.ServiceName.ToUpper().CompareTo(service.ToUpper()) == 0)
+                //    {
+                //        return sc.Status.ToString();
+                //    }
+                //}
+                System.ServiceProcess.ServiceController sc = new System.ServiceProcess.ServiceController();
+                //sc.MachineName = "localhost";
+                sc.ServiceName = service;
+                sc.Refresh();
+                switch (sc.Status)
+                {
+                    case System.ServiceProcess.ServiceControllerStatus.StartPending:
+                        return "服务正在启动！";
+                    case System.ServiceProcess.ServiceControllerStatus.ContinuePending:
+                        return "服务即将继续！";
+                    case System.ServiceProcess.ServiceControllerStatus.Paused:
+                        return "服务已暂停！";
+                    case System.ServiceProcess.ServiceControllerStatus.PausePending:
+                        return "服务即将暂停！";
+                    case System.ServiceProcess.ServiceControllerStatus.Running:
+                        return "服务正在运行！";
+                    case System.ServiceProcess.ServiceControllerStatus.Stopped:
+                        return "服务未运行！";
+                    case System.ServiceProcess.ServiceControllerStatus.StopPending:
+                        return "服务正在停止！";
+                    default:
+                        return "服务状态未知！";
+                }
+            }
+            catch (Exception e)
+            {
+                //ShowError(e.StackTrace.ToString());
+                return "Error:" + e.Message;
+            }
+        }
+        private bool StartSystemService(string service)
+        {
+            if (!SystemServiceExists(service))
+                return false;
+            try
+            {
+                System.ServiceProcess.ServiceController sc = new System.ServiceProcess.ServiceController();
+                //sc.MachineName = "localhost";
+                sc.ServiceName = service;
+                if (sc.Status != System.ServiceProcess.ServiceControllerStatus.Running &&
+                    sc.Status != System.ServiceProcess.ServiceControllerStatus.StartPending)
+                {
+                    sc.Start();
+                    for (int i = 0; i < 60; i++)
+                    {
+                        sc.Refresh();
+                        System.Threading.Thread.Sleep(1000);
+                        if (sc.Status == System.ServiceProcess.ServiceControllerStatus.Running)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        private bool StopSystemService(string service)
+        {
+            if (!SystemServiceExists(service))
+                return false;
+            try
+            {
+                System.ServiceProcess.ServiceController sc = new System.ServiceProcess.ServiceController();
+                //sc.MachineName = "localhost";
+                sc.ServiceName = service;
+                if (sc.Status == System.ServiceProcess.ServiceControllerStatus.Running)
+                {
+                    sc.Stop();
+                    for (int i = 0; i < 60; i++)
+                    {
+                        sc.Refresh();
+                        System.Threading.Thread.Sleep(1000);
+                        if (sc.Status == System.ServiceProcess.ServiceControllerStatus.Stopped)
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        private bool InstallSystemServic(string service, string servicePath, string commandLineOptions)
+        {
+            if (SystemServiceExists(service))
+                return true;
+            if (!System.IO.File.Exists(servicePath))
+                return false;
+            try
+            {
+                System.Configuration.Install.TransactedInstaller tranInstaller = new System.Configuration.Install.TransactedInstaller();
+                System.Configuration.Install.AssemblyInstaller assemInstaller = new System.Configuration.Install.AssemblyInstaller(servicePath, new string[] { commandLineOptions });
+                tranInstaller.Installers.Add(assemInstaller);
+                System.Configuration.Install.InstallContext installContext = new System.Configuration.Install.InstallContext("install.log", new string[] { commandLineOptions });
+                tranInstaller.Context = installContext;
+                tranInstaller.Install(new Hashtable());
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+        private bool UninstallSystemServic(string service, string servicePath, string commandLineOptions)
+        {
+            if (!System.IO.File.Exists(servicePath))
+                return false;
+            if (SystemServiceExists(service))
+                return false;
+            try
+            {
+                System.Configuration.Install.TransactedInstaller tranInstaller = new System.Configuration.Install.TransactedInstaller();
+                System.Configuration.Install.AssemblyInstaller assemInstaller = new System.Configuration.Install.AssemblyInstaller(servicePath, new string[] { commandLineOptions });
+                tranInstaller.Installers.Add(assemInstaller);
+                System.Configuration.Install.InstallContext installContext = new System.Configuration.Install.InstallContext("install.log", new string[] { commandLineOptions });
+                tranInstaller.Context = installContext;
+                tranInstaller.Uninstall(null);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+        #endregion
     }
 }

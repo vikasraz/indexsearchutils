@@ -15,6 +15,7 @@ namespace ISUtils.Common
         private string name = "";
         private string caption = "";
         private string index = "";
+        private float score = 0.0f;
         private List<SearchField> fieldList = new List<SearchField>();
         public string Name
         {
@@ -30,6 +31,11 @@ namespace ISUtils.Common
         {
             get { return index; }
             set { index = value; }
+        }
+        public float Score
+        {
+            get { return score; }
+            set { score = value; }
         }
         public List<SearchField> Fields
         {
@@ -96,11 +102,30 @@ namespace ISUtils.Common
             if (this.fieldList == null)
                 this.fieldList = new List<SearchField>();
         }
+        public SearchRecord(string name, string caption, string index,float score)
+        {
+            this.name = name;
+            this.caption = caption;
+            this.index = index;
+            this.score = score;
+            if (this.fieldList == null)
+                this.fieldList = new List<SearchField>();
+        }
         public SearchRecord(string name, string caption, string index, List<SearchField> fields)
         {
             this.name = name;
             this.caption = caption;
             this.index = index;
+            this.fieldList = fields;
+            if (this.fieldList == null)
+                this.fieldList = new List<SearchField>();
+        }
+        public SearchRecord(string name, string caption, string index,float score, List<SearchField> fields)
+        {
+            this.name = name;
+            this.caption = caption;
+            this.index = index;
+            this.score = score;
             this.fieldList = fields;
             if (this.fieldList == null)
                 this.fieldList = new List<SearchField>();
@@ -114,6 +139,16 @@ namespace ISUtils.Common
             this.name = name;
             this.caption = caption;
             this.index = index;
+            if (this.fieldList == null)
+                this.fieldList = new List<SearchField>();
+            this.fieldList.AddRange(fields);
+        }
+        public SearchRecord(string name, string caption, string index,float score, params SearchField[] fields)
+        {
+            this.name = name;
+            this.caption = caption;
+            this.index = index;
+            this.score = score;
             if (this.fieldList == null)
                 this.fieldList = new List<SearchField>();
             this.fieldList.AddRange(fields);
@@ -139,6 +174,10 @@ namespace ISUtils.Common
         public SearchRecord(IndexSet set, List<SearchField> fields)
             : this(set.IndexName, set.Caption, set.IndexName, fields)
         { 
+        }
+        public SearchRecord(IndexSet set, List<SearchField> fields,float score)
+            : this(set.IndexName, set.Caption, set.IndexName,score, fields)
+        {
         }
         #endregion
         #region Override

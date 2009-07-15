@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
     <title>结果聚类</title>
+    <meta http-equiv="x-ua-compatible" content="ie=7" />
     <script type="text/javascript" src="Silverlight.js"></script>
 
     <script type="text/javascript">

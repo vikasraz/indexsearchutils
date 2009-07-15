@@ -289,6 +289,7 @@ namespace ISUtils.Common
             writer.WriteElementString("Port", searchd.Port.ToString());
             writer.WriteElementString("QueryLog", searchd.QueryLogPath);
             writer.WriteElementString("TimeOut", searchd.TimeOut.ToString());
+            writer.WriteElementString("MinScore", searchd.MinScore.ToString());
             writer.WriteEndElement();
             #endregion
         }
@@ -581,6 +582,9 @@ namespace ISUtils.Common
                                     break;
                                 case "QueryLog":
                                     this.searchd.QueryLogPath = reader.ReadElementString();
+                                    break;
+                                case "MinScore":
+                                    this.searchd.MinScore = float.Parse(reader.ReadElementString());
                                     break;
                                 default:
                                     reader.Read();

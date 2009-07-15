@@ -104,6 +104,7 @@ namespace Searchd
                         SearchResult result = new SearchResult();
                         result.Statistics = Convert(statistics);
                         result.PageNum = 1;
+                        WriteToLog("Filter:\t" + searchInfo.Filter);
                         result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
                         result.Records.AddRange(GetPage(recordList,statistics,searchInfo.Filter, searchInfo.PageSize, 1));
                         result.Query = query;

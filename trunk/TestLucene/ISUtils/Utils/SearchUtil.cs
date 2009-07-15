@@ -888,6 +888,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields=new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields,0);
                             sfList.Clear();
@@ -895,7 +898,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field,indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet,sfList));
+                            recordList.Add(new SearchRecord(indexSet,sfList,score));
                         }
                     }
                 }
@@ -915,6 +918,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             sfList.Clear();
@@ -922,7 +928,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -958,6 +964,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             sfList.Clear();
@@ -965,7 +974,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                         siList.Add(si);
                     }
@@ -988,6 +997,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             sfList.Clear();
@@ -995,7 +1007,7 @@ namespace ISUtils.Utils
                             {
                                 sfList.Add(new SearchField(field, indexDict[indexSet].FieldDict[field.Name()]));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                         siList.Add(si);
                     }
@@ -1043,6 +1055,9 @@ namespace ISUtils.Utils
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
                     Document doc = searcher.Doc(scoreDocs[i].doc);
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
                     docList.Add(doc);
                 }
             }
@@ -1089,6 +1104,9 @@ namespace ISUtils.Utils
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
                     Document doc = searcher.Doc(scoreDocs[i].doc);
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
                     docList.Add(doc);
                 }
             }
@@ -1119,7 +1137,10 @@ namespace ISUtils.Utils
                         SpecialFieldSelector sfs = new SpecialFieldSelector(indexDict[indexSet].PrimaryKey);
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
-                            Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
+                            Document doc = searcher.Doc(scoreDocs[i].doc, sfs);
                             docList.Add(doc);
                         }
                     }
@@ -1141,6 +1162,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             docList.Add(doc);
                         }
                     }
@@ -1177,6 +1201,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             docList.Add(doc);
                         }
                         siList.Add(si);
@@ -1201,6 +1228,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc,sfs);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             docList.Add(doc);
                         }
                         siList.Add(si);
@@ -1237,6 +1267,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc, sfs);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             docList.Add(doc);
                         }
                     }
@@ -1259,6 +1292,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc, sfs);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             docList.Add(doc);
                         }
                     }
@@ -1351,6 +1387,9 @@ namespace ISUtils.Utils
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
                     Document doc = searcher.Doc(scoreDocs[i].doc);
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
                     docList.Add(doc);
                 }
             }
@@ -1384,6 +1423,9 @@ namespace ISUtils.Utils
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
                     Document doc = searcher.Doc(scoreDocs[i].doc);
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
                     docList.Add(doc);
                 }
             }
@@ -1436,6 +1478,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1446,7 +1491,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1469,6 +1514,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1479,7 +1527,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1515,6 +1563,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1525,7 +1576,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field,false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1549,6 +1600,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1559,7 +1613,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field, false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1598,6 +1652,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1608,7 +1665,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1645,6 +1702,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1655,7 +1715,7 @@ namespace ISUtils.Utils
                                 else
                                     sfList.Add(new SearchField(field));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1705,6 +1765,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1715,7 +1778,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field,false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1752,6 +1815,9 @@ namespace ISUtils.Utils
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
                             Document doc = searcher.Doc(scoreDocs[i].doc);
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
                             List<SearchField> sfList = new List<SearchField>();
@@ -1762,7 +1828,7 @@ namespace ISUtils.Utils
                                 //else
                                 //    sfList.Add(new SearchField(field, false));
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -1811,6 +1877,9 @@ namespace ISUtils.Utils
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -1837,7 +1906,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1861,6 +1930,9 @@ namespace ISUtils.Utils
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -1887,7 +1959,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1924,6 +1996,9 @@ namespace ISUtils.Utils
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -1950,7 +2025,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -1975,6 +2050,9 @@ namespace ISUtils.Utils
                         ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -2001,7 +2079,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                         }
                     }
                 }
@@ -2041,6 +2119,9 @@ namespace ISUtils.Utils
                         List<int> posList = new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -2067,7 +2148,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2105,6 +2186,9 @@ namespace ISUtils.Utils
                         List<int> posList=new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -2131,7 +2215,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2182,6 +2266,9 @@ namespace ISUtils.Utils
                         List<int> posList=new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -2208,7 +2295,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2246,6 +2333,9 @@ namespace ISUtils.Utils
                         List<int> posList=new List<int>();
                         for (int i = 0; i < scoreDocs.Length; i++)
                         {
+                            float score = scoreDocs[i].score;
+                            if (score < searchSet.MinScore)
+                                continue;
                             Document doc = searcher.Doc(scoreDocs[i].doc);
                             Field[] fields = new Field[doc.GetFields().Count];
                             doc.GetFields().CopyTo(fields, 0);
@@ -2272,7 +2362,7 @@ namespace ISUtils.Utils
                                         sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
                                 }
                             }
-                            recordList.Add(new SearchRecord(indexSet, sfList));
+                            recordList.Add(new SearchRecord(indexSet, sfList,score));
                             posList.Add(recordList.Count - 1);
                         }
                         try
@@ -2310,6 +2400,9 @@ namespace ISUtils.Utils
                 ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
                     Document doc = searcher.Doc(scoreDocs[i].doc);
                     string name = doc.Get("Name");
                     string path = doc.Get("Path");
@@ -2317,7 +2410,7 @@ namespace ISUtils.Utils
                     SearchField nf = new SearchField("文件名", "文件名", name, name, 1.0f, true, true, 0);
                     SearchField pf = new SearchField("路径", "路径", path, path, 1.0f, false, true, 0);
                     SearchField cf = new SearchField("内容", "内容", content, content, 1.0f, false, true, 0);
-                    recordList.Add(new SearchRecord("文件","文件","文件",nf,pf,cf));
+                    recordList.Add(new SearchRecord("文件","文件","文件",score,nf,pf,cf));
                 }
             }
             catch (Exception e)
@@ -2343,6 +2436,9 @@ namespace ISUtils.Utils
                 ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
                     Document doc = searcher.Doc(scoreDocs[i].doc);
                     string name = doc.Get("Name");
                     string path = doc.Get("Path");
@@ -2381,7 +2477,7 @@ namespace ISUtils.Utils
                     {
                         cf = new SearchField("内容", "内容", content, content, 1.0f, false, true, 0);
                     }
-                    recordList.Add(new SearchRecord("文件", "文件", "文件", nf, pf, cf));
+                    recordList.Add(new SearchRecord("文件", "文件", "文件",score, nf, pf, cf));
                 }
             }
             catch (Exception e)

@@ -154,6 +154,12 @@ namespace ISUtils.Common
             get { return maxtrans; }
             set { maxtrans = value; }
         }
+        private float minscore = 0.5f;
+        public float MinScore
+        {
+            get { return minscore; }
+            set { minscore = value; }
+        }
         #endregion
         #region Override
         /**/

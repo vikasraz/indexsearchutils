@@ -275,7 +275,24 @@ namespace ISUtils
             public static object GetObjectFromXmlFile(string path, Type type)
             {
                 object obj = new object();
-                FileStream reader = new FileStream(path, FileMode.Open);
+                if (!IsFileExists(path))
+                    throw new ArgumentNullException("path", "path is not valid in GetObjectFromXmlFile");
+                FileStream reader=null;
+                while (reader == null)
+                {
+                    try
+                    {
+                        reader = new FileStream(path, FileMode.Open);
+                    }
+                    catch (IOException ioe)
+                    {
+                        System.Threading.Thread.Sleep(1000);
+                    }
+                    catch (Exception e)
+                    {
+                        throw e;
+                    }
+                }
                 XmlSerializer xsr = new XmlSerializer(type);
                 obj = xsr.Deserialize(reader);
                 reader.Close();

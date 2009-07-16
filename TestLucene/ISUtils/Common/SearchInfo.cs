@@ -12,6 +12,7 @@ namespace ISUtils.Common
     {
         #region "常量"
         public const int DEFPAGESIZE=10;
+        public const int MINPAGESIZE = 0;
         #endregion
         #region "属性"
         private QueryInfo queryInfo=new QueryInfo();
@@ -30,8 +31,8 @@ namespace ISUtils.Common
             set 
             { 
                 pageSize = value;
-                if (pageSize < DEFPAGESIZE)
-                    pageSize = DEFPAGESIZE;
+                if (pageSize < MINPAGESIZE)
+                    pageSize = MINPAGESIZE;
             }
         }
         private int pageNum = 1;

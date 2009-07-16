@@ -206,7 +206,7 @@ namespace ISUtils.Utils
                 throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
-                DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+                //DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     if (indexSet.Type == IndexTypeEnum.Ordinary)
@@ -217,13 +217,13 @@ namespace ISUtils.Utils
                     {
                         IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
                     }
-                    if (indexSet.Type == IndexTypeEnum.Increment)
-                    {
-                        string view = indexSet.IndexName;
-                        if (view.StartsWith(Config.IndexPrefix))
-                            view = view.Substring(Config.IndexPrefix.Length);
-                        dblSum.Clear(view);
-                    }
+                    //if (indexSet.Type == IndexTypeEnum.Increment)
+                    //{
+                    //    string view = indexSet.IndexName;
+                    //    if (view.StartsWith(Config.IndexPrefix))
+                    //        view = view.Substring(Config.IndexPrefix.Length);
+                    //    dblSum.Clear(view);
+                    //}
                 }
             }
         }
@@ -233,7 +233,7 @@ namespace ISUtils.Utils
                 throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
-                DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+                //DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     if (indexSet.Type == IndexTypeEnum.Ordinary)
@@ -244,13 +244,13 @@ namespace ISUtils.Utils
                     {
                         IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
                     }
-                    if (indexSet.Type==IndexTypeEnum.Increment)
-                    {
-                        string view = indexSet.IndexName;
-                        if (view.StartsWith(Config.IndexPrefix))
-                            view = view.Substring(Config.IndexPrefix.Length);
-                        dblSum.Clear(view);
-                    }
+                    //if (indexSet.Type==IndexTypeEnum.Increment)
+                    //{
+                    //    string view = indexSet.IndexName;
+                    //    if (view.StartsWith(Config.IndexPrefix))
+                    //        view = view.Substring(Config.IndexPrefix.Length);
+                    //    dblSum.Clear(view);
+                    //}
                 }
             }
         }
@@ -260,7 +260,7 @@ namespace ISUtils.Utils
                 throw new ApplicationException("Index Settings not init!");
             if (indexDict.Count > 0)
             {
-                DataBaseLibrary.SearchUpdateManage dblSum=new DataBaseLibrary.SearchUpdateManage();
+                //DataBaseLibrary.SearchUpdateManage dblSum=new DataBaseLibrary.SearchUpdateManage();
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     if (create)
@@ -268,13 +268,13 @@ namespace ISUtils.Utils
                         SupportClass.FileUtil.DeleteFolder(indexSet.Path);
                     }
                     IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
-                    if (!create)
-                    {
-                        string view = indexSet.IndexName;
-                        if (view.StartsWith(Config.IndexPrefix))
-                            view = view.Substring(Config.IndexPrefix.Length);
-                        dblSum.Clear(view);
-                    }
+                    //if (!create)
+                    //{
+                    //    string view = indexSet.IndexName;
+                    //    if (view.StartsWith(Config.IndexPrefix))
+                    //        view = view.Substring(Config.IndexPrefix.Length);
+                    //    dblSum.Clear(view);
+                    //}
                 }
             }
         }

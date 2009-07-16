@@ -40,7 +40,7 @@ namespace ISUtils.Indexer
             catch (Exception ex)
             {
 #if DEBUG
-                Console.WriteLine(string.Format("Exception for open file {0},{1}", filename, ex.ToString()));
+                Console.WriteLine(string.Format("IndexMaker,发生异常，文件名:\t{0},\t异常:\t{1}", filename, ex.ToString()));
 #endif
                 throw;
             }

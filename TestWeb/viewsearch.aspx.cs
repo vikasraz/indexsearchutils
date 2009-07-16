@@ -9,9 +9,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
-using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
+using System.Net.Sockets;
 using System.IO;
 using System.Text;
 using ISUtils.Common;
@@ -19,9 +19,8 @@ using ISUtils.Searcher;
 using System.Xml;
 using System.Xml.Serialization;
 
-public partial class searchresult : System.Web.UI.Page
+public partial class minisearch : System.Web.UI.Page
 {
-    public string searchFilter = "";
     #region Event
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -29,35 +28,23 @@ public partial class searchresult : System.Web.UI.Page
         {
             return;
         }
-        string szWordsAllContains="";
-        string szExactPhraseContain="";
-        string szOneOfWordsAtLeastContain="";
-        string szWordNotInclude="";
+        string szWordsAllContains = "";
+        string szWordNotInclude = "";
+        string views = "";
         if (Request.QueryString["Word"] != null)
             szWordsAllContains = Decode(Request.QueryString["Word"]);
-        if (Request.QueryString["Exact"] != null)
-            szExactPhraseContain = Decode(Request.QueryString["Exact"]);
-        if (Request.QueryString["One"] != null)
-            szOneOfWordsAtLeastContain = Decode(Request.QueryString["One"]);
         if (Request.QueryString["Not"] != null)
             szWordNotInclude = Decode(Request.QueryString["Not"]);
-        if (IsNullOrEmpty(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude))
+        if (Request.QueryString["View"] != null)
+            szWordNotInclude = Decode(Request.QueryString["View"]);
+        if (IsNullOrEmpty(szWordsAllContains, szWordNotInclude))
         {
-            string searchWords = GetCookie("SearchWords");
-            if (string.IsNullOrEmpty(searchWords))
-                return;
-            txtSearch.Text = searchWords;
-            RunSearch();
             return;
         }
         int pageNum = 1;
         if (Request.QueryString["Page"] != null)
             pageNum = int.Parse(Request.QueryString["Page"]);
-        string filter = "";
-        if (Request.QueryString["Filter"] != null)
-            filter = Decode(Request.QueryString["Filter"]);
-        searchFilter = filter;
-        SetSearchWords(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude);
+        SetSearchWords(szWordsAllContains, szWordNotInclude);
         TcpClient client;
         NetworkStream ns;
         BinaryFormatter formater;
@@ -65,19 +52,11 @@ public partial class searchresult : System.Web.UI.Page
         int port = int.Parse(ConfigurationManager.AppSettings["PortNum"]);
         HttpCookie userCookie = Request.Cookies[ConfigurationManager.AppSettings["CookieName"]];
         int pageSize = 10;
-        string area = "";
-        string content = "";
-        bool allCon = true;
-        bool allArea = true;
         if (userCookie != null)
         {
             try
             {
                 pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
-                area = Decode(userCookie.Values["Area"]);
-                content = Decode(userCookie.Values["Content"]);
-                allCon = bool.Parse(Decode(userCookie.Values["AllContent"]));
-                allArea = bool.Parse(Decode(userCookie.Values["AllArea"]));
             }
             catch (Exception ce)
             {
@@ -91,29 +70,23 @@ public partial class searchresult : System.Web.UI.Page
             SearchInfo sinfo = new SearchInfo();
             QueryInfo info = new QueryInfo();
             if (!string.IsNullOrEmpty(szWordsAllContains))
-               info.WordsAllContains=szWordsAllContains;
-            if (!string.IsNullOrEmpty(szExactPhraseContain))
-               info.ExactPhraseContain = szExactPhraseContain;
-            if (!string.IsNullOrEmpty(szOneOfWordsAtLeastContain))
-               info.OneOfWordsAtLeastContain = szOneOfWordsAtLeastContain;
+                info.WordsAllContains = szWordsAllContains;
             if (!string.IsNullOrEmpty(szWordNotInclude))
-               info.WordNotInclude = szWordsAllContains;
-            if(!allCon)
-                info.IndexNames = GetIndexNames(content);
+                info.WordNotInclude = szWordsAllContains;
+            info.IndexNames = GetIndexNames(views);
             sinfo.PageSize = pageSize;
             sinfo.PageNum = pageNum;
             sinfo.Query = info;
             sinfo.HighLight = true;
-            sinfo.Filter = filter;
             formater.Serialize(ns, sinfo);
             //searchInfo = sinfo.ToString();
             SearchResult sr = (SearchResult)formater.Deserialize(ns);
             StringBuilder buffer = new StringBuilder();
             StringBuilder statis = new StringBuilder();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
-            Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(),filter, pageSize, sr.PageNum);
+            Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(), pageSize, sr.PageNum);
             #region Title and Content
-            DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();            
+            DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();
             foreach (SearchRecord record in sr.Records)
             {
                 if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
@@ -122,7 +95,7 @@ public partial class searchresult : System.Web.UI.Page
                     GetFileTypeValue(record["路径"].Value, out type, out fvalue);
                     buffer.Append("<span class=\"LargeTitle\" >" + type + "<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "&nbsp;得分：" + record.Score.ToString() + "</a></span><br>");
                     buffer.Append("<span class=\"SmallTitle\" >" + fvalue + "</span><br>");
-                    if(!string.IsNullOrEmpty(record["内容"].Value))
+                    if (!string.IsNullOrEmpty(record["内容"].Value))
                         buffer.Append("<span class=\"SmallTitle\" >" + GetColorString(record["内容"].Result) + "</span><br>");
                     buffer.Append("<br>");
                 }
@@ -130,10 +103,10 @@ public partial class searchresult : System.Web.UI.Page
                 {
                     string title, detail, xmlRecord;
                     xmlRecord = GetXmlRecord(xmlSerializer, record);
-                    record.GetWebInfo(out title, out detail, true,false);
+                    record.GetWebInfo(out title, out detail, true, false);
                     detail = detail + "......";
                     //标题，点击调用序列化
-                    if(!string.IsNullOrEmpty(title))
+                    if (!string.IsNullOrEmpty(title))
                         buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "：" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
                     else
                         buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
@@ -163,40 +136,21 @@ public partial class searchresult : System.Web.UI.Page
             }
             tdResult.InnerHtml = buffer.ToString();
             #endregion
-            #region Statistics
-            statis.Append("<table class=\"TableStyle\" width=\"100%\"><tr height=\"35px\"><td class=\"TableText\" colspan=\"2\" style=\"font-size:9pt; font-weight:bold\">分类统计信息</td></tr>");
-            string url;
-            foreach (string key in sr.Statistics.Keys)
-            {
-                if(sr.Statistics[key]>0)
-                {
-                    url=GetUrl(szWordsAllContains,szExactPhraseContain,szOneOfWordsAtLeastContain,szWordNotInclude,key,1);
-                    string displayKey = key;
-                    if (key.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
-                        displayKey = "电子文档";
-                    statis.Append("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"" + url + "\" >" + displayKey + "</a>&nbsp;&nbsp;(" + sr.Statistics[key].ToString() + ")</td></tr>");
-                }
-            }
-            url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, "", 1);
-            statis.Append(GetStatisticDisplay(sr.Statistics,url));
-            statis.Append("</table>");
-            if(sr.Records.Count > 0)
-                tdStatis.InnerHtml = statis.ToString();
-            #endregion
             #region Page
             StringBuilder pageBuilder = new StringBuilder();
+            string url = "";
             if (sr.PageNum > 1)
             {
-                url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum - 1);
+                url = GetUrl(szWordsAllContains,  szWordNotInclude, views, sr.PageNum - 1);
                 pageBuilder.Append("<a class=\"SmallTitle\" href=\"" + url + "\" >上一页</a>&nbsp;");
             }
-            if (sr.TotalPages<=10)
+            if (sr.TotalPages <= 10)
             {
                 for (int i = 1; i <= sr.TotalPages; i++)
                 {
                     if (i != sr.PageNum)
                     {
-                        url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
+                        url = GetUrl(szWordsAllContains,  szWordNotInclude, views, i);
                         pageBuilder.Append("<a class=\"SmallTitle\" href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                     }
                     else
@@ -213,7 +167,7 @@ public partial class searchresult : System.Web.UI.Page
                     {
                         if (i != sr.PageNum)
                         {
-                            url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, i);
+                            url = GetUrl(szWordsAllContains,  szWordNotInclude, views, i);
                             pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                         }
                         else
@@ -223,18 +177,18 @@ public partial class searchresult : System.Web.UI.Page
                     }
                 }
                 else
-                { 
+                {
                     pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
                     for (int i = 1; i < 10; i++)
                     {
-                        url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + i);
+                        url = GetUrl(szWordsAllContains, szWordNotInclude, views, sr.PageNum + i);
                         pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
                     }
                 }
             }
             if (sr.PageNum < sr.TotalPages)
             {
-                url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, filter, sr.PageNum + 1);
+                url = GetUrl(szWordsAllContains,  szWordNotInclude, views, sr.PageNum + 1);
                 pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >下一页</a>");
             }
             tdPageSet.InnerHtml = pageBuilder.ToString();
@@ -252,6 +206,7 @@ public partial class searchresult : System.Web.UI.Page
     }
     protected void txtSearch_TextChanged(object sender, EventArgs e)
     {
+        
         RunSearch();
     }
     #endregion
@@ -266,7 +221,7 @@ public partial class searchresult : System.Web.UI.Page
         if (start <= 0 || end <= 0)
             return string.Empty;
         string item = value.Substring(start + 1, end - start - 1);
-        item = item.Substring(item.IndexOf(":")+1);
+        item = item.Substring(item.IndexOf(":") + 1);
         SearchField sf = record[item];
         if (sf == null)
             return string.Empty;
@@ -275,7 +230,7 @@ public partial class searchresult : System.Web.UI.Page
     }
     protected void GetFileTypeValue(string file, out string type, out string value)
     {
-        if (file.EndsWith(".")) 
+        if (file.EndsWith("."))
             file = file.Substring(0, file.Length - 1);
         string suffix = file.Substring(file.LastIndexOf(".") + 1).ToUpper();
         type = "【" + suffix + "】";
@@ -285,38 +240,13 @@ public partial class searchresult : System.Web.UI.Page
         else
             value = "文件格式：" + value;
     }
-    protected string GetStatisticDisplay(Dictionary<string, int> statis,string url)
-    {
-        int total = 0;
-        StringBuilder result = new StringBuilder("<tr height=\"35px\"><td class=\"TableValue\" style=\"font-size:9pt;text-align:center;border-right:none\" width=\"30px\"><img src=\"icon_search_16px.gif\" width=\"16px\" height=\"16px\" /></td><td class=\"TableValue\" style=\"font-size:9pt;text-align:left;border-left:none\"><a href=\"");
-        foreach (string key in statis.Keys)
-        {
-            total += statis[key];
-        }
-        result.Append(url);
-        result.Append("\" >全部分类</a>&nbsp;&nbsp;(");
-        result.Append(total);
-        result.Append(")</td></tr>");
-        return result.ToString();
-    }
-    protected string GetStatisticString(Dictionary<string, int> statis, string searchWords, string filter, int pageSize, int pageNum)
+    protected string GetStatisticString(Dictionary<string, int> statis, string searchWords, int pageSize, int pageNum)
     {
         int total = 0;
         StringBuilder result = new StringBuilder();
-        if (string.IsNullOrEmpty(filter) || statis.ContainsKey(filter) == false)
+        foreach (string key in statis.Keys)
         {
-            foreach (string key in statis.Keys)
-            {
-                total += statis[key];
-            }
-        }
-        else
-        {
-            if (filter.Equals("文件"))
-                result.Append("在“电子文档”中");
-            else
-                result.Append("在“" + filter + "”中");
-            total = statis[filter];
+            total += statis[key];
         }
         result.Append("搜索“" + searchWords + "”获得大约");
         result.Append(total);
@@ -341,32 +271,24 @@ public partial class searchresult : System.Web.UI.Page
         }
         return result.ToString();
     }
-    protected void SetSearchWords(string wordsAllContains,string exactPhraseContain,string oneOfWordsAtLeastContain,string wordNotInclude)
+    protected void SetSearchWords(string wordsAllContains, string wordNotInclude)
     {
         string[] wordArray = wordNotInclude.Split(" \t".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         StringBuilder result = new StringBuilder();
         result.Append(wordsAllContains + " ");
-        result.Append(exactPhraseContain + " ");
-        result.Append(oneOfWordsAtLeastContain + " ");
         foreach (string word in wordArray)
         {
             result.Append(" -" + word);
         }
         txtSearch.Text = result.ToString().Trim();
-        txtWords.Value = result.ToString().Trim();
     }
-    protected string GetUrl(string wordsAllContains,string exactPhraseContain,string oneOfWordsAtLeastContain,string wordNotInclude,string filter,int pagenum)
+    protected string GetUrl(string wordsAllContains, string wordNotInclude, string views, int pagenum)
     {
-        StringBuilder url = new StringBuilder("search.aspx?");
-        url.Append("Word="+Encode(wordsAllContains));
-        url.Append("&Exact="+Encode(exactPhraseContain));
-        url.Append("&One="+Encode(oneOfWordsAtLeastContain));
-        url.Append("&Not=" +Encode(wordNotInclude));
+        StringBuilder url = new StringBuilder("viewsearch.aspx?");
+        url.Append("Word=" + Encode(wordsAllContains));
+        url.Append("&Not=" + Encode(wordNotInclude));
         url.Append("&Page=" + pagenum.ToString());
-        if (!string.IsNullOrEmpty(filter))
-        {
-            url.Append("&Filter=" + Encode(filter));
-        }
+        url.Append("&View=" + Encode(views));
         return url.ToString();
     }
     protected void RunSearch()
@@ -386,21 +308,30 @@ public partial class searchresult : System.Web.UI.Page
                 allContains.Append(word + " ");
             }
         }
-        StringBuilder url = new StringBuilder("~/search.aspx?");
-        url.Append("Word=" + Server.UrlEncode(allContains.ToString().Trim()));
+        StringBuilder url = new StringBuilder("~/viewsearch.aspx?");
+        url.Append("Word=" + Encode(allContains.ToString().Trim()));
         if (!string.IsNullOrEmpty(notIncludes.ToString().Trim()))
-            url.Append("&Not=" + Server.UrlEncode(notIncludes.ToString().Trim()));
+            url.Append("&Not=" + Encode(notIncludes.ToString().Trim()));
+        if (Request.QueryString["View"] != null)
+            url.Append("&View=" + Request.QueryString["View"]);
         Response.Redirect(url.ToString());
     }
-    protected string GetXmlRecord(XmlSerializer xmlSerializer ,SearchRecord record)
+    protected string GetXmlRecord(XmlSerializer xmlSerializer, SearchRecord record)
     {
-        StringBuilder builder = new StringBuilder();
-        StringWriter writer = new StringWriter(builder);
-        xmlSerializer.Serialize(writer, record);
-        XmlDocument doc = new XmlDocument();
-        doc.LoadXml(builder.ToString());
-        writer.Close();
-        return doc.DocumentElement.OuterXml;
+        try
+        {
+            StringBuilder builder = new StringBuilder();
+            StringWriter writer = new StringWriter(builder);
+            xmlSerializer.Serialize(writer, record);
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(builder.ToString());
+            writer.Close();
+            return doc.DocumentElement.OuterXml;
+        }
+        catch (Exception e)
+        {
+            return string.Empty;
+        }
     }
     protected string GetRedirectUrl(SearchRecord record)
     {
@@ -410,9 +341,9 @@ public partial class searchresult : System.Web.UI.Page
             return "#";
         int start = value.IndexOf('{');
         int end = value.IndexOf('}');
-        if (start <= 0 || end <=0)
+        if (start <= 0 || end <= 0)
             return "#";
-        string href=value.Substring(start+1,end-start-1);
+        string href = value.Substring(start + 1, end - start - 1);
         url.Append(href + "?");
         string rest = value.Substring(end + 1);
         string[] paramArray = rest.Split("[]".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -420,11 +351,11 @@ public partial class searchresult : System.Web.UI.Page
         foreach (string param in paramArray)
         {
             string[] keyValue = param.Split(":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            if(keyValue.Length!=2)
+            if (keyValue.Length != 2)
                 continue;
             paramDict.Add(keyValue[1], keyValue[0]);
         }
-        bool find=false;
+        bool find = false;
         foreach (SearchField field in record.Fields)
         {
             if (paramDict.ContainsKey(field.Name))
@@ -480,7 +411,7 @@ public partial class searchresult : System.Web.UI.Page
         string[] keys = content.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         StringBuilder result = new StringBuilder();
         foreach (string key in keys)
-        {           
+        {
             string value = ConfigurationManager.AppSettings[key];
             if (string.IsNullOrEmpty(value))
                 continue;

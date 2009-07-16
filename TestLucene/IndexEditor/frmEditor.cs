@@ -1292,6 +1292,14 @@ namespace IndexEditor
             if (!init) return;
             toolStripStatusLabelStatus.Text = "开始构建主索引！";
             this.Cursor = Cursors.WaitCursor;
+            if (!StopSystemService("Indexer"))
+            {
+                ShowWarning("索引服务停止失败!");
+            }
+            if (!StopSystemService("Searchd"))
+            {
+                ShowWarning("搜索服务停止失败!");
+            }
             toolStripProgressBar.Visible = true;
             toolStripProgressBar.Minimum = 0;
             toolStripProgressBar.Maximum = 1000;
@@ -1330,6 +1338,14 @@ namespace IndexEditor
             if (!init) return;
             toolStripStatusLabelStatus.Text = "开始构建增量索引！";
             this.Cursor = Cursors.WaitCursor;
+            if (!StopSystemService("Indexer"))
+            {
+                ShowWarning("索引服务停止失败!");
+            }
+            if (!StopSystemService("Searchd"))
+            {
+                ShowWarning("搜索服务停止失败!");
+            }
             toolStripProgressBar.Visible = true;
             toolStripProgressBar.Minimum = 0;
             toolStripProgressBar.Maximum = ISUtils.SupportClass.PERCENTAGEDIVE;

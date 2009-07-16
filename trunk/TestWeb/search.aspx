@@ -9,7 +9,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=7" />
     <link href="<%= ConfigurationManager.AppSettings["CSS_QueryPage"] %>" rel="stylesheet" type="text/css" />
     <link href="<%= ConfigurationManager.AppSettings["CSS_ResourceStyle"] %>" rel="stylesheet" type="text/css" />
-    
+    <script type="text/javascript" language="javascript" src="cookie.js"></script>
     <script type="text/javascript">
         
         function TransferString(str)
@@ -28,6 +28,11 @@
         {
             window.open(url,"newwindow","height="+window.screen.height+", width="+window.screen.width+", top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=yes,location=no, status=no"); 
         }
+        function SaveSearchWords()
+        {
+            var searchWords=document.getElementById("txtSearch").Text;
+            SetCookie("SearchWords",searchWords);  
+        }  
     </script>
     <style type="text/css">
         .LargeTitle
@@ -67,10 +72,10 @@
                             <asp:TextBox ID="txtSearch" Width="98%" runat="server" AutoPostBack="true"  OnTextChanged="txtSearch_TextChanged" ></asp:TextBox>
                         </td>                       
                         <td width="60px" style="text-align:right">
-                            <a id="HyperLink1" href="profsearch.aspx" style="display:inline-block;width:50px;font-size:9pt">高级搜索</a>
+                            <a id="HyperLink1" href="profsearch.aspx" onclick="SaveSearchWords()" style="display:inline-block;width:50px;font-size:9pt">高级搜索</a>
                         </td>
                         <td width="60px" style="text-align:right">
-                            <a id="HyperLink2" href="searchsetting.aspx" style="display:inline-block;width:50px;font-size:9pt">搜索设置</a>                            
+                            <a id="HyperLink2" href="searchsetting.aspx" onclick="SaveSearchWords()"  style="display:inline-block;width:50px;font-size:9pt">搜索设置</a>                            
                         </td>
                     </tr>
                     <tr>

@@ -7,7 +7,7 @@
     <title>搜索设置</title>
     <meta http-equiv="x-ua-compatible" content="ie=7" />
      <link href="<%= ConfigurationManager.AppSettings["CSS_QueryPage"] %>" rel="stylesheet" type="text/css" />
-     
+    <base target="_self"></base>
 </head>
 <body>
     <form id="form1" runat="server">

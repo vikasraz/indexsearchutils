@@ -78,7 +78,7 @@ namespace Searchd
                     WriteToLog("该搜索已经存在！");
                     List<SearchRecord> recordList = (List<SearchRecord>)searchResults[searchInfo.Query];
                     Dictionary<string, List<int>> statistics = (Dictionary<string, List<int>>)searchStatistics[searchInfo.Query];
-                    WriteToLog("Total Hits:" + recordList.Count.ToString());
+                    WriteToLog("Total Hits:" + recordList.Count.ToString()+"\tPageSize="+searchInfo.PageSize.ToString());
                     SearchResult result = new SearchResult();
                     result.Statistics = Convert(statistics);
                     result.PageNum = searchInfo.PageNum;
@@ -100,7 +100,7 @@ namespace Searchd
                         searchResults.Add(searchInfo.Query, recordList);
                         searchQueries.Add(searchInfo.Query, query);
                         searchStatistics.Add(searchInfo.Query, statistics);
-                        WriteToLog("Total Hits:" + recordList.Count.ToString());
+                        WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString());
                         SearchResult result = new SearchResult();
                         result.Statistics = Convert(statistics);
                         result.PageNum = 1;
@@ -135,7 +135,7 @@ namespace Searchd
         protected override void OnStart(string[] args)
         {
             // TODO: 在此处添加代码以启动服务。
-            EventLog.WriteEntry("Searchd Start....");
+            EventLog.WriteEntry("搜索服务开始....");
             MainThread.Start();
         }
         protected override void OnStop()
@@ -235,6 +235,8 @@ namespace Searchd
         }
         public static int TotalPages(int totalNum, int pageSize)
         {
+            if (pageSize <= 0)
+                return 1;
             if (totalNum % pageSize == 0)
                 return totalNum / pageSize;
             else

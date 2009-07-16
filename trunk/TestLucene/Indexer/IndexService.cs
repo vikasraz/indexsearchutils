@@ -21,20 +21,21 @@ namespace Indexer
         {
             InitializeComponent();
             // TODO: 在 InitComponent 调用后添加任何初始化
+            WriteToLog("InitializeComponent成功");
         }
 
         protected override void OnStart(string[] args)
         {
             // TODO: 在此处添加代码以启动服务。
-            EventLog.WriteEntry("Indexer Start....");
-            EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory);
+            EventLog.WriteEntry("索引服务开始运行....");
+            WriteToLog("尝试运行索引服务...");
             string[] imagePathArgs = Environment.GetCommandLineArgs();
             string configfile = System.AppDomain.CurrentDomain.BaseDirectory + @"\config.xml";
             if (imagePathArgs.Length >= 2)
             {
                 configfile = imagePathArgs[1];
             }
-            WriteToLog("ConfigFile:\t" + configfile);
+            WriteToLog("配置文件:\t" + configfile);
             try
             {
                 maker = new IndexMaker(configfile);
@@ -42,11 +43,10 @@ namespace Indexer
             catch (Exception ex)
             {
                 WriteToLog(string.Format("Exception for open config file {0},{1}", configfile, ex.ToString()));
-                EventLog.WriteEntry(string.Format("Exception for open config file {0},{1}", configfile, ex.ToString()));
             }
             this.timer.Enabled = true;
             timeStart = DateTime.Now;
-            WriteToLog("Indexer Start...");
+            WriteToLog("索引服务开始...");
         }
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -64,26 +64,30 @@ namespace Indexer
                 }
                 catch (Exception ex)
                 {
-                    WriteToLog(string.Format("Exception for open config file {0},{1}",configfile, ex.ToString()));
-                    EventLog.WriteEntry(string.Format("Exception for open config file {0},{1}", configfile, ex.ToString()));
+                    WriteToLog(string.Format("打开文件 {0}时发生异常：{1}",configfile, ex.ToString()));
                 }
             }
             DateTime now = DateTime.Now;
             TimeSpan span = DateTime.Now - timeStart;
-            //WriteToLog("开始写主索引！");
             if (!busy)
             {
                 busy = true;
-                try
+                if (maker.CanIndex(span, IndexTypeEnum.Ordinary) || maker.CanIndex(span, IndexTypeEnum.Increment))
                 {
-                    StopSystemService("Searchd");
-                }
-                catch (Exception ssse)
-                {
-                    WriteToLog("Exception for StopSystemService Searchd.Reason:" + ssse.Message);
+                    try
+                    {
+                        WriteToLog("停止搜索服务....");
+                        StopSystemService("Searchd");
+                        WriteToLog("搜索服务停止成功！");
+                    }
+                    catch (Exception ssse)
+                    {
+                        WriteToLog("搜索服务无法停止.原因是:" + ssse.Message);
+                    }
                 }
                 if (maker.CanIndex(span, IndexTypeEnum.Ordinary))
                 {
+                    WriteToLog("尝试开始写主索引......");
                     try
                     {
                         Message msg = maker.ExecuteBoostIndexer(span, IndexTypeEnum.Ordinary);
@@ -95,8 +99,8 @@ namespace Indexer
                     }
                     catch (Exception exp)
                     {
-                        WriteToLog("Exception for execute ordinary index.Reason:" + exp.Message);
-                        EventLog.WriteEntry("Exception for execute ordinary index.Reason:" + exp.Message);
+                        WriteToLog("写主索引出错.原因是:" + exp.Message);
+                        EventLog.WriteEntry("写主索引出错.原因是:" + exp.Message);
                     }
                     try
                     {
@@ -104,33 +108,40 @@ namespace Indexer
                     }
                     catch(Exception fe)
                     {
-                        WriteToLog("Index File Failed.Reason:"+fe.StackTrace.ToString());
+                        WriteToLog("文件索引出错。原因是:"+fe.StackTrace.ToString());
                     }
+                    WriteToLog("主索引完成！");
                 }
                 if (maker.CanIndex(span, IndexTypeEnum.Increment))
                 {
                     try
                     {
+                        WriteToLog("开始增量索引......");
                         Message msg = maker.ExecuteBoostIndexer(span, IndexTypeEnum.Increment);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else
                             if (msg.ExceptionOccur)
                                 WriteToLog(msg.ToString());
+                        WriteToLog("完成增量索引！");
                     }
                     catch (Exception exp)
                     {
-                        WriteToLog("Exception for execute increment index.Reason:" + exp.Message);
-                        EventLog.WriteEntry("Exception for execute increment index.Reason:" + exp.Message);
+                        WriteToLog("写增量索引时出错.原因是:" + exp.Message);
                     }
                 }
-                try
+                if (maker.CanIndex(span, IndexTypeEnum.Ordinary) || maker.CanIndex(span, IndexTypeEnum.Increment))
                 {
-                    StartSystemService("Searchd");
-                }
-                catch (Exception ste)
-                {
-                    WriteToLog("Exception for StartSystemService Searchd.Reason:" + ste.Message);
+                    try
+                    {
+                        WriteToLog("开启搜索服务......");
+                        StartSystemService("Searchd");
+                        WriteToLog("搜索服务开始!");
+                    }
+                    catch (Exception ste)
+                    {
+                        WriteToLog("搜索服务无法开始.原因是:" + ste.Message);
+                    }
                 }
                 busy = false;
             }
@@ -167,25 +178,25 @@ namespace Indexer
         protected override void OnStop()
         {
             // TODO: 在此处添加代码以执行停止服务所需的关闭操作。
-            EventLog.WriteEntry("Indexer Stop....");
+            EventLog.WriteEntry("索引服务停止....");
             this.timer.Enabled = false;
-            WriteToLog("Indexer Stop...");
+            WriteToLog("索引服务停止...");
         }
         protected override void OnContinue()
         {
             this.timer.Enabled = true;
-            WriteToLog("Indexer continue...");
+            WriteToLog("索引服务继续运行...");
             base.OnContinue();
         }
         protected override void OnPause()
         {
             this.timer.Enabled = false;
-            WriteToLog("Indexer pause...");
+            WriteToLog("索引服务暂停...");
             base.OnPause();
         }
         protected override void OnShutdown()
         {
-            WriteToLog("Indexer Stop...");
+            WriteToLog("索引服务停止...");
             base.OnShutdown();
         }
         #region Service Function

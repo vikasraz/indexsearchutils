@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ISUtils.CSegment.Utility
+namespace Lwh.ChineseSegment.Utility
 {
     internal static class Character
     {

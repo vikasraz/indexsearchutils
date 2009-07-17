@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ISUtils.CSegment.SegmentDictionary;
-using ISUtils.CSegment.DictionaryLoader;
-using ISUtils.CSegment.Utility;
+using Lwh.ChineseSegment.SegmentDictionary;
+using Lwh.ChineseSegment.DictionaryLoader;
+using Lwh.ChineseSegment.Utility;
 
-namespace ISUtils.CSegment
+namespace Lwh.ChineseSegment
 {
     /// <summary>
     /// 中文分词算法。
@@ -44,8 +44,6 @@ namespace ISUtils.CSegment
         {
             get;
         }
-
-     
         /// <summary>
         /// 数字分词链表
         /// </summary>
@@ -56,8 +54,6 @@ namespace ISUtils.CSegment
                 return _numberSegments;
             }
         }
-
-
         /// <summary>
         /// 姓名分词链表
         /// </summary>
@@ -68,7 +64,6 @@ namespace ISUtils.CSegment
                 return _nameSegments;
             }
         }
-
         protected List<string> FilterList
         {
             get
@@ -100,18 +95,11 @@ namespace ISUtils.CSegment
 
             string[] sentences = StrUtility.SplitSentences(text,_filterList,false);
             StringBuilder result = new StringBuilder();
-//#if DEBUG
-//            foreach (string s in sentences)
-//            {
-//                System.Console.WriteLine(s);
-//            }
-//#endif
             foreach (string sentence in sentences)
             {
                 
                 SegmentSentence(sentence.Trim(), ref result);
             }
-
             return result.ToString();
         }
         public string Segment(string text, out List<int> startList)
@@ -121,7 +109,7 @@ namespace ISUtils.CSegment
                 startList = null;
                 return "";
             }
-            string sentence = StrUtility.Filter(text, _filterList, false);
+            string sentence = StrUtility.FilterEx(text, _filterList);
             StringBuilder result = new StringBuilder();
             SegmentSentence(sentence, ref result, out startList);
             return result.ToString();
@@ -147,7 +135,6 @@ namespace ISUtils.CSegment
 
             return resultList;
         }
-
         public List<string> SegmentEx(string text, out List<int> startList)
         {
             startList = null;
@@ -185,12 +172,8 @@ namespace ISUtils.CSegment
         /// <param name="sentence"></param>
         /// <param name="result"></param>
         protected abstract List<string> SegmentSentence(string sentence,out List<int> startList);
-
         #endregion
-
         #region IWordSegment 成员
-
-
         public bool LoadDictionary(IDictionaryLoader dictionaryLoader, string dictionaryPath)
         {
             if (dictionaryLoader == null)
@@ -200,7 +183,6 @@ namespace ISUtils.CSegment
 
             return this.SegmentDictionary.Parse(dictionaryLoader.Load(dictionaryPath));
         }
-
         public bool AppendDictionary(IDictionaryLoader dictionaryLoader, string dictionaryPath)
         {
             if (dictionaryLoader == null)
@@ -211,7 +193,6 @@ namespace ISUtils.CSegment
             //将分词链表存储到字典中
             return this.SegmentDictionary.Append(dictionaryLoader.Load(dictionaryPath));
         }
-
         public bool LoadNameDictionary(IDictionaryLoader dictionaryLoader, string dictionaryPath)
         {
             if (dictionaryLoader == null)
@@ -223,7 +204,6 @@ namespace ISUtils.CSegment
             this._nameSegments = ParseList( dictionaryLoader.Load(dictionaryPath));
             return this._nameSegments != null && this._nameSegments.Count > 0;
         }
-
         public bool LoadNumberDictionary(IDictionaryLoader dictionaryLoader, string dictionaryPath)
         {
             if (dictionaryLoader == null)
@@ -234,7 +214,6 @@ namespace ISUtils.CSegment
             this._numberSegments = ParseList(dictionaryLoader.Load(dictionaryPath));
             return this._numberSegments != null && this._numberSegments.Count > 0;
         }
-
         public bool LoadFilterDictionary(IDictionaryLoader dictionaryLoader, string dictionaryPath)
         {
             if (dictionaryLoader == null)

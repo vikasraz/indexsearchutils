@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ISUtils.CSegment.Utility;
+using Lwh.ChineseSegment.Utility;
 
-namespace ISUtils.CSegment.DictionaryLoader
+namespace Lwh.ChineseSegment.DictionaryLoader
 {
     /// <summary>
     /// bin词库加载器,存于bin文件中。

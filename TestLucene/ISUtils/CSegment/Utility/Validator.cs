@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ISUtils.CSegment.Utility
+namespace Lwh.ChineseSegment.Utility
 {
     internal static class Validator
     {

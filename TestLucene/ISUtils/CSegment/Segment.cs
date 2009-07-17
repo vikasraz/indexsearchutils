@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ISUtils.CSegment.Utility;
-using ISUtils.CSegment.SegmentDictionary;
-using ISUtils.CSegment.DictionaryLoader;
+using Lwh.ChineseSegment.Utility;
+using Lwh.ChineseSegment.SegmentDictionary;
+using Lwh.ChineseSegment.DictionaryLoader;
 
-namespace ISUtils.CSegment
+namespace Lwh.ChineseSegment
 {
     public static class Segment
     {
+        #region Private Static Var
         private static string _basePath = "";
         private static string _namePath = "";
         private static string _numberPath = "";
@@ -18,6 +19,8 @@ namespace ISUtils.CSegment
         private static IDictionaryLoader dictLoader=new TextDictionaryLoader();
         private static bool initPath = false;
         private static bool initDefs = false;
+        #endregion
+        #region Setting Function
         public static void SetPaths(string basePath, string namePath, 
                                  string numberPath, string filterPath,
                                  List<string> customPaths)
@@ -88,6 +91,8 @@ namespace ISUtils.CSegment
         {
             return initDefs && initPath;
         }
+        #endregion
+        #region Segment Function
         public static string SegmentString(string text)
         {
             if (!initDefs || !initPath)
@@ -114,11 +119,40 @@ namespace ISUtils.CSegment
             wordSegment.Separator = separator;
             return wordSegment.SegmentEx(text);
         }
+        public static string SegmentString(string text,out List<int> startList)
+        {
+            if (!initDefs || !initPath)
+                throw new ApplicationException("Segment has not init!");
+            return wordSegment.Segment(text,out startList);
+        }
+        public static List<string> SegmentStringEx(string text, out List<int> startList)
+        {
+            if (!initDefs || !initPath)
+                throw new ApplicationException("Segment has not init!");
+            return wordSegment.SegmentEx(text, out startList);
+        }
+        public static string SegmentString(string text, string separator, out List<int> startList)
+        {
+            if (!initDefs || !initPath)
+                throw new ApplicationException("Segment has not init!");
+            wordSegment.Separator = separator;
+            return wordSegment.Segment(text, out startList);
+        }
+        public static List<string> SegmentStringEx(string text, string separator, out List<int> startList)
+        {
+            if (!initDefs || !initPath)
+                throw new ApplicationException("Segment has not init!");
+            wordSegment.Separator = separator;
+            return wordSegment.SegmentEx(text, out startList);
+        }
+        #endregion
+        #region Debug Function
 #if DEBUG
         public static void OutputDictionary()
         {
             wordSegment.SegmentDictionary.Output();
         }
 #endif
+        #endregion
     }
 }

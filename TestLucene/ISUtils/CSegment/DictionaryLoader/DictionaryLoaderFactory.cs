@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ISUtils.CSegment.DictionaryLoader
+namespace Lwh.ChineseSegment.DictionaryLoader
 {
     internal static class DictionaryLoaderFactory
     {

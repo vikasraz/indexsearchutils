@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ISUtils.CSegment.Utility;
+using Lwh.ChineseSegment.Utility;
 
-namespace ISUtils.CSegment.DictionaryLoader
+namespace Lwh.ChineseSegment.DictionaryLoader
 {
     /// <summary>
     /// 文本词库加载器,存于文本文件中。

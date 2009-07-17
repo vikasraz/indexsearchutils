@@ -332,12 +332,12 @@ namespace TestLucene
         }
         static void TestChineseSegmentIndexerSpeed()
         {
-            string path = @"d:\Indexer\config.conf";
+            string path = @"d:\Indexer\config.xml";
             //string dict = @"d:\Indexer\seglib\";
             //Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
             //Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
-            ISUtils.Utils.IndexUtil.SetIndexSettings(path,false);
-            //ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+            ISUtils.Utils.IndexUtil.SetIndexSettings(path,true);
+            ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;

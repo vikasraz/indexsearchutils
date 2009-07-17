@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lwh.ChineseSegment.DictionaryLoader
+namespace ISUtils.CSegment.DictionaryLoader
 {
     /// <summary>
     /// 词库加载器,存于文件中。

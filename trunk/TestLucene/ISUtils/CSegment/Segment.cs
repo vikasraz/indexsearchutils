@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Lwh.ChineseSegment.Utility;
-using Lwh.ChineseSegment.SegmentDictionary;
-using Lwh.ChineseSegment.DictionaryLoader;
+using ISUtils.CSegment.Utility;
+using ISUtils.CSegment.SegmentDictionary;
+using ISUtils.CSegment.DictionaryLoader;
 
-namespace Lwh.ChineseSegment
+namespace ISUtils.CSegment
 {
     public static class Segment
     {

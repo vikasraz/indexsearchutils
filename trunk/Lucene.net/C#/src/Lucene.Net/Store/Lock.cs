@@ -27,7 +27,7 @@ namespace Lucene.Net.Store
 	/// <i>... code to execute while locked ...</i>
 	/// }
 	/// }.run();
-	/// </p>
+	/// </pre>
 	/// 
 	/// 
 	/// </summary>

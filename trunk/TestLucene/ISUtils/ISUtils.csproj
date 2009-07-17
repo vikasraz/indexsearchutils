@@ -95,6 +95,7 @@
     <Compile Include="CSegment\SegmentDictionary\ForwardSegmentDictionary.cs" />
     <Compile Include="CSegment\SegmentDictionary\ISegmentDictionary.cs" />
     <Compile Include="CSegment\SegmentDictionary\SegmentDictionaryBase.cs" />
+    <Compile Include="CSegment\Utility\AuxiliaryString.cs" />
     <Compile Include="CSegment\Utility\Character.cs" />
     <Compile Include="CSegment\Utility\Serialization.cs" />
     <Compile Include="CSegment\Utility\StrUtility.cs" />

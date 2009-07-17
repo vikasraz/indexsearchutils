@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Lwh.ChineseSegment.SegmentDictionary;
-using Lwh.ChineseSegment.DictionaryLoader;
+using ISUtils.CSegment.SegmentDictionary;
+using ISUtils.CSegment.DictionaryLoader;
 
-namespace Lwh.ChineseSegment
+namespace ISUtils.CSegment
 {
     /// <summary>
     /// 中文分词算法。

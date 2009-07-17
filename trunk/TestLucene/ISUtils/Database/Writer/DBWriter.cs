@@ -149,10 +149,7 @@ namespace ISUtils.Database.Writer
             DataColumnCollection columns = row.Table.Columns;
             foreach (DataColumn column in columns)
             {
-                if (column.GetType() is DateTime)
-                    doc.Add(new Field(column.ColumnName,SupportClass.Time.GetLuceneDate((DateTime)row[column]), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-                else
-                    doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+                doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
             writer.AddDocument(doc);
         }

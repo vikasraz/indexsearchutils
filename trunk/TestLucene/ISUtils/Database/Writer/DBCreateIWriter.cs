@@ -278,15 +278,20 @@ namespace ISUtils.Database.Writer
                 //#if DEBUG
                 //                Console.WriteLine("Column: name " + column.ColumnName + "\tvalue " + row[column].ToString());
                 //#endif
-                if (column.GetType() is DateTime)
-                    fieldDict[column.ColumnName].SetValue(SupportClass.Time.GetLuceneDate((DateTime)row[column]));
-                else
-                    fieldDict[column.ColumnName].SetValue(row[column].ToString());
+                if (!fieldDict.ContainsKey(column.ColumnName)) continue;
+                fieldDict[column.ColumnName].SetValue(row[column].ToString());
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
-            writer.AddDocument(document);
+            try
+            {
+                writer.AddDocument(document);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
         /**/
         /// <summary>
@@ -327,7 +332,14 @@ namespace ISUtils.Database.Writer
         {
             foreach (DataRow row in collection)
             {
-                WriteDataRow(row);
+                //try
+                //{
+                    WriteDataRow(row);
+                //}
+                //catch (Exception e)
+                //{
+                //    continue;
+                //}
             }
             writer.Optimize();
             writer.Close();

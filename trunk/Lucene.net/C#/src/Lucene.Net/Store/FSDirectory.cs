@@ -89,12 +89,16 @@ namespace Lucene.Net.Store
 		/// the <code>getDirectory</code> methods that take a
 		/// <code>lockFactory</code> (for example, {@link #GetDirectory(String, LockFactory)}).
 		/// </deprecated>
-		public static readonly System.String LOCK_DIR = SupportClass.AppSettings.Get("Lucene.Net.lockDir", System.IO.Path.GetTempPath());
+        
+        //Deprecated. As of 2.1, LOCK_DIR is unused because the write.lock is now stored by default in the index directory. 
+        //If you really want to store locks elsewhere you can create your own SimpleFSLockFactory (or NativeFSLockFactory, etc.) passing in your preferred lock directory. 
+        //Then, pass this LockFactory instance to one of the getDirectory methods that take a lockFactory (for example, getDirectory(String, LockFactory)).
+		//public static readonly System.String LOCK_DIR = SupportClass.AppSettings.Get("Lucene.Net.lockDir", System.IO.Path.GetTempPath());
 		
 		/// <summary>The default class which implements filesystem-based directories. </summary>
 		private static System.Type IMPL;
 		
-		private static System.Security.Cryptography.MD5 DIGESTER;
+        private static System.Security.Cryptography.HashAlgorithm DIGESTER;
 		
 		/// <summary>A buffer optionally used in renameTo method </summary>
 		private byte[] buffer = null;
@@ -379,13 +383,7 @@ namespace Lucene.Net.Store
 		/// <summary>Returns an array of strings, one for each Lucene index file in the directory. </summary>
 		public override System.String[] List()
 		{
-            System.String[] files = SupportClass.FileSupport.GetLuceneIndexFiles(directory.FullName, IndexFileNameFilter.GetFilter());
-            for (int i = 0; i < files.Length; i++)
-            {
-                System.IO.FileInfo fi = new System.IO.FileInfo(files[i]);
-                files[i] = fi.Name;
-            }
-			return files;
+            return SupportClass.FileSupport.GetLuceneIndexFiles(directory.FullName, IndexFileNameFilter.GetFilter());
 		}
 		
 		/// <summary>Returns true iff a file with the given name exists. </summary>
@@ -888,7 +886,7 @@ namespace Lucene.Net.Store
 			{
 				try
 				{
-					DIGESTER = System.Security.Cryptography.MD5.Create();
+                    DIGESTER = SupportClass.Cryptography.GetHashAlgorithm();
 				}
 				catch (System.Exception e)
 				{

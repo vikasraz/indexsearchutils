@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lwh.ChineseSegment.SegmentDictionary
+namespace ISUtils.CSegment.SegmentDictionary
 {
     /// <summary>
     /// 分词字典。

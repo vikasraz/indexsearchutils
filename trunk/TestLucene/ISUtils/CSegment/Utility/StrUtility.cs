@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Lwh.ChineseSegment.DictionaryLoader;
+using ISUtils.CSegment.DictionaryLoader;
 
-namespace Lwh.ChineseSegment.Utility
+namespace ISUtils.CSegment.Utility
 {
     internal static class StrUtility
     {

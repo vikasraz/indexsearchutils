@@ -744,8 +744,9 @@ namespace ISUtils.Searcher
                     recordList.AddRange(Utils.SearchUtil.SearchFile());
                 }
             }
-            Reverser<SearchRecord> reverser=new Reverser<SearchRecord>("ISUtils.Common.SearchRecord","Score",ReverserInfo.Direction.DESC);
+            Reverser<SearchRecord> reverser = new Reverser<SearchRecord>("ISUtils.Common.SearchRecord", "Score", ReverserInfo.Direction.DESC);
             recordList.Sort(reverser);
+            SearchRecord.Direction = ReverserInfo.Direction.DESC;
             statistics = new Dictionary<string, List<int>>();
             for (int i=0; i<recordList.Count; i++)
             {

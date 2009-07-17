@@ -63,7 +63,7 @@ public partial class settings : System.Web.UI.Page
         if (string.IsNullOrEmpty(value))
         {
             foreach (ListItem item in cbList.Items)
-                item.Selected = true;
+                item.Selected = false;
         }
         else
         {

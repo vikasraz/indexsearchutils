@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Lwh.ChineseSegment.SegmentDictionary;
-using Lwh.ChineseSegment.Utility;
+using ISUtils.CSegment.SegmentDictionary;
+using ISUtils.CSegment.Utility;
 
-namespace Lwh.ChineseSegment
+namespace ISUtils.CSegment
 {
     /// <summary>
     /// 正向最大匹配分词。

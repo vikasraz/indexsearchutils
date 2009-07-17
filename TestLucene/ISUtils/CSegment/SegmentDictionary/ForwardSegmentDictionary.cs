@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Lwh.ChineseSegment.SegmentDictionary
+namespace ISUtils.CSegment.SegmentDictionary
 {
     internal class ForwardSegmentDictionary : SegmentDictionaryBase
     {

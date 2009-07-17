@@ -25,6 +25,11 @@ namespace ISUtils.Analysis.Chinese
         private List<string> resultList;
         /**/
         /// <summary>
+        /// 保存分词结果
+        /// </summary>
+        private List<int> startList;
+        /**/
+        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="reader">TextReader（文本读取器）</param>
@@ -47,26 +52,21 @@ namespace ISUtils.Analysis.Chinese
         /// <returns></returns>
         public override Token Next(Token result)
         {
-            if (done)   //第一次可以运行，运行后将被设置为false,在一个实例中只会运行一次
+            if (done )   //第一次可以运行，运行后将被设置为false,在一个实例中只会运行一次
             {
                 done = false;
                 ptr = 0;
                 string text = reader.ReadToEnd();
                 if (string.IsNullOrEmpty(text))
                     return null;
-                //Console.WriteLine(text);
-                resultList = Segment.SegmentStringEx(text," ");
-
-//#if DEBUG
-//                System.Console.WriteLine("In ChineseTokenizer:");
-//                foreach (string s in resultList)
-//                {
-//                    System.Console.WriteLine(s);
-//                }
-//                System.Console.WriteLine("End of Write Segment result");
-//#endif
+#if DEBUG
+                System.Console.WriteLine(text);
+#endif
+                List<int> posList;
+                resultList = Segment.SegmentStringEx(text,out posList);
+                startList = posList;
                 //返回第一个分词结果，并且把指针移向下一位
-                Token token = new Token(resultList[ptr], 0, resultList[ptr].Length - 1);
+                Token token = new Token(resultList[ptr], startList[ptr], startList[ptr]+resultList[ptr].Length - 1);
                 ptr++;
                 return token;
             }
@@ -78,15 +78,17 @@ namespace ISUtils.Analysis.Chinese
                     if (resultList[ptr].Length == 0)
                     {
                         done = true;
+                        ptr = 0;
                         return null;
                     }
-                    Token token = new Token(resultList[ptr], 0, resultList[ptr].Length - 1);
+                    Token token = new Token(resultList[ptr], startList[ptr],startList[ptr]+ resultList[ptr].Length - 1);
                     ptr++;
-                    done = true;
+                    //done = true;
                     return token;
                 }
                 //超出则返回结束符号
                 done = true;
+                ptr = 0;
                 return null;
             }
         }

@@ -33,17 +33,19 @@ namespace ISUtils.Analysis.Chinese
             //   tokenizer=new ChineseTokenizer(reader);
            return new ChineseTokenizer(reader);
         }
-        public override TokenStream ReusableTokenStream(string fieldName, System.IO.TextReader reader)
-        {
-            Tokenizer tokenizer = (Tokenizer)GetPreviousTokenStream();
-            if (tokenizer == null)
-            {
-                tokenizer = new ChineseTokenizer(reader);
-                SetPreviousTokenStream(tokenizer);
-            }
-            else
-                tokenizer.Reset(reader);
-            return tokenizer;
-        }
+        //public override TokenStream ReusableTokenStream(string fieldName, System.IO.TextReader reader)
+        //{
+        //    Tokenizer tokenizer = (Tokenizer)GetPreviousTokenStream();
+        //    if (tokenizer == null)
+        //    {
+        //        tokenizer = new ChineseTokenizer(reader);
+        //        SetPreviousTokenStream(tokenizer);
+        //    }
+        //    else
+        //    {
+        //        tokenizer.Reset(reader);
+        //    }
+        //    return tokenizer;
+        //}
     }
 }

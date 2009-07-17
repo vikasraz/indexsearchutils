@@ -218,10 +218,7 @@ namespace TestLucene
             //TestFileIndex();
             //testSearch();
             //TestIndexMaker();
-            for (int i = 0; i < 10; i++)
-            {
-                Config c = (Config)ISUtils.SupportClass.FileUtil.GetObjectFromXmlFile(@"d:\Indexer\config.xml", typeof(Config));
-            }
+            TestChineseSegmentIndexerSpeed();
             Console.ReadKey();
         }
         static void TestIndexMaker()
@@ -337,7 +334,7 @@ namespace TestLucene
             //Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
             //Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
             ISUtils.Utils.IndexUtil.SetIndexSettings(path,true);
-            //ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+            ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;

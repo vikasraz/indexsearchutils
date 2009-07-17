@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace ISUtils.Common
 {
     [Serializable]
-    public class SearchRecord : IXmlSerializable
+    public class SearchRecord : IXmlSerializable, IComparable
     {
         #region 属性
         private string name = "";
@@ -458,6 +458,38 @@ namespace ISUtils.Common
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
+        }
+        #endregion
+        #region IComparable
+        private static ReverserInfo.Direction direct = ReverserInfo.Direction.ASC;
+        public static ReverserInfo.Direction Direction
+        {
+            get { return direct; }
+            set { direct = value; }
+        }
+        public int CompareTo(object obj)
+        {
+            if (!(obj is SearchRecord))
+                throw new InvalidCastException("This object is not of type SearchRecord");
+            SearchRecord sr = (SearchRecord)obj;
+            if (Direction == ReverserInfo.Direction.ASC)
+            {
+                if (this.score > sr.score)
+                    return 1;
+                else if (this.score == sr.score)
+                    return 0;
+                else
+                    return -1;
+            }
+            else
+            {
+                if (this.score > sr.score)
+                    return -1;
+                else if (this.score == sr.score)
+                    return 0;
+                else
+                    return 1;
+            }
         }
         #endregion
     }

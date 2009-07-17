@@ -312,24 +312,24 @@ namespace Searchd
         public static List<SearchRecord> GetPage(List<SearchRecord> recordList, Dictionary<string, List<int>> statistics, string filter, int pageSize, int pageNum)
         {
             List<int> posList = GetPositions(statistics, filter);
+            posList.Sort(delegate(int x, int y) { return x - y; });
             return GetPage(recordList, posList, pageSize, pageNum);
         }
-        public static List<SearchRecord> GetPage(List<SearchRecord> recordList,int pageSize, int pageNum)
-        {
-            if (pageSize > 0)
-            {
-                List<SearchRecord> resultList = new List<SearchRecord>();
-                if (pageNum <= 0)
-                    pageNum = 1;
-                for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < recordList.Count; i++)
-                    resultList.Add(recordList[i]);
-                return resultList;
-            }
-            else
-            {
-                return recordList;
-            }
-        }
-
+        //public static List<SearchRecord> GetPage(List<SearchRecord> recordList,int pageSize, int pageNum)
+        //{
+        //    if (pageSize > 0)
+        //    {
+        //        List<SearchRecord> resultList = new List<SearchRecord>();
+        //        if (pageNum <= 0)
+        //            pageNum = 1;
+        //        for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < recordList.Count; i++)
+        //            resultList.Add(recordList[i]);
+        //        return resultList;
+        //    }
+        //    else
+        //    {
+        //        return recordList;
+        //    }
+        //}
     }
 }

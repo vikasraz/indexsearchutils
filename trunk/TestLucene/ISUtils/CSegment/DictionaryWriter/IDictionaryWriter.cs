@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ISUtils.CSegment.DictionaryWriter
+namespace Lwh.ChineseSegment.DictionaryWriter
 {
     public interface IDictionaryWriter
     {

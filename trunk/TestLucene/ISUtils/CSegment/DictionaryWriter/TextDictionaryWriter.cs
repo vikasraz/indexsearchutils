@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ISUtils.CSegment.DictionaryWriter
+namespace Lwh.ChineseSegment.DictionaryWriter
 {
     internal class TextDictionaryWriter : IDictionaryWriter
     {

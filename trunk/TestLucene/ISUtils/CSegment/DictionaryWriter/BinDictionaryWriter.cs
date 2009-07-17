@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ISUtils.CSegment.Utility;
+using Lwh.ChineseSegment.Utility;
 
-namespace ISUtils.CSegment.DictionaryWriter
+namespace Lwh.ChineseSegment.DictionaryWriter
 {
     internal class BinDictionaryWriter : IDictionaryWriter
     {

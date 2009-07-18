@@ -26,6 +26,11 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <SccProjectName>"%24/IndexSearch/TestLucene", UVQAAAAA</SccProjectName>
+    <SccLocalPath>..\..\..\..\..</SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\bin\Debug\</OutputPath>
@@ -145,7 +150,6 @@
     <Compile Include="WeightedTerm.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include="Package.html" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

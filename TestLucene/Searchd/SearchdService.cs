@@ -21,11 +21,14 @@ namespace Searchd
 {
     partial class SearchdService : ServiceBase
     {
+        public const int MaxResultCount = 1000;
+        public const int MinResultCount = 100;
         private static SearchMaker searcher;
         private static TcpListener listener;
         private static Hashtable searchResults;
         private static Hashtable searchQueries;
         private static Hashtable searchStatistics;
+        private static bool IsBusy;
         private Thread MainThread;
         // Thread signal.
         public static ManualResetEvent tcpClientConnected =new ManualResetEvent(false);
@@ -65,6 +68,7 @@ namespace Searchd
             NetworkStream ns = client.GetStream();
             if (ns.CanRead && ns.CanWrite)
             {
+                IsBusy = true;
                 SearchInfo searchInfo = GetSearchInfo(ns);
                 WriteToLog(searchInfo.ToString());
                 if (searchResults == null)
@@ -97,16 +101,19 @@ namespace Searchd
                         Query query;
                         Dictionary<string,List<int>> statistics;
                         List<SearchRecord> recordList = searcher.ExecuteFastSearch(searchInfo.Query, out query,out statistics,searchInfo.HighLight);
-                        searchResults.Add(searchInfo.Query, recordList);
-                        searchQueries.Add(searchInfo.Query, query);
-                        searchStatistics.Add(searchInfo.Query, statistics);
-                        WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString());
+                        if (recordList.Count > MinResultCount)
+                        {
+                            searchResults.Add(searchInfo.Query, recordList);
+                            searchQueries.Add(searchInfo.Query, query);
+                            searchStatistics.Add(searchInfo.Query, statistics);
+                            WriteToLog("Add Result to HashTable");
+                        }
+                        WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString()+"\tFilter:\t" + searchInfo.Filter);
                         SearchResult result = new SearchResult();
                         result.Statistics = Convert(statistics);
-                        result.PageNum = 1;
-                        WriteToLog("Filter:\t" + searchInfo.Filter);
+                        result.PageNum = searchInfo.PageNum;
                         result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
-                        result.Records.AddRange(GetPage(recordList,statistics,searchInfo.Filter, searchInfo.PageSize, 1));
+                        result.Records.AddRange(GetPage(recordList,statistics,searchInfo.Filter, searchInfo.PageSize, searchInfo.PageNum));
                         result.Query = query;
                         WriteToLog(result.ToString());
                         SendResult(ns, result);
@@ -120,6 +127,7 @@ namespace Searchd
                         //ns.Close();
                     }
                 }
+                IsBusy = false;
             }
             TimeSpan span = DateTime.Now - now;
             WriteToLog("花费时间："+span.TotalMilliseconds.ToString());
@@ -315,21 +323,16 @@ namespace Searchd
             posList.Sort(delegate(int x, int y) { return x - y; });
             return GetPage(recordList, posList, pageSize, pageNum);
         }
-        //public static List<SearchRecord> GetPage(List<SearchRecord> recordList,int pageSize, int pageNum)
-        //{
-        //    if (pageSize > 0)
-        //    {
-        //        List<SearchRecord> resultList = new List<SearchRecord>();
-        //        if (pageNum <= 0)
-        //            pageNum = 1;
-        //        for (int i = (pageNum - 1) * pageSize; i < pageNum * pageSize && i < recordList.Count; i++)
-        //            resultList.Add(recordList[i]);
-        //        return resultList;
-        //    }
-        //    else
-        //    {
-        //        return recordList;
-        //    }
-        //}
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (!IsBusy && searchResults.Count > MaxResultCount)
+            {
+                searchResults.Clear();
+                searchQueries.Clear(); 
+                searchStatistics.Clear();
+                GC.Collect();
+                WriteToLog("GC Collect!");
+            }
+        }
     }
 }

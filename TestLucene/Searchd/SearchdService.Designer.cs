@@ -39,9 +39,18 @@
             // SearchdService
             // 
             this.ServiceName = "SearchdService";
+            this.timer = new System.Timers.Timer();
+            ((System.ComponentModel.ISupportInitialize)(this.timer)).BeginInit();
+            // 
+            // timer
+            // 
+            this.timer.Interval = 1000;
+            this.timer.Enabled = true;
+            this.timer.Elapsed += new System.Timers.ElapsedEventHandler(this.Timer_Elapsed);
+            ((System.ComponentModel.ISupportInitialize)(this.timer)).EndInit();
         }
 
         #endregion
-
+        private System.Timers.Timer timer;
     }
 }

@@ -1306,9 +1306,10 @@ namespace IndexEditor
             Application.DoEvents();
             try
             {
+                DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
                 ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml",true);
                 toolStripStatusLabelStatus.Text = "正在构建主索引！";
-                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(dblSum,IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
                 ISUtils.Utils.IndexUtil.IndexFile(true, OnIndexCompleted, OnProgressChanged);
                 //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
                 toolStripStatusLabelStatus.Text = "构建主索引完毕！";
@@ -1353,8 +1354,9 @@ namespace IndexEditor
             toolStripStatusLabelStatus.Text = "正在构建增量索引！";
             try
             {
-                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml",true);
-                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
+                DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml", true);
+                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(dblSum,IndexTypeEnum.Increment, OnIndexCompleted, OnProgressChanged);
                 //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Increment,ref toolStripProgressBar);
                 toolStripStatusLabelStatus.Text = "构建增量索引完毕！";
                 ShowInformation("增量索引构建完成");

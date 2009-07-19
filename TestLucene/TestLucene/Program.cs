@@ -45,16 +45,6 @@ namespace TestLucene
                 Console.WriteLine(string.Format("{0}\t{1}\t{2}", tokens[i],offsets[i].Start, offsets[i].End));
             }
         }
-        static void testDB()
-        {
-            string path = @"F:\lwh\trunk\TestLucene\TestLucene\config.conf";
-            IndexMaker oper = new IndexMaker(path);
-            DateTime start = DateTime.Now;
-            Console.WriteLine("Start " + start.ToLocalTime().ToString());
-            oper.ExecuteIndexer(new TimeSpan(0, 2, 0), IndexTypeEnum.Increment);
-            TimeSpan span = DateTime.Now - start;
-            Console.WriteLine(string.Format("Spend {0} ", span.ToString()));
-        }
         static void testSearch()
         {
             string path = @"d:\Indexer\config.xml";
@@ -338,7 +328,7 @@ namespace TestLucene
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
             Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
-            ISUtils.Utils.IndexUtil.BoostIndex(IndexTypeEnum.Ordinary);
+            //ISUtils.Utils.IndexUtil.BoostIndex(IndexTypeEnum.Ordinary);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(span.TotalMilliseconds.ToString());
         }

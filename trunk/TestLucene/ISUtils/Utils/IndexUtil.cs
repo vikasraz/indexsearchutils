@@ -200,7 +200,7 @@ namespace ISUtils.Utils
         }
         #endregion
         #region No Ram,Boost
-        public static void BoostIndex(IndexTypeEnum type)
+        public static void BoostIndex(DataBaseLibrary.SearchUpdateManage dblSum, IndexTypeEnum type)
         {
             if (!initSettings)
                 throw new ApplicationException("Index Settings not init!");
@@ -217,17 +217,24 @@ namespace ISUtils.Utils
                     {
                         IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
                     }
-                    //if (indexSet.Type == IndexTypeEnum.Increment)
-                    //{
-                    //    string view = indexSet.IndexName;
-                    //    if (view.StartsWith(Config.IndexPrefix))
-                    //        view = view.Substring(Config.IndexPrefix.Length);
-                    //    dblSum.Clear(view);
-                    //}
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                    {
+                        string view = indexSet.IndexName;
+                        if (view.StartsWith(Config.IndexPrefix))
+                            view = view.Substring(Config.IndexPrefix.Length);
+                        try
+                        {
+                            dblSum.Clear(view);
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
         }
-        public static void BoostIndexWithEvent(IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
+        public static void BoostIndexWithEvent(DataBaseLibrary.SearchUpdateManage dblSum, IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
         {
             if (!initSettings)
                 throw new ApplicationException("Index Settings not init!");
@@ -244,17 +251,25 @@ namespace ISUtils.Utils
                     {
                         IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
                     }
-                    //if (indexSet.Type==IndexTypeEnum.Increment)
-                    //{
-                    //    string view = indexSet.IndexName;
-                    //    if (view.StartsWith(Config.IndexPrefix))
-                    //        view = view.Substring(Config.IndexPrefix.Length);
-                    //    dblSum.Clear(view);
-                    //}
+                    if (indexSet.Type == IndexTypeEnum.Increment)
+                    {
+                        string view = indexSet.IndexName;
+                        if (view.StartsWith(Config.IndexPrefix))
+                            view = view.Substring(Config.IndexPrefix.Length);
+                        SupportClass.FileUtil.WriteToLog(@"f:\err.log",view);
+                        try
+                        {
+                            dblSum.Clear(view);
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
         }
-        public static void BoostIndex(bool create)
+        public static void BoostIndex(DataBaseLibrary.SearchUpdateManage dblSum,bool create)
         {
             if (!initSettings)
                 throw new ApplicationException("Index Settings not init!");
@@ -268,13 +283,20 @@ namespace ISUtils.Utils
                         SupportClass.FileUtil.DeleteFolder(indexSet.Path);
                     }
                     IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
-                    //if (!create)
-                    //{
-                    //    string view = indexSet.IndexName;
-                    //    if (view.StartsWith(Config.IndexPrefix))
-                    //        view = view.Substring(Config.IndexPrefix.Length);
-                    //    dblSum.Clear(view);
-                    //}
+                    if (!create)
+                    {
+                        string view = indexSet.IndexName;
+                        if (view.StartsWith(Config.IndexPrefix))
+                            view = view.Substring(Config.IndexPrefix.Length);
+                        try
+                        {
+                            dblSum.Clear(view);
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
         }

@@ -90,7 +90,8 @@ namespace Indexer
                     WriteToLog("尝试开始写主索引......");
                     try
                     {
-                        Message msg = maker.ExecuteBoostIndexer(span, IndexTypeEnum.Ordinary);
+                        DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+                        Message msg = maker.ExecuteBoostIndexer(dblSum,span, IndexTypeEnum.Ordinary);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else
@@ -117,7 +118,8 @@ namespace Indexer
                     try
                     {
                         WriteToLog("开始增量索引......");
-                        Message msg = maker.ExecuteBoostIndexer(span, IndexTypeEnum.Increment);
+                        DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+                        Message msg = maker.ExecuteBoostIndexer(dblSum,span, IndexTypeEnum.Increment);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else

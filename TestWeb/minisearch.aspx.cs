@@ -359,7 +359,14 @@ public partial class minisearch : System.Web.UI.Page
         if (start <= 0 || end <= 0)
             return "#";
         string href = value.Substring(start + 1, end - start - 1);
-        url.Append(href + "?");
+        if (href.IndexOf("?") > 0)
+        {
+            url.Append(href + "&");
+        }
+        else
+        {
+            url.Append(href + "?");
+        }
         string rest = value.Substring(end + 1);
         string[] paramArray = rest.Split("[]".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         Dictionary<string, string> paramDict = new Dictionary<string, string>();

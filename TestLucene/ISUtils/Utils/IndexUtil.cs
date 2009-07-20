@@ -256,7 +256,6 @@ namespace ISUtils.Utils
                         string view = indexSet.IndexName;
                         if (view.StartsWith(Config.IndexPrefix))
                             view = view.Substring(Config.IndexPrefix.Length);
-                        SupportClass.FileUtil.WriteToLog(@"f:\err.log",view);
                         try
                         {
                             dblSum.Clear(view);

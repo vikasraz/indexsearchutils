@@ -451,15 +451,26 @@ public partial class searchresult : System.Web.UI.Page
     }
     protected string GetFileUrl(string filepath)
     {
-        string value = ConfigurationManager.AppSettings["电子文档"];
-        if (string.IsNullOrEmpty(value))
+        try
+        {
+            string value = ConfigurationManager.AppSettings["电子文档"];
+            if (string.IsNullOrEmpty(value))
+                return "#";
+            
+            string[] array = value.Split("{}".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            if (array == null)
+                return "#";
+            if (array.Length != 2)
+                return "#";
+            string suffix = filepath.Substring(array[1].Length).Replace('\\', '/');
+            string prefix = array[0];
+            return prefix + suffix;
+        }
+        catch (Exception e)
+        {
+            Response.Write(e.StackTrace.ToString() + "<br>");
             return "#";
-        string[] array = value.Split("{}".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-        if (array.Length != 2)
-            return "#";
-        string suffix = filepath.Substring(array[1].Length).Replace('\\', '/');
-        string prefix = array[0];
-        return prefix + suffix;
+        }
     }
     #endregion
     #region String Function

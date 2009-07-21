@@ -87,6 +87,7 @@ public partial class minisearch : System.Web.UI.Page
             if (!string.IsNullOrEmpty(szWordNotInclude))
                 info.WordNotInclude = szWordsAllContains;
             info.IndexNames = GetIndexNames(views);
+            info.AddFilter(new FilterCondition("", "GraphicsLabel","1"));
             sinfo.PageSize = pageSize;
             sinfo.PageNum = pageNum;
             sinfo.Query = info;
@@ -97,61 +98,49 @@ public partial class minisearch : System.Web.UI.Page
             StringBuilder buffer = new StringBuilder();
             StringBuilder statis = new StringBuilder();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
-            Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(), pageSize, sr.PageNum);
+            Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(),pageSize, sr.PageNum);
             #region Title and Content
             DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();
             foreach (SearchRecord record in sr.Records)
             {
-                if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    string type, fvalue;
-                    GetFileTypeValue(record["路径"].Value, out type, out fvalue);
-                    buffer.Append("<span class=\"LargeTitle\" >" + type + "<a href=\"#\" onclick=\"OpenMessage('" + GetFileUrl(record["路径"].Value) + "')\" >" + GetColorString(record["文件名"].Result) + "&nbsp;得分：" + record.Score.ToString() + "</a></span><br>");
-                    buffer.Append("<span class=\"SmallTitle\" >" + fvalue + "</span><br>");
-                    if (!string.IsNullOrEmpty(record["内容"].Value))
-                        buffer.Append("<span class=\"SmallTitle\" >" + GetColorString(record["内容"].Result) + "</span><br>");
-                    buffer.Append("<br>");
-                }
+                string title, detail, xmlRecord;
+                xmlRecord = GetXmlRecord(xmlSerializer, record);
+                record.GetWebInfo(out title, out detail, true, false);
+                detail = detail + "......";
+                //标题，点击调用序列化
+                if (!string.IsNullOrEmpty(title))
+                    buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "：" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
                 else
-                {
-                    string title, detail, xmlRecord;
-                    xmlRecord = GetXmlRecord(xmlSerializer, record);
-                    record.GetWebInfo(out title, out detail, true, false);
-                    detail = detail + "......";
-                    //标题，点击调用序列化
-                    if (!string.IsNullOrEmpty(title))
-                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "：" + title.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
-                    else
-                        buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
-                    buffer.Append("<span class=\"SmallTitle\" style=\"line-height:20px\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span><br />");
-                    buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
+                    buffer.Append("<a href=\"#\" class=\"LargeTitle\" onclick=\"OpenMessage('" + GetRedirectUrl(record) + "')\"><span class=\"LargeTitle\" onmouseover=\"this.className='MouseDown'\" onmouseout=\"this.className='LargeTitle'\">" + record.Caption + "&nbsp;得分：" + record.Score.ToString() + "</span></a><br />");
+                buffer.Append("<span class=\"SmallTitle\" style=\"line-height:20px\">" + detail.Replace("</B><B>", "").Replace("<B>", "<font color=\"Red\">").Replace("</B>", "</font>") + "</span><br />");
+                buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
 
-                    //查看图形                     
+                //查看图形                     
 
-                    string ID = GetPGLValue(record);
-                    if (!string.IsNullOrEmpty(ID))
-                    {
-                        bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
-                        if (IsImg)
-                        {
-                            buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
-                        }
-                        else
-                        {
-                            buffer.Append("<br /><br />");
-                        }
-                    }
-                    else
-                    {
-                        buffer.Append("<br /><br />");
-                    }
-                }
+                //string ID = GetPGLValue(record);
+                //if (!string.IsNullOrEmpty(ID))
+                //{
+                //bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
+                //if (IsImg)
+                //{
+                buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                //        }
+                //        else
+                //        {
+                //            buffer.Append("<br /><br />");
+                //        }
+                //    }
+                //    else
+                //    {
+                //        buffer.Append("<br /><br />");
+                //    }
+                //}
             }
             tdResult.InnerHtml = buffer.ToString();
             #endregion
             #region Page
-            StringBuilder pageBuilder = new StringBuilder();
             string url = "";
+            StringBuilder pageBuilder = new StringBuilder();
             if (sr.PageNum > 1)
             {
                 url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, views, sr.PageNum - 1);
@@ -430,6 +419,8 @@ public partial class minisearch : System.Web.UI.Page
     #region IndexNames
     public string GetIndexNames(string content)
     {
+        if (string.IsNullOrEmpty(content))
+            return "Cadastral_PCS_DCQZCG,IndexView_Cadastral,IndexView_Cadastral_IOD,IndexView_Monitoring_HCOV,IndexView_Monitoring_LI,IndexView_Monitoring_PM,IndexView_Monitoring_RSSPI,IndexView_OfficeManage_HT,Market_Search_BG_View,Market_Search_CR_View,Market_Search_JYZX_View,Market_Search_XZTD_View,Market_Search_ZL_View,Market_Search_ZR_View,Recource_LA_PCXXB,Recource_LA_PZSQB,Recource_LS_JYDPZSSQB,Recource_PCL_SQB";
         string[] keys = content.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
         StringBuilder result = new StringBuilder();
         foreach (string key in keys)

@@ -61,7 +61,6 @@
     <Compile Include="Common\FieldInfo.cs" />
     <Compile Include="Common\FileContent.cs" />
     <Compile Include="Common\FileIndexSet.cs" />
-    <Compile Include="Common\FileIndexInfo.cs" />
     <Compile Include="Common\FilterCondition.cs" />
     <Compile Include="Common\FormatedResult.cs" />
     <Compile Include="Common\FuzzyQuery.cs" />

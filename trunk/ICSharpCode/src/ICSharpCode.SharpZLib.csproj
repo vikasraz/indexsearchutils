@@ -37,8 +37,8 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>"%24/IndexSearch/TestLucene", UVQAAAAA</SccProjectName>
-    <SccLocalPath>..\..</SccLocalPath>
+    <SccProjectName>"%24/IndexSearch/TestLucene/ICSharpCode.SharpZLib", YRTAAAAA</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
     <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>

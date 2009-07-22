@@ -240,6 +240,10 @@ public partial class searchresult : System.Web.UI.Page
             tdPageSet.InnerHtml = pageBuilder.ToString();
             #endregion
         }
+        catch (SocketException)
+        {
+            Response.Write("搜索服务没有运行！");
+        }
         catch (Exception se)
         {
             Response.Write(se.StackTrace.ToString());

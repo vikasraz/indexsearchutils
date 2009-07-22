@@ -490,6 +490,41 @@ namespace ISUtils
                 {                    
                 }
             }
+            public static List<FileInfo> GetDirFilesEx(string dirPath, string searchPatterns)
+            {
+                List<FileInfo> fileList = null;
+                GetDirFilesEx(dirPath, searchPatterns, ref fileList);
+                return fileList;
+            }
+            public static void GetDirFilesEx(string dirPath, string searchPatterns, ref List<FileInfo> fileList)
+            {
+                if (fileList == null)
+                    fileList = new List<FileInfo>();
+                if (string.IsNullOrEmpty(dirPath))
+                    return;
+                if (!Directory.Exists(dirPath))
+                    return;
+                DirectoryInfo dir = new DirectoryInfo(dirPath);
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                if (string.IsNullOrEmpty(searchPatterns))
+                {
+                    FileInfo[] files = dir.GetFiles();
+                    fileList.AddRange(files);
+                }
+                else
+                {
+                    string[] searchPattenArray = searchPatterns.Split(" ,;|".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string searchPattern in searchPattenArray)
+                    {
+                        FileInfo[] files = dir.GetFiles(searchPattern);
+                        fileList.AddRange(files);
+                    }
+                }
+                foreach (DirectoryInfo dirInfo in dirs)
+                {
+                    GetDirFilesEx(dirInfo.FullName, searchPatterns, ref fileList);
+                }
+            }
         }
         public class Time
         {

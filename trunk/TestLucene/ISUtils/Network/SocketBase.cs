@@ -185,7 +185,7 @@ namespace ISUtils.Network
                 {
                     info = (SearchInfo)formater.Deserialize(connection.NetworkStream);
                 }
-                catch (SerializationException se)
+                catch (SerializationException)
                 { 
                 }
             }

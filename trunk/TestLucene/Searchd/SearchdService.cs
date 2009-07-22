@@ -21,7 +21,7 @@ namespace Searchd
 {
     partial class SearchdService : ServiceBase
     {
-        public const int MaxResultCount = 1000;
+        public const int MaxResultCount = 100;
         public const int MinResultCount = 100;
         private static SearchMaker searcher;
         private static TcpListener listener;
@@ -168,7 +168,7 @@ namespace Searchd
             {
                 WriteToLog("ConfigFile:\t" + configfile);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //EventLog.WriteEntry(System.AppDomain.CurrentDomain.BaseDirectory + "\n" + e.StackTrace.ToString());
             }
@@ -202,6 +202,9 @@ namespace Searchd
         {
             try
             {
+                FileInfo info = new FileInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt");
+                if (info.Length > 10000)
+                    info.Delete();
                 FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
                 string str = "[" + ISUtils.SupportClass.Time.GetDateTime()+ "]\t" + detail;

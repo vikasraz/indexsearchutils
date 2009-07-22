@@ -27,7 +27,7 @@ namespace ISUtils.File
                     fc.Content = reader.ReadToEnd();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (SupportClass.FileUtil.IsTextFile(filepath))
                 {
@@ -69,7 +69,7 @@ namespace ISUtils.File
                 {
                     IndexFile(writer, file);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     continue;
                 }
@@ -85,7 +85,7 @@ namespace ISUtils.File
                     IndexFile(writer, file);
                     OnProgressChanged("FileIndexer", new IndexProgressChangedEventArgs(1000, 1));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     continue;
                 }
@@ -100,7 +100,7 @@ namespace ISUtils.File
                 {
                     IndexFile(writer, file);
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     continue;
                 }
@@ -116,7 +116,7 @@ namespace ISUtils.File
                     IndexFile(writer, file);
                     OnProgressChanged("FileIndexer", new IndexProgressChangedEventArgs(1000, 1));
                 }
-                catch (Exception e)
+                catch (Exception )
                 {
                     continue;
                 }
@@ -136,7 +136,7 @@ namespace ISUtils.File
                 IndexDir(writer, dir);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -156,7 +156,7 @@ namespace ISUtils.File
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -176,7 +176,7 @@ namespace ISUtils.File
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }

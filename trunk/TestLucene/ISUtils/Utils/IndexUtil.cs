@@ -226,7 +226,7 @@ namespace ISUtils.Utils
                         {
                             dblSum.Clear(view);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             continue;
                         }
@@ -260,7 +260,7 @@ namespace ISUtils.Utils
                         {
                             dblSum.Clear(view);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             continue;
                         }
@@ -291,7 +291,7 @@ namespace ISUtils.Utils
                         {
                             dblSum.Clear(view);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             continue;
                         }

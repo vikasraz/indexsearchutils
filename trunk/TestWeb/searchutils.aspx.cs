@@ -42,7 +42,7 @@ public partial class searchutils : System.Web.UI.Page
             info.SearchWords = searchWords;
             info.IndexNames = indexNames;
             sinfo.Query = info;
-            sinfo.PageSize = 0;
+            sinfo.PageSize = 10;
             formater.Serialize(ns, sinfo);
             SearchResult sr = (SearchResult)formater.Deserialize(ns);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchResult));

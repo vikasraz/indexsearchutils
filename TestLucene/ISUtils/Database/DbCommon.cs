@@ -513,7 +513,7 @@ namespace ISUtils.Database
                                 {
                                     fp.IsTitle =bool.Parse(row[column].ToString());
                                 }
-                                catch(Exception e)
+                                catch(Exception)
                                 {
                                     fp.IsTitle =false;
                                 }
@@ -528,7 +528,7 @@ namespace ISUtils.Database
                             {
                                 fp.Boost = float.Parse(row[column].ToString());
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
                                 fp.Boost = 1.0f;
                             }
@@ -542,7 +542,7 @@ namespace ISUtils.Database
                             {
                                 fp.Order = int.Parse(row[column].ToString());
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
                                 fp.Order = 0;
                             }
@@ -556,7 +556,7 @@ namespace ISUtils.Database
                             {
                                 source.PrimaryKey=row[column].ToString();
                             }
-                            catch (Exception e)
+                            catch (Exception)
                             {
                             }
                         }

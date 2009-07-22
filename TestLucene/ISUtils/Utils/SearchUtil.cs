@@ -690,8 +690,8 @@ namespace ISUtils.Utils
         public static Query GetQuery(IndexSet indexSet)
         {
             BooleanQuery queryRet = new BooleanQuery();
-            queryRet.Add(GetFuzzyQuery(indexSet), BooleanClause.Occur.SHOULD);
-            queryRet.Add(GetExactQuery(), BooleanClause.Occur.SHOULD);
+            queryRet.Add(GetFuzzyQuery(indexSet), BooleanClause.Occur.MUST);
+            queryRet.Add(GetExactQuery(), BooleanClause.Occur.MUST);
             return queryRet;
         }
         #endregion
@@ -1672,7 +1672,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -1722,7 +1722,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -1785,7 +1785,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -1835,7 +1835,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -2155,7 +2155,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -2222,7 +2222,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -2302,7 +2302,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))
@@ -2369,7 +2369,7 @@ namespace ISUtils.Utils
                         {
                             statistics.Add(indexSet.Caption, posList);
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             int i = 2;
                             while (statistics.ContainsKey(indexSet.Caption + i.ToString()))

@@ -67,7 +67,7 @@ public partial class minisearch : System.Web.UI.Page
             {
                 pageSize = int.Parse(Decode(userCookie.Values["PageSize"]));
             }
-            catch (Exception ce)
+            catch (Exception )
             {
             }
         }
@@ -87,7 +87,7 @@ public partial class minisearch : System.Web.UI.Page
             if (!string.IsNullOrEmpty(szWordNotInclude))
                 info.WordNotInclude = szWordsAllContains;
             info.IndexNames = GetIndexNames(views);
-            info.AddFilter(new FilterCondition("", "GraphicsLabel","1"));
+            info.AddFilter(new FilterCondition("", "GraphicsLabel","True"));
             sinfo.PageSize = pageSize;
             sinfo.PageNum = pageNum;
             sinfo.Query = info;
@@ -123,7 +123,16 @@ public partial class minisearch : System.Web.UI.Page
                 //bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
                 //if (IsImg)
                 //{
-                buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                if (record.Caption == "遥感卫片监测调查")
+                {
+                    string TBH = record["JCTBH"].Value;
+                    buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath_WP"] + "&TBH=" + TBH + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                }
+                else
+                {
+                    buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
+                }
+                //buffer.Append("&nbsp;&nbsp;&nbsp;&nbsp;<img src=\"icon_solutions_16px.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"OpenMessage('" + ConfigurationManager.AppSettings["MapPath"] + "?BusinessName=" + Server.UrlEncode(record.Caption) + "&ProjectID=" + ID + "')\" class=\"SmallTitle\" >查看图形</a><br /><br />");
                 //        }
                 //        else
                 //        {
@@ -163,28 +172,22 @@ public partial class minisearch : System.Web.UI.Page
             }
             else
             {
-                if (sr.PageNum + 9 > sr.TotalPages)
+                int startPage = sr.PageNum >= 6 ? sr.PageNum - 5 : 1;
+                int endPage = sr.PageNum + 4 > sr.TotalPages ? sr.TotalPages : sr.PageNum + 4;
+                if (endPage == sr.TotalPages)
+                    startPage = endPage - 9;
+                if (startPage == 1)
+                    endPage = startPage + 9;
+                for (int i = startPage; i <= endPage; i++)
                 {
-                    for (int i = sr.TotalPages - 9; i <= sr.TotalPages; i++)
+                    if (i != sr.PageNum)
                     {
-                        if (i != sr.PageNum)
-                        {
-                            url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, views, i);
-                            pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
-                        }
-                        else
-                        {
-                            pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
-                        }
+                        url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, views, i);
+                        pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + i.ToString() + "</a>&nbsp;");
                     }
-                }
-                else
-                {
-                    pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
-                    for (int i = 1; i < 10; i++)
+                    else
                     {
-                        url = GetUrl(szWordsAllContains, szExactPhraseContain, szOneOfWordsAtLeastContain, szWordNotInclude, views, sr.PageNum + i);
-                        pageBuilder.Append("<a class=\"SmallTitle\"  href=\"" + url + "\" >" + (sr.PageNum + i).ToString() + "</a>&nbsp;");
+                        pageBuilder.Append(sr.PageNum.ToString() + "&nbsp;");
                     }
                 }
             }
@@ -195,6 +198,10 @@ public partial class minisearch : System.Web.UI.Page
             }
             tdPageSet.InnerHtml = pageBuilder.ToString();
             #endregion
+        }
+        catch (SocketException)
+        {
+            Response.Write("搜索服务没有运行！");
         }
         catch (Exception se)
         {
@@ -332,7 +339,7 @@ public partial class minisearch : System.Web.UI.Page
             writer.Close();
             return doc.DocumentElement.OuterXml;
         }
-        catch (Exception e)
+        catch (Exception )
         {
             return string.Empty;
         }

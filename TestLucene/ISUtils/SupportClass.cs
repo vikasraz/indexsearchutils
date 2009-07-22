@@ -36,6 +36,53 @@ namespace ISUtils
                 get { return End - Start + 1; }
             }
         }
+        public class Formatter
+        {
+            public static string GetDefValue(Type type)
+            {
+                string tstr = type.ToString().ToLower();
+                if (tstr == "system.double")
+                    return "0.0";
+                else if (tstr == "system.int32")
+                    return "0";
+                else if (tstr == "system.datetime")
+                    return "1949-10-1";
+                else if (tstr == "system.boolean")
+                    return "False";
+                else if (tstr == "system.string")
+                    return "";
+                else
+                    return "";
+            }
+            public static string GetValue(Type type, object obj)
+            {
+                if (obj != null)
+                {
+                    return obj.ToString();
+                }
+                else
+                {
+                    if (type is string)
+                        return string.Empty;
+                    else if (type is int)
+                        return "0";
+                    else if (type is float)
+                        return "0.0";
+                    else if (type is decimal)
+                        return "0.0";
+                    else if (type is double)
+                        return "0.0";
+                    else if (type is bool)
+                        return "False";
+                    else if (type is long)
+                        return "0";
+                    else if (type is DateTime)
+                        return "1949-10-1";
+                    else
+                        return string.Empty;
+                }
+            }
+        }
         public class String
         {
             public const string seprator ="\t,;.，；";
@@ -284,7 +331,7 @@ namespace ISUtils
                     {
                         reader = new FileStream(path, FileMode.Open);
                     }
-                    catch (IOException ioe)
+                    catch (IOException)
                     {
                         System.Threading.Thread.Sleep(1000);
                     }
@@ -320,7 +367,7 @@ namespace ISUtils
                 {
                     value= reader.GetAttribute(attribute);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     value = null;
                 }
@@ -354,7 +401,7 @@ namespace ISUtils
                     writer.Close();
                     return true;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -486,7 +533,7 @@ namespace ISUtils
                     }
                     Directory.Delete(folder);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {                    
                 }
             }

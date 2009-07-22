@@ -164,6 +164,9 @@ namespace Indexer
         {
             try
             {
+                FileInfo info = new FileInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt");
+                if (info.Length > 10000)
+                    info.Delete();
                 FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt", FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
                 string str = "[" + DateTime.Now.ToString() + "]\t" + detail;
@@ -281,7 +284,7 @@ namespace Indexer
                 }
                 return false;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -311,7 +314,7 @@ namespace Indexer
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -332,7 +335,7 @@ namespace Indexer
                 tranInstaller.Install(new Hashtable());
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -354,7 +357,7 @@ namespace Indexer
                 tranInstaller.Uninstall(null);
                 return true;
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }

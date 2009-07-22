@@ -169,6 +169,7 @@ namespace ISUtils.Database.Writer
                 if (fieldDict.ContainsKey(column.ColumnName))
                     continue;
                 fieldDict.Add(column.ColumnName, field);
+                //defValList.Add(column.ColumnName,SupportClass.Formatter.GetValue
 #if DEBUG
                 System.Console.WriteLine("Caption:\t" + column.Caption + "\tName:\t" + column.ColumnName + "\tType:\t" + column.DataType.ToString());
 #endif
@@ -280,6 +281,15 @@ namespace ISUtils.Database.Writer
                 //#endif
                 if (!fieldDict.ContainsKey(column.ColumnName)) continue;
                 fieldDict[column.ColumnName].SetValue(row[column].ToString());
+#if DEBUG
+                if (column.ColumnName == "GraphicsLabel")
+                    System.Console.WriteLine(row[column].ToString());
+                object obj=row[column];
+                Type t = column.DataType;
+                //System.Console.WriteLine(t.ToString());
+                string v = row[column].ToString();
+                string value = SupportClass.Formatter.GetValue(column.DataType, obj);
+#endif
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));

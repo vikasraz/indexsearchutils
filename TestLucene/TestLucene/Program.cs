@@ -50,7 +50,7 @@ namespace TestLucene
             string path = @"d:\Indexer\config.xml";
             SearchMaker searcher = new SearchMaker(path);
             QueryInfo info = new QueryInfo();
-            info.IndexNames = "IndexView_Monitoring_HCOV";
+            info.IndexNames = "Recource_LA_PCXXB";
             info.SearchWords = "东丽区2004年第十三批农用地转用";
             //info.FilterList.Add(new FilterCondition("","JSDW", "东丽"));
             //info.ExcludeList.Add(new ExcludeCondition("", "JSDW", "国家"));
@@ -206,9 +206,9 @@ namespace TestLucene
             //xsr.Serialize(writer, nc);
             //writer.Close();
             //TestFileIndex();
-            //testSearch();
+            testSearch();
             //TestIndexMaker();
-            TestChineseSegmentIndexerSpeed();
+            //TestChineseSegmentIndexerSpeed();
             Console.ReadKey();
         }
         static void TestIndexMaker()
@@ -324,11 +324,12 @@ namespace TestLucene
             //Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
             //Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
             ISUtils.Utils.IndexUtil.SetIndexSettings(path,true);
-            ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+            //ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
-            Console.WriteLine("Begin indexing....."+DateTime.Now.ToShortTimeString());
+            DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+            Console.WriteLine("Begin indexing....." + DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
-            //ISUtils.Utils.IndexUtil.BoostIndex(IndexTypeEnum.Ordinary);
+            ISUtils.Utils.IndexUtil.BoostIndex(dblSum,IndexTypeEnum.Ordinary);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(span.TotalMilliseconds.ToString());
         }

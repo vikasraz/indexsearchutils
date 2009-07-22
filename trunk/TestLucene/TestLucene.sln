@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLucene", "TestLucene\TestLucene.csproj", "{E584BE66-4CF3-44A8-98B0-4B4A83D2C79A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Net-2.3.2-VS2005", "..\Lucene.net\C#\src\Lucene.Net\Lucene.Net-2.3.2-VS2005.csproj", "{F04CA2F4-E182-46A8-B914-F46AF5319E83}"

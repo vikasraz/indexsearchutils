@@ -48,6 +48,18 @@ namespace ISUtils.File
             doc.Add(new Field("Content", fc.Content, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             writer.AddDocument(doc);
         }
+        internal static void IndexFile(IndexWriter writer, FileInfo file)
+        {
+#if DEBUG
+            System.Console.WriteLine(SupportClass.Time.GetDateTime() + "\t" + file.FullName);
+#endif
+            FileContent fc = GetFileContent(file.FullName);
+            Document doc = new Document();
+            doc.Add(new Field("Name", fc.Name, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            doc.Add(new Field("Path", fc.Path, Field.Store.COMPRESS, Field.Index.NO));
+            doc.Add(new Field("Content", fc.Content, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
+            writer.AddDocument(doc);
+        }
         internal static void IndexDir(IndexWriter writer, string dir)
         {
             List<string> fileList = SupportClass.FileUtil.GetDirFiles(dir, string.Empty);
@@ -67,6 +79,37 @@ namespace ISUtils.File
         {
             List<string> fileList = SupportClass.FileUtil.GetDirFiles(dir, string.Empty);
             foreach (string file in fileList)
+            {
+                try
+                {
+                    IndexFile(writer, file);
+                    OnProgressChanged("FileIndexer", new IndexProgressChangedEventArgs(1000, 1));
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        internal static void IndexDirEx(IndexWriter writer, string dir)
+        {
+            List<FileInfo> fileList = SupportClass.FileUtil.GetDirFilesEx(dir, string.Empty);
+            foreach (FileInfo file in fileList)
+            {
+                try
+                {
+                    IndexFile(writer, file);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        internal static void IndexDirEx(IndexWriter writer, string dir, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            List<FileInfo> fileList = SupportClass.FileUtil.GetDirFilesEx(dir, string.Empty);
+            foreach (FileInfo file in fileList)
             {
                 try
                 {

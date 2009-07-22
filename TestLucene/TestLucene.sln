@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLucene", "TestLucene\TestLucene.csproj", "{E584BE66-4CF3-44A8-98B0-4B4A83D2C79A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Net-2.3.2-VS2005", "..\Lucene.net\C#\src\Lucene.Net\Lucene.Net-2.3.2-VS2005.csproj", "{F04CA2F4-E182-46A8-B914-F46AF5319E83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucene.Net-2.3.2", "..\Lucene.net\C#\src\Lucene.Net\Lucene.Net-2.3.2.csproj", "{F04CA2F4-E182-46A8-B914-F46AF5319E83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICSharpCode.SharpZLib", "..\ICSharpCode\src\ICSharpCode.SharpZLib.csproj", "{0E7413FF-EB9E-4714-ACF2-BE3A6A7B2FFD}"
 EndProject
@@ -21,42 +21,41 @@ Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 9
 		SccProjectName0 = \u0022$/IndexSearch/TestLucene\u0022,\u0020UVQAAAAA
-		SccLocalPath0 = ..
+		SccLocalPath0 = .
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection0 = TestLucene\\
-		SccProjectUniqueName1 = ..\\ICSharpCode\\src\\ICSharpCode.SharpZLib.csproj
-		SccLocalPath1 = ..
+		SccProjectUniqueName1 = Indexer\\Indexer.csproj
+		SccProjectName1 = \u0022$/IndexSearch/TestLucene/TestLucene/Indexer\u0022,\u0020KWQAAAAA
+		SccLocalPath1 = Indexer
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection1 = ICSharpCode\\src\\
-		SccProjectUniqueName2 = ..\\Lucene.net\\C#\\contrib\\Highlighter.Net\\Highlighter.Net\\Highlighter.Net.csproj
-		SccLocalPath2 = ..
+		SccProjectUniqueName2 = IndexEditor\\IndexEditor.csproj
+		SccProjectName2 = \u0022$/IndexSearch/TestLucene/TestLucene/IndexEditor\u0022,\u0020IWQAAAAA
+		SccLocalPath2 = IndexEditor
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection2 = Lucene.net\\C#\\contrib\\Highlighter.Net\\Highlighter.Net\\
-		SccProjectUniqueName3 = ..\\Lucene.net\\C#\\src\\Lucene.Net\\Lucene.Net-2.3.2-VS2005.csproj
-		SccLocalPath3 = ..
+		SccProjectUniqueName3 = Searchd\\Searchd.csproj
+		SccProjectName3 = \u0022$/IndexSearch/TestLucene/TestLucene/Searchd\u0022,\u0020OWQAAAAA
+		SccLocalPath3 = Searchd
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection3 = Lucene.net\\C#\\src\\Lucene.Net\\
-		SccProjectUniqueName4 = IndexEditor\\IndexEditor.csproj
-		SccLocalPath4 = ..
+		SccProjectUniqueName4 = ISUtils\\ISUtils.csproj
+		SccProjectName4 = \u0022$/IndexSearch/TestLucene/TestLucene/ISUtils\u0022,\u0020MWQAAAAA
+		SccLocalPath4 = ISUtils
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection4 = TestLucene\\IndexEditor\\
-		SccProjectUniqueName5 = Indexer\\Indexer.csproj
-		SccLocalPath5 = ..
+		SccProjectUniqueName5 = TestLucene\\TestLucene.csproj
+		SccProjectName5 = \u0022$/IndexSearch/TestLucene/TestLucene/TestLucene\u0022,\u0020QWQAAAAA
+		SccLocalPath5 = TestLucene
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection5 = TestLucene\\Indexer\\
-		SccProjectUniqueName6 = ISUtils\\ISUtils.csproj
-		SccLocalPath6 = ..
+		SccProjectUniqueName6 = ..\\Lucene.net\\C#\\src\\Lucene.Net\\Lucene.Net-2.3.2.csproj
+		SccProjectName6 = \u0022$/IndexSearch/TestLucene/Lucene.Net-2.3.2\u0022,\u0020DGTAAAAA
+		SccLocalPath6 = ..\\Lucene.net\\C#\\src\\Lucene.Net
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection6 = TestLucene\\ISUtils\\
-		SccProjectUniqueName7 = Searchd\\Searchd.csproj
-		SccLocalPath7 = ..
+		SccProjectUniqueName7 = ..\\ICSharpCode\\src\\ICSharpCode.SharpZLib.csproj
+		SccProjectName7 = \u0022$/IndexSearch/TestLucene/ICSharpCode.SharpZLib\u0022,\u0020YRTAAAAA
+		SccLocalPath7 = ..\\ICSharpCode\\src
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection7 = TestLucene\\Searchd\\
-		SccProjectUniqueName8 = TestLucene\\TestLucene.csproj
-		SccLocalPath8 = ..
+		SccProjectUniqueName8 = ..\\Lucene.net\\C#\\contrib\\Highlighter.Net\\Highlighter.Net\\Highlighter.Net.csproj
+		SccProjectName8 = \u0022$/IndexSearch/TestLucene/Highlighter.Net\u0022,\u0020RUTAAAAA
+		SccLocalPath8 = ..\\Lucene.net\\C#\\contrib\\Highlighter.Net\\Highlighter.Net
 		CanCheckoutShared = false
-		SccProjectFilePathRelativizedFromConnection8 = TestLucene\\TestLucene\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET

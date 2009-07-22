@@ -2,15 +2,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{922149A6-EB4A-487B-A218-87FEE16065F6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Indexer</RootNamespace>
     <AssemblyName>Indexer</AssemblyName>
-    <SccProjectName>"%24/IndexSearch/TestLucene", UVQAAAAA</SccProjectName>
-    <SccLocalPath>..\..</SccLocalPath>
+    <SccProjectName>"%24/IndexSearch/TestLucene/TestLucene/Indexer", KWQAAAAA</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
     <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
@@ -78,9 +78,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Lucene.net\C#\src\Lucene.Net\Lucene.Net-2.3.2-VS2005.csproj">
+    <ProjectReference Include="..\..\Lucene.net\C#\src\Lucene.Net\Lucene.Net-2.3.2.csproj">
       <Project>{F04CA2F4-E182-46A8-B914-F46AF5319E83}</Project>
-      <Name>Lucene.Net-2.3.2-VS2005</Name>
+      <Name>Lucene.Net-2.3.2</Name>
     </ProjectReference>
     <ProjectReference Include="..\ISUtils\ISUtils.csproj">
       <Project>{48D94CC5-E186-4C7E-B78D-FEF2F1763EB8}</Project>

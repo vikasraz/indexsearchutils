@@ -11,6 +11,7 @@ namespace ISUtils
     using ISUtils.Common;
     public class SupportClass
     {
+        public const string TableFileNameField = "__TFCAPTION__";
         public const string TextFileTypes = ".txt|.ini|.sql|.log|.dat|.bat|.cmd" ;
         public const string ImageFileTypes = ".jpg|.jpeg|.png|.bmp|.dib|.gif|.jpe|.jfif|.tif|.tiff";
         public static bool WriteLogAccess = false;

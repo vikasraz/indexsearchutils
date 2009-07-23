@@ -333,6 +333,9 @@ namespace Searchd
                 searchResults.Clear();
                 searchQueries.Clear(); 
                 searchStatistics.Clear();
+                searchResults = null;
+                searchQueries = null;
+                searchStatistics = null;
                 GC.Collect();
                 WriteToLog("GC Collect!");
             }

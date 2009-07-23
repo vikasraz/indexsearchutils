@@ -16,6 +16,12 @@ namespace ISUtils.Database.Writer
         protected int RowNum = 0;
         protected int Percent = 1;
         protected bool isBusy = false;
+        protected string dbName = "";
+        public string DbName
+        {
+            get { return dbName; }
+            set { dbName = value; }
+        }
         public bool IsBusy
         {
             get { return isBusy; }

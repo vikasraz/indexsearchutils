@@ -9,11 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ISUtils</RootNamespace>
     <AssemblyName>ISUtils</AssemblyName>
-    <SccProjectName>"%24/IndexSearch/TestLucene/TestLucene/ISUtils", MWQAAAAA</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
-    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -136,12 +139,10 @@
     <Compile Include="Database\Writer\DataBaseWriter.cs" />
     <Compile Include="Database\Indexer\DBCreateIndexer.cs" />
     <Compile Include="Database\Indexer\DBIncremIndexer.cs" />
-    <Compile Include="Database\Indexer\DBIndexer.cs" />
     <Compile Include="Database\Link\OdbcLinker.cs" />
     <Compile Include="Database\Link\OleDbLinker.cs" />
     <Compile Include="Database\Link\SqlServerLinker.cs" />
     <Compile Include="Database\Writer\DBCreateIWriter.cs" />
-    <Compile Include="Database\Writer\DBWriter.cs" />
     <Compile Include="Database\Writer\DBIncremIWriter.cs" />
     <Compile Include="Database\Writer\IWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

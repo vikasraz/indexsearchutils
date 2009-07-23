@@ -24,6 +24,12 @@ namespace ISUtils.Database.Indexer
             get { return primaryKey; }
             set { primaryKey = value; }
         }
+        protected string dbName = "";
+        public string DbName
+        {
+            get { return dbName; }
+            set { dbName = value; }
+        }
         /**/
         /// <summary>
         /// 数据库连接字符串

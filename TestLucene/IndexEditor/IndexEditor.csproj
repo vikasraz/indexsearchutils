@@ -10,11 +10,14 @@
     <RootNamespace>IndexEditor</RootNamespace>
     <AssemblyName>IndexEditor</AssemblyName>
     <ApplicationIcon>Properties\chinaz8.ico</ApplicationIcon>
-    <SccProjectName>"%24/IndexSearch/TestLucene/TestLucene/IndexEditor", IWQAAAAA</SccProjectName>
-    <SccLocalPath>.</SccLocalPath>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
     <SccAuxPath>
     </SccAuxPath>
-    <SccProvider>MSSCCI:Microsoft Visual SourceSafe</SccProvider>
+    <SccProvider>
+    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

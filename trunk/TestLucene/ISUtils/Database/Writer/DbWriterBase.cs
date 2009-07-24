@@ -47,11 +47,6 @@ namespace ISUtils.Database.Writer
         protected Dictionary<string, Field> fieldDict;
         /**/
         /// <summary>
-        /// 标题字段
-        /// </summary>
-        protected Field capField;
-        /**/
-        /// <summary>
         /// 索引分析器
         /// </summary>
         protected Analyzer analyzer;
@@ -71,7 +66,10 @@ namespace ISUtils.Database.Writer
         {
             path = directory;
             this.dbName = dbName;
-            capField = new Field(SupportClass.TableFileNameField, dbName, Field.Store.YES, Field.Index.UN_TOKENIZED);
+            Field capField = new Field(SupportClass.TableFileNameField, dbName, Field.Store.YES, Field.Index.UN_TOKENIZED);
+            document = new Document();
+            fieldDict = new Dictionary<string, Field>();
+            document.Add(capField);
         }
         #endregion
         #region Event CallBack

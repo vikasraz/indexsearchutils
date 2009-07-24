@@ -26,8 +26,6 @@ namespace ISUtils.Database.Writer
         public DBCreateIWriter(Analyzer analyzer,string dbName, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
             :base(directory,dbName)
         {
-            document = new Document();
-            fieldDict = new Dictionary<string, Field>();
             try
             {
                 fsWriter = new IndexWriter(directory, analyzer, true);
@@ -99,8 +97,6 @@ namespace ISUtils.Database.Writer
             {
                 throw new Exception("The IndexWriter does not created.");
             }
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE+1;
@@ -141,8 +137,6 @@ namespace ISUtils.Database.Writer
             }
             if (fieldsBoostDict == null)
                 throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
@@ -187,8 +181,6 @@ namespace ISUtils.Database.Writer
             }
             if (fieldsBoostDict == null)
                 throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
@@ -226,8 +218,6 @@ namespace ISUtils.Database.Writer
             {
                 throw new Exception("The IndexWriter does not created.");
             }
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
@@ -271,7 +261,6 @@ namespace ISUtils.Database.Writer
                 document.Add(fieldDict[column.ColumnName]);
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
-            document.Add(capField);
             try
             {
                 fsWriter.AddDocument(document);

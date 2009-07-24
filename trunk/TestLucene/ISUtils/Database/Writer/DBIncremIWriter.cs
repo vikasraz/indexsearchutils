@@ -125,8 +125,6 @@ namespace ISUtils.Database.Writer
             {
                 throw new Exception("The IndexWriter does not created.");
             }
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE+1;
@@ -163,8 +161,6 @@ namespace ISUtils.Database.Writer
             }
             if (fieldsBoostDict == null)
                 throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
@@ -204,8 +200,6 @@ namespace ISUtils.Database.Writer
             }
             if (fieldsBoostDict == null)
                 throw new ArgumentNullException("fieldsBoostDict", "fieldsBoostDict is not valid.");
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
@@ -247,8 +241,6 @@ namespace ISUtils.Database.Writer
             {
                 throw new Exception("The IndexWriter does not created.");
             }
-            if (document == null)
-                document = new Document();
             this.isBusy = true;
             RowNum = table.Rows.Count;
             Percent = RowNum / SupportClass.PERCENTAGEDIVE + 1;
@@ -288,7 +280,6 @@ namespace ISUtils.Database.Writer
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
             }
-            document.Add(capField);
             try
             {
                 fsWriter.AddDocument(document);

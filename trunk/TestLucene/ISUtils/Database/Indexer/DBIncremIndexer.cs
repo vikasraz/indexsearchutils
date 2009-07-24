@@ -54,7 +54,8 @@ namespace ISUtils.Database.Indexer
         /// </summary>
         /// <param name="mergeFactor">合并因子 (mergeFactor)</param>
         /// <param name="maxBufferedDocs">文档内存最大存储数</param>
-        public DBIncremIndexer(Analyzer analyzer, DBTypeEnum type, string connectString, string directory)
+        public DBIncremIndexer(Analyzer analyzer, DBTypeEnum type, string connectString, string directory,string dbName)
+            :base(dbName)
         {
             this.analyzer = analyzer;
             _connectString = connectString;
@@ -90,7 +91,7 @@ namespace ISUtils.Database.Indexer
                     break;
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory,int.MaxValue,512,1000,1000);
+            DbWriterBase writer = new DBIncremIWriter(analyzer,dbName, _directory,int.MaxValue,512,1000,1000);
             writer.PrimaryKey = PrimaryKey;
             writer.WriteDataTable(dt);
             linker.Close();
@@ -125,7 +126,7 @@ namespace ISUtils.Database.Indexer
                     break;
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory,maxFieldLength,ramBufferSize,mergeFactor,maxBufferedDocs);
+            DbWriterBase writer = new DBIncremIWriter(analyzer,dbName, _directory,maxFieldLength,ramBufferSize,mergeFactor,maxBufferedDocs);
             writer.PrimaryKey = PrimaryKey;
             writer.WriteDataTable(dt);
             linker.Close();
@@ -160,7 +161,7 @@ namespace ISUtils.Database.Indexer
                     break;
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            DbWriterBase writer = new DBIncremIWriter(analyzer,dbName, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
             writer.PrimaryKey = PrimaryKey;
             writer.WriteDataTable(dt, fieldBoostDict);
             linker.Close();
@@ -195,7 +196,7 @@ namespace ISUtils.Database.Indexer
                     break;
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            DbWriterBase writer = new DBIncremIWriter(analyzer,dbName, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
             writer.PrimaryKey = PrimaryKey;
             writer.OnProgressChanged += new WriteDbProgressChangedEventHandler(Writer_OnProgressChanged);
             writer.WriteDataTableWithEvent(dt,fieldBoostDict);
@@ -233,7 +234,7 @@ namespace ISUtils.Database.Indexer
                     break;
             }
             DataTable dt = linker.ExecuteSQL(strSQL);
-            DbWriterBase writer = new DBIncremIWriter(analyzer, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
+            DbWriterBase writer = new DBIncremIWriter(analyzer,dbName, _directory, maxFieldLength, ramBufferSize, mergeFactor, maxBufferedDocs);
             writer.PrimaryKey = PrimaryKey;
             writer.OnProgressChanged += new WriteDbProgressChangedEventHandler(Writer_OnProgressChanged);
             writer.WriteDataTableWithEvent(dt);

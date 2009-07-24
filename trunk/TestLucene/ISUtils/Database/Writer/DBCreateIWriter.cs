@@ -14,7 +14,7 @@ namespace ISUtils.Database.Writer
     /// <summary>
     /// 数据库的新建索引写入器
     /// </summary>
-    class DBCreateIWriter : DbWriterBase,DataBaseWriter
+    public class DBCreateIWriter : DbWriterBase,DataBaseWriter
     {
         /**/
         /// <summary>
@@ -23,8 +23,8 @@ namespace ISUtils.Database.Writer
         /// <param name="analyzer">分析器</param>
         /// <param name="directory">索引存储路径</param>
         /// <param name="create">创建索引还是增量索引</param>
-        public DBCreateIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
-            :base(directory)
+        public DBCreateIWriter(Analyzer analyzer,string dbName, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+            :base(directory,dbName)
         {
             document = new Document();
             fieldDict = new Dictionary<string, Field>();
@@ -267,26 +267,18 @@ namespace ISUtils.Database.Writer
                 //#endif
                 if (!fieldDict.ContainsKey(column.ColumnName)) continue;
                 fieldDict[column.ColumnName].SetValue(row[column].ToString());
-#if DEBUG
-                if (column.ColumnName == "GraphicsLabel")
-                    System.Console.WriteLine(row[column].ToString());
-                object obj=row[column];
-                Type t = column.DataType;
-                //System.Console.WriteLine(t.ToString());
-                string v = row[column].ToString();
-                string value = SupportClass.Formatter.GetValue(column.DataType, obj);
-#endif
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
+            document.Add(capField);
             try
             {
                 fsWriter.AddDocument(document);
             }
             catch (Exception e)
             {
-                throw e;
+                OnException(e);
             }
         }
         /**/

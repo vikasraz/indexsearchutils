@@ -6,11 +6,11 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using ISUtils.Common;
 using ISUtils.Analysis.Chinese;
-using ISUtils.Database;
+using ISUtils.Database.Writer;
 using ISUtils.Database.Indexer;
 using ISUtils.Async;
 
-namespace ISUtils.Database.Writer
+namespace ISUtils.Database
 {
     public class IWriter
     {
@@ -26,7 +26,7 @@ namespace ISUtils.Database.Writer
                 DateTime start;
                 if (create)
                 {
-                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbcIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbcIndexer.WriteResults(source.Query,indexer.MaxFieldLength,indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs);
@@ -34,7 +34,7 @@ namespace ISUtils.Database.Writer
                 }
                 else
                 {
-                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbiIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs);                 
@@ -59,7 +59,7 @@ namespace ISUtils.Database.Writer
                 DateTime start;
                 if (create)
                 {
-                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbcIndexer.PrimaryKey = source.PrimaryKey;
                     dbcIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbcIndexer.OnProgressChanged += OnProgressChanged;
@@ -69,7 +69,7 @@ namespace ISUtils.Database.Writer
                 }
                 else
                 {
-                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbiIndexer.PrimaryKey = source.PrimaryKey;
                     dbiIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbiIndexer.OnProgressChanged += OnProgressChanged;
@@ -96,7 +96,7 @@ namespace ISUtils.Database.Writer
                 DateTime start;
                 if (create)
                 {
-                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbcIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbcIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,source.FieldBoostDict);
@@ -104,7 +104,7 @@ namespace ISUtils.Database.Writer
                 }
                 else
                 {
-                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbiIndexer.PrimaryKey = source.PrimaryKey;
                     start = DateTime.Now;
                     dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs,source.FieldBoostDict);
@@ -129,7 +129,7 @@ namespace ISUtils.Database.Writer
                 DateTime start;
                 if (create)
                 {
-                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBCreateIndexer dbcIndexer = new DBCreateIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbcIndexer.PrimaryKey = source.PrimaryKey;
                     dbcIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbcIndexer.OnProgressChanged += OnProgressChanged;
@@ -139,7 +139,7 @@ namespace ISUtils.Database.Writer
                 }
                 else
                 {
-                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBIncremIndexer dbiIndexer = new DBIncremIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbiIndexer.PrimaryKey = source.PrimaryKey;
                     dbiIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbiIndexer.OnProgressChanged += OnProgressChanged;

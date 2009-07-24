@@ -47,6 +47,11 @@ namespace ISUtils.Database.Writer
         protected Dictionary<string, Field> fieldDict;
         /**/
         /// <summary>
+        /// 标题字段
+        /// </summary>
+        protected Field capField;
+        /**/
+        /// <summary>
         /// 索引分析器
         /// </summary>
         protected Analyzer analyzer;
@@ -62,9 +67,11 @@ namespace ISUtils.Database.Writer
         protected string path = "";
         #endregion
         #region Constructor
-        public DbWriterBase(string directory)
+        public DbWriterBase(string directory,string dbName)
         {
             path = directory;
+            this.dbName = dbName;
+            capField = new Field(SupportClass.TableFileNameField, dbName, Field.Store.YES, Field.Index.UN_TOKENIZED);
         }
         #endregion
         #region Event CallBack
@@ -149,6 +156,11 @@ namespace ISUtils.Database.Writer
         /// </summary>
         /// <param name="directoryPaths">索引存储路径列表</param>
         public abstract void MergeIndexes(params string[] directoryPaths);
+        #endregion
+        #region Function for Exception
+        public void OnException(Exception e)
+        {
+        }
         #endregion
     }
 }

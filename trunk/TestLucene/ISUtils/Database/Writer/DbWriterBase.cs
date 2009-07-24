@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lucene.Net.Analysis;
 using System.Data;
+using Lucene.Net.Analysis;
+using Lucene.Net.Documents;
+using Lucene.Net.Index;
 using ISUtils.Async;
 namespace ISUtils.Database.Writer
 {
@@ -13,6 +15,7 @@ namespace ISUtils.Database.Writer
         public event WriteDbProgressChangedEventHandler OnProgressChanged;
         #endregion
         #region Property
+
         protected int RowNum = 0;
         protected int Percent = 1;
         protected bool isBusy = false;
@@ -31,6 +34,37 @@ namespace ISUtils.Database.Writer
         {
             get { return primaryKey; }
             set { primaryKey = value; }
+        }
+        /**/
+        /// <summary>
+        /// 索引文档
+        /// </summary>
+        protected Document document;
+        /**/
+        /// <summary>
+        /// 索引字段
+        /// </summary>
+        protected Dictionary<string, Field> fieldDict;
+        /**/
+        /// <summary>
+        /// 索引分析器
+        /// </summary>
+        protected Analyzer analyzer;
+        /**/
+        /// <summary>
+        /// 索引写入器
+        /// </summary>
+        protected IndexWriter fsWriter;
+        /**/
+        /// <summary>
+        /// 索引路径
+        /// </summary>
+        protected string path = "";
+        #endregion
+        #region Constructor
+        public DbWriterBase(string directory)
+        {
+            path = directory;
         }
         #endregion
         #region Event CallBack

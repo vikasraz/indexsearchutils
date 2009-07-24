@@ -18,37 +18,23 @@ namespace ISUtils.Database.Writer
     {
         /**/
         /// <summary>
-        /// 索引文档
-        /// </summary>
-        private Document document;
-        /**/
-        /// <summary>
-        /// 索引字段
-        /// </summary>
-        private Dictionary<string, Field> fieldDict;
-        /**/
-        /// <summary>
-        /// 索引写入器
-        /// </summary>
-        private IndexWriter writer;
-        /**/
-        /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="analyzer">分析器</param>
         /// <param name="directory">索引存储路径</param>
         /// <param name="create">创建索引还是增量索引</param>
         public DBCreateIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+            :base(directory)
         {
             document = new Document();
             fieldDict = new Dictionary<string, Field>();
             try
             {
-                writer = new IndexWriter(directory, analyzer, true);
-                writer.SetMaxFieldLength(maxFieldLength);
-                writer.SetRAMBufferSizeMB(ramBufferSize);
-                writer.SetMergeFactor(mergeFactor);
-                writer.SetMaxBufferedDocs(maxBufferedDocs);
+                fsWriter = new IndexWriter(directory, analyzer, true);
+                fsWriter.SetMaxFieldLength(maxFieldLength);
+                fsWriter.SetRAMBufferSizeMB(ramBufferSize);
+                fsWriter.SetMergeFactor(mergeFactor);
+                fsWriter.SetMaxBufferedDocs(maxBufferedDocs);
             }
             catch (Exception e)
             {
@@ -61,8 +47,8 @@ namespace ISUtils.Database.Writer
         /// 析构函数
         ~DBCreateIWriter()
         {
-            if (writer != null)
-                writer.Close();
+            if (fsWriter != null)
+                fsWriter.Close();
         }
         /**/
         /// <summary>
@@ -73,14 +59,14 @@ namespace ISUtils.Database.Writer
         /// <param name="create">创建索引还是增量索引</param>
         public override void SetBasicProperties(Analyzer analyzer, string directory, bool create)
         {
-            if (writer != null)
+            if (fsWriter != null)
             {
-                writer.Flush();
+                fsWriter.Flush();
             }
             try
             {
-                writer = new IndexWriter(directory, analyzer, true);
-                writer.SetMaxFieldLength(int.MaxValue);
+                fsWriter = new IndexWriter(directory, analyzer, true);
+                fsWriter.SetMaxFieldLength(int.MaxValue);
             }
             catch (Exception e)
             {
@@ -95,12 +81,12 @@ namespace ISUtils.Database.Writer
         /// <param name="maxBufferedDocs">文档内存最大存储数</param>
         public override void SetOptimProperties(int mergeFactor, int maxBufferedDocs)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
-            writer.SetMergeFactor(mergeFactor);
-            writer.SetMaxBufferedDocs(maxBufferedDocs);
+            fsWriter.SetMergeFactor(mergeFactor);
+            fsWriter.SetMaxBufferedDocs(maxBufferedDocs);
         }
         /**/
         /// <summary>
@@ -109,7 +95,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTable(DataTable table)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -149,7 +135,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTable(DataTable table, Dictionary<string, float> fieldsBoostDict)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -195,7 +181,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTableWithEvent(DataTable table, Dictionary<string, float> fieldsBoostDict)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -236,7 +222,7 @@ namespace ISUtils.Database.Writer
         /// <param name="table">数据库表名</param>
         public override void WriteDataTableWithEvent(DataTable table)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -296,7 +282,7 @@ namespace ISUtils.Database.Writer
             }
             try
             {
-                writer.AddDocument(document);
+                fsWriter.AddDocument(document);
             }
             catch (Exception e)
             {
@@ -327,8 +313,8 @@ namespace ISUtils.Database.Writer
                     base.OnProgressChangedEvent(this, pargs);
                 }
             }
-            writer.Optimize();
-            writer.Close();
+            fsWriter.Optimize();
+            fsWriter.Close();
 #if DEBUG
             System.Console.WriteLine("WriteDataRowCollection Success!\t" + DateTime.Now.ToLongTimeString());
 #endif
@@ -351,8 +337,8 @@ namespace ISUtils.Database.Writer
                 //    continue;
                 //}
             }
-            writer.Optimize();
-            writer.Close();
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
         /**/
         /// <summary>
@@ -361,7 +347,7 @@ namespace ISUtils.Database.Writer
         /// <param name="directoryPaths">索引存储路径列表</param>
         public override void MergeIndexes(params string[] directoryPaths)
         {
-            if (writer == null)
+            if (fsWriter == null)
             {
                 throw new Exception("The IndexWriter does not created.");
             }
@@ -370,9 +356,9 @@ namespace ISUtils.Database.Writer
             {
                 dictList.Add(FSDirectory.GetDirectory(directory, false));
             }
-            writer.AddIndexes(dictList.ToArray());
-            writer.Optimize();
-            writer.Close();
+            fsWriter.AddIndexes(dictList.ToArray());
+            fsWriter.Optimize();
+            fsWriter.Close();
         }
     }
 }

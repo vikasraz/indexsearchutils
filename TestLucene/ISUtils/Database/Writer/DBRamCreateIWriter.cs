@@ -16,23 +16,7 @@ namespace ISUtils.Database.Writer
     /// </summary>
     class DBRamCreateIWriter : DbWriterBase,DataBaseWriter
     {
-        /**/
-        /// <summary>
-        /// 索引文档
-        /// </summary>
-        private Document document;
-        /**/
-        /// <summary>
-        /// 索引字段
-        /// </summary>
-        private Dictionary<string, Field> fieldDict;
-        /**/
-        /// <summary>
-        /// 索引写入器
-        /// </summary>
-        private Analyzer analyzer;
         private IndexWriter ramWriter;
-        private IndexWriter fsWriter;
         private FSDirectory fsDir;
         private RAMDirectory ramDir=new RAMDirectory();
         /**/
@@ -43,6 +27,7 @@ namespace ISUtils.Database.Writer
         /// <param name="directory">索引存储路径</param>
         /// <param name="create">创建索引还是增量索引</param>
         public DBRamCreateIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+            :base(directory)
         {
             document = new Document();
             fieldDict = new Dictionary<string, Field>();

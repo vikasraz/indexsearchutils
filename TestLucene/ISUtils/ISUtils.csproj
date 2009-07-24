@@ -115,7 +115,7 @@
     <Compile Include="Async\WriteRowCompletedEventArgs.cs" />
     <Compile Include="Database\Writer\DBRamCreateIWriter.cs" />
     <Compile Include="Database\Writer\DBRamIncremIWriter.cs" />
-    <Compile Include="Database\Writer\RamIWriter.cs" />
+    <Compile Include="Database\RamIWriter.cs" />
     <Compile Include="File\FileIndexer.cs" />
     <Compile Include="File\IFilter\ComHelper.cs" />
     <Compile Include="File\IFilter\FilterLoader.cs" />
@@ -144,7 +144,7 @@
     <Compile Include="Database\Link\SqlServerLinker.cs" />
     <Compile Include="Database\Writer\DBCreateIWriter.cs" />
     <Compile Include="Database\Writer\DBIncremIWriter.cs" />
-    <Compile Include="Database\Writer\IWriter.cs" />
+    <Compile Include="Database\IWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Searcher\SearchMaker.cs" />
     <Compile Include="Utils\Parser.cs">

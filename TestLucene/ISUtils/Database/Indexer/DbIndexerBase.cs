@@ -46,6 +46,12 @@ namespace ISUtils.Database.Indexer
         /// </summary>
         public abstract string Directory { get; }
         #endregion
+        #region Constructor
+        public DbIndexerBase(string dbName)
+        {
+            this.dbName = dbName;
+        }
+        #endregion
         #region Event Func
         protected virtual void OnIndexCompletedEvent(object sender, IndexCompletedEventArgs e)
         {

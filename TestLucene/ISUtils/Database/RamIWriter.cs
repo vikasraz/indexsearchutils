@@ -6,11 +6,11 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Documents;
 using ISUtils.Common;
 using ISUtils.Analysis.Chinese;
-using ISUtils.Database;
+using ISUtils.Database.Writer;
 using ISUtils.Database.Indexer;
 using ISUtils.Async;
 
-namespace ISUtils.Database.Writer
+namespace ISUtils.Database
 {
     public class RamIWriter
     {
@@ -25,14 +25,14 @@ namespace ISUtils.Database.Writer
                 DateTime start;
                 if (create)
                 {
-                    DBRamCreateIndexer dbcIndexer = new DBRamCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBRamCreateIndexer dbcIndexer = new DBRamCreateIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     start = DateTime.Now;
                     dbcIndexer.WriteResults(source.Query,indexer.MaxFieldLength,indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs);
                     return DateTime.Now - start;
                 }
                 else
                 {
-                    DBRamIncremIndexer dbiIndexer = new DBRamIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBRamIncremIndexer dbiIndexer = new DBRamIncremIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     start = DateTime.Now;
                     dbiIndexer.WriteResults(source.Query, indexer.MaxFieldLength, indexer.RamBufferSize, indexer.MergeFactor, indexer.MaxBufferedDocs);                 
                     return DateTime.Now - start;
@@ -56,7 +56,7 @@ namespace ISUtils.Database.Writer
                 DateTime start;
                 if (create)
                 {
-                    DBRamCreateIndexer dbcIndexer = new DBRamCreateIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBRamCreateIndexer dbcIndexer = new DBRamCreateIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbcIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbcIndexer.OnProgressChanged += OnProgressChanged;
                     start = DateTime.Now;
@@ -65,7 +65,7 @@ namespace ISUtils.Database.Writer
                 }
                 else
                 {
-                    DBRamIncremIndexer dbiIndexer = new DBRamIncremIndexer(analyzer, source.DBType, connect, index.Path);
+                    DBRamIncremIndexer dbiIndexer = new DBRamIncremIndexer(analyzer, source.DBType, connect, index.Path,index.Caption);
                     dbiIndexer.OnIndexCompleted += OnIndexCompleted;
                     dbiIndexer.OnProgressChanged += OnProgressChanged;
                     start = DateTime.Now;

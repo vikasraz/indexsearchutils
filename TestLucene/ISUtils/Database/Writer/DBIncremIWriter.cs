@@ -24,8 +24,8 @@ namespace ISUtils.Database.Writer
         /// <param name="analyzer">分析器</param>
         /// <param name="directory">索引存储路径</param>
         /// <param name="create">创建索引还是增量索引</param>
-        public DBIncremIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
-            : base(directory)
+        public DBIncremIWriter(Analyzer analyzer,string dbName, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+            : base(directory,dbName)
         {
             Lucene.Net.Store.Directory dict;
             document=new Document();
@@ -288,7 +288,15 @@ namespace ISUtils.Database.Writer
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
             }
-            fsWriter.AddDocument(document);
+            document.Add(capField);
+            try
+            {
+                fsWriter.AddDocument(document);
+            }
+            catch (Exception e)
+            {
+                OnException(e);
+            }
         }
         /**/
         /// <summary>

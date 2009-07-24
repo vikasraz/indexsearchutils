@@ -14,7 +14,7 @@ namespace ISUtils.Database.Writer
     /// <summary>
     /// 数据库的新建索引写入器
     /// </summary>
-    class DBRamCreateIWriter : DbWriterBase,DataBaseWriter
+    public class DBRamCreateIWriter : DbWriterBase,DataBaseWriter
     {
         private IndexWriter ramWriter;
         private FSDirectory fsDir;
@@ -26,8 +26,8 @@ namespace ISUtils.Database.Writer
         /// <param name="analyzer">分析器</param>
         /// <param name="directory">索引存储路径</param>
         /// <param name="create">创建索引还是增量索引</param>
-        public DBRamCreateIWriter(Analyzer analyzer, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
-            :base(directory)
+        public DBRamCreateIWriter(Analyzer analyzer,string dbName, string directory, int maxFieldLength, double ramBufferSize, int mergeFactor, int maxBufferedDocs)
+            :base(directory,dbName)
         {
             document = new Document();
             fieldDict = new Dictionary<string, Field>();
@@ -276,7 +276,15 @@ namespace ISUtils.Database.Writer
                 document.Add(fieldDict[column.ColumnName]);
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             }
-            ramWriter.AddDocument(document);
+            document.Add(capField);
+            try
+            {
+                ramWriter.AddDocument(document);
+            }
+            catch (Exception e)
+            {
+                OnException(e);
+            }
         }
         /**/
         /// <summary>

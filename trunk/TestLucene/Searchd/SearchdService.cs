@@ -25,9 +25,6 @@ namespace Searchd
         public const int MinResultCount = 100;
         private static SearchMaker searcher;
         private static TcpListener listener;
-        private static Hashtable searchResults;
-        private static Hashtable searchQueries;
-        private static Hashtable searchStatistics;
         private static bool IsBusy;
         private Thread MainThread;
         // Thread signal.
@@ -68,64 +65,35 @@ namespace Searchd
             NetworkStream ns = client.GetStream();
             if (ns.CanRead && ns.CanWrite)
             {
+                
                 IsBusy = true;
-                SearchInfo searchInfo = GetSearchInfo(ns);
-                WriteToLog(searchInfo.ToString());
-                if (searchResults == null)
-                    searchResults = new Hashtable(new QueryInfoComparer());
-                if (searchQueries == null)
-                    searchQueries = new Hashtable(new QueryInfoComparer());
-                if (searchStatistics == null)
-                    searchStatistics = new Hashtable(new QueryInfoComparer());
-                if (searchResults.ContainsKey(searchInfo.Query))
+                try
                 {
-                    WriteToLog("该搜索已经存在！");
-                    List<SearchRecord> recordList = (List<SearchRecord>)searchResults[searchInfo.Query];
-                    Dictionary<string, List<int>> statistics = (Dictionary<string, List<int>>)searchStatistics[searchInfo.Query];
-                    WriteToLog("Total Hits:" + recordList.Count.ToString()+"\tPageSize="+searchInfo.PageSize.ToString());
+                    WriteToLog("A New Search Begin");
+                    SearchInfo searchInfo = GetSearchInfo(ns);
+                    WriteToLog("Get Search Info");
+                    Query query;
+                    Dictionary<string,int> statistics;
+                    List<SearchRecord> recordList = searcher.ExecutePageSearch(searchInfo.Query, out query, out statistics, searchInfo.Filter,searchInfo.PageSize, searchInfo.PageNum, searchInfo.HighLight);
+                    WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString()+"\tFilter:\t" + searchInfo.Filter);
                     SearchResult result = new SearchResult();
-                    result.Statistics = Convert(statistics);
+                    result.Statistics = statistics;
                     result.PageNum = searchInfo.PageNum;
-                    result.TotalPages = TotalPages(TotalCount(statistics,searchInfo.Filter), searchInfo.PageSize);
-                    result.Records.AddRange(GetPage(recordList, statistics,searchInfo.Filter, searchInfo.PageSize, searchInfo.PageNum));
-                    result.Query = (Query)searchQueries[searchInfo.Query];
+                    result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
+                    result.Records.AddRange(recordList);
+                    result.Query = query;
                     WriteToLog(result.ToString());
+                    WriteToLog("Get Search Result");
                     SendResult(ns, result);
                     ns.Close();
+                    WriteToLog("Search Finish");
                 }
-                else
+                catch (Exception ex)
                 {
-                    WriteToLog("该搜索首次进行！");
-                    try
-                    {
-                        Query query;
-                        Dictionary<string,List<int>> statistics;
-                        List<SearchRecord> recordList = searcher.ExecuteFastSearch(searchInfo.Query, out query,out statistics,searchInfo.HighLight);
-                        if (recordList.Count > MinResultCount)
-                        {
-                            searchResults.Add(searchInfo.Query, recordList);
-                            searchQueries.Add(searchInfo.Query, query);
-                            searchStatistics.Add(searchInfo.Query, statistics);
-                            WriteToLog("Add Result to HashTable");
-                        }
-                        WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString()+"\tFilter:\t" + searchInfo.Filter);
-                        SearchResult result = new SearchResult();
-                        result.Statistics = Convert(statistics);
-                        result.PageNum = searchInfo.PageNum;
-                        result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
-                        result.Records.AddRange(GetPage(recordList,statistics,searchInfo.Filter, searchInfo.PageSize, searchInfo.PageNum));
-                        result.Query = query;
-                        WriteToLog(result.ToString());
-                        SendResult(ns, result);
-                        ns.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteToLog(ex.StackTrace.ToString());
-                        WriteToLog("Failed to Search. Reason: " + ex.Message);
-                        //EventLog.WriteEntry("Failed to Search. Reason: " + ex.Message);
-                        //ns.Close();
-                    }
+                    WriteToLog(ex.StackTrace.ToString());
+                    WriteToLog("Failed to Search. Reason: " + ex.Message);
+                    //EventLog.WriteEntry("Failed to Search. Reason: " + ex.Message);
+                    //ns.Close();
                 }
                 IsBusy = false;
             }
@@ -203,7 +171,7 @@ namespace Searchd
             try
             {
                 FileInfo info = new FileInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt");
-                if (info.Length > 10000)
+                if (info.Length > 1024*100)
                     info.Delete();
                 FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);
@@ -262,14 +230,14 @@ namespace Searchd
             }
             return result;
         }
-        public static int TotalCount(Dictionary<string,List<int>> statistics,string filter)
+        public static int TotalCount(Dictionary<string,int> statistics,string filter)
         {
             int count = 0;
             if (string.IsNullOrEmpty(filter))
             {
                 foreach (string key in statistics.Keys)
                 {
-                    count+=statistics[key].Count;
+                    count+=statistics[key];
                 }
             }
             else
@@ -278,7 +246,7 @@ namespace Searchd
                 foreach (string key in keys)
                 {
                     if (statistics.ContainsKey(key))
-                        count += statistics[key].Count;
+                        count += statistics[key];
                 }
             }
             return count;
@@ -328,17 +296,17 @@ namespace Searchd
         }
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!IsBusy && searchResults.Count > MaxResultCount)
-            {
-                searchResults.Clear();
-                searchQueries.Clear(); 
-                searchStatistics.Clear();
-                searchResults = null;
-                searchQueries = null;
-                searchStatistics = null;
-                GC.Collect();
-                WriteToLog("GC Collect!");
-            }
+            //if (!IsBusy && searchResults.Count > MaxResultCount)
+            //{
+            //    //searchResults.Clear();
+            //    //searchQueries.Clear(); 
+            //    //searchStatistics.Clear();
+            //    //searchResults = null;
+            //    //searchQueries = null;
+            //    //searchStatistics = null;
+            //    GC.Collect();
+            //    WriteToLog("GC Collect!");
+            //}
         }
     }
 }

@@ -66,9 +66,9 @@ namespace TestLucene
             //Console.WriteLine(si.ToString());
             DateTime start = DateTime.Now;
             Query query;
-            Dictionary<string, List<int>> statis;
+            Dictionary<string, int> statis;
             //List<SearchRecord> results = searcher.ExecuteFastSearch(info, out query, true);
-            List<SearchRecord> results = searcher.ExecuteFastSearch(info, out query, out statis, true);
+            List<SearchRecord> results = searcher.ExecutePageSearch(info, out query, out statis,"",10,1, true);
             //Console.WriteLine(query.ToString());
             //SearchResult sr = new SearchResult();
             //sr.PageNum = 1;

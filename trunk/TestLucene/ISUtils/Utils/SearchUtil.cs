@@ -30,7 +30,8 @@ namespace ISUtils.Utils
         private static List<ExcludeCondition> excludeList = new List<ExcludeCondition>();
         private static List<RangeCondition> rangeList = new List<RangeCondition>();
         private static bool initSettings=false;
-        private static int maxMatches = 1000;
+        private static Dictionary<string, Dictionary<string, FieldProperties>> sfpDict = new Dictionary<string, Dictionary<string, FieldProperties>>();
+        private static Dictionary<string, IndexSet> nameIndexDict = new Dictionary<string, IndexSet>();
         #endregion
         #region "搜索基本设置"
         public static void SetSearchSettings(string configFileName,bool isXmlFile)
@@ -74,6 +75,7 @@ namespace ISUtils.Utils
                         }
                     }
                 }
+                SetBasicDict();
                 initSettings = true;
             }
             catch (Exception e)
@@ -111,6 +113,7 @@ namespace ISUtils.Utils
                     }
                 }
             }
+            SetBasicDict();
             initSettings = true;
         }
         public static void SetSearchSettings(List<Source> sourceList, List<IndexSet> indexList,FileIndexSet fileIndexSet, DictionarySet dictSet, SearchSet searchSet)
@@ -141,6 +144,7 @@ namespace ISUtils.Utils
                     }
                 }
             }
+            SetBasicDict();
             initSettings = true;
         }
         public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, SearchSet searchSet)
@@ -155,6 +159,7 @@ namespace ISUtils.Utils
             SearchUtil.searchSet = searchSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
             ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
+            SetBasicDict();
             initSettings = true;
         }
         public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, FileIndexSet fileIndexSet, DictionarySet dictSet, SearchSet searchSet)
@@ -170,6 +175,7 @@ namespace ISUtils.Utils
             SearchUtil.fileSet = fileIndexSet;
             ISUtils.CSegment.Segment.SetPaths(dictSet.BasePath, dictSet.NamePath, dictSet.NumberPath, dictSet.FilterPath, dictSet.CustomPaths);
             ISUtils.CSegment.Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ISUtils.CSegment.ForwardMatchSegment());
+            SetBasicDict();
             initSettings = true;
         }
         public static void UseDefaultChineseAnalyzer(bool useChineseAnalyzer)
@@ -180,6 +186,25 @@ namespace ISUtils.Utils
             }
             else
                 analyzer = new StandardAnalyzer();
+        }
+        private static void SetBasicDict()
+        {
+            if (sfpDict == null)
+                sfpDict = new Dictionary<string, Dictionary<string, FieldProperties>>();
+            if (nameIndexDict == null)
+                nameIndexDict = new Dictionary<string, IndexSet>();
+            foreach (IndexSet set in indexDict.Keys)
+            {
+                if (set.Type == IndexTypeEnum.Increment)
+                    continue;
+                nameIndexDict.Add(set.Caption, set);
+                sfpDict.Add(set.Caption, indexDict[set].FieldDict);
+            }
+            Dictionary<string, FieldProperties> fpDict = new Dictionary<string, FieldProperties>();
+            fpDict.Add("Name", new FieldProperties("Name","文件名",1.0f,true));
+            fpDict.Add("Path", new FieldProperties("Path", "路径", 1.0f, true));
+            fpDict.Add("Content", new FieldProperties("Content", "内容", 1.0f, true));
+            sfpDict.Add(SupportClass.TFNFieldValue, fpDict);
         }
         #endregion
         #region "搜索扩展设置"
@@ -2483,6 +2508,162 @@ namespace ISUtils.Utils
             catch (Exception e)
             {
                 SupportClass.FileUtil.WriteToLog(SupportClass.LogPath, e.StackTrace.ToString());
+            }
+            return recordList;
+        }
+        public static List<SearchRecord> SearchPage(out Query query, out Dictionary<string, int> statistics,List<string> filterList,int pageSize, int pageNum,bool fileInclude,bool highLight)
+        {
+            List<SearchRecord> recordList = new List<SearchRecord>();
+            query = GetQuery();
+            statistics = new Dictionary<string, int>();
+            try
+            {
+                #region Add Index Dir
+                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "begin to init searcher.");
+                List<IndexSearcher> searcherList = new List<IndexSearcher>();
+                if (searchIndexList.Count > 0)
+                {
+                    foreach (IndexSet indexSet in searchIndexList)
+                    {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
+                        searcherList.Add(new IndexSearcher(indexSet.Path));
+                    }
+                }
+                else
+                {
+                    foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                    {
+                        if (indexSet.Type == IndexTypeEnum.Increment)
+                            continue;
+                        searcherList.Add(new IndexSearcher(indexSet.Path));
+                    }
+                }
+                if (fileInclude)
+                {
+                    searcherList.Add(new IndexSearcher(fileSet.Path));
+                }
+                #endregion
+                ParallelMultiSearcher searcher = new ParallelMultiSearcher(searcherList.ToArray());
+                TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
+                ScoreDoc[] scoreDocs = topDocs.scoreDocs;
+                Highlighter highlighter = new Highlighter(new QueryScorer(query));
+                highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
+                #region Order by Score
+                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "Add to list.");
+                List<ScoreDoc> scoreDocList = new List<ScoreDoc>();
+                for (int i = 0; i < scoreDocs.Length; i++)
+                {
+                    float score = scoreDocs[i].score;
+                    if (score < searchSet.MinScore)
+                        continue;
+                    scoreDocList.Add(scoreDocs[i]);
+                }
+                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "Begin to sort.");
+                scoreDocList.Sort(delegate(ScoreDoc x, ScoreDoc y)
+                {
+                    if (x.score > y.score)
+                        return -1;
+                    else if (x.score == y.score)
+                        return 0;
+                    else
+                        return 1;
+                });
+                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "End sort.");
+                #endregion
+                #region Doc Statistic
+                int start = 0, end = scoreDocList.Count;
+                if (pageSize > 0 && pageNum >= 1)
+                {
+                    start = pageSize * (pageNum - 1);
+                    end = pageNum * pageSize;
+                }
+                int current = 0;
+                SpecialFieldSelector sfSelector = new SpecialFieldSelector(SupportClass.TableFileNameField);
+                for (int recNum = 0; recNum < scoreDocList.Count; recNum++)
+                {
+                    float score = scoreDocList[recNum].score;
+                    if (score < searchSet.MinScore)
+                        continue;
+                    Document fDoc = searcher.Doc(scoreDocList[recNum].doc,sfSelector);
+                    string caption = fDoc.Get(SupportClass.TableFileNameField);
+                    if (sfpDict.ContainsKey(caption) == false || nameIndexDict.ContainsKey(caption) == false)
+                        continue;
+                    if (statistics.ContainsKey(caption))
+                    {
+                        statistics[caption] = statistics[caption] + 1;
+                    }
+                    else
+                    {
+                        statistics.Add(caption, 1);
+                    }
+                    if (filterList != null && filterList.Count>0)
+                    {
+                        if (!filterList.Contains(caption))
+                            continue;
+                    }
+                    #region Add Page
+                    if (current >= start && current <= end)
+                    {
+                        Document doc = searcher.Doc(scoreDocList[recNum].doc);
+                        doc.RemoveField(SupportClass.TableFileNameField);
+                        Dictionary<string, FieldProperties> fpDict = sfpDict[caption];
+                        Field[] fields = new Field[doc.GetFields().Count];
+                        doc.GetFields().CopyTo(fields, 0);
+                        #region SearchField
+                        List<SearchField> sfList = new List<SearchField>();
+                        foreach (Field field in fields)
+                        {
+                            string key = field.Name();
+                            string value = field.StringValue();
+                            string result = "";
+                            if (highLight)
+                            {
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                result = highlighter.GetBestFragment(tokenStream, value);
+                                if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, result, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                                else
+                                {
+                                    if (fpDict.ContainsKey(key))
+                                        sfList.Add(new SearchField(key, fpDict[key].Caption, value, value, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                    else
+                                        sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                                }
+                            }
+                            else
+                            {
+                                if (fpDict.ContainsKey(key))
+                                    sfList.Add(new SearchField(key, fpDict[key].Caption, value, value, field.GetBoost(), fpDict[key].IsTitle, true, fpDict[key].Order));
+                                else
+                                    sfList.Add(new SearchField(key, key, value, result, field.GetBoost(), false, false, 0));
+                            }
+                        }
+                        #endregion
+                        if (caption.Equals(SupportClass.TFNFieldValue) == false)
+                        {
+                            IndexSet indexSet = nameIndexDict[caption];
+                            recordList.Add(new SearchRecord(indexSet, sfList, indexDict[indexSet].PrimaryKey, score));
+                        }
+                        else
+                        {
+                            recordList.Add(new SearchRecord("文件", "文件", "文件", score, sfList));
+                        }
+                    }
+                    #endregion
+                    current++;
+                }
+                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "End of Search.");
+                #endregion
+            }
+            catch (Exception e)
+            {
+                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search_log.txt", e.StackTrace.ToString());
             }
             return recordList;
         }

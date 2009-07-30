@@ -53,18 +53,18 @@
 </head>
 <body onload="Init();" bgcolor="white">
     <form id="form1" runat="server">
-     <div style="text-align:center;width:100%" id="divTalbe">
+     <div style="text-align:center;width:100%; font-size:9pt" id="divTalbe">
+    
+            <span class="LabelStyle">国 土 资 源 综 合 搜 索</span>
+            <div style="width:94%; text-align:right">
+                           <a href='javascript:window.history.back();'>返回上一页</a> 
+            </div>
+            <br />
      <table border="0" width ="100%" cellpadding="0" cellspacing ="0">
         <tr>
             <td width="3%">&nbsp;</td>
             <td width="94%">         
                 <table border="0" width="800px" cellpadding="0" cellspacing ="0">
-                    <tr>
-                        <td colspan="4">
-                             <span class="LabelStyle">国 土 资 源 综 合 搜 索</span>
-                             <br /><br />
-                        </td>                       
-                    </tr>
                     <tr height="35px">
                         <td width="80px" style="text-align:right">
                         </td>

@@ -712,6 +712,30 @@ namespace ISUtils.Utils
             queryRet.Add(GetExactQuery(), BooleanClause.Occur.SHOULD);
             return queryRet;
         }
+        private static Query GetQuery(bool fileInclude)
+        {
+            BooleanQuery queryRet = new BooleanQuery();
+            if (searchIndexList.Count > 0)
+            {
+                foreach (IndexSet indexSet in searchIndexList)
+                {
+                    queryRet.Add(GetFuzzyQuery(indexSet), BooleanClause.Occur.SHOULD);
+                }
+            }
+            else
+            {
+                foreach (IndexSet indexSet in indexFieldsDict.Keys)
+                {
+                    queryRet.Add(GetFuzzyQuery(indexSet), BooleanClause.Occur.SHOULD);
+                }
+            }
+            queryRet.Add(GetExactQuery(), BooleanClause.Occur.SHOULD);
+            if (fileInclude)
+            {
+                queryRet.Add(GetFileQuery(), BooleanClause.Occur.SHOULD);
+            }
+            return queryRet;
+        }
         public static Query GetQuery(IndexSet indexSet)
         {
             BooleanQuery queryRet = new BooleanQuery();
@@ -2514,12 +2538,12 @@ namespace ISUtils.Utils
         public static List<SearchRecord> SearchPage(out Query query, out Dictionary<string, int> statistics,List<string> filterList,int pageSize, int pageNum,bool fileInclude,bool highLight)
         {
             List<SearchRecord> recordList = new List<SearchRecord>();
-            query = GetQuery();
+            query = GetQuery(fileInclude);
             statistics = new Dictionary<string, int>();
             try
             {
                 #region Add Index Dir
-                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "begin to init searcher.");
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "begin to init searcher.");
                 List<IndexSearcher> searcherList = new List<IndexSearcher>();
                 if (searchIndexList.Count > 0)
                 {
@@ -2544,13 +2568,14 @@ namespace ISUtils.Utils
                     searcherList.Add(new IndexSearcher(fileSet.Path));
                 }
                 #endregion
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "begin to Search.");
                 ParallelMultiSearcher searcher = new ParallelMultiSearcher(searcherList.ToArray());
                 TopDocs topDocs = searcher.Search(query.Weight(searcher), null, searchSet.MaxMatches);
                 ScoreDoc[] scoreDocs = topDocs.scoreDocs;
                 Highlighter highlighter = new Highlighter(new QueryScorer(query));
                 highlighter.SetTextFragmenter(new SimpleFragmenter(SupportClass.FRAGMENT_SIZE));
                 #region Order by Score
-                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "Add to list.");
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "Add to list.");
                 List<ScoreDoc> scoreDocList = new List<ScoreDoc>();
                 for (int i = 0; i < scoreDocs.Length; i++)
                 {
@@ -2559,7 +2584,7 @@ namespace ISUtils.Utils
                         continue;
                     scoreDocList.Add(scoreDocs[i]);
                 }
-                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "Begin to sort.");
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "Begin to sort.");
                 scoreDocList.Sort(delegate(ScoreDoc x, ScoreDoc y)
                 {
                     if (x.score > y.score)
@@ -2569,13 +2594,13 @@ namespace ISUtils.Utils
                     else
                         return 1;
                 });
-                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "End sort.");
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "End sort.");
                 #endregion
                 #region Doc Statistic
                 int start = 0, end = scoreDocList.Count;
                 if (pageSize > 0 && pageNum >= 1)
                 {
-                    start = pageSize * (pageNum - 1);
+                    start = pageSize * (pageNum - 1)+1;
                     end = pageNum * pageSize;
                 }
                 int current = 0;
@@ -2587,8 +2612,13 @@ namespace ISUtils.Utils
                         continue;
                     Document fDoc = searcher.Doc(scoreDocList[recNum].doc,sfSelector);
                     string caption = fDoc.Get(SupportClass.TableFileNameField);
-                    if (sfpDict.ContainsKey(caption) == false || nameIndexDict.ContainsKey(caption) == false)
-                        continue;
+                    if ((caption.Equals(SupportClass.TFNFieldValue) == false))
+                    {
+                        if (sfpDict.ContainsKey(caption) == false || nameIndexDict.ContainsKey(caption) == false)
+                        {
+                            continue;
+                        }
+                    }
                     if (statistics.ContainsKey(caption))
                     {
                         statistics[caption] = statistics[caption] + 1;
@@ -2658,12 +2688,12 @@ namespace ISUtils.Utils
                     #endregion
                     current++;
                 }
-                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "End of Search.");
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search.log", "End of Search.");
                 #endregion
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search_log.txt", e.StackTrace.ToString());
+                //SupportClass.FileUtil.WriteToLog(@"D:\Indexer\log\search_log.txt", e.StackTrace.ToString());
             }
             return recordList;
         }

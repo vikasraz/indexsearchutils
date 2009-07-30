@@ -74,7 +74,7 @@ namespace ISUtils.Common
                     return null;
                 foreach (SearchField sf in fieldList)
                 {
-                    if (sf.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+                    if (sf.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) || sf.Caption.Equals(name, StringComparison.CurrentCultureIgnoreCase))
                         return sf;
                 }
                 return null;
@@ -85,7 +85,7 @@ namespace ISUtils.Common
                     return;
                 foreach (SearchField sf in fieldList)
                 {
-                    if (sf.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
+                    if (sf.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase) || sf.Caption.Equals(name, StringComparison.CurrentCultureIgnoreCase))
                     {
                         fieldList.Remove(sf);
                         fieldList.Add(value);

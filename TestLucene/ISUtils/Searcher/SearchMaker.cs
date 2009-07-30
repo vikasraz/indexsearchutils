@@ -116,6 +116,23 @@ namespace ISUtils.Searcher
             }
             return recordList;
         }
+        public List<SearchRecord> ExecutePageSearch(QueryInfo info, out Query query, out Dictionary<string, int> statistics,string filter,int pageSize,int pageNum, bool highlight)
+        {
+            List<SearchRecord> recordList;
+            Utils.SearchUtil.SetSearchSettings(sourceList, indexList, fileSet, dictSet, searchd);
+            Utils.SearchUtil.SetQueryInfo(info);
+            List<string> filterList=null;
+            bool fileInclude=false;
+            if (string.IsNullOrEmpty(info.IndexNames))
+            {
+                fileInclude=true;
+            }
+            filterList=new List<string>();
+            string[] filters=SupportClass.String.Split(filter,",;");
+            filterList.AddRange(filters);
+            recordList = Utils.SearchUtil.SearchPage(out query,out statistics,filterList,pageSize,pageNum,fileInclude,highlight);
+            return recordList;
+        }
         #endregion
     }
 }

@@ -14,6 +14,7 @@ namespace ISUtils.File
 {
     public static class FileIndexer
     {
+        private static Field tfnField=new Field(SupportClass.TableFileNameField, SupportClass.TFNFieldValue, Field.Store.YES, Field.Index.NO_NORMS);
         #region Internal Function
         internal static FileContent GetFileContent(string filepath)
         {
@@ -43,6 +44,7 @@ namespace ISUtils.File
 #endif
             FileContent fc = GetFileContent(filepath);
             Document doc = new Document();
+            doc.Add(tfnField);
             doc.Add(new Field("Name", fc.Name, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             doc.Add(new Field("Path", fc.Path, Field.Store.COMPRESS, Field.Index.NO));
             doc.Add(new Field("Content", fc.Content, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
@@ -55,6 +57,7 @@ namespace ISUtils.File
 #endif
             FileContent fc = GetFileContent(file.FullName);
             Document doc = new Document();
+            doc.Add(tfnField);
             doc.Add(new Field("Name", fc.Name, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
             doc.Add(new Field("Path", fc.Path, Field.Store.COMPRESS, Field.Index.NO));
             doc.Add(new Field("Content", fc.Content, Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));

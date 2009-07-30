@@ -66,7 +66,7 @@ namespace ISUtils.Database.Writer
         {
             path = directory;
             this.dbName = dbName;
-            Field capField = new Field(SupportClass.TableFileNameField, dbName, Field.Store.YES, Field.Index.UN_TOKENIZED);
+            Field capField = new Field(SupportClass.TableFileNameField, dbName, Field.Store.YES, Field.Index.NO_NORMS);
             document = new Document();
             fieldDict = new Dictionary<string, Field>();
             document.Add(capField);

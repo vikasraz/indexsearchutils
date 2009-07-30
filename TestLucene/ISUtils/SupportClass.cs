@@ -12,6 +12,7 @@ namespace ISUtils
     public class SupportClass
     {
         public const string TableFileNameField = "__TABLEFILECAPTION__";
+        public const string TFNFieldValue = "文件";
         public const string TextFileTypes = ".txt|.ini|.sql|.log|.dat|.bat|.cmd" ;
         public const string ImageFileTypes = ".jpg|.jpeg|.png|.bmp|.dib|.gif|.jpe|.jfif|.tif|.tiff";
         public static bool WriteLogAccess = false;

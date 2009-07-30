@@ -2603,7 +2603,7 @@ namespace ISUtils.Utils
                     start = pageSize * (pageNum - 1)+1;
                     end = pageNum * pageSize;
                 }
-                int current = 0;
+                int current = 1;
                 SpecialFieldSelector sfSelector = new SpecialFieldSelector(SupportClass.TableFileNameField);
                 for (int recNum = 0; recNum < scoreDocList.Count; recNum++)
                 {

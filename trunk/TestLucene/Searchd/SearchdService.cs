@@ -69,24 +69,24 @@ namespace Searchd
                 IsBusy = true;
                 try
                 {
-                    WriteToLog("A New Search Begin");
+                    //WriteToLog("A New Search Begin");
                     SearchInfo searchInfo = GetSearchInfo(ns);
-                    WriteToLog("Get Search Info");
+                    //WriteToLog("Get Search Info");
                     Query query;
                     Dictionary<string,int> statistics;
                     List<SearchRecord> recordList = searcher.ExecutePageSearch(searchInfo.Query, out query, out statistics, searchInfo.Filter,searchInfo.PageSize, searchInfo.PageNum, searchInfo.HighLight);
-                    WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString()+"\tFilter:\t" + searchInfo.Filter);
+                    //WriteToLog("Total Hits:" + recordList.Count.ToString() + "\tPageSize=" + searchInfo.PageSize.ToString()+"\tFilter:\t" + searchInfo.Filter);
                     SearchResult result = new SearchResult();
                     result.Statistics = statistics;
                     result.PageNum = searchInfo.PageNum;
                     result.TotalPages = TotalPages(TotalCount(statistics, searchInfo.Filter), searchInfo.PageSize);
                     result.Records.AddRange(recordList);
                     result.Query = query;
-                    WriteToLog(result.ToString());
-                    WriteToLog("Get Search Result");
+                    //WriteToLog(result.ToString());
+                    //WriteToLog("Get Search Result");
                     SendResult(ns, result);
                     ns.Close();
-                    WriteToLog("Search Finish");
+                    //WriteToLog("Search Finish");
                 }
                 catch (Exception ex)
                 {

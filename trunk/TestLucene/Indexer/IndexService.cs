@@ -165,7 +165,7 @@ namespace Indexer
             try
             {
                 FileInfo info = new FileInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt");
-                if (info.Length > 10000)
+                if (info.Length > 1024*100)
                     info.Delete();
                 FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt", FileMode.Append);
                 StreamWriter sw = new StreamWriter(fs);

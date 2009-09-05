@@ -45,6 +45,7 @@ public partial class searchutils : System.Web.UI.Page
             sinfo.PageSize = 10;
             formater.Serialize(ns, sinfo);
             SearchResult sr = (SearchResult)formater.Deserialize(ns);
+            //WriteLog(Server.MapPath(".") + "searchutils.log", searchWords, indexNames, sr.Records.Count, sr);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchResult));
             StringBuilder builder = new StringBuilder();
             StringWriter writer = new StringWriter(builder);
@@ -63,5 +64,37 @@ public partial class searchutils : System.Web.UI.Page
             Response.Write(se.StackTrace.ToString());
             return;
         }
+    }
+    protected void WriteLog(string path,string searchwords,string index,int recNum,SearchResult sr)
+    {
+        try
+        {
+            FileStream fs = new FileStream(path, FileMode.Append);
+            StreamWriter sw = new StreamWriter(fs);
+            string str = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fffffff") + "]" ;
+            sw.WriteLine(str);
+            sw.WriteLine("SearchWords=\t" + searchwords);
+            sw.WriteLine("Index=\t" + index);
+            sw.WriteLine("Search Record:\t" + recNum.ToString());
+            sw.WriteLine("PageNum:\t"+sr.PageNum);
+            foreach (SearchRecord record in sr.Records)
+            {
+                sw.WriteLine("==============================================");
+                sw.WriteLine("Caption:\t" + record.Caption);
+                foreach (SearchField field in record.Fields)
+                {
+                    sw.WriteLine(field.Caption + "\t\t" + field.Name + "\t\t" + field.Value);
+                }
+            }
+            sw.WriteLine("#########################################################################");
+            sw.Flush();
+            sw.Close();
+            fs.Close();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+
     }
 }

@@ -31,6 +31,10 @@ namespace ISUtils.Searcher
         {
             get { return searchd.Port; }
         }
+        public string Address
+        {
+            get { return searchd.Address; }
+        }
         #endregion
         #region 构造函数
         public SearchMaker(string filename)

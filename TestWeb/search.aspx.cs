@@ -242,9 +242,11 @@ public partial class searchresult : System.Web.UI.Page
             tdPageSet.InnerHtml = pageBuilder.ToString();
             #endregion
         }
-        catch (SocketException)
+        catch (SocketException sep)
         {
             Response.Write("搜索服务没有运行！");
+            Response.Write(sep.StackTrace.ToString());
+            return;
         }
         catch (Exception se)
         {

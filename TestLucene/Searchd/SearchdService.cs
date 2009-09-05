@@ -158,11 +158,13 @@ namespace Searchd
             int port = 3322;
             if (searcher != null)
                 port = searcher.GetNetworkPort();
-            WriteToLog(string.Format("port={0}", port));
             //EventLog.WriteEntry(string.Format("port={0}", port));
             //IPAddress ipaddr=new IPAddress(
-            IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
-            listener = new TcpListener(ipEntry.AddressList[0], port);
+            //IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
+            //listener = new TcpListener(ipEntry.AddressList[0], port);
+            IPAddress ipAddr = IPAddress.Parse(searcher.Address);
+            listener = new TcpListener(ipAddr, port);
+            WriteToLog("IP="+searcher.Address+string.Format("\tport={0}", port));
             listener.Start();
             DoBeginAcceptTcpClient(listener);
         }

@@ -30,11 +30,11 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEditor));
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("数据源", 0);
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("索引设置", 1);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("索引器", 2);
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("搜索设置", 3);
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("词库设置", 4);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("数据源", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("索引设置", 1);
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("索引器", 2);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("搜索设置", 3);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("词库设置", 4);
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.NicontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -75,7 +75,6 @@
             this.textBoxQueryPath = new System.Windows.Forms.TextBox();
             this.btnSetSearchdPath = new System.Windows.Forms.Button();
             this.textBoxSearchdPath = new System.Windows.Forms.TextBox();
-            this.maskedTextBoxIpAddress = new System.Windows.Forms.MaskedTextBox();
             this.numericUpDownMaxTransport = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownMaxMatches = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
@@ -195,6 +194,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.ipAddress = new IPAddressControlLib.IPAddressControl();
             this.NicontextMenu.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -473,15 +473,15 @@
             this.listView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView.GridLines = true;
             this.listView.ImeMode = System.Windows.Forms.ImeMode.Off;
-            listViewItem6.StateImageIndex = 0;
-            listViewItem7.StateImageIndex = 0;
-            listViewItem8.StateImageIndex = 0;
+            listViewItem1.StateImageIndex = 0;
+            listViewItem2.StateImageIndex = 0;
+            listViewItem3.StateImageIndex = 0;
             this.listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6,
-            listViewItem7,
-            listViewItem8,
-            listViewItem9,
-            listViewItem10});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5});
             this.listView.LargeImageList = this.imageList;
             this.listView.Location = new System.Drawing.Point(0, 0);
             this.listView.Margin = new System.Windows.Forms.Padding(10);
@@ -602,11 +602,11 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.ipAddress);
             this.groupBox8.Controls.Add(this.btnSetQueryPath);
             this.groupBox8.Controls.Add(this.textBoxQueryPath);
             this.groupBox8.Controls.Add(this.btnSetSearchdPath);
             this.groupBox8.Controls.Add(this.textBoxSearchdPath);
-            this.groupBox8.Controls.Add(this.maskedTextBoxIpAddress);
             this.groupBox8.Controls.Add(this.numericUpDownMaxTransport);
             this.groupBox8.Controls.Add(this.numericUpDownMaxMatches);
             this.groupBox8.Controls.Add(this.numericUpDownPort);
@@ -659,14 +659,6 @@
             this.textBoxSearchdPath.Size = new System.Drawing.Size(366, 21);
             this.textBoxSearchdPath.TabIndex = 6;
             // 
-            // maskedTextBoxIpAddress
-            // 
-            this.maskedTextBoxIpAddress.Location = new System.Drawing.Point(102, 25);
-            this.maskedTextBoxIpAddress.Mask = "099.099.099.099";
-            this.maskedTextBoxIpAddress.Name = "maskedTextBoxIpAddress";
-            this.maskedTextBoxIpAddress.Size = new System.Drawing.Size(154, 21);
-            this.maskedTextBoxIpAddress.TabIndex = 5;
-            // 
             // numericUpDownMaxTransport
             // 
             this.numericUpDownMaxTransport.Increment = new decimal(new int[] {
@@ -686,7 +678,7 @@
             0,
             0});
             this.numericUpDownMaxTransport.Name = "numericUpDownMaxTransport";
-            this.numericUpDownMaxTransport.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownMaxTransport.Size = new System.Drawing.Size(116, 21);
             this.numericUpDownMaxTransport.TabIndex = 4;
             this.numericUpDownMaxTransport.Value = new decimal(new int[] {
             1000,
@@ -713,7 +705,7 @@
             0,
             0});
             this.numericUpDownMaxMatches.Name = "numericUpDownMaxMatches";
-            this.numericUpDownMaxMatches.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownMaxMatches.Size = new System.Drawing.Size(116, 21);
             this.numericUpDownMaxMatches.TabIndex = 4;
             this.numericUpDownMaxMatches.Value = new decimal(new int[] {
             1000,
@@ -740,7 +732,7 @@
             0,
             0});
             this.numericUpDownPort.Name = "numericUpDownPort";
-            this.numericUpDownPort.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownPort.Size = new System.Drawing.Size(116, 21);
             this.numericUpDownPort.TabIndex = 4;
             this.numericUpDownPort.Value = new decimal(new int[] {
             3312,
@@ -762,7 +754,7 @@
             0,
             0});
             this.numericUpDownTimeOut.Name = "numericUpDownTimeOut";
-            this.numericUpDownTimeOut.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownTimeOut.Size = new System.Drawing.Size(116, 21);
             this.numericUpDownTimeOut.TabIndex = 4;
             this.numericUpDownTimeOut.Value = new decimal(new int[] {
             10,
@@ -2098,6 +2090,16 @@
             this.timer.Interval = 10000;
             this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
+            // ipAddress
+            // 
+            this.ipAddress.BackColor = System.Drawing.SystemColors.Window;
+            this.ipAddress.Location = new System.Drawing.Point(102, 26);
+            this.ipAddress.MinimumSize = new System.Drawing.Size(116, 21);
+            this.ipAddress.Name = "ipAddress";
+            this.ipAddress.ReadOnly = false;
+            this.ipAddress.Size = new System.Drawing.Size(116, 21);
+            this.ipAddress.TabIndex = 8;
+            // 
             // frmEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -2341,7 +2343,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownTimeOut;
         private System.Windows.Forms.NumericUpDown numericUpDownPort;
         //MaskedTextBox
-        private System.Windows.Forms.MaskedTextBox maskedTextBoxIpAddress;
         #endregion
         private System.Windows.Forms.TextBox textBoxIndexCaption;
         private System.Windows.Forms.Label label29;
@@ -2352,5 +2353,6 @@
         private System.Windows.Forms.ListBox listBoxFileDirs;
         private System.Windows.Forms.Button btnFileDirs;
         private System.Windows.Forms.Label label32;
+        private IPAddressControlLib.IPAddressControl ipAddress;
     }
 }

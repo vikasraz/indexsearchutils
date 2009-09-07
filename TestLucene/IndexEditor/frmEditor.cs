@@ -393,7 +393,7 @@ namespace IndexEditor
         }
         private void EnablePanelSearchControls(bool enabled)
         {
-            Control[] controls = new Control[] { maskedTextBoxIpAddress, 
+            Control[] controls = new Control[] { ipAddress, 
                                                 numericUpDownPort, 
                                                 numericUpDownTimeOut, 
                                                 numericUpDownMaxMatches,
@@ -416,7 +416,7 @@ namespace IndexEditor
             if (update)
             {
                 if (searchSet == null) return;
-                maskedTextBoxIpAddress.Text =searchSet.Address; 
+                ipAddress.Text =searchSet.Address; 
                 numericUpDownPort.Value =searchSet.Port; 
                 numericUpDownTimeOut.Value =searchSet.TimeOut; 
                 numericUpDownMaxMatches.Value =searchSet.MaxMatches;
@@ -427,7 +427,7 @@ namespace IndexEditor
             else
             {
                 if (searchSet == null) searchSet = new SearchSet();
-                searchSet.Address =maskedTextBoxIpAddress.Text;
+                searchSet.Address =ipAddress.Text;
                 searchSet.LogPath=textBoxSearchdPath.Text;
                 searchSet.MaxMatches=(int)numericUpDownMaxMatches.Value;
                 searchSet.MaxTrans = (int)numericUpDownMaxTransport.Value;

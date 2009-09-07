@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ISUtils", "ISUtils\ISUtils.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Highlighter.Net", "..\Lucene.net\C#\contrib\Highlighter.Net\Highlighter.Net\Highlighter.Net.csproj", "{901D5415-383C-4AA6-A256-879558841BEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IPAddressControlLib", "IPAddressControlLib\IPAddressControlLib.csproj", "{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -129,6 +131,18 @@ Global
 		{901D5415-383C-4AA6-A256-879558841BEA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{901D5415-383C-4AA6-A256-879558841BEA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{901D5415-383C-4AA6-A256-879558841BEA}.Release|Win32.ActiveCfg = Release|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Release|.NET.ActiveCfg = Release|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2463CBF1-A5FC-406A-AF4D-89D96E66A8D7}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

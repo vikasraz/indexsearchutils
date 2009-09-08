@@ -1937,9 +1937,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -1990,9 +1991,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2056,9 +2058,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2110,9 +2113,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2179,9 +2183,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2246,9 +2251,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2326,9 +2332,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2393,9 +2400,10 @@ namespace ISUtils.Utils
                             {
                                 string key = field.Name();
                                 string value = field.StringValue();
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
                                 string result = "";
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))
@@ -2649,8 +2657,9 @@ namespace ISUtils.Utils
                             string result = "";
                             if (highLight)
                             {
-                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(value));
-                                result = highlighter.GetBestFragment(tokenStream, value);
+                                string output = SupportClass.String.DropHTML(value);
+                                TokenStream tokenStream = analyzer.TokenStream(key, new System.IO.StringReader(output));
+                                result = highlighter.GetBestFragment(tokenStream, output);
                                 if (result != null && string.IsNullOrEmpty(result.Trim()) == false)
                                 {
                                     if (fpDict.ContainsKey(key))

@@ -73,7 +73,8 @@ namespace ISUtils.Database.Writer
         }
         public string Pretreatment(string input)
         {
-            return SupportClass.String.DropHTML(input);
+            //return SupportClass.String.DropHTML(input);
+            return input;
         }
         #endregion
         #region Event CallBack

@@ -88,6 +88,65 @@ namespace ISUtils
         public class String
         {
             public const string seprator ="\t,;.，；";
+            /// <summary>
+            /// 去掉HTML标签
+            /// </summary>
+            /// <param name="strHtml"></param>
+            /// <returns></returns>
+            public static string DropHTML(string strHtml)
+            {
+                string[] aryReg ={
+                                    @"<script[^>]*?>.*?</script>",
+
+                                    @"<(\/\s*)?!?((\w+:)?\w+)(\w+(\s*=?\s*(([""''])(\\[""''tbnr]|[^\7])*?\7|\w+)|.{0})|\s)*?(\/\s*)?>",
+                                    @"([\r\n])[\s]+",
+                                    @"&(quot|#34);",
+                                    @"&(amp|#38);",
+                                    @"&(lt|#60);",
+                                    @"&(gt|#62);", 
+                                    @"&(nbsp|#160);", 
+                                    @"&(iexcl|#161);",
+                                    @"&(cent|#162);",
+                                    @"&(pound|#163);",
+                                    @"&(copy|#169);",
+                                    @"&#(\d+);",
+                                    @"-->",
+                                    @"<!--.*\n"
+                                 };
+
+                string[] aryRep = {
+                                    "",
+                                    "",
+                                    "",
+                                    "\"",
+                                    "&",
+                                    "<",
+                                    ">",
+                                    " ",
+                                    "\xa1",//chr(161),
+                                    "\xa2",//chr(162),
+                                    "\xa3",//chr(163),
+                                    "\xa9",//chr(169),
+                                    "",
+                                    "\r\n",
+                                    ""
+                                  };
+                string strOutput = strHtml;
+                for (int i = 0; i < aryReg.Length; i++)
+                {
+                    string newReg = aryReg[i];
+                    string newRep = aryRep[i];
+                    Regex regex = new Regex(newReg, RegexOptions.IgnoreCase);
+                    strOutput = regex.Replace(strOutput, newRep);
+                }
+
+                strOutput.Replace("<", "");
+                strOutput.Replace(">", "");
+                strOutput.Replace("\r\n", "");
+
+
+                return strOutput;
+            }
             public static string[] Split(string src)
             {
                 return src.Split(Splitor.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);

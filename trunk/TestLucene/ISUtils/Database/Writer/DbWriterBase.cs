@@ -71,6 +71,10 @@ namespace ISUtils.Database.Writer
             fieldDict = new Dictionary<string, Field>();
             document.Add(capField);
         }
+        public string Pretreatment(string input)
+        {
+            return SupportClass.String.DropHTML(input);
+        }
         #endregion
         #region Event CallBack
         protected virtual void OnWriteTableCompletedEvent(object sender, WriteTableCompletedEventArgs e)

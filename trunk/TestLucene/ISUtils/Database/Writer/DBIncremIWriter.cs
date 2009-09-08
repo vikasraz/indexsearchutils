@@ -276,7 +276,7 @@ namespace ISUtils.Database.Writer
             foreach (DataColumn column in columns)
             {
                 if (!fieldDict.ContainsKey(column.ColumnName)) continue;
-                fieldDict[column.ColumnName].SetValue(row[column].ToString());
+                fieldDict[column.ColumnName].SetValue(Pretreatment(row[column].ToString()));
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
             }

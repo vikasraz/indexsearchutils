@@ -261,7 +261,7 @@ namespace ISUtils.Database.Writer
             foreach (DataColumn column in columns)
             {
                 if (!fieldDict.ContainsKey(column.ColumnName)) continue;
-                fieldDict[column.ColumnName].SetValue(row[column].ToString());
+                fieldDict[column.ColumnName].SetValue(Pretreatment(row[column].ToString()));
                 document.RemoveField(column.ColumnName);
                 document.Add(fieldDict[column.ColumnName]);
                 //doc.Add(new Field(column.ColumnName, row[column].ToString(), Field.Store.COMPRESS, Field.Index.TOKENIZED, Field.TermVector.WITH_POSITIONS_OFFSETS));

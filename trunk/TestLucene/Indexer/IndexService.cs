@@ -171,7 +171,15 @@ namespace Indexer
                 FileInfo info = new FileInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt");
                 if (info.Length > 1024*100)
                     info.Delete();
-                FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt", FileMode.Append);
+                FileStream fs;
+                if (System.IO.File.Exists(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt"))
+                {
+                    fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt", FileMode.Append);
+                }
+                else
+                {
+                    fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\log.txt", FileMode.Create);
+                }
                 StreamWriter sw = new StreamWriter(fs);
                 string str = "[" + DateTime.Now.ToString() + "]\t" + detail;
                 sw.WriteLine(str);

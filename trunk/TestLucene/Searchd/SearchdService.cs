@@ -175,7 +175,15 @@ namespace Searchd
                 FileInfo info = new FileInfo(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt");
                 if (info.Length > 1024*100)
                     info.Delete();
-                FileStream fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", FileMode.Append);
+                FileStream fs;
+                if (System.IO.File.Exists(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt"))
+                {
+                    fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", FileMode.Append);
+                }
+                else
+                {
+                    fs = new FileStream(System.AppDomain.CurrentDomain.BaseDirectory + @"\log\search_log.txt", FileMode.Create);
+                }
                 StreamWriter sw = new StreamWriter(fs);
                 string str = "[" + ISUtils.SupportClass.Time.GetDateTime()+ "]\t" + detail;
                 sw.WriteLine(str);

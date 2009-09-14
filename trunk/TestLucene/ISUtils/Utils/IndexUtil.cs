@@ -234,6 +234,17 @@ namespace ISUtils.Utils
                 }
             }
         }
+        public static void BoostIndexWithEvent(IndexSet indexSet, IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0 && indexDict.ContainsKey(indexSet))
+            {
+                //DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+                SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+            }
+        }
         public static void BoostIndexWithEvent(DataBaseLibrary.SearchUpdateManage dblSum, IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
         {
             if (!initSettings)

@@ -91,7 +91,7 @@ namespace Indexer
                     try
                     {
                         DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
-                        Message msg = maker.ExecuteBoostIndexer(dblSum,span, IndexTypeEnum.Ordinary);
+                        Message msg = maker.ExecuteBoostIndexer(dblSum, span, IndexTypeEnum.Ordinary);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else
@@ -107,9 +107,9 @@ namespace Indexer
                     {
                         maker.IndexFile(true);
                     }
-                    catch(Exception fe)
+                    catch (Exception fe)
                     {
-                        WriteToLog("文件索引出错。原因是:"+fe.StackTrace.ToString());
+                        WriteToLog("文件索引出错。原因是:" + fe.StackTrace.ToString());
                     }
                     WriteToLog("主索引完成！");
                 }
@@ -119,7 +119,7 @@ namespace Indexer
                     {
                         WriteToLog("开始增量索引......");
                         DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
-                        Message msg = maker.ExecuteBoostIndexer(dblSum,span, IndexTypeEnum.Increment);
+                        Message msg = maker.ExecuteBoostIndexer(dblSum, span, IndexTypeEnum.Increment);
                         if (msg.Success)
                             WriteToLog(msg.ToString());
                         else
@@ -146,6 +146,10 @@ namespace Indexer
                     }
                 }
                 busy = false;
+            }
+            else
+            {
+                WriteToLog("正在建立索引，请等待.......");
             }
         }
         public static long GetSeconds(TimeSpan span)

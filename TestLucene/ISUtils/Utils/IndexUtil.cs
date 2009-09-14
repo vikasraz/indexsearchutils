@@ -347,6 +347,8 @@ namespace ISUtils.Utils
         #region File Index
         public static bool IndexFile(bool create)
         {
+            if (string.IsNullOrEmpty(fileSet.Path))
+                return true;
             try
             {
                 if (create)

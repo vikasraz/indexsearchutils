@@ -671,7 +671,7 @@ namespace ISUtils
             }
             public static bool IsTimeSame(DateTime dta, DateTime dtb)
             {
-                return dta.Hour == dtb.Hour && dta.Minute == dtb.Minute && dta.Second == dtb.Second;
+                return dta.Hour == dtb.Hour && dta.Minute == dtb.Minute;
             }
             public static string GetLuceneTime(DateTime date)
             {

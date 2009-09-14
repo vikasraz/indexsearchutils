@@ -904,7 +904,7 @@ namespace IndexEditor
             EnablePanelSourceControls(true);
             status = Status.Insert;
             EnablePanelSourceButtons(status);
-            comboBoxSource.Enabled = false;
+            listBoxSource.Enabled = false;
         }
         private void btnEditSource_Click(object sender, EventArgs e)
         {
@@ -914,7 +914,7 @@ namespace IndexEditor
             textBoxSourceName.Enabled = false;
             status = Status.Edit;
             EnablePanelSourceButtons(status);
-            comboBoxSource.Enabled = false;
+            listBoxSource.Enabled = false;
         }
         private void btnDelSource_Click(object sender, EventArgs e)
         {
@@ -946,12 +946,12 @@ namespace IndexEditor
             {
                 indexSet = new IndexSet();
             }
-            InitComboBoxIndex(indexList);
+            InitListBoxIndex(indexList);
             if (sourceList.Count > 0)
                 source = sourceList[0];
             else
                 source = new Source();
-            InitComboBoxSource(sourceList);
+            InitListBoxSource(sourceList);
             InitComboBoxSourceSel(sourceList);
             UpdatePanelSourceData(true);
             EnablePanelSourceButtons(status);
@@ -976,7 +976,7 @@ namespace IndexEditor
                         if (ISUtils.Database.DbCommon.TestFields(source.DBType, source.HostName, source.DataBase, source.UserName, source.Password, source.Query, source.GetFields()))
                         {
                             sourceList.Add(source);
-                            comboBoxSource.Items.Add(source.SourceName);
+                            listBoxSource.Items.Add(source.SourceName);
                             makeChange = true;
                         }
                         else
@@ -1005,11 +1005,11 @@ namespace IndexEditor
                 default :
                     break;
             }
-            InitComboBoxSource(sourceList);
+            InitListBoxSource(sourceList);
             InitComboBoxSourceSel(sourceList);
             EnablePanelSourceControls(false);
             status = Status.Confirm;
-            comboBoxSource.Enabled = true;
+            listBoxSource.Enabled = true;
             EnablePanelSourceButtons(status);
         }
         private void btnSourceCancel_Click(object sender, EventArgs e)
@@ -1021,12 +1021,12 @@ namespace IndexEditor
             }
             EnablePanelSourceControls(false);
             status = Status.Cancel;
-            comboBoxSource.Enabled = true;
+            listBoxSource.Enabled = true;
             EnablePanelSourceButtons(status);
         }
         private void comboBoxSouce_SelectedIndexChanged(object sender, EventArgs e)
         {
-            InitPanelSourceControls(comboBoxSource.SelectedItem.ToString());
+            InitPanelSourceControls(listBoxSource.SelectedItem.ToString());
         }
         void textBoxFields_Click(object sender, System.EventArgs e)
         {
@@ -1181,7 +1181,7 @@ namespace IndexEditor
             EnablePanelIndexControls(true);
             status = Status.Insert;
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
-            comboBoxIndex.Enabled = false;
+            listBoxIndex.Enabled = false;
         }
         private void btnEditIndex_Click(object sender, EventArgs e)
         {
@@ -1191,7 +1191,7 @@ namespace IndexEditor
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
             textBoxIndexName.Enabled = false;
             status = Status.Edit;
-            comboBoxIndex.Enabled = false;
+            listBoxIndex.Enabled = false;
         }
         private void btnDelIndex_Click(object sender, EventArgs e)
         {
@@ -1207,12 +1207,12 @@ namespace IndexEditor
             if (ShowQuestion("确认删除吗？"))
             {
                 indexList.Remove(indexSet);
-                InitComboBoxIndex(indexList);
+                InitListBoxIndex(indexList);
                 if (indexList.Count > 0)
                     indexSet = indexList[0];
                 else
                     indexSet = new IndexSet();
-                InitComboBoxIndex(indexList);
+                InitListBoxIndex(indexList);
                 UpdatePanelSourceData(true);
             }
         }
@@ -1234,7 +1234,7 @@ namespace IndexEditor
                             }
                         }
                         indexList.Add(indexSet);
-                        comboBoxIndex.Items.Add(indexSet.IndexName);
+                        listBoxIndex.Items.Add(indexSet.IndexName);
                         makeChange = true;
                     }
                     break;
@@ -1257,10 +1257,10 @@ namespace IndexEditor
                 default:
                     break;
             }
-            InitComboBoxIndex(indexList);
+            InitListBoxIndex(indexList);
             EnablePanelIndexControls(false);
             status = Status.Confirm;
-            comboBoxIndex.Enabled = true;
+            listBoxIndex.Enabled = true;
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
         }
         private void btnIndexCancel_Click(object sender, EventArgs e)
@@ -1272,7 +1272,7 @@ namespace IndexEditor
             }
             EnablePanelIndexControls(false);
             status = Status.Cancel;
-            comboBoxIndex.Enabled = true;
+            listBoxIndex.Enabled = true;
             EnableControls(btnAddIndex, btnEditIndex, btnDelIndex, btnIndexConfirm, btnIndexCancel);
         }
         private void btnSetIndexPath_Click(object sender, EventArgs e)
@@ -1283,7 +1283,7 @@ namespace IndexEditor
         }
         private void comboBoxIndex_SelectedIndexChanged(object sender, EventArgs e)
         {
-            InitPanelIndexControls(comboBoxIndex.SelectedItem.ToString());
+            InitPanelIndexControls(listBoxIndex.SelectedItem.ToString());
         }
         #endregion
         #region Panel Indexer Control Event
@@ -1454,22 +1454,22 @@ namespace IndexEditor
         }
         #endregion
         #region GUI Control Function
-        private void InitComboBoxSource(List<Source> sourceList)
+        private void InitListBoxSource(List<Source> sourceList)
         {
-            comboBoxSource.Items.Clear();
+            listBoxSource.Items.Clear();
             if (sourceList == null) return;
             foreach (Source s in sourceList)
             {
-                comboBoxSource.Items.Add(s.SourceName);
+                listBoxSource.Items.Add(s.SourceName);
             }
         }
-        private void InitComboBoxIndex(List<IndexSet> indexList)
+        private void InitListBoxIndex(List<IndexSet> indexList)
         {
-            comboBoxIndex.Items.Clear();
+            listBoxIndex.Items.Clear();
             if (indexList == null) return;
             foreach (IndexSet i in indexList)
             {
-                comboBoxIndex.Items.Add(i.IndexName);
+                listBoxIndex.Items.Add(i.IndexName);
             }
         }
         private void InitComboBoxSourceSel(List<Source> sourceList)
@@ -1491,8 +1491,8 @@ namespace IndexEditor
         }
         private void InitGUIControls()
         {
-            InitComboBoxSource(sourceList);
-            InitComboBoxIndex(indexList);
+            InitListBoxSource(sourceList);
+            InitListBoxIndex(indexList);
             InitComboBoxSourceSel(sourceList);
             EnablePanelSourceControls(false);
             EnablePanelIndexControls(false);
@@ -1614,5 +1614,90 @@ namespace IndexEditor
             toolStripMenuItemExit_Click(sender, e);
         }
         #endregion
+
+        private void btnIndex_Click(object sender, EventArgs e)
+        {
+            if (!init || indexSet == null) return;
+            if (indexSet.Type == IndexTypeEnum.Increment)
+            {
+                ShowExclamation("增量索引不用重建索引！");
+                return;
+            }
+            toolStripStatusLabelStatus.Text = "开始构建索引！";
+            this.Cursor = Cursors.WaitCursor;
+            if (!StopSystemService("Indexer"))
+            {
+                ShowWarning("索引服务停止失败!");
+            }
+            if (!StopSystemService("Searchd"))
+            {
+                ShowWarning("搜索服务停止失败!");
+            }
+            toolStripProgressBar.Visible = true;
+            toolStripProgressBar.Minimum = 0;
+            toolStripProgressBar.Maximum = 1000;
+            Application.DoEvents();
+            try
+            {
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml", true);
+                toolStripStatusLabelStatus.Text = "正在构建索引！";
+                ISUtils.Utils.IndexUtil.BoostIndexWithEvent(indexSet, IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                toolStripStatusLabelStatus.Text = "构建索引完毕！";
+                ShowInformation("索引构建完成");
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.StackTrace.ToString());
+            }
+            toolStripProgressBar.Visible = false;
+            this.Cursor = Cursors.Default;
+            toolStripStatusLabelStatus.Text = "";
+        }
+
+        private void listBoxSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InitPanelSourceControls(listBoxSource.SelectedItem.ToString());
+        }
+
+        private void listBoxIndex_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            InitPanelIndexControls(listBoxIndex.SelectedItem.ToString());
+        }
+
+        private void btnFileIndex_Click(object sender, EventArgs e)
+        {
+            if (!init) return;
+            toolStripStatusLabelStatus.Text = "开始构建文件索引！";
+            this.Cursor = Cursors.WaitCursor;
+            if (!StopSystemService("Indexer"))
+            {
+                ShowWarning("索引服务停止失败!");
+            }
+            if (!StopSystemService("Searchd"))
+            {
+                ShowWarning("搜索服务停止失败!");
+            }
+            toolStripProgressBar.Visible = true;
+            toolStripProgressBar.Minimum = 0;
+            toolStripProgressBar.Maximum = 1000;
+            Application.DoEvents();
+            try
+            {
+                ISUtils.Utils.IndexUtil.SetIndexSettings(AppPath + @"\config.xml", true);
+                toolStripStatusLabelStatus.Text = "正在构建文件索引！";
+                ISUtils.Utils.IndexUtil.IndexFile(true, OnIndexCompleted, OnProgressChanged);
+                //ISUtils.Utils.IndexUtil.Index(IndexTypeEnum.Ordinary,ref toolStripProgressBar);
+                toolStripStatusLabelStatus.Text = "构建文件索引完毕！";
+                ShowInformation("文件索引构建完成");
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.StackTrace.ToString());
+            }
+            toolStripProgressBar.Visible = false;
+            this.Cursor = Cursors.Default;
+            toolStripStatusLabelStatus.Text = "";
+        }
+
     }
 }

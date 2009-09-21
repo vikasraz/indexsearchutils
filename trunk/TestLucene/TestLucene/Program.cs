@@ -206,9 +206,9 @@ namespace TestLucene
             //xsr.Serialize(writer, nc);
             //writer.Close();
             //TestFileIndex();
-            testSearch();
+            //testSearch();
             //TestIndexMaker();
-            //TestChineseSegmentIndexerSpeed();
+            TestChineseSegmentIndexerSpeed();
             Console.ReadKey();
         }
         static void TestIndexMaker()
@@ -320,16 +320,17 @@ namespace TestLucene
         static void TestChineseSegmentIndexerSpeed()
         {
             string path = @"d:\Indexer\config.xml";
-            //string dict = @"d:\Indexer\seglib\";
-            //Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
-            //Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
+            string dict = @"d:\Indexer\seglib\";
+            Segment.SetPaths(dict + "BaseDict.txt", dict + "FamilyName.txt", dict + "Number.txt",dict+"Filter.txt", dict + "CustomDict.txt", dict + "Other.txt");
+            Segment.SetDefaults(new ISUtils.CSegment.DictionaryLoader.TextDictionaryLoader(), new ForwardMatchSegment());
             ISUtils.Utils.IndexUtil.SetIndexSettings(path,true);
-            //ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+            ISUtils.Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
             //ISUtils.Utils.IndexUtil.SetAnalyzer(new ChineseAnalyzer());
-            DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
+            //DataBaseLibrary.SearchUpdateManage dblSum = new DataBaseLibrary.SearchUpdateManage();
             Console.WriteLine("Begin indexing....." + DateTime.Now.ToShortTimeString());
             DateTime start = DateTime.Now;
-            ISUtils.Utils.IndexUtil.BoostIndex(dblSum,IndexTypeEnum.Ordinary);
+            ISUtils.Utils.IndexUtil.BoostIndex(IndexTypeEnum.Ordinary);
+            ISUtils.Utils.IndexUtil.IndexFile(true);
             TimeSpan span = DateTime.Now - start;
             Console.WriteLine(span.TotalMilliseconds.ToString());
         }

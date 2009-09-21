@@ -200,6 +200,25 @@ namespace ISUtils.Utils
         }
         #endregion
         #region No Ram,Boost
+        public static void BoostIndex(IndexTypeEnum type)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == IndexTypeEnum.Ordinary)
+                    {
+                        SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                    }
+                    if (indexSet.Type == type)
+                    {
+                        IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary);
+                    }
+                }
+            }
+        }
         public static void BoostIndex(DataBaseLibrary.SearchUpdateManage dblSum, IndexTypeEnum type)
         {
             if (!initSettings)
@@ -307,6 +326,41 @@ namespace ISUtils.Utils
                             continue;
                         }
                     }
+                }
+            }
+        }
+        public static void BoostIndexWithEvent(IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (indexSet.Type == IndexTypeEnum.Ordinary)
+                    {
+                        SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                    }
+                    if (indexSet.Type == type)
+                    {
+                        IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
+                    }
+                }
+            }
+        }
+        public static void BoostIndex(bool create)
+        {
+            if (!initSettings)
+                throw new ApplicationException("Index Settings not init!");
+            if (indexDict.Count > 0)
+            {
+                foreach (IndexSet indexSet in indexDict.Keys)
+                {
+                    if (create)
+                    {
+                        SupportClass.FileUtil.DeleteFolder(indexSet.Path);
+                    }
+                    IWriter.WriteBoostIndex(analyzer, indexerSet, indexSet, indexDict[indexSet], create);
                 }
             }
         }

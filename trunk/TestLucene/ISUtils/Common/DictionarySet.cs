@@ -4,6 +4,19 @@ using System.Text;
 
 namespace ISUtils.Common
 {
+    /*
+     *  <Dictionary>
+     *    <BasePath>seglib\BaseDict.txt</BasePath>
+     *    <NamePath>seglib\FamilyName.txt</NamePath>
+     *    <NumberPath>seglib\Number.txt</NumberPath>
+     *    <FilterPath>seglib\Filter.txt</FilterPath>
+     *    <CustomPaths>
+     *      <Path>seglib\CustomDict.txt</Path>
+     *      <Path>seglib\Other.txt</Path>
+     *    </CustomPaths>
+     *  </Dictionary>
+     * */
+    [Serializable]
     public class DictionarySet
     {
         #region Public Const Flag

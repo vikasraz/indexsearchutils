@@ -94,6 +94,7 @@ namespace ISUtils.Indexer
             }
             return false;
         }
+#if DataBaseLib
         public Message ExecuteBoostIndexer(DataBaseLibrary.SearchUpdateManage dblSum, TimeSpan span, IndexTypeEnum type)
         {
             Message msg = new Message();
@@ -115,10 +116,8 @@ namespace ISUtils.Indexer
             }
             catch (Exception e)
             {
-#if DEBUG
                 Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
 
-#endif
                 msg.Result = "Exception:" + e.StackTrace.ToString();
                 msg.Success = false;
                 msg.ExceptionOccur = true;
@@ -144,9 +143,63 @@ namespace ISUtils.Indexer
             }
             catch (Exception e)
             {
-#if DEBUG
                 Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
+                msg.AddInfo("Write Index Error.Reason:" + e.StackTrace.ToString());
+                msg.Success = false;
+                msg.ExceptionOccur = true;
+                throw e;
+            }
+        }
 #endif
+        public Message ExecuteBoostIndexer(TimeSpan span, IndexTypeEnum type)
+        {
+            Message msg = new Message();
+            if (CanIndex(span, type) == false)
+            {
+                msg.Result = "ExecuteIndexer does not run.";
+                msg.Success = false;
+                return msg;
+            }
+            try
+            {
+                if (type == IndexTypeEnum.Ordinary)
+                    BoostExecute(ordinaryDict, dictSet, indexer,  true, ref msg);
+                else
+                    BoostExecute(incremenDict, dictSet, indexer,  false, ref msg);
+                msg.Result = "ExecuteIndexer Success.";
+                msg.Success = true;
+                return msg;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
+
+                msg.Result = "Exception:" + e.StackTrace.ToString();
+                msg.Success = false;
+                msg.ExceptionOccur = true;
+                return msg;
+            }
+        }
+        public static void BoostExecute(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
+        {
+            try
+            {
+                DateTime allStart = DateTime.Now;
+                msg.AddInfo("All Start at :" + allStart.ToLocalTime());
+                Utils.IndexUtil.SetIndexSettings(dict, dictSet, indexer);
+                //由于中文分词结果随中文词库的变化而变化，为了使索引不需要根据中文词库的变化而变化，
+                //故采用默认的Analyzer来进行分词，即StandardAnalyzer
+                //Utils.IndexUtil.UseDefaultChineseAnalyzer(true);
+                Utils.IndexUtil.BoostIndex( create);
+                msg.AddInfo("All End at :" + DateTime.Now.ToLocalTime());
+                TimeSpan allSpan = DateTime.Now - allStart;
+                msg.AddInfo(string.Format("All Spend {0} millionseconds.", allSpan.TotalMilliseconds));
+                msg.Success = true;
+                msg.Result = "Execute Success.";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Execute Indexer Error.Reason:" + e.Message);
                 msg.AddInfo("Write Index Error.Reason:" + e.StackTrace.ToString());
                 msg.Success = false;
                 msg.ExceptionOccur = true;

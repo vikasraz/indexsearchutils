@@ -62,11 +62,69 @@
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.listView = new System.Windows.Forms.ListView();
+            this.panelIndexerSet = new System.Windows.Forms.Panel();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.btnFileIndex = new System.Windows.Forms.Button();
+            this.listBoxFileDirs = new System.Windows.Forms.ListBox();
+            this.btnFileDirs = new System.Windows.Forms.Button();
+            this.btnFilePath = new System.Windows.Forms.Button();
+            this.textBoxFilePath = new System.Windows.Forms.TextBox();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.btnEditIndexer = new System.Windows.Forms.Button();
+            this.imageListButtons = new System.Windows.Forms.ImageList(this.components);
+            this.btnReCreateIncrIndex = new System.Windows.Forms.Button();
+            this.btnMainIndexReCreate = new System.Windows.Forms.Button();
+            this.btnIndexerStopService = new System.Windows.Forms.Button();
+            this.btnIndexerStartService = new System.Windows.Forms.Button();
+            this.btnIndexerService = new System.Windows.Forms.Button();
+            this.btnIndexerConfirm = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.numericUpDownMergeFactor = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMaxBufferedDocs = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMaxFieldLength = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownRamBufferSize = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownIncrTimeSpan = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMainCreateTimeSpan = new System.Windows.Forms.NumericUpDown();
+            this.dateTimePickerMainReCreate = new System.Windows.Forms.DateTimePicker();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.panelSearchd = new System.Windows.Forms.Panel();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnSearchdStopService = new System.Windows.Forms.Button();
+            this.btnSearchdStartService = new System.Windows.Forms.Button();
+            this.btnEditSearchd = new System.Windows.Forms.Button();
+            this.btnSearchdService = new System.Windows.Forms.Button();
+            this.btnSearchdConfirm = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.btnSetQueryPath = new System.Windows.Forms.Button();
+            this.textBoxQueryPath = new System.Windows.Forms.TextBox();
+            this.btnSetSearchdPath = new System.Windows.Forms.Button();
+            this.textBoxSearchdPath = new System.Windows.Forms.TextBox();
+            this.numericUpDownMaxTransport = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMaxMatches = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownTimeOut = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
             this.panelSource = new System.Windows.Forms.Panel();
             this.listBoxSource = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnSourceCancel = new System.Windows.Forms.Button();
-            this.imageListButtons = new System.Windows.Forms.ImageList(this.components);
             this.btnSourceConfim = new System.Windows.Forms.Button();
             this.btnDelSource = new System.Windows.Forms.Button();
             this.btnEditSource = new System.Windows.Forms.Button();
@@ -137,65 +195,6 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.panelIndexerSet = new System.Windows.Forms.Panel();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.btnFileIndex = new System.Windows.Forms.Button();
-            this.listBoxFileDirs = new System.Windows.Forms.ListBox();
-            this.btnFileDirs = new System.Windows.Forms.Button();
-            this.btnFilePath = new System.Windows.Forms.Button();
-            this.textBoxFilePath = new System.Windows.Forms.TextBox();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.btnEditIndexer = new System.Windows.Forms.Button();
-            this.btnReCreateIncrIndex = new System.Windows.Forms.Button();
-            this.btnMainIndexReCreate = new System.Windows.Forms.Button();
-            this.btnIndexerStopService = new System.Windows.Forms.Button();
-            this.btnIndexerStartService = new System.Windows.Forms.Button();
-            this.btnIndexerService = new System.Windows.Forms.Button();
-            this.btnIndexerConfirm = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.numericUpDownMergeFactor = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxBufferedDocs = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxFieldLength = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownRamBufferSize = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownIncrTimeSpan = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMainCreateTimeSpan = new System.Windows.Forms.NumericUpDown();
-            this.dateTimePickerMainReCreate = new System.Windows.Forms.DateTimePicker();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.panelSearchd = new System.Windows.Forms.Panel();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.btnSearchdStopService = new System.Windows.Forms.Button();
-            this.btnSearchdStartService = new System.Windows.Forms.Button();
-            this.btnEditSearchd = new System.Windows.Forms.Button();
-            this.btnSearchdService = new System.Windows.Forms.Button();
-            this.btnSearchdConfirm = new System.Windows.Forms.Button();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.ipAddress = new IPAddressControlLib.IPAddressControl();
-            this.btnSetQueryPath = new System.Windows.Forms.Button();
-            this.textBoxQueryPath = new System.Windows.Forms.TextBox();
-            this.btnSetSearchdPath = new System.Windows.Forms.Button();
-            this.textBoxSearchdPath = new System.Windows.Forms.TextBox();
-            this.numericUpDownMaxTransport = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxMatches = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownTimeOut = new System.Windows.Forms.NumericUpDown();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label34 = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.NicontextMenu.SuspendLayout();
             this.menuStrip.SuspendLayout();
@@ -204,15 +203,6 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
-            this.panelSource.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.panelDictionary.SuspendLayout();
-            this.groupBox9.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.panelIndexSet.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.panelIndexerSet.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -230,6 +220,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxMatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeOut)).BeginInit();
+            this.panelSource.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.panelDictionary.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            this.groupBox10.SuspendLayout();
+            this.panelIndexSet.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList
@@ -495,6 +494,807 @@
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
             // 
+            // panelIndexerSet
+            // 
+            this.panelIndexerSet.Controls.Add(this.groupBox11);
+            this.panelIndexerSet.Controls.Add(this.groupBox6);
+            this.panelIndexerSet.Controls.Add(this.groupBox5);
+            this.panelIndexerSet.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelIndexerSet.Location = new System.Drawing.Point(0, 0);
+            this.panelIndexerSet.Name = "panelIndexerSet";
+            this.panelIndexerSet.Size = new System.Drawing.Size(663, 567);
+            this.panelIndexerSet.TabIndex = 3;
+            this.panelIndexerSet.Visible = false;
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Controls.Add(this.btnFileIndex);
+            this.groupBox11.Controls.Add(this.listBoxFileDirs);
+            this.groupBox11.Controls.Add(this.btnFileDirs);
+            this.groupBox11.Controls.Add(this.btnFilePath);
+            this.groupBox11.Controls.Add(this.textBoxFilePath);
+            this.groupBox11.Controls.Add(this.label32);
+            this.groupBox11.Controls.Add(this.label31);
+            this.groupBox11.Location = new System.Drawing.Point(14, 416);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(621, 122);
+            this.groupBox11.TabIndex = 13;
+            this.groupBox11.TabStop = false;
+            this.groupBox11.Text = "文件索引设置";
+            // 
+            // btnFileIndex
+            // 
+            this.btnFileIndex.Location = new System.Drawing.Point(580, 26);
+            this.btnFileIndex.Name = "btnFileIndex";
+            this.btnFileIndex.Size = new System.Drawing.Size(35, 83);
+            this.btnFileIndex.TabIndex = 14;
+            this.btnFileIndex.Text = "重建索引";
+            this.btnFileIndex.UseVisualStyleBackColor = true;
+            this.btnFileIndex.Click += new System.EventHandler(this.btnFileIndex_Click);
+            // 
+            // listBoxFileDirs
+            // 
+            this.listBoxFileDirs.FormattingEnabled = true;
+            this.listBoxFileDirs.ItemHeight = 12;
+            this.listBoxFileDirs.Location = new System.Drawing.Point(79, 57);
+            this.listBoxFileDirs.Name = "listBoxFileDirs";
+            this.listBoxFileDirs.Size = new System.Drawing.Size(455, 52);
+            this.listBoxFileDirs.TabIndex = 11;
+            // 
+            // btnFileDirs
+            // 
+            this.btnFileDirs.Location = new System.Drawing.Point(540, 54);
+            this.btnFileDirs.Name = "btnFileDirs";
+            this.btnFileDirs.Size = new System.Drawing.Size(35, 23);
+            this.btnFileDirs.TabIndex = 10;
+            this.btnFileDirs.Text = "...";
+            this.btnFileDirs.UseVisualStyleBackColor = true;
+            // 
+            // btnFilePath
+            // 
+            this.btnFilePath.Location = new System.Drawing.Point(540, 25);
+            this.btnFilePath.Name = "btnFilePath";
+            this.btnFilePath.Size = new System.Drawing.Size(35, 23);
+            this.btnFilePath.TabIndex = 10;
+            this.btnFilePath.Text = "...";
+            this.btnFilePath.UseVisualStyleBackColor = true;
+            // 
+            // textBoxFilePath
+            // 
+            this.textBoxFilePath.Location = new System.Drawing.Point(79, 27);
+            this.textBoxFilePath.Name = "textBoxFilePath";
+            this.textBoxFilePath.Size = new System.Drawing.Size(455, 21);
+            this.textBoxFilePath.TabIndex = 9;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(8, 59);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(53, 12);
+            this.label32.TabIndex = 8;
+            this.label32.Text = "数据源：";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(8, 30);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(65, 12);
+            this.label31.TabIndex = 8;
+            this.label31.Text = "存储路径：";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.btnEditIndexer);
+            this.groupBox6.Controls.Add(this.btnReCreateIncrIndex);
+            this.groupBox6.Controls.Add(this.btnMainIndexReCreate);
+            this.groupBox6.Controls.Add(this.btnIndexerStopService);
+            this.groupBox6.Controls.Add(this.btnIndexerStartService);
+            this.groupBox6.Controls.Add(this.btnIndexerService);
+            this.groupBox6.Controls.Add(this.btnIndexerConfirm);
+            this.groupBox6.Location = new System.Drawing.Point(13, 6);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(622, 102);
+            this.groupBox6.TabIndex = 10;
+            this.groupBox6.TabStop = false;
+            // 
+            // btnEditIndexer
+            // 
+            this.btnEditIndexer.ImageIndex = 4;
+            this.btnEditIndexer.ImageList = this.imageListButtons;
+            this.btnEditIndexer.Location = new System.Drawing.Point(178, 9);
+            this.btnEditIndexer.Name = "btnEditIndexer";
+            this.btnEditIndexer.Size = new System.Drawing.Size(89, 90);
+            this.btnEditIndexer.TabIndex = 3;
+            this.btnEditIndexer.Text = "修改设置";
+            this.btnEditIndexer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEditIndexer.UseVisualStyleBackColor = true;
+            this.btnEditIndexer.Click += new System.EventHandler(this.btnEditIndexer_Click);
+            // 
+            // imageListButtons
+            // 
+            this.imageListButtons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListButtons.ImageStream")));
+            this.imageListButtons.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListButtons.Images.SetKeyName(0, "testdblink.jpg");
+            this.imageListButtons.Images.SetKeyName(1, "testquery.jpg");
+            this.imageListButtons.Images.SetKeyName(2, "testsourcefields.jpg");
+            this.imageListButtons.Images.SetKeyName(3, "newsource.jpg");
+            this.imageListButtons.Images.SetKeyName(4, "editsource.jpg");
+            this.imageListButtons.Images.SetKeyName(5, "sourcedelete.jpg");
+            this.imageListButtons.Images.SetKeyName(6, "sourceconfirm.jpg");
+            this.imageListButtons.Images.SetKeyName(7, "sourcecancel.jpg");
+            this.imageListButtons.Images.SetKeyName(8, "indexcreate.jpg");
+            this.imageListButtons.Images.SetKeyName(9, "indexservice.jpg");
+            this.imageListButtons.Images.SetKeyName(10, "startservice.png");
+            this.imageListButtons.Images.SetKeyName(11, "stopservice.png");
+            // 
+            // btnReCreateIncrIndex
+            // 
+            this.btnReCreateIncrIndex.ImageIndex = 3;
+            this.btnReCreateIncrIndex.ImageList = this.imageListButtons;
+            this.btnReCreateIncrIndex.Location = new System.Drawing.Point(89, 9);
+            this.btnReCreateIncrIndex.Name = "btnReCreateIncrIndex";
+            this.btnReCreateIncrIndex.Size = new System.Drawing.Size(89, 90);
+            this.btnReCreateIncrIndex.TabIndex = 3;
+            this.btnReCreateIncrIndex.Text = "重建增量索引";
+            this.btnReCreateIncrIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnReCreateIncrIndex.UseVisualStyleBackColor = true;
+            this.btnReCreateIncrIndex.Click += new System.EventHandler(this.btnReCreateIncrIndex_Click);
+            // 
+            // btnMainIndexReCreate
+            // 
+            this.btnMainIndexReCreate.ImageIndex = 8;
+            this.btnMainIndexReCreate.ImageList = this.imageListButtons;
+            this.btnMainIndexReCreate.Location = new System.Drawing.Point(0, 9);
+            this.btnMainIndexReCreate.Name = "btnMainIndexReCreate";
+            this.btnMainIndexReCreate.Size = new System.Drawing.Size(89, 90);
+            this.btnMainIndexReCreate.TabIndex = 2;
+            this.btnMainIndexReCreate.Text = "重新主索引";
+            this.btnMainIndexReCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnMainIndexReCreate.UseVisualStyleBackColor = true;
+            this.btnMainIndexReCreate.Click += new System.EventHandler(this.btnMainIndexReCreate_Click);
+            // 
+            // btnIndexerStopService
+            // 
+            this.btnIndexerStopService.ImageIndex = 11;
+            this.btnIndexerStopService.ImageList = this.imageListButtons;
+            this.btnIndexerStopService.Location = new System.Drawing.Point(534, 9);
+            this.btnIndexerStopService.Name = "btnIndexerStopService";
+            this.btnIndexerStopService.Size = new System.Drawing.Size(89, 90);
+            this.btnIndexerStopService.TabIndex = 3;
+            this.btnIndexerStopService.Text = "停止服务";
+            this.btnIndexerStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnIndexerStopService.UseVisualStyleBackColor = true;
+            this.btnIndexerStopService.Click += new System.EventHandler(this.btnIndexerStopService_Click);
+            // 
+            // btnIndexerStartService
+            // 
+            this.btnIndexerStartService.ImageIndex = 10;
+            this.btnIndexerStartService.ImageList = this.imageListButtons;
+            this.btnIndexerStartService.Location = new System.Drawing.Point(445, 9);
+            this.btnIndexerStartService.Name = "btnIndexerStartService";
+            this.btnIndexerStartService.Size = new System.Drawing.Size(89, 90);
+            this.btnIndexerStartService.TabIndex = 3;
+            this.btnIndexerStartService.Text = "开始服务";
+            this.btnIndexerStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnIndexerStartService.UseVisualStyleBackColor = true;
+            this.btnIndexerStartService.Click += new System.EventHandler(this.btnIndexerStartService_Click);
+            // 
+            // btnIndexerService
+            // 
+            this.btnIndexerService.ImageIndex = 9;
+            this.btnIndexerService.ImageList = this.imageListButtons;
+            this.btnIndexerService.Location = new System.Drawing.Point(356, 9);
+            this.btnIndexerService.Name = "btnIndexerService";
+            this.btnIndexerService.Size = new System.Drawing.Size(89, 90);
+            this.btnIndexerService.TabIndex = 3;
+            this.btnIndexerService.Text = "设置系统服务";
+            this.btnIndexerService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnIndexerService.UseVisualStyleBackColor = true;
+            this.btnIndexerService.Click += new System.EventHandler(this.btnIndexerService_Click);
+            // 
+            // btnIndexerConfirm
+            // 
+            this.btnIndexerConfirm.Enabled = false;
+            this.btnIndexerConfirm.ImageIndex = 6;
+            this.btnIndexerConfirm.ImageList = this.imageListButtons;
+            this.btnIndexerConfirm.Location = new System.Drawing.Point(267, 9);
+            this.btnIndexerConfirm.Name = "btnIndexerConfirm";
+            this.btnIndexerConfirm.Size = new System.Drawing.Size(89, 90);
+            this.btnIndexerConfirm.TabIndex = 3;
+            this.btnIndexerConfirm.Text = "确定操作";
+            this.btnIndexerConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnIndexerConfirm.UseVisualStyleBackColor = true;
+            this.btnIndexerConfirm.Click += new System.EventHandler(this.btnIndexerConfirm_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.numericUpDownMergeFactor);
+            this.groupBox5.Controls.Add(this.numericUpDownMaxBufferedDocs);
+            this.groupBox5.Controls.Add(this.numericUpDownMaxFieldLength);
+            this.groupBox5.Controls.Add(this.numericUpDownRamBufferSize);
+            this.groupBox5.Controls.Add(this.numericUpDownIncrTimeSpan);
+            this.groupBox5.Controls.Add(this.numericUpDownMainCreateTimeSpan);
+            this.groupBox5.Controls.Add(this.dateTimePickerMainReCreate);
+            this.groupBox5.Controls.Add(this.label22);
+            this.groupBox5.Controls.Add(this.label21);
+            this.groupBox5.Controls.Add(this.label20);
+            this.groupBox5.Controls.Add(this.label19);
+            this.groupBox5.Controls.Add(this.label24);
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Controls.Add(this.label23);
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Location = new System.Drawing.Point(14, 120);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(620, 284);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "索引器设置：";
+            // 
+            // numericUpDownMergeFactor
+            // 
+            this.numericUpDownMergeFactor.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMergeFactor.Location = new System.Drawing.Point(336, 247);
+            this.numericUpDownMergeFactor.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.numericUpDownMergeFactor.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMergeFactor.Name = "numericUpDownMergeFactor";
+            this.numericUpDownMergeFactor.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownMergeFactor.TabIndex = 4;
+            this.numericUpDownMergeFactor.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownMaxBufferedDocs
+            // 
+            this.numericUpDownMaxBufferedDocs.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxBufferedDocs.Location = new System.Drawing.Point(334, 210);
+            this.numericUpDownMaxBufferedDocs.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxBufferedDocs.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxBufferedDocs.Name = "numericUpDownMaxBufferedDocs";
+            this.numericUpDownMaxBufferedDocs.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownMaxBufferedDocs.TabIndex = 4;
+            this.numericUpDownMaxBufferedDocs.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownMaxFieldLength
+            // 
+            this.numericUpDownMaxFieldLength.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxFieldLength.Location = new System.Drawing.Point(334, 173);
+            this.numericUpDownMaxFieldLength.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxFieldLength.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxFieldLength.Name = "numericUpDownMaxFieldLength";
+            this.numericUpDownMaxFieldLength.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownMaxFieldLength.TabIndex = 4;
+            this.numericUpDownMaxFieldLength.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownRamBufferSize
+            // 
+            this.numericUpDownRamBufferSize.Location = new System.Drawing.Point(336, 136);
+            this.numericUpDownRamBufferSize.Maximum = new decimal(new int[] {
+            768,
+            0,
+            0,
+            0});
+            this.numericUpDownRamBufferSize.Minimum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+            this.numericUpDownRamBufferSize.Name = "numericUpDownRamBufferSize";
+            this.numericUpDownRamBufferSize.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownRamBufferSize.TabIndex = 4;
+            this.numericUpDownRamBufferSize.Value = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownIncrTimeSpan
+            // 
+            this.numericUpDownIncrTimeSpan.Location = new System.Drawing.Point(334, 99);
+            this.numericUpDownIncrTimeSpan.Maximum = new decimal(new int[] {
+            3600,
+            0,
+            0,
+            0});
+            this.numericUpDownIncrTimeSpan.Minimum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            this.numericUpDownIncrTimeSpan.Name = "numericUpDownIncrTimeSpan";
+            this.numericUpDownIncrTimeSpan.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownIncrTimeSpan.TabIndex = 4;
+            this.numericUpDownIncrTimeSpan.Value = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownMainCreateTimeSpan
+            // 
+            this.numericUpDownMainCreateTimeSpan.Location = new System.Drawing.Point(334, 62);
+            this.numericUpDownMainCreateTimeSpan.Maximum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.numericUpDownMainCreateTimeSpan.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownMainCreateTimeSpan.Name = "numericUpDownMainCreateTimeSpan";
+            this.numericUpDownMainCreateTimeSpan.Size = new System.Drawing.Size(154, 21);
+            this.numericUpDownMainCreateTimeSpan.TabIndex = 4;
+            this.numericUpDownMainCreateTimeSpan.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // dateTimePickerMainReCreate
+            // 
+            this.dateTimePickerMainReCreate.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerMainReCreate.Location = new System.Drawing.Point(334, 25);
+            this.dateTimePickerMainReCreate.Name = "dateTimePickerMainReCreate";
+            this.dateTimePickerMainReCreate.RightToLeftLayout = true;
+            this.dateTimePickerMainReCreate.ShowUpDown = true;
+            this.dateTimePickerMainReCreate.Size = new System.Drawing.Size(154, 21);
+            this.dateTimePickerMainReCreate.TabIndex = 3;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(31, 251);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(89, 12);
+            this.label22.TabIndex = 1;
+            this.label22.Text = "文档合并因子：";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(31, 214);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(113, 12);
+            this.label21.TabIndex = 1;
+            this.label21.Text = "内存文档存储限额：";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(31, 177);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(113, 12);
+            this.label20.TabIndex = 1;
+            this.label20.Text = "索引字段长度限制：";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(31, 140);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(113, 12);
+            this.label19.TabIndex = 1;
+            this.label19.Text = "允许使用内存容量：";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(496, 140);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(17, 12);
+            this.label24.TabIndex = 1;
+            this.label24.Text = "MB";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(31, 103);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(113, 12);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "增量索引重建间隔：";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(496, 103);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(17, 12);
+            this.label23.TabIndex = 1;
+            this.label23.Text = "秒";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(496, 66);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(17, 12);
+            this.label12.TabIndex = 1;
+            this.label12.Text = "天";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(31, 66);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(101, 12);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "主索引重建间隔：";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(31, 29);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(101, 12);
+            this.label10.TabIndex = 0;
+            this.label10.Text = "主索引重建时间：";
+            // 
+            // panelSearchd
+            // 
+            this.panelSearchd.Controls.Add(this.groupBox7);
+            this.panelSearchd.Controls.Add(this.groupBox8);
+            this.panelSearchd.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelSearchd.Location = new System.Drawing.Point(0, 0);
+            this.panelSearchd.Name = "panelSearchd";
+            this.panelSearchd.Size = new System.Drawing.Size(663, 567);
+            this.panelSearchd.TabIndex = 2;
+            this.panelSearchd.Visible = false;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.btnSearchdStopService);
+            this.groupBox7.Controls.Add(this.btnSearchdStartService);
+            this.groupBox7.Controls.Add(this.btnEditSearchd);
+            this.groupBox7.Controls.Add(this.btnSearchdService);
+            this.groupBox7.Controls.Add(this.btnSearchdConfirm);
+            this.groupBox7.Location = new System.Drawing.Point(27, 25);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(519, 108);
+            this.groupBox7.TabIndex = 12;
+            this.groupBox7.TabStop = false;
+            // 
+            // btnSearchdStopService
+            // 
+            this.btnSearchdStopService.ImageIndex = 11;
+            this.btnSearchdStopService.ImageList = this.imageListButtons;
+            this.btnSearchdStopService.Location = new System.Drawing.Point(412, 9);
+            this.btnSearchdStopService.Name = "btnSearchdStopService";
+            this.btnSearchdStopService.Size = new System.Drawing.Size(103, 99);
+            this.btnSearchdStopService.TabIndex = 7;
+            this.btnSearchdStopService.Text = "停止服务";
+            this.btnSearchdStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSearchdStopService.UseVisualStyleBackColor = true;
+            this.btnSearchdStopService.Click += new System.EventHandler(this.btnSearchdStopService_Click);
+            // 
+            // btnSearchdStartService
+            // 
+            this.btnSearchdStartService.ImageIndex = 10;
+            this.btnSearchdStartService.ImageList = this.imageListButtons;
+            this.btnSearchdStartService.Location = new System.Drawing.Point(309, 9);
+            this.btnSearchdStartService.Name = "btnSearchdStartService";
+            this.btnSearchdStartService.Size = new System.Drawing.Size(103, 99);
+            this.btnSearchdStartService.TabIndex = 6;
+            this.btnSearchdStartService.Text = "开始服务";
+            this.btnSearchdStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSearchdStartService.UseVisualStyleBackColor = true;
+            this.btnSearchdStartService.Click += new System.EventHandler(this.btnSearchdStartService_Click);
+            // 
+            // btnEditSearchd
+            // 
+            this.btnEditSearchd.ImageIndex = 4;
+            this.btnEditSearchd.ImageList = this.imageListButtons;
+            this.btnEditSearchd.Location = new System.Drawing.Point(0, 8);
+            this.btnEditSearchd.Name = "btnEditSearchd";
+            this.btnEditSearchd.Size = new System.Drawing.Size(103, 99);
+            this.btnEditSearchd.TabIndex = 3;
+            this.btnEditSearchd.Text = "修改设置";
+            this.btnEditSearchd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEditSearchd.UseVisualStyleBackColor = true;
+            this.btnEditSearchd.Click += new System.EventHandler(this.btnEditSearchd_Click);
+            // 
+            // btnSearchdService
+            // 
+            this.btnSearchdService.ImageIndex = 9;
+            this.btnSearchdService.ImageList = this.imageListButtons;
+            this.btnSearchdService.Location = new System.Drawing.Point(206, 8);
+            this.btnSearchdService.Name = "btnSearchdService";
+            this.btnSearchdService.Size = new System.Drawing.Size(103, 99);
+            this.btnSearchdService.TabIndex = 3;
+            this.btnSearchdService.Text = "设置系统服务";
+            this.btnSearchdService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSearchdService.UseVisualStyleBackColor = true;
+            this.btnSearchdService.Click += new System.EventHandler(this.btnSearchdService_Click);
+            // 
+            // btnSearchdConfirm
+            // 
+            this.btnSearchdConfirm.Enabled = false;
+            this.btnSearchdConfirm.ImageIndex = 6;
+            this.btnSearchdConfirm.ImageList = this.imageListButtons;
+            this.btnSearchdConfirm.Location = new System.Drawing.Point(103, 8);
+            this.btnSearchdConfirm.Name = "btnSearchdConfirm";
+            this.btnSearchdConfirm.Size = new System.Drawing.Size(103, 99);
+            this.btnSearchdConfirm.TabIndex = 3;
+            this.btnSearchdConfirm.Text = "确定操作";
+            this.btnSearchdConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSearchdConfirm.UseVisualStyleBackColor = true;
+            this.btnSearchdConfirm.Click += new System.EventHandler(this.btnSearchdConfirm_Click);
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.btnSetQueryPath);
+            this.groupBox8.Controls.Add(this.textBoxQueryPath);
+            this.groupBox8.Controls.Add(this.btnSetSearchdPath);
+            this.groupBox8.Controls.Add(this.textBoxSearchdPath);
+            this.groupBox8.Controls.Add(this.numericUpDownMaxTransport);
+            this.groupBox8.Controls.Add(this.numericUpDownMaxMatches);
+            this.groupBox8.Controls.Add(this.numericUpDownPort);
+            this.groupBox8.Controls.Add(this.numericUpDownTimeOut);
+            this.groupBox8.Controls.Add(this.label25);
+            this.groupBox8.Controls.Add(this.label26);
+            this.groupBox8.Controls.Add(this.label27);
+            this.groupBox8.Controls.Add(this.label28);
+            this.groupBox8.Controls.Add(this.label30);
+            this.groupBox8.Controls.Add(this.label33);
+            this.groupBox8.Controls.Add(this.label34);
+            this.groupBox8.Location = new System.Drawing.Point(29, 192);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(519, 297);
+            this.groupBox8.TabIndex = 11;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "搜索器设置";
+            // 
+            // btnSetQueryPath
+            // 
+            this.btnSetQueryPath.Location = new System.Drawing.Point(468, 258);
+            this.btnSetQueryPath.Name = "btnSetQueryPath";
+            this.btnSetQueryPath.Size = new System.Drawing.Size(35, 23);
+            this.btnSetQueryPath.TabIndex = 7;
+            this.btnSetQueryPath.Text = "...";
+            this.btnSetQueryPath.UseVisualStyleBackColor = true;
+            this.btnSetQueryPath.Click += new System.EventHandler(this.btnSetQueryPath_Click);
+            // 
+            // textBoxQueryPath
+            // 
+            this.textBoxQueryPath.Location = new System.Drawing.Point(102, 259);
+            this.textBoxQueryPath.Name = "textBoxQueryPath";
+            this.textBoxQueryPath.Size = new System.Drawing.Size(366, 21);
+            this.textBoxQueryPath.TabIndex = 6;
+            // 
+            // btnSetSearchdPath
+            // 
+            this.btnSetSearchdPath.Location = new System.Drawing.Point(468, 219);
+            this.btnSetSearchdPath.Name = "btnSetSearchdPath";
+            this.btnSetSearchdPath.Size = new System.Drawing.Size(35, 23);
+            this.btnSetSearchdPath.TabIndex = 7;
+            this.btnSetSearchdPath.Text = "...";
+            this.btnSetSearchdPath.UseVisualStyleBackColor = true;
+            this.btnSetSearchdPath.Click += new System.EventHandler(this.btnSetSearchdPath_Click);
+            // 
+            // textBoxSearchdPath
+            // 
+            this.textBoxSearchdPath.Location = new System.Drawing.Point(102, 220);
+            this.textBoxSearchdPath.Name = "textBoxSearchdPath";
+            this.textBoxSearchdPath.Size = new System.Drawing.Size(366, 21);
+            this.textBoxSearchdPath.TabIndex = 6;
+            // 
+            // numericUpDownMaxTransport
+            // 
+            this.numericUpDownMaxTransport.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxTransport.Location = new System.Drawing.Point(102, 181);
+            this.numericUpDownMaxTransport.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxTransport.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxTransport.Name = "numericUpDownMaxTransport";
+            this.numericUpDownMaxTransport.Size = new System.Drawing.Size(116, 21);
+            this.numericUpDownMaxTransport.TabIndex = 4;
+            this.numericUpDownMaxTransport.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownMaxMatches
+            // 
+            this.numericUpDownMaxMatches.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxMatches.Location = new System.Drawing.Point(102, 142);
+            this.numericUpDownMaxMatches.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxMatches.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxMatches.Name = "numericUpDownMaxMatches";
+            this.numericUpDownMaxMatches.Size = new System.Drawing.Size(116, 21);
+            this.numericUpDownMaxMatches.TabIndex = 4;
+            this.numericUpDownMaxMatches.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownPort
+            // 
+            this.numericUpDownPort.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownPort.Location = new System.Drawing.Point(102, 64);
+            this.numericUpDownPort.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.numericUpDownPort.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownPort.Name = "numericUpDownPort";
+            this.numericUpDownPort.Size = new System.Drawing.Size(116, 21);
+            this.numericUpDownPort.TabIndex = 4;
+            this.numericUpDownPort.Value = new decimal(new int[] {
+            3312,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownTimeOut
+            // 
+            this.numericUpDownTimeOut.Location = new System.Drawing.Point(102, 103);
+            this.numericUpDownTimeOut.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.numericUpDownTimeOut.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownTimeOut.Name = "numericUpDownTimeOut";
+            this.numericUpDownTimeOut.Size = new System.Drawing.Size(116, 21);
+            this.numericUpDownTimeOut.TabIndex = 4;
+            this.numericUpDownTimeOut.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(24, 185);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(65, 12);
+            this.label25.TabIndex = 1;
+            this.label25.Text = "传输限制：";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(24, 146);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(65, 12);
+            this.label26.TabIndex = 1;
+            this.label26.Text = "匹配限制：";
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(24, 107);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(65, 12);
+            this.label27.TabIndex = 1;
+            this.label27.Text = "超时设置：";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(24, 263);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(65, 12);
+            this.label28.TabIndex = 1;
+            this.label28.Text = "查询输出：";
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(24, 224);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(65, 12);
+            this.label30.TabIndex = 1;
+            this.label30.Text = "结果文件：";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(24, 68);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(65, 12);
+            this.label33.TabIndex = 1;
+            this.label33.Text = "监听端口：";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(24, 29);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(53, 12);
+            this.label34.TabIndex = 0;
+            this.label34.Text = "IP地址：";
+            // 
             // panelSource
             // 
             this.panelSource.Controls.Add(this.listBoxSource);
@@ -544,23 +1344,6 @@
             this.btnSourceCancel.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnSourceCancel.UseVisualStyleBackColor = true;
             this.btnSourceCancel.Click += new System.EventHandler(this.btnSourceCancel_Click);
-            // 
-            // imageListButtons
-            // 
-            this.imageListButtons.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListButtons.ImageStream")));
-            this.imageListButtons.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListButtons.Images.SetKeyName(0, "testdblink.jpg");
-            this.imageListButtons.Images.SetKeyName(1, "testquery.jpg");
-            this.imageListButtons.Images.SetKeyName(2, "testsourcefields.jpg");
-            this.imageListButtons.Images.SetKeyName(3, "newsource.jpg");
-            this.imageListButtons.Images.SetKeyName(4, "editsource.jpg");
-            this.imageListButtons.Images.SetKeyName(5, "sourcedelete.jpg");
-            this.imageListButtons.Images.SetKeyName(6, "sourceconfirm.jpg");
-            this.imageListButtons.Images.SetKeyName(7, "sourcecancel.jpg");
-            this.imageListButtons.Images.SetKeyName(8, "indexcreate.jpg");
-            this.imageListButtons.Images.SetKeyName(9, "indexservice.jpg");
-            this.imageListButtons.Images.SetKeyName(10, "startservice.png");
-            this.imageListButtons.Images.SetKeyName(11, "stopservice.png");
             // 
             // btnSourceConfim
             // 
@@ -1324,801 +2107,6 @@
             this.label18.TabIndex = 7;
             this.label18.Text = "索引列表：";
             // 
-            // panelIndexerSet
-            // 
-            this.panelIndexerSet.Controls.Add(this.groupBox11);
-            this.panelIndexerSet.Controls.Add(this.groupBox6);
-            this.panelIndexerSet.Controls.Add(this.groupBox5);
-            this.panelIndexerSet.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelIndexerSet.Location = new System.Drawing.Point(0, 0);
-            this.panelIndexerSet.Name = "panelIndexerSet";
-            this.panelIndexerSet.Size = new System.Drawing.Size(663, 567);
-            this.panelIndexerSet.TabIndex = 3;
-            this.panelIndexerSet.Visible = false;
-            // 
-            // groupBox11
-            // 
-            this.groupBox11.Controls.Add(this.btnFileIndex);
-            this.groupBox11.Controls.Add(this.listBoxFileDirs);
-            this.groupBox11.Controls.Add(this.btnFileDirs);
-            this.groupBox11.Controls.Add(this.btnFilePath);
-            this.groupBox11.Controls.Add(this.textBoxFilePath);
-            this.groupBox11.Controls.Add(this.label32);
-            this.groupBox11.Controls.Add(this.label31);
-            this.groupBox11.Location = new System.Drawing.Point(14, 416);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(621, 122);
-            this.groupBox11.TabIndex = 13;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "文件索引设置";
-            // 
-            // btnFileIndex
-            // 
-            this.btnFileIndex.Location = new System.Drawing.Point(580, 26);
-            this.btnFileIndex.Name = "btnFileIndex";
-            this.btnFileIndex.Size = new System.Drawing.Size(35, 83);
-            this.btnFileIndex.TabIndex = 14;
-            this.btnFileIndex.Text = "重建索引";
-            this.btnFileIndex.UseVisualStyleBackColor = true;
-            this.btnFileIndex.Click += new System.EventHandler(this.btnFileIndex_Click);
-            // 
-            // listBoxFileDirs
-            // 
-            this.listBoxFileDirs.FormattingEnabled = true;
-            this.listBoxFileDirs.ItemHeight = 12;
-            this.listBoxFileDirs.Location = new System.Drawing.Point(79, 57);
-            this.listBoxFileDirs.Name = "listBoxFileDirs";
-            this.listBoxFileDirs.Size = new System.Drawing.Size(455, 52);
-            this.listBoxFileDirs.TabIndex = 11;
-            // 
-            // btnFileDirs
-            // 
-            this.btnFileDirs.Location = new System.Drawing.Point(540, 54);
-            this.btnFileDirs.Name = "btnFileDirs";
-            this.btnFileDirs.Size = new System.Drawing.Size(35, 23);
-            this.btnFileDirs.TabIndex = 10;
-            this.btnFileDirs.Text = "...";
-            this.btnFileDirs.UseVisualStyleBackColor = true;
-            // 
-            // btnFilePath
-            // 
-            this.btnFilePath.Location = new System.Drawing.Point(540, 25);
-            this.btnFilePath.Name = "btnFilePath";
-            this.btnFilePath.Size = new System.Drawing.Size(35, 23);
-            this.btnFilePath.TabIndex = 10;
-            this.btnFilePath.Text = "...";
-            this.btnFilePath.UseVisualStyleBackColor = true;
-            // 
-            // textBoxFilePath
-            // 
-            this.textBoxFilePath.Location = new System.Drawing.Point(79, 27);
-            this.textBoxFilePath.Name = "textBoxFilePath";
-            this.textBoxFilePath.Size = new System.Drawing.Size(455, 21);
-            this.textBoxFilePath.TabIndex = 9;
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(8, 59);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(53, 12);
-            this.label32.TabIndex = 8;
-            this.label32.Text = "数据源：";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(8, 30);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(65, 12);
-            this.label31.TabIndex = 8;
-            this.label31.Text = "存储路径：";
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.btnEditIndexer);
-            this.groupBox6.Controls.Add(this.btnReCreateIncrIndex);
-            this.groupBox6.Controls.Add(this.btnMainIndexReCreate);
-            this.groupBox6.Controls.Add(this.btnIndexerStopService);
-            this.groupBox6.Controls.Add(this.btnIndexerStartService);
-            this.groupBox6.Controls.Add(this.btnIndexerService);
-            this.groupBox6.Controls.Add(this.btnIndexerConfirm);
-            this.groupBox6.Location = new System.Drawing.Point(13, 6);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(622, 102);
-            this.groupBox6.TabIndex = 10;
-            this.groupBox6.TabStop = false;
-            // 
-            // btnEditIndexer
-            // 
-            this.btnEditIndexer.ImageIndex = 4;
-            this.btnEditIndexer.ImageList = this.imageListButtons;
-            this.btnEditIndexer.Location = new System.Drawing.Point(178, 9);
-            this.btnEditIndexer.Name = "btnEditIndexer";
-            this.btnEditIndexer.Size = new System.Drawing.Size(89, 90);
-            this.btnEditIndexer.TabIndex = 3;
-            this.btnEditIndexer.Text = "修改设置";
-            this.btnEditIndexer.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnEditIndexer.UseVisualStyleBackColor = true;
-            this.btnEditIndexer.Click += new System.EventHandler(this.btnEditIndexer_Click);
-            // 
-            // btnReCreateIncrIndex
-            // 
-            this.btnReCreateIncrIndex.ImageIndex = 3;
-            this.btnReCreateIncrIndex.ImageList = this.imageListButtons;
-            this.btnReCreateIncrIndex.Location = new System.Drawing.Point(89, 9);
-            this.btnReCreateIncrIndex.Name = "btnReCreateIncrIndex";
-            this.btnReCreateIncrIndex.Size = new System.Drawing.Size(89, 90);
-            this.btnReCreateIncrIndex.TabIndex = 3;
-            this.btnReCreateIncrIndex.Text = "重建增量索引";
-            this.btnReCreateIncrIndex.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnReCreateIncrIndex.UseVisualStyleBackColor = true;
-            this.btnReCreateIncrIndex.Click += new System.EventHandler(this.btnReCreateIncrIndex_Click);
-            // 
-            // btnMainIndexReCreate
-            // 
-            this.btnMainIndexReCreate.ImageIndex = 8;
-            this.btnMainIndexReCreate.ImageList = this.imageListButtons;
-            this.btnMainIndexReCreate.Location = new System.Drawing.Point(0, 9);
-            this.btnMainIndexReCreate.Name = "btnMainIndexReCreate";
-            this.btnMainIndexReCreate.Size = new System.Drawing.Size(89, 90);
-            this.btnMainIndexReCreate.TabIndex = 2;
-            this.btnMainIndexReCreate.Text = "重新主索引";
-            this.btnMainIndexReCreate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnMainIndexReCreate.UseVisualStyleBackColor = true;
-            this.btnMainIndexReCreate.Click += new System.EventHandler(this.btnMainIndexReCreate_Click);
-            // 
-            // btnIndexerStopService
-            // 
-            this.btnIndexerStopService.ImageIndex = 11;
-            this.btnIndexerStopService.ImageList = this.imageListButtons;
-            this.btnIndexerStopService.Location = new System.Drawing.Point(534, 9);
-            this.btnIndexerStopService.Name = "btnIndexerStopService";
-            this.btnIndexerStopService.Size = new System.Drawing.Size(89, 90);
-            this.btnIndexerStopService.TabIndex = 3;
-            this.btnIndexerStopService.Text = "停止服务";
-            this.btnIndexerStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnIndexerStopService.UseVisualStyleBackColor = true;
-            this.btnIndexerStopService.Click += new System.EventHandler(this.btnIndexerStopService_Click);
-            // 
-            // btnIndexerStartService
-            // 
-            this.btnIndexerStartService.ImageIndex = 10;
-            this.btnIndexerStartService.ImageList = this.imageListButtons;
-            this.btnIndexerStartService.Location = new System.Drawing.Point(445, 9);
-            this.btnIndexerStartService.Name = "btnIndexerStartService";
-            this.btnIndexerStartService.Size = new System.Drawing.Size(89, 90);
-            this.btnIndexerStartService.TabIndex = 3;
-            this.btnIndexerStartService.Text = "开始服务";
-            this.btnIndexerStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnIndexerStartService.UseVisualStyleBackColor = true;
-            this.btnIndexerStartService.Click += new System.EventHandler(this.btnIndexerStartService_Click);
-            // 
-            // btnIndexerService
-            // 
-            this.btnIndexerService.ImageIndex = 9;
-            this.btnIndexerService.ImageList = this.imageListButtons;
-            this.btnIndexerService.Location = new System.Drawing.Point(356, 9);
-            this.btnIndexerService.Name = "btnIndexerService";
-            this.btnIndexerService.Size = new System.Drawing.Size(89, 90);
-            this.btnIndexerService.TabIndex = 3;
-            this.btnIndexerService.Text = "设置系统服务";
-            this.btnIndexerService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnIndexerService.UseVisualStyleBackColor = true;
-            this.btnIndexerService.Click += new System.EventHandler(this.btnIndexerService_Click);
-            // 
-            // btnIndexerConfirm
-            // 
-            this.btnIndexerConfirm.Enabled = false;
-            this.btnIndexerConfirm.ImageIndex = 6;
-            this.btnIndexerConfirm.ImageList = this.imageListButtons;
-            this.btnIndexerConfirm.Location = new System.Drawing.Point(267, 9);
-            this.btnIndexerConfirm.Name = "btnIndexerConfirm";
-            this.btnIndexerConfirm.Size = new System.Drawing.Size(89, 90);
-            this.btnIndexerConfirm.TabIndex = 3;
-            this.btnIndexerConfirm.Text = "确定操作";
-            this.btnIndexerConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnIndexerConfirm.UseVisualStyleBackColor = true;
-            this.btnIndexerConfirm.Click += new System.EventHandler(this.btnIndexerConfirm_Click);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.numericUpDownMergeFactor);
-            this.groupBox5.Controls.Add(this.numericUpDownMaxBufferedDocs);
-            this.groupBox5.Controls.Add(this.numericUpDownMaxFieldLength);
-            this.groupBox5.Controls.Add(this.numericUpDownRamBufferSize);
-            this.groupBox5.Controls.Add(this.numericUpDownIncrTimeSpan);
-            this.groupBox5.Controls.Add(this.numericUpDownMainCreateTimeSpan);
-            this.groupBox5.Controls.Add(this.dateTimePickerMainReCreate);
-            this.groupBox5.Controls.Add(this.label22);
-            this.groupBox5.Controls.Add(this.label21);
-            this.groupBox5.Controls.Add(this.label20);
-            this.groupBox5.Controls.Add(this.label19);
-            this.groupBox5.Controls.Add(this.label24);
-            this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.label23);
-            this.groupBox5.Controls.Add(this.label12);
-            this.groupBox5.Controls.Add(this.label11);
-            this.groupBox5.Controls.Add(this.label10);
-            this.groupBox5.Location = new System.Drawing.Point(14, 120);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(620, 284);
-            this.groupBox5.TabIndex = 0;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "索引器设置：";
-            // 
-            // numericUpDownMergeFactor
-            // 
-            this.numericUpDownMergeFactor.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMergeFactor.Location = new System.Drawing.Point(336, 247);
-            this.numericUpDownMergeFactor.Maximum = new decimal(new int[] {
-            20000,
-            0,
-            0,
-            0});
-            this.numericUpDownMergeFactor.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMergeFactor.Name = "numericUpDownMergeFactor";
-            this.numericUpDownMergeFactor.Size = new System.Drawing.Size(154, 21);
-            this.numericUpDownMergeFactor.TabIndex = 4;
-            this.numericUpDownMergeFactor.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownMaxBufferedDocs
-            // 
-            this.numericUpDownMaxBufferedDocs.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxBufferedDocs.Location = new System.Drawing.Point(334, 210);
-            this.numericUpDownMaxBufferedDocs.Maximum = new decimal(new int[] {
-            20000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxBufferedDocs.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxBufferedDocs.Name = "numericUpDownMaxBufferedDocs";
-            this.numericUpDownMaxBufferedDocs.Size = new System.Drawing.Size(154, 21);
-            this.numericUpDownMaxBufferedDocs.TabIndex = 4;
-            this.numericUpDownMaxBufferedDocs.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownMaxFieldLength
-            // 
-            this.numericUpDownMaxFieldLength.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxFieldLength.Location = new System.Drawing.Point(334, 173);
-            this.numericUpDownMaxFieldLength.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxFieldLength.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxFieldLength.Name = "numericUpDownMaxFieldLength";
-            this.numericUpDownMaxFieldLength.Size = new System.Drawing.Size(154, 21);
-            this.numericUpDownMaxFieldLength.TabIndex = 4;
-            this.numericUpDownMaxFieldLength.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownRamBufferSize
-            // 
-            this.numericUpDownRamBufferSize.Location = new System.Drawing.Point(336, 136);
-            this.numericUpDownRamBufferSize.Maximum = new decimal(new int[] {
-            768,
-            0,
-            0,
-            0});
-            this.numericUpDownRamBufferSize.Minimum = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
-            this.numericUpDownRamBufferSize.Name = "numericUpDownRamBufferSize";
-            this.numericUpDownRamBufferSize.Size = new System.Drawing.Size(154, 21);
-            this.numericUpDownRamBufferSize.TabIndex = 4;
-            this.numericUpDownRamBufferSize.Value = new decimal(new int[] {
-            512,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownIncrTimeSpan
-            // 
-            this.numericUpDownIncrTimeSpan.Location = new System.Drawing.Point(334, 99);
-            this.numericUpDownIncrTimeSpan.Maximum = new decimal(new int[] {
-            3600,
-            0,
-            0,
-            0});
-            this.numericUpDownIncrTimeSpan.Minimum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.numericUpDownIncrTimeSpan.Name = "numericUpDownIncrTimeSpan";
-            this.numericUpDownIncrTimeSpan.Size = new System.Drawing.Size(154, 21);
-            this.numericUpDownIncrTimeSpan.TabIndex = 4;
-            this.numericUpDownIncrTimeSpan.Value = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownMainCreateTimeSpan
-            // 
-            this.numericUpDownMainCreateTimeSpan.Location = new System.Drawing.Point(334, 62);
-            this.numericUpDownMainCreateTimeSpan.Maximum = new decimal(new int[] {
-            7,
-            0,
-            0,
-            0});
-            this.numericUpDownMainCreateTimeSpan.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownMainCreateTimeSpan.Name = "numericUpDownMainCreateTimeSpan";
-            this.numericUpDownMainCreateTimeSpan.Size = new System.Drawing.Size(154, 21);
-            this.numericUpDownMainCreateTimeSpan.TabIndex = 4;
-            this.numericUpDownMainCreateTimeSpan.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // dateTimePickerMainReCreate
-            // 
-            this.dateTimePickerMainReCreate.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePickerMainReCreate.Location = new System.Drawing.Point(334, 25);
-            this.dateTimePickerMainReCreate.Name = "dateTimePickerMainReCreate";
-            this.dateTimePickerMainReCreate.RightToLeftLayout = true;
-            this.dateTimePickerMainReCreate.ShowUpDown = true;
-            this.dateTimePickerMainReCreate.Size = new System.Drawing.Size(154, 21);
-            this.dateTimePickerMainReCreate.TabIndex = 3;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(31, 251);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(89, 12);
-            this.label22.TabIndex = 1;
-            this.label22.Text = "文档合并因子：";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(31, 214);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(113, 12);
-            this.label21.TabIndex = 1;
-            this.label21.Text = "内存文档存储限额：";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(31, 177);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(113, 12);
-            this.label20.TabIndex = 1;
-            this.label20.Text = "索引字段长度限制：";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(31, 140);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(113, 12);
-            this.label19.TabIndex = 1;
-            this.label19.Text = "允许使用内存容量：";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(496, 140);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(17, 12);
-            this.label24.TabIndex = 1;
-            this.label24.Text = "MB";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(31, 103);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(113, 12);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "增量索引重建间隔：";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(496, 103);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(17, 12);
-            this.label23.TabIndex = 1;
-            this.label23.Text = "秒";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(496, 66);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(17, 12);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "天";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(31, 66);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(101, 12);
-            this.label11.TabIndex = 1;
-            this.label11.Text = "主索引重建间隔：";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(31, 29);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(101, 12);
-            this.label10.TabIndex = 0;
-            this.label10.Text = "主索引重建时间：";
-            // 
-            // panelSearchd
-            // 
-            this.panelSearchd.Controls.Add(this.groupBox7);
-            this.panelSearchd.Controls.Add(this.groupBox8);
-            this.panelSearchd.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSearchd.Location = new System.Drawing.Point(0, 0);
-            this.panelSearchd.Name = "panelSearchd";
-            this.panelSearchd.Size = new System.Drawing.Size(663, 567);
-            this.panelSearchd.TabIndex = 2;
-            this.panelSearchd.Visible = false;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.btnSearchdStopService);
-            this.groupBox7.Controls.Add(this.btnSearchdStartService);
-            this.groupBox7.Controls.Add(this.btnEditSearchd);
-            this.groupBox7.Controls.Add(this.btnSearchdService);
-            this.groupBox7.Controls.Add(this.btnSearchdConfirm);
-            this.groupBox7.Location = new System.Drawing.Point(27, 25);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(519, 108);
-            this.groupBox7.TabIndex = 12;
-            this.groupBox7.TabStop = false;
-            // 
-            // btnSearchdStopService
-            // 
-            this.btnSearchdStopService.ImageIndex = 11;
-            this.btnSearchdStopService.ImageList = this.imageListButtons;
-            this.btnSearchdStopService.Location = new System.Drawing.Point(412, 9);
-            this.btnSearchdStopService.Name = "btnSearchdStopService";
-            this.btnSearchdStopService.Size = new System.Drawing.Size(103, 99);
-            this.btnSearchdStopService.TabIndex = 7;
-            this.btnSearchdStopService.Text = "停止服务";
-            this.btnSearchdStopService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnSearchdStopService.UseVisualStyleBackColor = true;
-            this.btnSearchdStopService.Click += new System.EventHandler(this.btnSearchdStopService_Click);
-            // 
-            // btnSearchdStartService
-            // 
-            this.btnSearchdStartService.ImageIndex = 10;
-            this.btnSearchdStartService.ImageList = this.imageListButtons;
-            this.btnSearchdStartService.Location = new System.Drawing.Point(309, 9);
-            this.btnSearchdStartService.Name = "btnSearchdStartService";
-            this.btnSearchdStartService.Size = new System.Drawing.Size(103, 99);
-            this.btnSearchdStartService.TabIndex = 6;
-            this.btnSearchdStartService.Text = "开始服务";
-            this.btnSearchdStartService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnSearchdStartService.UseVisualStyleBackColor = true;
-            this.btnSearchdStartService.Click += new System.EventHandler(this.btnSearchdStartService_Click);
-            // 
-            // btnEditSearchd
-            // 
-            this.btnEditSearchd.ImageIndex = 4;
-            this.btnEditSearchd.ImageList = this.imageListButtons;
-            this.btnEditSearchd.Location = new System.Drawing.Point(0, 8);
-            this.btnEditSearchd.Name = "btnEditSearchd";
-            this.btnEditSearchd.Size = new System.Drawing.Size(103, 99);
-            this.btnEditSearchd.TabIndex = 3;
-            this.btnEditSearchd.Text = "修改设置";
-            this.btnEditSearchd.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnEditSearchd.UseVisualStyleBackColor = true;
-            this.btnEditSearchd.Click += new System.EventHandler(this.btnEditSearchd_Click);
-            // 
-            // btnSearchdService
-            // 
-            this.btnSearchdService.ImageIndex = 9;
-            this.btnSearchdService.ImageList = this.imageListButtons;
-            this.btnSearchdService.Location = new System.Drawing.Point(206, 8);
-            this.btnSearchdService.Name = "btnSearchdService";
-            this.btnSearchdService.Size = new System.Drawing.Size(103, 99);
-            this.btnSearchdService.TabIndex = 3;
-            this.btnSearchdService.Text = "设置系统服务";
-            this.btnSearchdService.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnSearchdService.UseVisualStyleBackColor = true;
-            this.btnSearchdService.Click += new System.EventHandler(this.btnSearchdService_Click);
-            // 
-            // btnSearchdConfirm
-            // 
-            this.btnSearchdConfirm.Enabled = false;
-            this.btnSearchdConfirm.ImageIndex = 6;
-            this.btnSearchdConfirm.ImageList = this.imageListButtons;
-            this.btnSearchdConfirm.Location = new System.Drawing.Point(103, 8);
-            this.btnSearchdConfirm.Name = "btnSearchdConfirm";
-            this.btnSearchdConfirm.Size = new System.Drawing.Size(103, 99);
-            this.btnSearchdConfirm.TabIndex = 3;
-            this.btnSearchdConfirm.Text = "确定操作";
-            this.btnSearchdConfirm.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.btnSearchdConfirm.UseVisualStyleBackColor = true;
-            this.btnSearchdConfirm.Click += new System.EventHandler(this.btnSearchdConfirm_Click);
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.ipAddress);
-            this.groupBox8.Controls.Add(this.btnSetQueryPath);
-            this.groupBox8.Controls.Add(this.textBoxQueryPath);
-            this.groupBox8.Controls.Add(this.btnSetSearchdPath);
-            this.groupBox8.Controls.Add(this.textBoxSearchdPath);
-            this.groupBox8.Controls.Add(this.numericUpDownMaxTransport);
-            this.groupBox8.Controls.Add(this.numericUpDownMaxMatches);
-            this.groupBox8.Controls.Add(this.numericUpDownPort);
-            this.groupBox8.Controls.Add(this.numericUpDownTimeOut);
-            this.groupBox8.Controls.Add(this.label25);
-            this.groupBox8.Controls.Add(this.label26);
-            this.groupBox8.Controls.Add(this.label27);
-            this.groupBox8.Controls.Add(this.label28);
-            this.groupBox8.Controls.Add(this.label30);
-            this.groupBox8.Controls.Add(this.label33);
-            this.groupBox8.Controls.Add(this.label34);
-            this.groupBox8.Location = new System.Drawing.Point(29, 192);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(519, 297);
-            this.groupBox8.TabIndex = 11;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "搜索器设置";
-            // 
-            // ipAddress
-            // 
-            this.ipAddress.BackColor = System.Drawing.SystemColors.Window;
-            this.ipAddress.Location = new System.Drawing.Point(102, 26);
-            this.ipAddress.MinimumSize = new System.Drawing.Size(116, 21);
-            this.ipAddress.Name = "ipAddress";
-            this.ipAddress.ReadOnly = false;
-            this.ipAddress.Size = new System.Drawing.Size(116, 21);
-            this.ipAddress.TabIndex = 8;
-            // 
-            // btnSetQueryPath
-            // 
-            this.btnSetQueryPath.Location = new System.Drawing.Point(468, 258);
-            this.btnSetQueryPath.Name = "btnSetQueryPath";
-            this.btnSetQueryPath.Size = new System.Drawing.Size(35, 23);
-            this.btnSetQueryPath.TabIndex = 7;
-            this.btnSetQueryPath.Text = "...";
-            this.btnSetQueryPath.UseVisualStyleBackColor = true;
-            this.btnSetQueryPath.Click += new System.EventHandler(this.btnSetQueryPath_Click);
-            // 
-            // textBoxQueryPath
-            // 
-            this.textBoxQueryPath.Location = new System.Drawing.Point(102, 259);
-            this.textBoxQueryPath.Name = "textBoxQueryPath";
-            this.textBoxQueryPath.Size = new System.Drawing.Size(366, 21);
-            this.textBoxQueryPath.TabIndex = 6;
-            // 
-            // btnSetSearchdPath
-            // 
-            this.btnSetSearchdPath.Location = new System.Drawing.Point(468, 219);
-            this.btnSetSearchdPath.Name = "btnSetSearchdPath";
-            this.btnSetSearchdPath.Size = new System.Drawing.Size(35, 23);
-            this.btnSetSearchdPath.TabIndex = 7;
-            this.btnSetSearchdPath.Text = "...";
-            this.btnSetSearchdPath.UseVisualStyleBackColor = true;
-            this.btnSetSearchdPath.Click += new System.EventHandler(this.btnSetSearchdPath_Click);
-            // 
-            // textBoxSearchdPath
-            // 
-            this.textBoxSearchdPath.Location = new System.Drawing.Point(102, 220);
-            this.textBoxSearchdPath.Name = "textBoxSearchdPath";
-            this.textBoxSearchdPath.Size = new System.Drawing.Size(366, 21);
-            this.textBoxSearchdPath.TabIndex = 6;
-            // 
-            // numericUpDownMaxTransport
-            // 
-            this.numericUpDownMaxTransport.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxTransport.Location = new System.Drawing.Point(102, 181);
-            this.numericUpDownMaxTransport.Maximum = new decimal(new int[] {
-            20000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxTransport.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxTransport.Name = "numericUpDownMaxTransport";
-            this.numericUpDownMaxTransport.Size = new System.Drawing.Size(116, 21);
-            this.numericUpDownMaxTransport.TabIndex = 4;
-            this.numericUpDownMaxTransport.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownMaxMatches
-            // 
-            this.numericUpDownMaxMatches.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxMatches.Location = new System.Drawing.Point(102, 142);
-            this.numericUpDownMaxMatches.Maximum = new decimal(new int[] {
-            20000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxMatches.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxMatches.Name = "numericUpDownMaxMatches";
-            this.numericUpDownMaxMatches.Size = new System.Drawing.Size(116, 21);
-            this.numericUpDownMaxMatches.TabIndex = 4;
-            this.numericUpDownMaxMatches.Value = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownPort
-            // 
-            this.numericUpDownPort.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownPort.Location = new System.Drawing.Point(102, 64);
-            this.numericUpDownPort.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.numericUpDownPort.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownPort.Name = "numericUpDownPort";
-            this.numericUpDownPort.Size = new System.Drawing.Size(116, 21);
-            this.numericUpDownPort.TabIndex = 4;
-            this.numericUpDownPort.Value = new decimal(new int[] {
-            3312,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownTimeOut
-            // 
-            this.numericUpDownTimeOut.Location = new System.Drawing.Point(102, 103);
-            this.numericUpDownTimeOut.Maximum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            0});
-            this.numericUpDownTimeOut.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownTimeOut.Name = "numericUpDownTimeOut";
-            this.numericUpDownTimeOut.Size = new System.Drawing.Size(116, 21);
-            this.numericUpDownTimeOut.TabIndex = 4;
-            this.numericUpDownTimeOut.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(24, 185);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(65, 12);
-            this.label25.TabIndex = 1;
-            this.label25.Text = "传输限制：";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(24, 146);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(65, 12);
-            this.label26.TabIndex = 1;
-            this.label26.Text = "匹配限制：";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(24, 107);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(65, 12);
-            this.label27.TabIndex = 1;
-            this.label27.Text = "超时设置：";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(24, 263);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(65, 12);
-            this.label28.TabIndex = 1;
-            this.label28.Text = "查询输出：";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(24, 224);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(65, 12);
-            this.label30.TabIndex = 1;
-            this.label30.Text = "结果文件：";
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(24, 68);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(65, 12);
-            this.label33.TabIndex = 1;
-            this.label33.Text = "监听端口：";
-            // 
-            // label34
-            // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(24, 29);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(53, 12);
-            this.label34.TabIndex = 0;
-            this.label34.Text = "IP地址：";
-            // 
             // timer
             // 
             this.timer.Enabled = true;
@@ -2149,20 +2137,6 @@
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             this.splitContainer.ResumeLayout(false);
-            this.panelSource.ResumeLayout(false);
-            this.panelSource.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.panelDictionary.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.groupBox10.PerformLayout();
-            this.panelIndexSet.ResumeLayout(false);
-            this.panelIndexSet.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.panelIndexerSet.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
@@ -2183,6 +2157,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxMatches)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeOut)).EndInit();
+            this.panelSource.ResumeLayout(false);
+            this.panelSource.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.panelDictionary.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
+            this.groupBox10.PerformLayout();
+            this.panelIndexSet.ResumeLayout(false);
+            this.panelIndexSet.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

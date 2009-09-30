@@ -219,6 +219,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#if DataBaseLib
         public static void BoostIndex(DataBaseLibrary.SearchUpdateManage dblSum, IndexTypeEnum type)
         {
             if (!initSettings)
@@ -253,6 +254,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#endif
         public static void BoostIndexWithEvent(IndexSet indexSet, IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
         {
             if (!initSettings)
@@ -264,6 +266,7 @@ namespace ISUtils.Utils
                 IWriter.WriteBoostIndexWithEvent(analyzer, indexerSet, indexSet, indexDict[indexSet], type == IndexTypeEnum.Ordinary, OnIndexCompleted, OnProgressChanged);
             }
         }
+#if DataBaseLib
         public static void BoostIndexWithEvent(DataBaseLibrary.SearchUpdateManage dblSum, IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
         {
             if (!initSettings)
@@ -329,6 +332,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#endif
         public static void BoostIndexWithEvent(IndexTypeEnum type, IndexCompletedEventHandler OnIndexCompleted, IndexProgressChangedEventHandler OnProgressChanged)
         {
             if (!initSettings)

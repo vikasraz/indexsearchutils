@@ -9,14 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ISUtils</RootNamespace>
     <AssemblyName>ISUtils</AssemblyName>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -41,10 +37,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataBaseLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\DataBaseLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.OracleClient" />
@@ -57,19 +49,17 @@
     <Compile Include="Async\IndexProgressChangedEventArgs.cs" />
     <Compile Include="Async\WriteDbProgressChangedEventArgs.cs" />
     <Compile Include="Async\WriteTableCompletedEventArgs.cs" />
+    <Compile Include="Common\CommonSet.cs" />
     <Compile Include="Common\Config.cs" />
     <Compile Include="Common\DBType.cs" />
     <Compile Include="Common\DictionarySet.cs" />
-    <Compile Include="Common\FieldProperties.cs" />
+    <Compile Include="Common\IndexField.cs" />
     <Compile Include="Common\FieldInfo.cs" />
     <Compile Include="Common\FileContent.cs" />
     <Compile Include="Common\FileIndexSet.cs" />
     <Compile Include="Common\FilterCondition.cs" />
-    <Compile Include="Common\FormatedResult.cs" />
     <Compile Include="Common\FuzzyQuery.cs" />
-    <Compile Include="Common\IndexSet.cs" />
     <Compile Include="Common\IndexerSet.cs" />
-    <Compile Include="Common\IndexType.cs" />
     <Compile Include="Common\FieldBase.cs" />
     <Compile Include="Common\Message.cs" />
     <Compile Include="Common\RangeCondition.cs" />

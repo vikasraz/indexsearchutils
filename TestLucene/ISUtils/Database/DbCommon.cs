@@ -159,21 +159,21 @@ namespace ISUtils.Database
                     linker.Close();
                     return false;
                 }
-                List<FieldProperties> fpList = new List<FieldProperties>();
+                List<IndexField> fpList = new List<IndexField>();
                 if (fields.IndexOf(')') > 0)
                 {
                     string[] split = SupportClass.String.Split(fields, ")");
                     foreach (string token in split)
-                        fpList.Add(new FieldProperties(token));
+                        fpList.Add(new IndexField(token));
                 }
                 else
                 {
                     string[] split = SupportClass.String.Split(fields, ",");
                     foreach (string token in split)
-                        fpList.Add(new FieldProperties(token));
+                        fpList.Add(new IndexField(token));
                 }
                 bool find;
-                foreach (FieldProperties fp in fpList)
+                foreach (IndexField fp in fpList)
                 {
                     find = false;
                     foreach(DataColumn column in dt.Columns)
@@ -405,11 +405,11 @@ namespace ISUtils.Database
             string tableName = "",currentTableName;
             Source source=null;
             IndexSet indexSet=null;
-            List<FieldProperties> fpList=new List<FieldProperties>();
+            List<IndexField> fpList=new List<IndexField>();
             bool change=false;
             foreach (DataRow row in table.Rows)
             {
-                FieldProperties fp=new FieldProperties();
+                IndexField fp=new IndexField();
                 fp.Visible = true;
                 fp.Order = 0;
                 #region DataColumn
@@ -440,7 +440,7 @@ namespace ISUtils.Database
                                 }
                             }
                             tableName = currentTableName;
-                            fpList = new List<FieldProperties>();
+                            fpList = new List<IndexField>();
                             source = new Source();
                             indexSet = new IndexSet();
                             source.SourceName = row[column].ToString();

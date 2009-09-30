@@ -77,7 +77,7 @@ namespace ISUtils.Common
             : this(field.Name(), caption, field.StringValue(), field.StringValue(), field.GetBoost(), isTitle, true, 0)
         { 
         }
-        public SearchField(Field field, FieldProperties properties)
+        public SearchField(Field field, IndexField properties)
             : this(field.Name(), properties.Caption, field.StringValue(), field.StringValue(), properties.Boost, properties.IsTitle, true, properties.Order)
         { 
         }

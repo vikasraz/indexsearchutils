@@ -14,10 +14,10 @@ namespace IndexEditor
     {
         #region Private Vars
         private TextBox tbFields;
-        private List<FieldProperties> fpList=new List<FieldProperties>();
+        private List<IndexField> fpList=new List<IndexField>();
         #endregion
         #region Property
-        public List<FieldProperties> Fields
+        public List<IndexField> Fields
         {
             get { return fpList; }
             set { fpList = value; }
@@ -27,9 +27,9 @@ namespace IndexEditor
             get 
             {
                 if (fpList == null)
-                    fpList = new List<FieldProperties>();
+                    fpList = new List<IndexField>();
                 StringBuilder buffer = new StringBuilder();
-                foreach (FieldProperties fp in fpList)
+                foreach (IndexField fp in fpList)
                 {
                     buffer.Append(fp.ToString() + ",");
                 }
@@ -40,18 +40,18 @@ namespace IndexEditor
             set
             {
                 if (fpList == null)
-                    fpList = new List<FieldProperties>();
+                    fpList = new List<IndexField>();
                 if (value.IndexOf(')') > 0)
                 {
                     string[] split = SupportClass.String.Split(value, ")");
                     foreach (string token in split)
-                        fpList.Add(new FieldProperties(token));
+                        fpList.Add(new IndexField(token));
                 }
                 else
                 {
                     string[] split = SupportClass.String.Split(value, ",");
                     foreach (string token in split)
-                        fpList.Add(new FieldProperties(token));
+                        fpList.Add(new IndexField(token));
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace IndexEditor
         {
             InitializeComponent();
             this.tbFields = tbFields;
-            fpList.AddRange(FieldProperties.ToArray(tbFields.Text));
+            fpList.AddRange(IndexField.ToArray(tbFields.Text));
             UpdateListData(true);
             EnableControls(false);
         }
@@ -160,7 +160,7 @@ namespace IndexEditor
         }
         private void btnConfim_Click(object sender, EventArgs e)
         {
-            FieldProperties fp = new FieldProperties();
+            IndexField fp = new IndexField();
             fp.Name = txtName.Text;
             fp.Caption = txtCaption.Text;
             fp.Boost = (float)numBoost.Value;
@@ -186,7 +186,7 @@ namespace IndexEditor
             {
                 int sel = lbFields.SelectedIndex;
                 lbFields.Items.Clear();
-                foreach (FieldProperties fp in fpList)
+                foreach (IndexField fp in fpList)
                 {
                     lbFields.Items.Add(fp.ToString());
                 }
@@ -197,7 +197,7 @@ namespace IndexEditor
                 fpList.Clear();
                 foreach (string item in lbFields.Items)
                 {
-                    fpList.Add(new FieldProperties(item));
+                    fpList.Add(new IndexField(item));
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace IndexEditor
                 return;
             if (update)
             {
-                FieldProperties fp = fpList[lbFields.SelectedIndex];
+                IndexField fp = fpList[lbFields.SelectedIndex];
                 txtName.Text = fp.Name;
                 txtCaption.Text = fp.Caption;
                 numBoost.Value = (decimal) fp.Boost;

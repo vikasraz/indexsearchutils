@@ -100,7 +100,7 @@ public partial class minisearch : System.Web.UI.Page
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
             Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(),pageSize, sr.PageNum);
             #region Title and Content
-            DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();
+            //DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();
             foreach (SearchRecord record in sr.Records)
             {
                 string title, detail, xmlRecord;

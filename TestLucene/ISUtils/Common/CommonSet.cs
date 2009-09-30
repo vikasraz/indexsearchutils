@@ -4,8 +4,19 @@ using System.Text;
 
 namespace ISUtils.Common
 {
+    /*
+     * 	<CommonSetting>
+     *    <DbType>SqlServer</DbType>
+     *    <HostName>192.168.1.254</HostName>
+     *    <DataBase>DongliBusiness</DataBase>
+     *    <UserName>sa</UserName>
+     *    <Password>suntop</Password>
+     *    <IndexPath>D:\IndexData</IndexPath>
+     *    <Source>CodeMaker</Source>
+     *  </CommonSetting>
+     * */
     [Serializable]
-    class CommonSet
+    public class CommonSet
     {
         #region 属性
         /**/
@@ -96,15 +107,15 @@ namespace ISUtils.Common
         /// <summary>
         /// 存储密码
         /// </summary>
-        private string config = "";
+        private string source = "";
         /**/
         /// <summary>
         /// 设定或返回密码
         /// </summary>
-        public string Config
+        public string Source
         {
-            get { return config; }
-            set { config = value; }
+            get { return source; }
+            set { source = value; }
         }
         #endregion
     }

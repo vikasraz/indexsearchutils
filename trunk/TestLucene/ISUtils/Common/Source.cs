@@ -71,48 +71,6 @@ namespace ISUtils.Common
         }
         /**/
         /// <summary>
-        /// 存储数据库类型
-        /// </summary>
-        private DBTypeEnum dbtype = DBTypeEnum.SQL_Server;
-        /**/
-        /// <summary>
-        /// 设定或返回数据库类型
-        /// </summary>
-        public DBTypeEnum DBType
-        {
-            get { return dbtype;}
-            set { dbtype = value; }
-        }
-        /**/
-        /// <summary>
-        /// 存储数据库路径
-        /// </summary>
-        private string hostname = "";
-        /**/
-        /// <summary>
-        /// 设定或返回数据库路径
-        /// </summary>
-        public string HostName
-        {
-            get { return hostname; }
-            set { hostname = value; }
-        }
-        /**/
-        /// <summary>
-        /// 存储数据库名称
-        /// </summary>
-        private string database = "";
-        /**/
-        /// <summary>
-        /// 设定或返回数据库名称
-        /// </summary>
-        public string DataBase
-        {
-            get { return database; }
-            set { database = value; }
-        }
-        /**/
-        /// <summary>
         /// 存储数据库查询语句
         /// </summary>
         private string query = "";
@@ -129,17 +87,17 @@ namespace ISUtils.Common
         /// <summary>
         /// 存储索引字段名称
         /// </summary>
-        private List<FieldProperties> fields=new List<FieldProperties>();
+        private List<IndexField> fields=new List<IndexField>();
         /**/
         /// <summary>
         /// 设定或返回索引字段名称
         /// </summary>
-        public List<FieldProperties> Fields
+        public List<IndexField> Fields
         {
             get 
             {
                 if (fields == null)
-                    fields = new List<FieldProperties>();
+                    fields = new List<IndexField>();
                 return fields; 
             }
             set 
@@ -148,12 +106,12 @@ namespace ISUtils.Common
                 if (fields != null)
                 { 
                     if (fieldDict ==null)
-                        fieldDict = new Dictionary<string, FieldProperties>();
+                        fieldDict = new Dictionary<string, IndexField>();
                     if (boostDict == null)
                         boostDict = new Dictionary<string, float>();
                     fieldDict.Clear();
                     boostDict.Clear();
-                    foreach (FieldProperties fb in fields)
+                    foreach (IndexField fb in fields)
                     {
                         if(!fieldDict.ContainsKey(fb.Name))
                             fieldDict.Add(fb.Name, fb);
@@ -163,7 +121,7 @@ namespace ISUtils.Common
                 }
             }
         }
-        private Dictionary<string, FieldProperties> fieldDict = new Dictionary<string, FieldProperties>();
+        private Dictionary<string, IndexField> fieldDict = new Dictionary<string, IndexField>();
         public List<string> StringFields
         {
             get
@@ -173,7 +131,7 @@ namespace ISUtils.Common
                 return szFields;
             }
         }
-        public Dictionary<string, FieldProperties> FieldDict
+        public Dictionary<string, IndexField> FieldDict
         {
             get
             {
@@ -184,34 +142,6 @@ namespace ISUtils.Common
         public Dictionary<string, float> FieldBoostDict
         {
             get { return boostDict; }
-        }
-        /**/
-        /// <summary>
-        /// 存储用户名
-        /// </summary>
-        private string username = "";
-        /**/
-        /// <summary>
-        /// 设定或返回用户名
-        /// </summary>
-        public string UserName
-        {
-            get { return username ; }
-            set { username = value; }
-        }
-        /**/
-        /// <summary>
-        /// 存储密码
-        /// </summary>
-        private string password = "";
-        /**/
-        /// <summary>
-        /// 设定或返回密码
-        /// </summary>
-        public string Password
-        {
-            get { return password; }
-            set { password = value; }
         }
         /**/
         /// <summary>
@@ -234,7 +164,7 @@ namespace ISUtils.Common
             if (fields == null)
                 return "";
             string ret=" ";
-            foreach (FieldProperties fb in fields)
+            foreach (IndexField fb in fields)
             {
                 ret += "," + fb.ToString();
             }
@@ -272,7 +202,7 @@ namespace ISUtils.Common
                                      username, password, query, primaryKey);
             if (fields != null && fields.Count > 0)
             {
-                foreach (FieldProperties fb in fields)
+                foreach (IndexField fb in fields)
                     ret += fb.ToString() + ",";
                 ret = ret.Substring(0, ret.Length - 1);
             }
@@ -457,7 +387,7 @@ namespace ISUtils.Common
                     string rest = format.Substring(pos + 1);
                     if (rest.IndexOf(')') > 0)
                     {
-                        List<FieldProperties> fpList = new List<FieldProperties>();
+                        List<IndexField> fpList = new List<IndexField>();
                         string[] split = SupportClass.String.Split(rest, ")");
 #if DEBUG
                         Console.WriteLine(format);
@@ -465,12 +395,12 @@ namespace ISUtils.Common
                             Console.WriteLine(a);
 #endif
                         foreach (string token in split)
-                            fpList.Add(new FieldProperties(token));
+                            fpList.Add(new IndexField(token));
                         src.Fields = fpList;
                     }
                     else
                     {
-                        List<FieldProperties> fpList = new List<FieldProperties>();
+                        List<IndexField> fpList = new List<IndexField>();
                         string[] split = SupportClass.String.Split(rest, ",");
 #if DEBUG
                         Console.WriteLine(format);
@@ -478,7 +408,7 @@ namespace ISUtils.Common
                             Console.WriteLine(a);
 #endif
                         foreach (string token in split)
-                            fpList.Add(new FieldProperties(token));
+                            fpList.Add(new IndexField(token));
                         src.Fields = fpList;
                     }
                     continue;

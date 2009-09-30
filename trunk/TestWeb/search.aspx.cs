@@ -113,7 +113,7 @@ public partial class searchresult : System.Web.UI.Page
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(SearchRecord));
             Number.InnerText = GetStatisticString(sr.Statistics, txtSearch.Text.Trim(),filter, pageSize, sr.PageNum);
             #region Title and Content
-            DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();            
+            //DataBaseLibrary.GraphicsManagementHandle gmh = new DataBaseLibrary.GraphicsManagementHandle();            
             foreach (SearchRecord record in sr.Records)
             {
                 if (record.Caption.Equals("文件", StringComparison.CurrentCultureIgnoreCase))
@@ -141,12 +141,13 @@ public partial class searchresult : System.Web.UI.Page
                     buffer.Append("<img src=\"action_import.gif\" width=\"16px\" height=\"16px\" />&nbsp;<a href=\"#\" onclick=\"TransferString('" + Encode(xmlRecord) + "')\" class=\"SmallTitle\" >搜索关系</a>");
 
                     //查看图形                     
-
                     string ID = GetPGLValue(record);
                     if (!string.IsNullOrEmpty(ID))
                     {
-                        bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
-                        if (IsImg)
+                        SearchField sf = record["GraphicsLabel"];
+                        //bool IsImg = gmh.GetProjectGraphicsLabel(record.Caption, ID);
+                        //if (IsImg)
+                        if(sf!=null && !string.IsNullOrEmpty(sf.Value) && bool.Parse(sf.Value))
                         {
                             if (record.Caption == "遥感卫片监测调查")
                             {

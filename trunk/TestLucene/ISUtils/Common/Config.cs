@@ -211,7 +211,7 @@ namespace ISUtils.Common
                 writer.WriteElementString("Query", source.Query);
                 writer.WriteElementString("PrimaryKey", source.PrimaryKey);
                 writer.WriteStartElement("Fields");
-                foreach (FieldProperties fp in source.Fields)
+                foreach (IndexField fp in source.Fields)
                 {
                     writer.WriteStartElement("Field");
                     writer.WriteAttributeString("Name", fp.Name);
@@ -344,7 +344,7 @@ namespace ISUtils.Common
                                     source.PrimaryKey = reader.ReadElementString();
                                     break;
                                 case "Fields":
-                                    List<FieldProperties> fpList = new List<FieldProperties>();
+                                    List<IndexField> fpList = new List<IndexField>();
                                     do
                                     {
                                         currentItemName = reader.Name;
@@ -355,7 +355,7 @@ namespace ISUtils.Common
                                         switch (currentItemName)
                                         {
                                             case "Field":
-                                                FieldProperties fp = new FieldProperties();
+                                                IndexField fp = new IndexField();
                                                 fp.Name = SupportClass.FileUtil.GetXmlAttribute(reader, "Name", typeof(string));
                                                 fp.Caption = SupportClass.FileUtil.GetXmlAttribute(reader, "Caption", typeof(string));
                                                 fp.Boost = float.Parse(SupportClass.FileUtil.GetXmlAttribute(reader, "Boost", typeof(float)));

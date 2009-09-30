@@ -30,7 +30,7 @@ namespace ISUtils.Utils
         private static List<ExcludeCondition> excludeList = new List<ExcludeCondition>();
         private static List<RangeCondition> rangeList = new List<RangeCondition>();
         private static bool initSettings=false;
-        private static Dictionary<string, Dictionary<string, FieldProperties>> sfpDict = new Dictionary<string, Dictionary<string, FieldProperties>>();
+        private static Dictionary<string, Dictionary<string, IndexField>> sfpDict = new Dictionary<string, Dictionary<string, IndexField>>();
         private static Dictionary<string, IndexSet> nameIndexDict = new Dictionary<string, IndexSet>();
         #endregion
         #region "搜索基本设置"
@@ -190,7 +190,7 @@ namespace ISUtils.Utils
         private static void SetBasicDict()
         {
             if (sfpDict == null)
-                sfpDict = new Dictionary<string, Dictionary<string, FieldProperties>>();
+                sfpDict = new Dictionary<string, Dictionary<string, IndexField>>();
             if (nameIndexDict == null)
                 nameIndexDict = new Dictionary<string, IndexSet>();
             foreach (IndexSet set in indexDict.Keys)
@@ -200,10 +200,10 @@ namespace ISUtils.Utils
                 nameIndexDict.Add(set.Caption, set);
                 sfpDict.Add(set.Caption, indexDict[set].FieldDict);
             }
-            Dictionary<string, FieldProperties> fpDict = new Dictionary<string, FieldProperties>();
-            fpDict.Add("Name", new FieldProperties("Name","文件名",1.0f,true));
-            fpDict.Add("Path", new FieldProperties("Path", "路径", 1.0f, true));
-            fpDict.Add("Content", new FieldProperties("Content", "内容", 1.0f, true));
+            Dictionary<string, IndexField> fpDict = new Dictionary<string, IndexField>();
+            fpDict.Add("Name", new IndexField("Name","文件名",1.0f,true));
+            fpDict.Add("Path", new IndexField("Path", "路径", 1.0f, true));
+            fpDict.Add("Content", new IndexField("Content", "内容", 1.0f, true));
             sfpDict.Add(SupportClass.TFNFieldValue, fpDict);
         }
         #endregion
@@ -307,7 +307,7 @@ namespace ISUtils.Utils
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     List<string> fieldList = new List<string>();
-                    foreach (FieldProperties field in indexDict[indexSet].Fields)
+                    foreach (IndexField field in indexDict[indexSet].Fields)
                     {
                         if (queryAtList.Contains(field.Name))
                         {
@@ -323,7 +323,7 @@ namespace ISUtils.Utils
                 foreach (IndexSet indexSet in indexDict.Keys)
                 {
                     List<string> fieldList = new List<string>();
-                    foreach (FieldProperties field in indexDict[indexSet].Fields)
+                    foreach (IndexField field in indexDict[indexSet].Fields)
                     {
                         fieldList.Add(field.Name);
                     }
@@ -1515,7 +1515,7 @@ namespace ISUtils.Utils
                         if (indexSet.Type == IndexTypeEnum.Increment)
                             continue;
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1551,7 +1551,7 @@ namespace ISUtils.Utils
                         if (indexSet.Type == IndexTypeEnum.Increment)
                             continue;
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1600,7 +1600,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1637,7 +1637,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1688,7 +1688,7 @@ namespace ISUtils.Utils
                             continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1738,7 +1738,7 @@ namespace ISUtils.Utils
                             continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1801,7 +1801,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1851,7 +1851,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1913,7 +1913,7 @@ namespace ISUtils.Utils
                         if (indexSet.Type == IndexTypeEnum.Increment)
                             continue;
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -1967,7 +1967,7 @@ namespace ISUtils.Utils
                         if (indexSet.Type == IndexTypeEnum.Increment)
                             continue;
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2034,7 +2034,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2089,7 +2089,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2158,7 +2158,7 @@ namespace ISUtils.Utils
                             continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2226,7 +2226,7 @@ namespace ISUtils.Utils
                             continue;
                         Query theQuery = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2307,7 +2307,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2375,7 +2375,7 @@ namespace ISUtils.Utils
                             continue;
                         Query query = GetQuery(indexSet);
                         Source source = indexDict[indexSet];
-                        Dictionary<string, FieldProperties> fpDict = source.FieldDict;
+                        Dictionary<string, IndexField> fpDict = source.FieldDict;
                         //IndexSearcher searcher = new IndexSearcher(indexSet.Path);
                         IndexSearcher presearcher = new IndexSearcher(indexSet.Path);
                         ParallelMultiSearcher searcher = new ParallelMultiSearcher(new IndexSearcher[] { presearcher });
@@ -2645,7 +2645,7 @@ namespace ISUtils.Utils
                     {
                         Document doc = searcher.Doc(scoreDocList[recNum].doc);
                         doc.RemoveField(SupportClass.TableFileNameField);
-                        Dictionary<string, FieldProperties> fpDict = sfpDict[caption];
+                        Dictionary<string, IndexField> fpDict = sfpDict[caption];
                         Field[] fields = new Field[doc.GetFields().Count];
                         doc.GetFields().CopyTo(fields, 0);
                         #region SearchField

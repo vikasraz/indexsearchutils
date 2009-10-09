@@ -89,20 +89,6 @@ namespace ISUtils.Common
         }
         /**/
         /// <summary>
-        /// 存储索引列表
-        /// </summary>
-        private List<IndexSet> indexList=new List<IndexSet>();
-        /**/
-        /// <summary>
-        /// 返回索引列表
-        /// </summary>
-        public List<IndexSet> IndexList
-        {
-            get { return indexList; }
-            set { indexList = value; }
-        }
-        /**/
-        /// <summary>
         /// 存储索引器
         /// </summary>
         private IndexerSet indexer=new IndexerSet();
@@ -606,10 +592,6 @@ namespace ISUtils.Common
         public List<Source> GetSourceList()
         {
             return sourceList;
-        }
-        public List<IndexSet> GetIndexList()
-        {
-            return indexList;
         }
         public DictionarySet GetDictionarySet()
         {

@@ -14,7 +14,7 @@ namespace ISUtils.Database
 {
     public class RamIWriter
     {
-        public static TimeSpan WriteIndex(Analyzer analyzer,IndexerSet indexer, IndexSet index, Source source,bool create)
+        public static TimeSpan WriteIndex(Analyzer analyzer,IndexerSet indexer,  Source source,bool create)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace ISUtils.Database
                 throw e;
             }
         }
-        public static TimeSpan WriteIndexWithEvent(Analyzer analyzer, IndexerSet indexer, IndexSet index, Source source, bool create,
+        public static TimeSpan WriteIndexWithEvent(Analyzer analyzer, IndexerSet indexer, Source source, bool create,
                                                 IndexCompletedEventHandler OnIndexCompleted,
                                                 IndexProgressChangedEventHandler OnProgressChanged)
         {

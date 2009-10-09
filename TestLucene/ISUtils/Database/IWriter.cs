@@ -15,7 +15,7 @@ namespace ISUtils.Database
     public class IWriter
     {
         #region No Boost Index
-        public static TimeSpan WriteIndex(Analyzer analyzer,IndexerSet indexer, IndexSet index, Source source,bool create)
+        public static TimeSpan WriteIndex(Analyzer analyzer,IndexerSet indexer, Source source,bool create)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace ISUtils.Database
                 throw e;
             }
         }
-        public static TimeSpan WriteIndexWithEvent(Analyzer analyzer, IndexerSet indexer, IndexSet index, Source source, bool create,
+        public static TimeSpan WriteIndexWithEvent(Analyzer analyzer, IndexerSet indexer,  Source source, bool create,
                                                 IndexCompletedEventHandler OnIndexCompleted,
                                                 IndexProgressChangedEventHandler OnProgressChanged)
         {
@@ -85,7 +85,7 @@ namespace ISUtils.Database
         }
         #endregion
         #region Boost Index
-        public static TimeSpan WriteBoostIndex(Analyzer analyzer, IndexerSet indexer, IndexSet index, Source source, bool create)
+        public static TimeSpan WriteBoostIndex(Analyzer analyzer, IndexerSet indexer,  Source source, bool create)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace ISUtils.Database
                 throw e;
             }
         }
-        public static TimeSpan WriteBoostIndexWithEvent(Analyzer analyzer, IndexerSet indexer, IndexSet index, Source source, bool create,
+        public static TimeSpan WriteBoostIndexWithEvent(Analyzer analyzer, IndexerSet indexer, Source source, bool create,
                                                 IndexCompletedEventHandler OnIndexCompleted,
                                                 IndexProgressChangedEventHandler OnProgressChanged)
         {

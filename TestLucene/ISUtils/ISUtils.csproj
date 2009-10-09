@@ -113,12 +113,6 @@
     <Compile Include="File\IFilter\FilterReader.cs" />
     <Compile Include="File\IFilter\IFilter.cs" />
     <Compile Include="Indexer\IndexMaker.cs" />
-    <Compile Include="Network\Client.cs" />
-    <Compile Include="Network\Connection.cs" />
-    <Compile Include="Network\ConnectionCollection.cs" />
-    <Compile Include="Network\Server.cs" />
-    <Compile Include="Network\SocketBase.cs" />
-    <Compile Include="Network\SocketFactory.cs" />
     <Compile Include="SupportClass.cs" />
     <Compile Include="Utils\IndexUtil.cs" />
     <Compile Include="Common\QueryInfo.cs" />

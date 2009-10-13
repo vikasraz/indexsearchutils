@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="commons-vfs-1.0, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="commons-vfs-1.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\lib\commons-vfs-1.0.dll</HintPath>
     </Reference>
@@ -53,6 +53,7 @@
     <Compile Include="Async\IndexProgressChangedEventArgs.cs" />
     <Compile Include="Async\WriteDbProgressChangedEventArgs.cs" />
     <Compile Include="Async\WriteTableCompletedEventArgs.cs" />
+    <Compile Include="VFSDirectory.cs" />
     <Compile Include="Common\AppSet.cs" />
     <Compile Include="Common\CommonSet.cs" />
     <Compile Include="Common\Config.cs" />

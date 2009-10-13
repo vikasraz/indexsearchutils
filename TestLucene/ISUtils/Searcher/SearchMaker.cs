@@ -21,7 +21,7 @@ namespace ISUtils.Searcher
     {
         #region 私有变量
         private List<Source> sourceList;
-        private List<IndexSet> indexList;
+        //private List<IndexSet> indexList;
         private FileIndexSet fileSet;
         private DictionarySet dictSet;
         private SearchSet searchd;

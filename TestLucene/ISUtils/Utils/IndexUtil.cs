@@ -16,7 +16,7 @@ namespace ISUtils.Utils
     public static class IndexUtil
     {
         #region static private vars
-        private static Dictionary<IndexSet, Source> indexDict=new Dictionary<IndexSet,Source>();
+        //private static Dictionary<IndexSet, Source> indexDict=new Dictionary<IndexSet,Source>();
         private static FileIndexSet fileSet = new FileIndexSet();
         private static IndexerSet indexerSet=new IndexerSet();
         private static DictionarySet dictSet=new DictionarySet();
@@ -72,6 +72,7 @@ namespace ISUtils.Utils
                 throw e;
             }
         }
+#if INDEXSET
         public static void SetIndexSettings(List<Source> sourceList, List<IndexSet> indexList, DictionarySet dictSet, IndexerSet indexerSet)
         {
             if (initSettings) return;
@@ -115,7 +116,8 @@ namespace ISUtils.Utils
                 }
             }
         }
-        public static void SetIndexSettings(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexerSet)
+#endif
+        public static void SetIndexSettings(List<Source> sourceList, DictionarySet dictSet, IndexerSet indexerSet)
         {
             if (initSettings) return;
             initSettings = true;
@@ -126,7 +128,7 @@ namespace ISUtils.Utils
             IndexUtil.dictSet = dictSet;
             IndexUtil.indexerSet = indexerSet;
         }
-        public static void SetIndexSettings(Dictionary<IndexSet, Source> dict, FileIndexSet fileIndexSet, DictionarySet dictSet, IndexerSet indexerSet)
+        public static void SetIndexSettings(List<Source> sourceList, FileIndexSet fileIndexSet, DictionarySet dictSet, IndexerSet indexerSet)
         {
             if (initSettings) return;
             initSettings = true;
@@ -186,6 +188,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#if INDEXSET
         public static void Index(bool create)
         {
             if (!initSettings)
@@ -198,6 +201,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#endif
         #endregion
         #region No Ram,Boost
         public static void BoostIndex(bool isIncreament)
@@ -249,6 +253,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#if INDEXSET
         public static void BoostIndex(bool create)
         {
             if (!initSettings)
@@ -265,6 +270,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#endif
         #endregion
         #region Use Ram,No Boost
         public static void IndexEx(bool isIncreament)
@@ -297,6 +303,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#if INDEXSET
         public static void IndexEx(bool create)
         {
             if (!initSettings)
@@ -309,6 +316,7 @@ namespace ISUtils.Utils
                 }
             }
         }
+#endif
         #endregion
         #region File Index
         public static bool IndexFile(bool create)

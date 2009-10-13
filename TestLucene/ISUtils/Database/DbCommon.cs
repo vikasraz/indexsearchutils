@@ -203,6 +203,7 @@ namespace ISUtils.Database
                 return false;
             }
         }
+#if INDEXSET
         public static void GetStructures(string configFilePath, out Dictionary<string, List<IndexSet>> tableIndexDict, out Dictionary<string, List<FieldInfo>> tableFieldDict, out Dictionary<IndexSet, List<string>> indexTableDict)
         {
             List<string> srcList = SupportClass.FileUtil.GetFileText(configFilePath);
@@ -349,6 +350,7 @@ namespace ISUtils.Database
                     tableIndexDict.Add(table, inList);
             }
         }
+#endif
         public static Dictionary<string, List<FieldInfo>> GetQueryTableFields(DBTypeEnum dbType, string connStr, string query)
         {
             Dictionary<string, List<FieldInfo>> tableFieldDict = new Dictionary<string, List<FieldInfo>>();
@@ -396,12 +398,13 @@ namespace ISUtils.Database
             }
             return tableFieldDict;
         }
+#if INDEXSET
         public static Dictionary<IndexSet,Source> GetExcelSettings(string path)
         {
             if (SupportClass.FileUtil.IsFileExists(path) == false)
                 throw new ArgumentException("path is not valid.", "path");
             DataTable table = ExcelLinker.GetDataTableFromFile(path);
-            Dictionary<IndexSet, Source> dict = new Dictionary<IndexSet, Source>();
+            List<Source> sourceList = new Dictionary<IndexSet, Source>();
             string tableName = "",currentTableName;
             Source source=null;
             IndexSet indexSet=null;
@@ -412,12 +415,9 @@ namespace ISUtils.Database
                 IndexField fp=new IndexField();
                 fp.Visible = true;
                 fp.Order = 0;
-                #region DataColumn
                 foreach (DataColumn column in table.Columns)
                 {
-#if DEBUG
                     System.Console.Write(row[column] + "\t");
-#endif
                     if (column.ColumnName.Equals("Table"))
                     {
                         currentTableName = row[column].ToString();
@@ -565,11 +565,8 @@ namespace ISUtils.Database
                     { 
                     }
                 }
-                #endregion
                 fpList.Add(fp);
-#if DEBUG
                 System.Console.WriteLine();
-#endif
             }
             if (source != null && indexSet != null)
             {
@@ -589,5 +586,6 @@ namespace ISUtils.Database
             }
             return dict;
         }
+#endif
     }
 }

@@ -177,6 +177,7 @@ namespace ISUtils.Common
             :this(string.Empty,string.Empty,string.Empty,doc)
         {           
         }
+#if INDEXSET
         public SearchRecord(IndexSet set, List<SearchField> fields)
             : this(set.IndexName, set.Caption, set.IndexName, fields)
         { 
@@ -186,6 +187,7 @@ namespace ISUtils.Common
         {
             this.primaryKey = pk;
         }
+#endif
         #endregion
         #region Override
         public override string ToString()

@@ -190,19 +190,19 @@ namespace ISUtils.Common
         #endregion
         #region 属性
         private CommonSet commonSet = new CommonSet();
-        public CommonSet CommonSet
+        public CommonSet CommonSettings
         {
             get { return commonSet; }
             set { commonSet = value; }
         }
         private IndexerSet indexerSet = new IndexerSet();
-        public IndexerSet IndexerSet
+        public IndexerSet IndexerSettings
         {
             get { return indexerSet; }
             set { indexerSet = value; }
         }
         private SearchSet searchSet = new SearchSet();
-        public SearchSet SearchSet
+        public SearchSet SearchSettings
         {
             get { return searchSet; }
             set { searchSet = value; }

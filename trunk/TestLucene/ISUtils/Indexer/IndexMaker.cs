@@ -120,7 +120,7 @@ namespace ISUtils.Indexer
                 return msg;
             }
         }
-        public static void BoostExecute(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
+        public static void BoostExecute(List<Source> sourceList, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
         {
             try
             {
@@ -146,7 +146,7 @@ namespace ISUtils.Indexer
                 throw e;
             }
         }
-        public static void Execute(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
+        public static void Execute(List<Source> sourceList, DictionarySet dictSet, IndexerSet indexer, bool create, ref Message msg)
         {
             try
             {

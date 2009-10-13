@@ -348,6 +348,7 @@ namespace ISUtils
                     throw e;
                 }
             }
+#if INDEXSET
             public static void WriteConfigFile(string path, List<Source> sourceList, List<IndexSet> indexList,FileIndexSet fileSet, DictionarySet dictSet, IndexerSet indexerSet, SearchSet searchSet)
             {
                 try
@@ -381,6 +382,7 @@ namespace ISUtils
                     throw e;
                 }
             }
+#endif
             public static object GetObjectFromXmlFile(string path, Type type)
             {
                 object obj = new object();
@@ -417,7 +419,7 @@ namespace ISUtils
             public static Config GetConfigFromExcelFile(string path)
             {
                 Config config = new Config();
-                Dictionary<IndexSet, Source> dict = Database.DbCommon.GetExcelSettings(path);
+                List<Source> sourceList = Database.DbCommon.GetExcelSettings(path);
                 config.SourceList.AddRange(dict.Values);
                 config.IndexList.AddRange(dict.Keys);
                 return config;

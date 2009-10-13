@@ -14,8 +14,8 @@ namespace ISUtils.Utils
     public static class SearchUtil
     {
         #region "私有全局变量"
-        private static Dictionary<IndexSet, Source> indexDict = new Dictionary<IndexSet, Source>();
-        private static Dictionary<IndexSet, List<string>> indexFieldsDict = new Dictionary<IndexSet, List<string>>();
+        //private static Dictionary<IndexSet, Source> indexDict = new Dictionary<IndexSet, Source>();
+        //private static Dictionary<IndexSet, List<string>> indexFieldsDict = new Dictionary<IndexSet, List<string>>();
         private static FileIndexSet fileSet = new FileIndexSet();
         private static SearchSet searchSet = new  SearchSet();
         private static DictionarySet dictSet = new DictionarySet();
@@ -25,13 +25,13 @@ namespace ISUtils.Utils
         private static string oneOfWordsAtLeastContain="";
         private static string wordNotInclude="";
         private static List<string> queryAtList = new List<string>();
-        private static List<IndexSet> searchIndexList = new List<IndexSet>();
+        //private static List<IndexSet> searchIndexList = new List<IndexSet>();
         private static List<FilterCondition> filterList = new List<FilterCondition>();
         private static List<ExcludeCondition> excludeList = new List<ExcludeCondition>();
         private static List<RangeCondition> rangeList = new List<RangeCondition>();
         private static bool initSettings=false;
         private static Dictionary<string, Dictionary<string, IndexField>> sfpDict = new Dictionary<string, Dictionary<string, IndexField>>();
-        private static Dictionary<string, IndexSet> nameIndexDict = new Dictionary<string, IndexSet>();
+        //private static Dictionary<string, IndexSet> nameIndexDict = new Dictionary<string, IndexSet>();
         #endregion
         #region "搜索基本设置"
         public static void SetSearchSettings(string configFileName,bool isXmlFile)
@@ -86,6 +86,7 @@ namespace ISUtils.Utils
                 throw e;
             }
         }
+#if INDEXSET
         public static void SetSearchSettings(List<Source> sourceList, List<IndexSet> indexList, DictionarySet dictSet, SearchSet searchSet)
         {
             if (initSettings) return;
@@ -104,11 +105,6 @@ namespace ISUtils.Utils
                     {
                         if(indexDict.ContainsKey(set)==false)
                             indexDict.Add(set, source);
-#if DEBUG
-                        System.Console.WriteLine("SearchUtil.indexDict.Add:");
-                        System.Console.WriteLine("\t"+set.ToString());
-                        System.Console.WriteLine("\t"+source.ToString());
-#endif
                         break;
                     }
                 }
@@ -135,11 +131,6 @@ namespace ISUtils.Utils
                     {
                         if (indexDict.ContainsKey(set) == false)
                             indexDict.Add(set, source);
-#if DEBUG
-                        System.Console.WriteLine("SearchUtil.indexDict.Add:");
-                        System.Console.WriteLine("\t" + set.ToString());
-                        System.Console.WriteLine("\t" + source.ToString());
-#endif
                         break;
                     }
                 }
@@ -147,7 +138,8 @@ namespace ISUtils.Utils
             SetBasicDict();
             initSettings = true;
         }
-        public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, DictionarySet dictSet, SearchSet searchSet)
+#endif
+        public static void SetSearchSettings(List<Source> sourceList, DictionarySet dictSet, SearchSet searchSet)
         {
             if (initSettings) return;
             if (dict != null)
@@ -162,7 +154,7 @@ namespace ISUtils.Utils
             SetBasicDict();
             initSettings = true;
         }
-        public static void SetSearchSettings(Dictionary<IndexSet, Source> dict, FileIndexSet fileIndexSet, DictionarySet dictSet, SearchSet searchSet)
+        public static void SetSearchSettings(List<Source> sourceList, FileIndexSet fileIndexSet, DictionarySet dictSet, SearchSet searchSet)
         {
             if (initSettings) return;
             if (dict != null)
@@ -531,6 +523,7 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
+#if INDEXSET
         private static Query GetFuzzyQuery(IndexSet indexSet)
         {
             string[] fields;
@@ -638,6 +631,7 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
+#endif
         private static Query GetExactQuery()
         {
             BooleanQuery queryRet = new BooleanQuery();
@@ -736,6 +730,7 @@ namespace ISUtils.Utils
             }
             return queryRet;
         }
+#if INDEXSET
         public static Query GetQuery(IndexSet indexSet)
         {
             BooleanQuery queryRet = new BooleanQuery();
@@ -743,6 +738,7 @@ namespace ISUtils.Utils
             queryRet.Add(GetExactQuery(), BooleanClause.Occur.MUST);
             return queryRet;
         }
+#endif
         #endregion
         #region "模糊搜索接口"
         public static List<Hits> FuzzySearch()

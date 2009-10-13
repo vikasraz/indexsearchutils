@@ -19,7 +19,6 @@ namespace ISUtils.Common
   </CommonSetting>
   <Indexer>
     <MainIndexTime>23:45</MainIndexTime>
-    <MainIndexSpan>1</MainIndexSpan>
   </Indexer>
   <Searchd>
     <MaxChildren>30</MaxChildren>
@@ -139,20 +138,6 @@ namespace ISUtils.Common
             {
                 get { return maincreate; }
                 set { maincreate = value; }
-            }
-            /**/
-            /// <summary>
-            /// 存储主索引重建间隔
-            /// </summary>
-            private int maintmspan = 1;//1 day
-            /**/
-            /// <summary>
-            /// 设定或返回主索引重建间隔
-            /// </summary>
-            public int MainIndexReCreateTimeSpan
-            {
-                get { return maintmspan; }
-                set { maintmspan = value; }
             }
             #endregion
         }
@@ -298,9 +283,6 @@ namespace ISUtils.Common
                                 case "MainIndexTime":
                                     indexerSet.MainIndexReCreateTime = DateTime.Parse(reader.ReadElementString());
                                     break;
-                                case "MainIndexSpan":
-                                    indexerSet.MainIndexReCreateTimeSpan = int.Parse(reader.ReadElementString());
-                                    break;
                                 default:
                                     reader.Read();
                                     break;
@@ -364,7 +346,6 @@ namespace ISUtils.Common
             #region Indexer
             writer.WriteStartElement("Indexer");
             writer.WriteElementString("MainIndexTime", indexerSet.MainIndexReCreateTime.ToString("HH:mm:ss"));
-            writer.WriteElementString("MainIndexSpan", indexerSet.MainIndexReCreateTimeSpan.ToString());
             writer.WriteEndElement();
             #endregion
             #region Search

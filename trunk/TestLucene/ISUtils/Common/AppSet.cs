@@ -31,6 +31,7 @@ namespace ISUtils.Common
     </CustomPaths>
   </Dictionary>
   <Indexer>
+    <MainIndexSpan>1</MainIndexSpan>
     <RamBufferSize>512</RamBufferSize>
     <MaxBufferedDocs>10000</MaxBufferedDocs>
     <MergeFactor>15000</MergeFactor>   
@@ -73,6 +74,20 @@ namespace ISUtils.Common
         public sealed class IndexerSet
         {
             #region 属性
+            /**/
+            /// <summary>
+            /// 存储主索引重建间隔
+            /// </summary>
+            private int maintmspan = 1;//1 day
+            /**/
+            /// <summary>
+            /// 设定或返回主索引重建间隔
+            /// </summary>
+            public int MainIndexReCreateTimeSpan
+            {
+                get { return maintmspan; }
+                set { maintmspan = value; }
+            }
             /**/
             /// <summary>
             /// 存储主索引重建时间
@@ -183,7 +198,12 @@ namespace ISUtils.Common
             get { return searchSet; }
             set { searchSet = value; }
         }
-        
+        private DbMonitorSet dbmSet = new DbMonitorSet();
+        public DbMonitorSet DbMonitorSet
+        {
+            get { return dbmSet; }
+            set { dbmSet = value; }
+        }
         #endregion
         #region IXmlSerializable 成员
         public XmlSchema GetSchema()
@@ -192,11 +212,33 @@ namespace ISUtils.Common
         }
         public void ReadXml(XmlReader reader)
         {
-            throw new NotImplementedException();
+                                //case "MainIndexSpan":
+                                //    indexerSet.MainIndexReCreateTimeSpan = int.Parse(reader.ReadElementString());
+                                //    break;
         }
         public void WriteXml(XmlWriter writer)
         {
-            throw new NotImplementedException();
+            #region CommonSet
+            writer.WriteStartElement("CommonSetting");
+            writer.WriteElementString("IndexPath", commonSet.IndexPath);
+            writer.WriteEndElement();
+            #endregion
+            #region Indexer
+            writer.WriteStartElement("Indexer");
+            writer.WriteElementString("MainIndexSpan", indexerSet.MainIndexReCreateTimeSpan.ToString());
+            writer.WriteElementString("MainIndexTime", indexerSet.MainIndexReCreateTime.ToString("HH:mm:ss"));
+            writer.WriteElementString("MainIndexSpan", indexerSet.MainIndexReCreateTimeSpan.ToString());
+            writer.WriteEndElement();
+            #endregion
+            #region Search
+            writer.WriteStartElement("Searchd");
+            writer.WriteElementString("MaxChildren", searchSet.MaxChildren.ToString());
+            writer.WriteElementString("MaxMatches", searchSet.MaxMatches.ToString());
+            writer.WriteElementString("MaxTrans", searchSet.MaxTrans.ToString());
+            writer.WriteElementString("MinScore", searchSet.MinScore.ToString());
+            writer.WriteEndElement();
+            #endregion
+
         }
         #endregion
     }
